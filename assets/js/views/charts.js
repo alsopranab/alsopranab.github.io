@@ -1,62 +1,63 @@
-function renderCharts() {
-  const skillCtx = document.getElementById("skillChart");
-  const growthCtx = document.getElementById("growthChart");
+function renderDashboardCharts() {
+  /* SKILLS BAR CHART */
+  const skillsCtx = document.getElementById("skillsChart");
 
-  new Chart(skillCtx, {
-    type: "doughnut",
+  new Chart(skillsCtx, {
+    type: "bar",
     data: {
-      labels: ["SQL", "Python", "Excel", "Automation", "Analytics"],
-      datasets: [{
-        data: [30, 25, 15, 15, 15],
-        backgroundColor: [
-          "#38bdf8",
-          "#22c55e",
-          "#f59e0b",
-          "#a855f7",
-          "#06b6d4"
-        ]
-      }]
+      labels: ["SQL", "Python", "Excel", "Automation", "EDA", "Business Analysis"],
+      datasets: [
+        {
+          label: "Skill Strength",
+          data: [90, 80, 75, 70, 85, 80],
+          backgroundColor: "#38bdf8"
+        }
+      ]
     },
     options: {
+      responsive: true,
       plugins: {
-        legend: { labels: { color: "#e5e7eb" } }
-      }
-    }
-  });
-
-  new Chart(growthCtx, {
-    type: "line",
-    data: {
-      labels: ["2022", "2023", "2024", "2025"],
-      datasets: [{
-        label: "Skill Growth",
-        data: [20, 40, 70, 90],
-        borderColor: "#38bdf8",
-        tension: 0.4,
-        fill: false
-      }]
-    },
-    options: {
-      plugins: {
-        legend: { labels: { color: "#e5e7eb" } }
+        legend: { display: false }
       },
       scales: {
-        x: { ticks: { color: "#9ca3af" } },
-        y: { ticks: { color: "#9ca3af" } }
+        y: {
+          beginAtZero: true,
+          ticks: { color: "#9ca3af" }
+        },
+        x: {
+          ticks: { color: "#9ca3af" }
+        }
       }
     }
   });
-}
 
-function animateKPIs() {
-  document.querySelectorAll(".kpi-value").forEach(el => {
-    let target = +el.dataset.target;
-    let count = 0;
+  /* PROJECT PIE CHART */
+  const projectCtx = document.getElementById("projectsChart");
 
-    const timer = setInterval(() => {
-      count++;
-      el.textContent = count;
-      if (count >= target) clearInterval(timer);
-    }, 30);
+  new Chart(projectCtx, {
+    type: "doughnut",
+    data: {
+      labels: ["SQL", "Python", "Automation / ETL", "Mixed"],
+      datasets: [
+        {
+          data: [40, 25, 20, 15],
+          backgroundColor: [
+            "#38bdf8",
+            "#22d3ee",
+            "#22c55e",
+            "#a78bfa"
+          ]
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: "bottom",
+          labels: { color: "#e5e7eb" }
+        }
+      }
+    }
   });
 }
