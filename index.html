@@ -4,7 +4,15 @@
   <meta charset="UTF-8" />
   <title>Pranab Debnath | Data Analyst</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- MAIN STYLES -->
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- PRISM (CODE HIGHLIGHTING THEME) -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"
+    rel="stylesheet"
+  />
 </head>
 <body>
 
@@ -22,12 +30,11 @@
 
 <main id="app"></main>
 
-<!-- DATA FIRST -->
+<!-- DATA -->
 <script src="assets/js/data.js"></script>
 
-<!-- VIEW FILES FIRST -->
+<!-- VIEWS (NO DEPENDENCIES) -->
 <script src="assets/js/views/home.js"></script>
-<script src="assets/js/views/dashboard.js"></script>
 <script src="assets/js/views/projects.js"></script>
 <script src="assets/js/views/project.js"></script>
 <script src="assets/js/views/learnings.js"></script>
@@ -36,9 +43,16 @@
 <!-- CHARTS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/js/charts.js"></script>
+<script src="assets/js/views/dashboard.js"></script>
 
-<!-- SPA ROUTER LAST -->
+<!-- SPA ROUTER (LAST) -->
 <script src="assets/js/spa.js"></script>
+
+<!-- PRISM CORE -->
+<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
 
 </body>
 </html>
