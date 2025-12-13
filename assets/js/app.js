@@ -14,11 +14,15 @@ async function loadExperience() {
   const data = await loadJSON("assets/data/experience.json");
   const box = document.getElementById("experience");
   if (!box) return;
+
+  box.innerHTML = `<div class="timeline"></div>`;
+  const timeline = box.querySelector(".timeline");
+
   data.forEach(e => {
-    box.innerHTML += `
-      <div class="card">
+    timeline.innerHTML += `
+      <div class="timeline-item">
         <h3>${e.company}</h3>
-        <p>${e.designation}</p>
+        <p><strong>${e.designation}</strong></p>
         <p>${e.duration}</p>
       </div>`;
   });
@@ -34,6 +38,7 @@ async function loadProjects() {
   const data = await loadJSON("assets/data/projects.json");
   const box = document.getElementById("projects");
   if (!box) return;
+
   data.forEach(p => {
     box.innerHTML += `
       <div class="card">
