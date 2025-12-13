@@ -1,6 +1,6 @@
 /* =====================================================
    SPA ROUTER & LIFECYCLE CONTROLLER
-   Clean · Predictable · Motion-Aware
+   macOS-STYLE · STABLE · NO FLICKER
 ===================================================== */
 
 const app = document.getElementById("app");
@@ -19,69 +19,52 @@ const routes = {
 };
 
 /* =====================
-   INTERNAL STATE
-===================== */
-let isNavigating = false;
-
-/* =====================
    CORE NAVIGATION
 ===================== */
 function navigate() {
-  if (!app || isNavigating) return;
-
-  isNavigating = true;
+  if (!app) return;
 
   const hash = location.hash || "#/";
   const [path, query] = hash.replace("#", "").split("?");
 
-  // Fade out old view
+  // HARD RESET — prevents layout ghosts
   app.classList.remove("fade-in");
+  app.innerHTML = "";
 
-  // Allow CSS transition to complete
-  requestAnimationFrame(() => {
-    setTimeout(() => {
-      // Hard cleanup
-      app.innerHTML = "";
+  const view = routes[path];
 
-      const view = routes[path];
+  if (!view) {
+    render404();
+    return;
+  }
 
-      if (!view) {
-        render404();
-        isNavigating = false;
-        return;
-      }
+  try {
+    // 1️⃣ Render content synchronously
+    view(query);
 
-      try {
-        // Render view
-        view(query);
+    // 2️⃣ Charts ONLY after DOM is stable
+    if (path === "/dashboard" && typeof renderCharts === "function") {
+      requestAnimationFrame(() => {
+        renderCharts();
+      });
+    }
 
-        // Run motion & interactions (ONCE per route)
-        if (typeof runMotionEnhancements === "function") {
-          runMotionEnhancements();
-        }
+    // 3️⃣ Motion AFTER content is final
+    if (typeof runMotionEnhancements === "function") {
+      requestAnimationFrame(() => {
+        runMotionEnhancements();
+      });
+    }
 
-        // Render charts only if dashboard exists
-        if (
-          path === "/dashboard" &&
-          typeof renderCharts === "function"
-        ) {
-          renderCharts();
-        }
+    // 4️⃣ Fade-in LAST (single paint)
+    requestAnimationFrame(() => {
+      app.classList.add("fade-in");
+    });
 
-        // Fade in new view
-        requestAnimationFrame(() => {
-          app.classList.add("fade-in");
-          isNavigating = false;
-        });
-
-      } catch (err) {
-        console.error(err);
-        renderError(err);
-        isNavigating = false;
-      }
-
-    }, 120); // intentional, smooth transition
-  });
+  } catch (err) {
+    console.error(err);
+    renderError(err);
+  }
 }
 
 /* =====================
@@ -99,7 +82,7 @@ function render404() {
 function renderError(err) {
   app.innerHTML = `
     <section>
-      <h1>Something went wrong</h1>
+      <h1>Runtime Error</h1>
       <pre>${err.message}</pre>
     </section>
   `;
@@ -108,10 +91,5 @@ function renderError(err) {
 /* =====================
    INITIALIZE
 ===================== */
-window.addEventListener("load", () => {
-  navigate();
-});
-
-window.addEventListener("hashchange", () => {
-  navigate();
-});
+window.addEventListener("load", navigate);
+window.addEventListener("hashchange", navigate);
