@@ -238,20 +238,33 @@ a {
 }
 
 /* ===============================
-   CODE VIEWER
+   CODE VIEWER (FIXED)
 ================================ */
 .code-block {
   background: #0f172a;
   color: #e5e7eb;
-  padding: 16px;
-  border-radius: 14px;
-  font-size: 13px;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.45;
+  max-height: 320px;
+  overflow-y: auto;
   overflow-x: auto;
-  margin-top: 14px;
+  margin-top: 12px;
+}
+
+/* Scrollbar polish */
+.code-block::-webkit-scrollbar {
+  width: 6px;
+}
+.code-block::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.25);
+  border-radius: 4px;
 }
 
 pre {
   margin: 0;
+  white-space: pre;
 }
 
 /* ===============================
