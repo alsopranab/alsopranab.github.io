@@ -1,6 +1,6 @@
 function renderHome() {
   app.innerHTML = `
-    <section class="hero fade-in">
+    <section class="fade-in">
       <h1>${PROFILE.name}</h1>
       <h2>${PROFILE.role}</h2>
       <p>Data analysis, automation, and real-world problem solving.</p>
@@ -14,11 +14,8 @@ function renderHome() {
             <h3>${e.role}</h3>
             <p>${e.company}</p>
             <small>${e.period}</small>
-
             <div class="experience-details" id="exp-${i}">
-              ${e.points.map(p => `
-                <div class="experience-step">${p}</div>
-              `).join("")}
+              ${e.points.map(p => `<div class="experience-step">${p}</div>`).join("")}
             </div>
           </div>
         `).join("")}
@@ -28,9 +25,5 @@ function renderHome() {
 }
 
 function toggleExp(i) {
-  document
-    .getElementById(`exp-${i}`)
-    .parentElement
-    .classList
-    .toggle("active");
+  document.getElementById(`exp-${i}`).parentElement.classList.toggle("active");
 }
