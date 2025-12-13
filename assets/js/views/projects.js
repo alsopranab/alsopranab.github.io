@@ -4,16 +4,18 @@ function renderProjects() {
   app.innerHTML = `
     <section>
       <h1>Projects</h1>
-      <p>Live GitHub repositories grouped by domain.</p>
+      <p class="muted">
+        A curated view of my real-world work, grouped by domain.
+      </p>
     </section>
 
     <section>
-      <h2>SQL</h2>
+      <h2>SQL Projects</h2>
       <div id="sql-projects" class="grid"></div>
     </section>
 
     <section>
-      <h2>Python</h2>
+      <h2>Python Projects</h2>
       <div id="python-projects" class="grid"></div>
     </section>
 
@@ -26,39 +28,42 @@ function renderProjects() {
   fetchProjects();
 }
 
+/* =========================
+   FETCH & CLASSIFY
+========================= */
+
 function fetchProjects() {
   fetch("https://api.github.com/users/alsopranab/repos")
     .then(res => res.json())
     .then(repos => {
-      repos.filter(r => !r.fork).forEach(repo => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <h3>${repo.name}</h3>
-          <p>${repo.description || "No description available."}</p>
-          <button onclick="location.hash='#/project?repo=${repo.name}'">
-            Open Project
-          </button>
-        `;
+      repos
+        .filter(r => !r.fork)
+        .forEach(repo => {
+          const card = projectCard(repo);
 
-        const name = repo.name.toLowerCase();
-        if (name.includes("sql")) {
-          sqlAppend(card);
-        } else if (repo.language === "Python") {
-          pythonAppend(card);
-        } else {
-          autoAppend(card);
-        }
-      });
+          const name = repo.name.toLowerCase();
+          if (name.includes("sql")) {
+            document.getElementById("sql-projects").appendChild(card);
+          } else if (repo.language === "Python") {
+            document.getElementById("python-projects").appendChild(card);
+          } else {
+            document.getElementById("automation-projects").appendChild(card);
+          }
+        });
     });
 }
 
-function sqlAppend(el) {
-  document.getElementById("sql-projects").appendChild(el);
-}
-function pythonAppend(el) {
-  document.getElementById("python-projects").appendChild(el);
-}
-function autoAppend(el) {
-  document.getElementById("automation-projects").appendChild(el);
+function projectCard(repo) {
+  const div = document.createElement("div");
+  div.className = "card";
+
+  div.innerHTML = `
+    <h3>${repo.name}</h3>
+    <p class="muted">${repo.description || "No description provided."}</p>
+    <button onclick="location.hash='#/project?repo=${repo.name}'">
+      View Code
+    </button>
+  `;
+
+  return div;
 }
