@@ -1,22 +1,21 @@
 :root {
   --bg: #0b0f14;
-  --section: #111827;
-  --card: #161e2e;
-  --border: #1f2937;
+  --card: #121826;
   --text: #e5e7eb;
-  --muted: #9ca3af;
   --accent: #38bdf8;
 }
 
-* {
-  box-sizing: border-box;
-  font-family: system-ui, sans-serif;
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #020617;
 }
 
 body {
   margin: 0;
-  background: var(--bg);
+  background: radial-gradient(circle at top, #0f172a, var(--bg));
   color: var(--text);
+  font-family: Inter, system-ui, sans-serif;
 }
 
 nav {
