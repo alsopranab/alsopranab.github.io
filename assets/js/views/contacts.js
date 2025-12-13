@@ -4,71 +4,92 @@ function renderContacts() {
   app.innerHTML = `
     <section>
       <h1>Contact</h1>
-      <p>
-        I’m open to discussions around data analytics roles,
-        automation projects, and learning collaborations.
+      <p class="muted">
+        Reach out for opportunities, collaboration, or discussion.
+        I respond fastest via email.
       </p>
     </section>
 
+    <!-- PRIMARY CONTACT -->
     <section>
-      <h2>Connect With Me</h2>
-
       <div class="grid">
-        <div class="card">
-          <h3>LinkedIn</h3>
-          <p>Professional profile & experience.</p>
-          <button onclick="window.open('https://www.linkedin.com/in/pranab-dnath','_blank')">
-            Open LinkedIn
-          </button>
-        </div>
-
-        <div class="card">
-          <h3>GitHub</h3>
-          <p>All projects, SQL practice, and automation code.</p>
-          <button onclick="window.open('https://github.com/alsopranab','_blank')">
-            Open GitHub
-          </button>
-        </div>
-
         <div class="card">
           <h3>Email</h3>
-          <p>For direct communication.</p>
-          <button onclick="window.location.href='mailto:alsopranab@gmail.com'">
-            Send Email
+          <p class="muted">Direct communication</p>
+          <p><strong>career.pranab@gmail.com</strong></p>
+          <button onclick="location.href='mailto:career.pranab@gmail.com'">
+            Write Email
           </button>
         </div>
-
-        <div class="card">
-          <h3>Location</h3>
-          <p>Bangalore, India</p>
-          <p style="color: var(--muted);">
-            Open to relocation & remote roles
-          </p>
-        </div>
       </div>
     </section>
 
+    <!-- PROFESSIONAL PROFILES -->
     <section>
-      <h2>What I’m Looking For</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Roles</h3>
-          <ul>
-            <li>Data Analyst</li>
-            <li>Business Analyst</li>
-            <li>Analytics-focused roles</li>
-          </ul>
-        </div>
+      <h2>Professional Profiles</h2>
 
-        <div class="card">
-          <h3>Work Type</h3>
-          <ul>
-            <li>Full-time</li>
-            <li>Contract / Freelance</li>
-            <li>Remote / Hybrid</li>
-          </ul>
-        </div>
+      <div class="grid">
+        ${contactCard(
+          "LinkedIn",
+          "Professional background & experience",
+          "https://www.linkedin.com/in/pranab-dnath"
+        )}
+
+        ${contactCard(
+          "GitHub",
+          "Projects, code, and automation work",
+          "https://github.com/alsopranab"
+        )}
+
+        ${contactCard(
+          "LeetCode",
+          "Problem solving & DSA practice",
+          "https://leetcode.com/alsopranab"
+        )}
+
+        ${contactCard(
+          "HackerRank",
+          "SQL & problem-solving practice",
+          "https://www.hackerrank.com/alsopranab"
+        )}
       </div>
     </section>
+
+    <!-- INSTAGRAM -->
+    <section>
+      <h2>Instagram</h2>
+
+      <div class="grid">
+        ${contactCard(
+          "The Query Guy",
+          "Data analytics content & insights",
+          "https://www.instagram.com/the.queryguy"
+        )}
+
+        ${contactCard(
+          "Personal",
+          "Personal updates & life",
+          "https://www.instagram.com/alsopranab"
+        )}
+      </div>
+    </section>
+  `;
+
+  app.classList.add("fade-in");
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function contactCard(title, desc, link) {
+  return `
+    <div class="card">
+      <h3>${title}</h3>
+      <p class="muted">${desc}</p>
+      <button onclick="window.open('${link}', '_blank')">
+        Open
+      </button>
+    </div>
   `;
 }
