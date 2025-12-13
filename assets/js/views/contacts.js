@@ -18,13 +18,12 @@ function renderContacts() {
       <div class="grid">
         <div class="card">
           <h3>Write an Email</h3>
-          <p class="muted">This will open your email client with details filled in.</p>
+          <p class="muted">Opens your email client with details filled in.</p>
 
           <form onsubmit="sendEmail(event)">
             <input
               type="text"
               id="emailSubject"
-              placeholder="Subject"
               value="Opportunity / Collaboration"
               required
               style="width:100%;margin-bottom:12px;"
@@ -33,7 +32,6 @@ function renderContacts() {
             <textarea
               id="emailBody"
               rows="6"
-              placeholder="Write your message here..."
               required
               style="width:100%;margin-bottom:14px;"
             >Hi Pranab,
@@ -88,18 +86,16 @@ Regards,</textarea>
       <h2>Instagram</h2>
 
       <div class="grid">
-        ${instagramCard(
+        ${instagramQueryGuyCard(
           "The Query Guy",
           "Analytics tips & SQL content",
-          PROFILE.social.instagram_data,
-          "https://raw.githubusercontent.com/alsopranab/alsopranab.github.io/main/assets/img/instagram-queryguy.jpg"
+          PROFILE.social.instagram_data
         )}
 
-        ${instagramCard(
+        ${profileCard(
           "Personal",
-          "Life & behind-the-scenes",
-          PROFILE.social.instagram_personal,
-          "https://raw.githubusercontent.com/alsopranab/alsopranab.github.io/main/assets/img/instagram-personal.jpg"
+          "Personal updates & life",
+          `https://www.instagram.com/${PROFILE.social.instagram_personal}`
         )}
       </div>
     </section>
@@ -122,13 +118,13 @@ function profileCard(title, desc, link) {
   `;
 }
 
-function instagramCard(title, desc, handle, img) {
+function instagramQueryGuyCard(title, desc, handle) {
   return `
     <div class="card">
       <img
-        src="${img}"
+        src="https://avatars.githubusercontent.com/u/62995713?v=4"
         alt="${title}"
-        style="width:100%;border-radius:14px;margin-bottom:12px;"
+        style="width:120px;height:120px;border-radius:50%;margin-bottom:14px;"
       />
       <h3>${title}</h3>
       <p class="muted">${desc}</p>
