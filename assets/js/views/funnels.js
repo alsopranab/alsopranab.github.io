@@ -6,8 +6,8 @@ function renderFunnels() {
     <section>
       <h1>Career Funnel</h1>
       <p class="muted">
-        A left-to-right flow showing how experience becomes skills,
-        projects, and measurable business impact.
+        How real-world experience turns into skills, projects,
+        and measurable business impact.
       </p>
     </section>
 
@@ -15,24 +15,33 @@ function renderFunnels() {
     <section class="funnel-row">
       ${funnelStage({
         title: "Experience",
-        subtitle: "Where real-world problems originate",
+        subtitle: "Problems faced in real environments",
         points: [
-          "MagicBricks — lead & site-visit analytics",
-          "NoBroker — revenue & conversion analysis",
-          "Operational reporting & dashboards"
-        ]
+          "MagicBricks — lead quality & site-visit analytics",
+          "NoBroker — revenue conversion & funnel analysis",
+          "Stakeholder reporting & performance tracking"
+        ],
+        action: {
+          label: "View LinkedIn",
+          route: `https://www.linkedin.com/in/${PROFILE.linkedin}`,
+          external: true
+        }
       })}
 
       ${funnelArrow()}
 
       ${funnelStage({
         title: "Skills",
-        subtitle: "Tools applied to solve those problems",
+        subtitle: "Tools used to solve those problems",
         points: [
           "SQL — joins, CTEs, window functions",
-          "Python — EDA & automation",
-          "Excel — KPI tracking & dashboards"
-        ]
+          "Python — EDA, automation, scripting",
+          "Excel — KPIs, dashboards, tracking models"
+        ],
+        action: {
+          label: "Open Dashboard",
+          route: "#/dashboard"
+        }
       })}
 
       ${funnelArrow()}
@@ -42,8 +51,8 @@ function renderFunnels() {
         subtitle: "Hands-on implementations",
         points: [
           "SQL practice & optimization repositories",
-          "Titanic survival prediction (Python)",
-          "Automation & ETL scripts"
+          "Automation & ETL scripts",
+          "End-to-end analytics projects"
         ],
         action: {
           label: "View Projects",
@@ -55,14 +64,14 @@ function renderFunnels() {
 
       ${funnelStage({
         title: "Impact",
-        subtitle: "Measurable outcomes",
+        subtitle: "Business outcomes delivered",
         points: [
           "~15% average revenue improvement",
-          "Improved funnel visibility",
-          "Reduced manual reporting workload"
+          "Improved funnel visibility & reporting",
+          "Reduced manual effort via automation"
         ],
         action: {
-          label: "Open Dashboard",
+          label: "See Metrics",
           route: "#/dashboard"
         }
       })}
@@ -76,7 +85,8 @@ function renderFunnels() {
 
 function funnelStage({ title, subtitle, points, action }) {
   return `
-    <div class="card funnel-stage" tabindex="0"
+    <div class="card funnel-stage"
+         tabindex="0"
          onclick="toggleFunnel(this)"
          onkeypress="if(event.key==='Enter') toggleFunnel(this)">
       
@@ -90,9 +100,16 @@ function funnelStage({ title, subtitle, points, action }) {
 
         ${
           action
-            ? `<button onclick="event.stopPropagation(); location.hash='${action.route}'">
-                 ${action.label}
-               </button>`
+            ? `
+              <button
+                onclick="event.stopPropagation(); ${
+                  action.external
+                    ? `window.open('${action.route}', '_blank')`
+                    : `location.hash='${action.route}'`
+                }">
+                ${action.label}
+              </button>
+            `
             : ""
         }
       </div>
@@ -103,7 +120,7 @@ function funnelStage({ title, subtitle, points, action }) {
 function funnelArrow() {
   return `
     <div class="funnel-arrow" aria-hidden="true">
-      <span>→</span>
+      →
     </div>
   `;
 }
