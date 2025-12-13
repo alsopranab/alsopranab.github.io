@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Learnings</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="projects.html">Projects</a>
+  <a href="resume.html">Resume</a>
+  <a href="learnings.html">Learnings</a>
+  <a href="contacts.html">Contacts</a>
+</nav>
+
+<section id="learnings"></section>
+
+<script>
+fetch("assets/data/learnings.json")
+  .then(r => r.json())
+  .then(d => {
+    const box = document.getElementById("learnings");
+    d.forEach(l => {
+      box.innerHTML += `
+        <div class="card">
+          <h3>${l.title}</h3>
+          <p>${l.description}</p>
+        </div>`;
+    });
+  });
+</script>
+
+</body>
+</html>
 
