@@ -2,7 +2,6 @@ function renderHome() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
-    <!-- HERO -->
     <section class="home-hero">
       <h1 class="home-name">Pranab Debnath</h1>
       <h2 class="home-role">Data Analyst</h2>
@@ -12,7 +11,6 @@ function renderHome() {
         and measurable outcomes through analytics systems.
       </p>
 
-      <!-- SKILLS SNAPSHOT -->
       <div class="grid home-skills">
         ${skillCard("SQL", "Business queries, joins, CTEs")}
         ${skillCard("Python", "EDA, automation, scripting")}
@@ -20,7 +18,6 @@ function renderHome() {
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
     <section>
       <h2>Experience Snapshot</h2>
 
@@ -50,13 +47,11 @@ function renderHome() {
 
       <div class="home-cta">
         <a href="#/funnels" class="impact-link">
-          See how experience converts into impact
-          <span class="arrow">→</span>
+          See how experience converts into impact →
         </a>
       </div>
     </section>
 
-    <!-- WHAT I BUILD -->
     <section>
       <h2>What I Build</h2>
 
@@ -81,11 +76,10 @@ function renderHome() {
       </div>
     </section>
 
-    <!-- EXPLORE -->
     <section>
       <h2>Explore</h2>
       <p class="muted">
-        This site is both a portfolio and a knowledge base. Start anywhere.
+        This site is both a portfolio and a knowledge base.
       </p>
 
       <div class="grid">
@@ -109,8 +103,6 @@ function renderHome() {
       </div>
     </section>
   `;
-
-  app.classList.add("fade-in");
 }
 
 /* =========================
