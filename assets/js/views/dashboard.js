@@ -2,27 +2,44 @@ function renderDashboard() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
-    <!-- DASHBOARD HEADER -->
+    <!-- HEADER -->
     <section>
       <h1>Analytics Dashboard</h1>
       <p class="muted">
-        High-level view of my work, skills, and project distribution.
+        A data-driven overview of skills, experience, and project focus.
       </p>
     </section>
 
-    <!-- KPI ROW -->
+    <!-- KPI METRICS -->
     <section>
       <div class="grid">
-        ${kpiCard("12+", "Active Repositories")}
+        ${kpiCard("12+", "GitHub Repositories")}
         ${kpiCard("3", "Core Domains")}
         ${kpiCard("100+", "SQL Problems Solved")}
-        ${kpiCard("15%", "Revenue Impact (Avg)")}
+        ${kpiCard("15%", "Avg Business Impact")}
       </div>
     </section>
 
-    <!-- SKILL DISTRIBUTION -->
+    <!-- CHARTS -->
     <section>
-      <h2>Skill Distribution</h2>
+      <h2>Skill & Growth Overview</h2>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Skill Distribution</h3>
+          <canvas id="skillChart" height="220"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Growth Over Time</h3>
+          <canvas id="growthChart" height="220"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILL BREAKDOWN -->
+    <section>
+      <h2>Skill Proficiency</h2>
 
       <div class="grid">
         ${skillBar("SQL", "Joins, CTEs, Window Functions", 90)}
@@ -32,33 +49,36 @@ function renderDashboard() {
       </div>
     </section>
 
-    <!-- PROJECT CLASSIFICATION -->
+    <!-- PROJECT DOMAINS -->
     <section>
-      <h2>Project Classification</h2>
+      <h2>Project Domains</h2>
 
       <div class="grid">
         ${projectClassCard(
-          "SQL",
-          "Query optimization, joins, CTEs, schema design",
-          "2 Major Repos"
+          "SQL Analytics",
+          "Query optimization, schema design, reporting logic",
+          "Multiple structured repositories"
         )}
 
         ${projectClassCard(
-          "Python",
-          "EDA, automation scripts, data processing",
-          "1 End-to-End Project"
+          "Python Projects",
+          "EDA, ML basics, automation scripts",
+          "End-to-end data projects"
         )}
 
         ${projectClassCard(
-          "Automation / ETL",
-          "Email parsing, CSV extraction, workflow automation",
-          "4 Automation Scripts"
+          "Automation & ETL",
+          "Email parsing, CSV pipelines, workflow automation",
+          "Production-ready scripts"
         )}
       </div>
     </section>
   `;
 
-  app.classList.add("fade-in");
+  // Render charts AFTER DOM is ready
+  if (typeof renderCharts === "function") {
+    renderCharts();
+  }
 }
 
 /* =========================
@@ -69,7 +89,7 @@ function kpiCard(value, label) {
   return `
     <div class="card kpi">
       <div class="kpi-value">${value}</div>
-      <p>${label}</p>
+      <p class="muted">${label}</p>
     </div>
   `;
 }
@@ -89,12 +109,12 @@ function skillBar(title, desc, percent) {
   `;
 }
 
-function projectClassCard(title, desc, count) {
+function projectClassCard(title, desc, meta) {
   return `
     <div class="card">
       <h3>${title}</h3>
       <p>${desc}</p>
-      <p class="muted">${count}</p>
+      <p class="muted">${meta}</p>
     </div>
   `;
 }
