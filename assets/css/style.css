@@ -4,13 +4,25 @@
 :root {
   --bg: #0b0f14;
   --bg-soft: #0f172a;
-  --card: rgba(18, 24, 38, 0.9);
+  --card: rgba(18, 24, 38, 0.95);
   --border: rgba(56, 189, 248, 0.25);
   --text: #e5e7eb;
   --muted: #9ca3af;
   --accent: #38bdf8;
   --accent-2: #22d3ee;
   --success: #22c55e;
+}
+
+[data-theme="light"] {
+  --bg: #f8fafc;
+  --bg-soft: #e5e7eb;
+  --card: #ffffff;
+  --border: rgba(2, 6, 23, 0.15);
+  --text: #020617;
+  --muted: #475569;
+  --accent: #0284c7;
+  --accent-2: #0ea5e9;
+  --success: #16a34a;
 }
 
 /* =========================
@@ -23,9 +35,10 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, #0f172a, var(--bg));
+  background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
   color: var(--text);
   overflow-x: hidden;
+  transition: background 0.35s ease, color 0.35s ease;
 }
 
 /* =========================
@@ -34,7 +47,7 @@ body {
 nav {
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 20;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -54,6 +67,20 @@ nav a {
 .logo {
   font-weight: 800;
   letter-spacing: 1px;
+}
+
+/* =========================
+   THEME TOGGLE
+========================= */
+#themeToggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--accent);
+  border-radius: 999px;
+  padding: 6px 10px;
+  margin-left: 16px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 /* =========================
@@ -119,7 +146,7 @@ section {
 }
 
 /* =========================
-   DASHBOARD CARDS
+   CARDS / DASHBOARD FEEL
 ========================= */
 .card {
   background: linear-gradient(
@@ -131,12 +158,16 @@ section {
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 20px;
-  transition: 
+  position: relative;
+  overflow: hidden;
+  transition:
     transform 0.35s ease,
     box-shadow 0.35s ease,
     border-color 0.35s ease;
-  position: relative;
-  overflow: hidden;
+}
+
+[data-theme="light"] .card {
+  background: var(--card);
 }
 
 .card::after {
@@ -194,7 +225,7 @@ section {
 }
 
 /* =========================
-   BUTTON
+   BUTTONS
 ========================= */
 button {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -204,6 +235,8 @@ button {
   font-weight: 700;
   cursor: pointer;
   margin-top: 12px;
+  position: relative;
+  z-index: 2;
 }
 
 /* =========================
@@ -213,6 +246,9 @@ a {
   color: var(--accent);
 }
 
+/* =========================
+   KPI DASHBOARD
+========================= */
 .kpi {
   text-align: center;
 }
@@ -224,15 +260,9 @@ a {
   color: var(--accent);
 }
 
-button {
-  pointer-events: auto;
-  position: relative;
-  z-index: 2;
-}
-
-.card {
-  pointer-events: auto;
-}
+/* =========================
+   CODE VIEWER (PRISM)
+========================= */
 .code-block {
   background: #020617;
   padding: 20px;
@@ -245,4 +275,3 @@ button {
 pre {
   margin: 0;
 }
-
