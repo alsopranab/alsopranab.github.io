@@ -1,21 +1,41 @@
 /* ======================================================
-   ROOT THEME TOKENS (DARK FIRST)
+   ROOT THEME TOKENS (macOS AUTO LIGHT / DARK)
 ====================================================== */
+
+/* DARK (default) */
 :root {
   --bg: #0b0f14;
-  --bg-soft: #0f172a;
-  --card: rgba(18, 24, 38, 0.92);
-  --border: rgba(56, 189, 248, 0.25);
+  --bg-soft: rgba(15, 23, 42, 0.55);
+  --card: rgba(18, 24, 38, 0.55);
+  --border: rgba(255,255,255,0.08);
 
   --text: #e5e7eb;
   --muted: #9ca3af;
 
   --accent: #38bdf8;
   --accent-2: #22d3ee;
-  --success: #22c55e;
 
-  --radius: 18px;
-  --blur: 16px;
+  --radius: 20px;
+  --blur: 22px;
+
+  --ease-mac: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --shadow-mac: 0 18px 45px rgba(0,0,0,0.45);
+}
+
+/* LIGHT MODE (auto via macOS) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f5f7fb;
+    --bg-soft: rgba(255,255,255,0.65);
+    --card: rgba(255,255,255,0.75);
+    --border: rgba(0,0,0,0.08);
+
+    --text: #0f172a;
+    --muted: #475569;
+
+    --accent: #2563eb;
+    --accent-2: #38bdf8;
+  }
 }
 
 /* ======================================================
@@ -37,139 +57,93 @@ html {
 }
 
 body {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "SF Pro Text",
+    "SF Pro Display",
+    Inter,
+    system-ui,
+    sans-serif;
+
   color: var(--text);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
 /* ======================================================
-   ANALYTICS ANIMATED BACKGROUND (FULL)
+   macOS GLASS BACKGROUND (STATIC – NO JANK)
 ====================================================== */
-body::before,
-body::after {
+body::before {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: -1;
-}
-
-/* Gradient motion */
-body::before {
   background:
-    radial-gradient(circle at 20% 20%, rgba(56,189,248,0.18), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(34,211,238,0.16), transparent 45%),
-    radial-gradient(circle at 50% 80%, rgba(56,189,248,0.14), transparent 40%),
-    linear-gradient(120deg, #050b1e, #07142f, #050b1e);
-
-  background-size: 200% 200%;
-  animation: bgMove 20s ease infinite;
-}
-
-/* Analytics grid + data flow */
-body::after {
-  background:
-    linear-gradient(rgba(56,189,248,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(56,189,248,0.05) 1px, transparent 1px),
-    radial-gradient(circle at 10% 20%, rgba(56,189,248,0.2), transparent 35%),
-    radial-gradient(circle at 90% 40%, rgba(34,211,238,0.18), transparent 40%),
-    radial-gradient(circle at 50% 90%, rgba(56,189,248,0.16), transparent 45%);
-
-  background-size:
-    90px 90px,
-    90px 90px,
-    200% 200%,
-    200% 200%,
-    200% 200%;
-
-  animation:
-    gridMove 40s linear infinite,
-    pulse 16s ease-in-out infinite;
-}
-
-@keyframes bgMove {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes gridMove {
-  0% {
-    background-position:
-      0 0,
-      0 0,
-      0% 50%,
-      100% 50%,
-      50% 100%;
-  }
-  100% {
-    background-position:
-      90px 90px,
-      90px 90px,
-      100% 50%,
-      0% 50%,
-      50% 0%;
-  }
-}
-
-@keyframes pulse {
-  0% { opacity: 0.45; }
-  50% { opacity: 0.75; }
-  100% { opacity: 0.45; }
+    radial-gradient(circle at 15% 10%, rgba(56,189,248,0.12), transparent 40%),
+    radial-gradient(circle at 85% 25%, rgba(34,211,238,0.08), transparent 45%),
+    linear-gradient(180deg, var(--bg), var(--bg));
 }
 
 /* ======================================================
-   NAVIGATION
+   NAVIGATION — macOS DOCK STYLE
 ====================================================== */
 nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  padding: 14px 28px;
 
+  padding: 14px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  backdrop-filter: blur(var(--blur));
-  background: rgba(11, 15, 20, 0.75);
+  background: var(--bg-soft);
+  backdrop-filter: saturate(180%) blur(var(--blur));
+  -webkit-backdrop-filter: saturate(180%) blur(var(--blur));
+
   border-bottom: 1px solid var(--border);
 }
 
 nav a {
-  margin-left: 18px;
+  margin-left: 20px;
+  font-weight: 500;
+  font-size: 14px;
   color: var(--accent);
   text-decoration: none;
-  font-weight: 600;
-  font-size: 14px;
+
+  transition:
+    transform 0.18s var(--ease-mac),
+    opacity 0.18s ease;
 }
 
+/* Dock hover */
 nav a:hover {
-  text-decoration: underline;
+  transform: scale(1.18) translateY(-2px);
+  opacity: 0.9;
 }
 
 .logo {
-  font-weight: 900;
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
 }
 
 /* ======================================================
    MAIN / SPA TRANSITION
 ====================================================== */
 main {
-  padding: 36px 24px;
+  padding: 42px 24px;
   min-height: 85vh;
-  background: transparent;
 }
 
 .fade-in {
-  animation: fadeIn 0.35s ease forwards;
+  animation: macFade 0.28s var(--ease-mac) forwards;
 }
 
-@keyframes fadeIn {
+@keyframes macFade {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -178,73 +152,87 @@ main {
 }
 
 /* ======================================================
-   TYPOGRAPHY
+   TYPOGRAPHY (APPLE RHYTHM)
 ====================================================== */
 section {
   max-width: 1200px;
   margin: auto;
-  margin-bottom: 56px;
+  margin-bottom: 64px;
 }
 
 h1 {
   font-size: 42px;
-  margin-bottom: 8px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   font-size: 26px;
-  margin-bottom: 16px;
-  border-left: 4px solid var(--accent);
+  border-left: 3px solid var(--accent);
   padding-left: 12px;
+  margin-bottom: 18px;
 }
 
 h3 {
-  margin-bottom: 6px;
+  font-weight: 600;
 }
 
 p {
   color: var(--muted);
   max-width: 720px;
-  line-height: 1.6;
-}
-
-.muted {
-  color: var(--muted);
+  line-height: 1.7;
 }
 
 /* ======================================================
-   GRID SYSTEM
+   GRID
 ====================================================== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 26px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 28px;
 }
 
 /* ======================================================
-   CARDS
+   CARDS — macOS WINDOW STYLE
 ====================================================== */
 .card {
-  background: linear-gradient(
-    145deg,
-    rgba(18, 24, 38, 0.95),
-    rgba(18, 24, 38, 0.75)
-  );
-  backdrop-filter: blur(var(--blur));
+  position: relative;
+  background: var(--card);
+  backdrop-filter: saturate(160%) blur(var(--blur));
+  -webkit-backdrop-filter: saturate(160%) blur(var(--blur));
+
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 22px;
+  padding: 26px;
 
   transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease,
-    border-color 0.35s ease;
+    transform 0.28s var(--ease-mac),
+    box-shadow 0.28s var(--ease-mac);
+}
+
+/* macOS window controls */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  width: 44px;
+  height: 12px;
+
+  background:
+    radial-gradient(circle, #ff5f57 50%, transparent 52%) 0 0 / 12px 12px,
+    radial-gradient(circle, #febc2e 50%, transparent 52%) 16px 0 / 12px 12px,
+    radial-gradient(circle, #28c840 50%, transparent 52%) 32px 0 / 12px 12px;
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
-  border-color: var(--accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-mac);
+}
+
+/* Trackpad press physics */
+.card.pressed {
+  transform: scale(0.985);
 }
 
 /* ======================================================
@@ -255,64 +243,65 @@ p {
 }
 
 .kpi-value {
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 34px;
+  font-weight: 700;
   color: var(--accent);
 }
 
 /* ======================================================
-   SKILLS
-====================================================== */
-.skill-bar {
-  height: 10px;
-  background: rgba(255,255,255,0.1);
-  border-radius: 999px;
-  overflow: hidden;
-  margin: 12px 0;
-}
-
-.skill-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--accent), var(--accent-2));
-  animation: fillBar 1.2s ease forwards;
-}
-
-@keyframes fillBar {
-  from { width: 0; }
-}
-
-/* ======================================================
-   BUTTONS
+   BUTTONS — macOS SYSTEM STYLE
 ====================================================== */
 button {
-  margin-top: 14px;
+  margin-top: 16px;
   padding: 10px 18px;
   border-radius: 999px;
   border: none;
   cursor: pointer;
 
-  font-weight: 700;
+  font-weight: 600;
   color: #000;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.45),
+    0 6px 14px rgba(0,0,0,0.25);
+
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
 }
 
-button:hover {
-  box-shadow: 0 12px 30px rgba(56,189,248,0.35);
+button:active {
+  transform: scale(0.96);
 }
 
 /* ======================================================
-   CODE BLOCKS
+   CODE — TRUE DEV COLORS (PRISM)
 ====================================================== */
 pre {
   background: #020617;
-  padding: 20px;
+  padding: 18px;
   border-radius: 14px;
   overflow-x: auto;
+  font-size: 14px;
 }
 
 code {
-  font-family: Consolas, Monaco, monospace;
+  font-family:
+    "SF Mono",
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
 }
+
+/* Clean Prism palette */
+.token.keyword   { color: #c792ea; }
+.token.string    { color: #ecc48d; }
+.token.function  { color: #82aaff; }
+.token.comment   { color: #6b7280; }
+.token.number    { color: #f78c6c; }
 
 /* ======================================================
    MOBILE
@@ -323,5 +312,9 @@ code {
   nav {
     flex-direction: column;
     gap: 10px;
+  }
+
+  nav a:hover {
+    transform: none;
   }
 }
