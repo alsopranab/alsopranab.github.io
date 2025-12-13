@@ -1,11 +1,12 @@
 const app = document.getElementById("app");
 
 const routes = {
-  "/": () => renderHome(),
-  "/projects": () => renderProjects(),
-  "/project": (params) => renderProject(params),
-  "/learnings": () => renderLearnings(),
-  "/contacts": () => renderContacts()
+  "/": renderHome,
+  "/dashboard": renderDashboard,
+  "/projects": renderProjects,
+  "/project": renderProject,
+  "/learnings": renderLearnings,
+  "/contacts": renderContacts
 };
 
 function parseParams(query) {
@@ -18,19 +19,19 @@ function parseParams(query) {
   return params;
 }
 
-function navigate() {
+async function navigate() {
   const hash = location.hash.replace("#", "") || "/";
   const [path, query] = hash.split("?");
 
-  app.innerHTML = "";
+  app.innerHTML = `<p>Loading...</p>`;
 
   const route = routes[path];
   if (!route) {
-    app.innerHTML = "<h2>404</h2>";
+    app.innerHTML = `<h2>404 – Page not found</h2>`;
     return;
   }
 
-  route(parseParams(query));
+  await route(parseParams(query));
 }
 
 window.addEventListener("hashchange", navigate);
