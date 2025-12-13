@@ -3,32 +3,24 @@ function renderHome() {
 
   app.innerHTML = `
     <!-- HERO -->
-    <section>
-      <h1>Pranab Debnath</h1>
-      <p style="font-size:18px">
-        Data Analyst focused on turning raw business data into
-        clarity, automation, and measurable outcomes.
+    <section class="home-hero">
+      <h1 class="home-name">Pranab Debnath</h1>
+      <h2 class="home-role">Data Analyst</h2>
+
+      <p class="home-summary">
+        Turning raw business data into clarity, automation,
+        and measurable outcomes through analytics systems.
       </p>
 
-      <div class="grid">
-        <div class="card kpi">
-          <div class="kpi-value">SQL</div>
-          <p>Business queries, joins, CTEs</p>
-        </div>
-
-        <div class="card kpi">
-          <div class="kpi-value">Python</div>
-          <p>EDA, automation, scripting</p>
-        </div>
-
-        <div class="card kpi">
-          <div class="kpi-value">Analytics</div>
-          <p>Funnels, KPIs, reporting</p>
-        </div>
+      <!-- SKILLS SNAPSHOT -->
+      <div class="grid home-skills">
+        ${skillCard("SQL", "Business queries, joins, CTEs")}
+        ${skillCard("Python", "EDA, automation, scripting")}
+        ${skillCard("Analytics", "Funnels, KPIs, reporting")}
       </div>
     </section>
 
-    <!-- EXPERIENCE SNAPSHOT -->
+    <!-- EXPERIENCE -->
     <section>
       <h2>Experience Snapshot</h2>
 
@@ -56,9 +48,12 @@ function renderHome() {
         )}
       </div>
 
-      <p>
-        <a href="#/funnels">See how experience converts into impact →</a>
-      </p>
+      <div class="home-cta">
+        <a href="#/funnels" class="impact-link">
+          See how experience converts into impact
+          <span class="arrow">→</span>
+        </a>
+      </div>
     </section>
 
     <!-- WHAT I BUILD -->
@@ -68,13 +63,13 @@ function renderHome() {
       <div class="grid">
         ${buildCard(
           "Analytics Projects",
-          "SQL, Python, Excel projects based on real problems",
+          "SQL, Python, and Excel projects solving real business problems",
           "#/projects"
         )}
 
         ${buildCard(
           "Automation",
-          "Scripts that reduce manual reporting & errors",
+          "Scripts that reduce manual reporting and operational errors",
           "#/funnels"
         )}
 
@@ -86,45 +81,57 @@ function renderHome() {
       </div>
     </section>
 
-    <!-- CTA -->
+    <!-- EXPLORE -->
     <section>
       <h2>Explore</h2>
-      <p>
-        This site is both a portfolio and a knowledge base.
-        Start anywhere:
+      <p class="muted">
+        This site is both a portfolio and a knowledge base. Start anywhere.
       </p>
 
       <div class="grid">
-        <div class="card">
-          <h3>Dashboard</h3>
-          <p>Analytics-style view of metrics & funnels.</p>
-          <button onclick="location.hash='#/dashboard'">Open Dashboard</button>
-        </div>
+        ${exploreCard(
+          "Dashboard",
+          "Analytics-style view of metrics, skills, and impact",
+          "#/dashboard"
+        )}
 
-        <div class="card">
-          <h3>Projects</h3>
-          <p>Live GitHub projects with in-site code viewer.</p>
-          <button onclick="location.hash='#/projects'">View Projects</button>
-        </div>
+        ${exploreCard(
+          "Projects",
+          "Live GitHub projects with in-site code viewer",
+          "#/projects"
+        )}
 
-        <div class="card">
-          <h3>Learnings</h3>
-          <p>Patterns learned from real-world analytics work.</p>
-          <button onclick="location.hash='#/learnings'">Read Learnings</button>
-        </div>
+        ${exploreCard(
+          "Learnings",
+          "Patterns learned from real-world analytics work",
+          "#/learnings"
+        )}
       </div>
     </section>
   `;
+
+  app.classList.add("fade-in");
 }
 
-/* ---------- HELPERS ---------- */
+/* =========================
+   HELPERS
+========================= */
+
+function skillCard(title, desc) {
+  return `
+    <div class="card kpi">
+      <div class="kpi-value">${title}</div>
+      <p>${desc}</p>
+    </div>
+  `;
+}
 
 function experienceCard(company, role, period, points) {
   return `
     <div class="card experience-card" onclick="this.classList.toggle('active')">
       <h3>${company}</h3>
       <p><strong>${role}</strong></p>
-      <p>${period}</p>
+      <p class="muted">${period}</p>
 
       <div class="experience-details">
         <ul>
@@ -141,6 +148,16 @@ function buildCard(title, desc, link) {
       <h3>${title}</h3>
       <p>${desc}</p>
       <button onclick="location.hash='${link}'">Explore</button>
+    </div>
+  `;
+}
+
+function exploreCard(title, desc, link) {
+  return `
+    <div class="card">
+      <h3>${title}</h3>
+      <p>${desc}</p>
+      <button onclick="location.hash='${link}'">Open</button>
     </div>
   `;
 }
