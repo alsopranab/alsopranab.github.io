@@ -1,18 +1,28 @@
-export function drawSkillChart(skills) {
-  const svg = document.getElementById("skill-chart");
-  const cx = 300, cy = 110, r = 80;
+function renderCharts() {
+  const skill = document.getElementById("skillChart");
+  const growth = document.getElementById("growthChart");
 
-  skills.forEach((s, i) => {
-    const angle = (2 * Math.PI / skills.length) * i;
-    const x = cx + r * Math.cos(angle);
-    const y = cy + r * Math.sin(angle);
-
-    svg.innerHTML += `
-      <line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1e293b"/>
-      <circle cx="${x}" cy="${y}" r="22" fill="#38bdf8"/>
-      <text x="${x}" y="${y+4}" text-anchor="middle" fill="#000" font-size="10">${s}</text>
-    `;
+  new Chart(skill, {
+    type: "doughnut",
+    data: {
+      labels: ["SQL", "Python", "Excel", "Automation", "Analytics"],
+      datasets: [{
+        data: [30, 25, 15, 15, 15],
+        backgroundColor: ["#38bdf8","#22c55e","#f59e0b","#a855f7","#06b6d4"]
+      }]
+    }
   });
 
-  svg.innerHTML += `<circle cx="${cx}" cy="${cy}" r="30" fill="#22d3ee"/>`;
+  new Chart(growth, {
+    type: "line",
+    data: {
+      labels: ["2022","2023","2024","2025"],
+      datasets: [{
+        label: "Skill Growth",
+        data: [20,40,70,90],
+        borderColor: "#38bdf8",
+        tension: 0.4
+      }]
+    }
+  });
 }
