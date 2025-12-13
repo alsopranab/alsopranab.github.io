@@ -25,16 +25,46 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  margin: 0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, #0f172a, var(--bg));
   color: var(--text);
   overflow-x: hidden;
+}
+
+/* ======================================================
+   ANIMATED BACKGROUND (GLOBAL)
+====================================================== */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    radial-gradient(circle at 20% 20%, rgba(56,189,248,0.15), transparent 40%),
+    radial-gradient(circle at 80% 30%, rgba(34,211,238,0.12), transparent 45%),
+    radial-gradient(circle at 50% 80%, rgba(56,189,248,0.1), transparent 40%),
+    linear-gradient(120deg, #050b1e, #07142f, #050b1e);
+
+  background-size: 200% 200%;
+  animation: bgMove 18s ease infinite;
+}
+
+@keyframes bgMove {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* ======================================================
@@ -78,6 +108,7 @@ nav a:hover {
 main {
   padding: 36px 24px;
   min-height: 85vh;
+  background: transparent;
 }
 
 .fade-in {
@@ -102,6 +133,7 @@ section {
   max-width: 1200px;
   margin: auto;
   margin-bottom: 56px;
+  background: transparent;
 }
 
 h1 {
