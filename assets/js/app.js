@@ -3,56 +3,50 @@ async function loadJSON(path) {
   return res.json();
 }
 
-async function loadProfile() {
-  const d = await loadJSON("assets/data/profile.json");
-  document.getElementById("name").textContent = d.name;
-  document.getElementById("designation").textContent = d.designation;
-  document.getElementById("tagline").textContent = d.tagline;
-}
-
+/* EXPERIENCE STACK WITH POPUP */
 async function loadExperience() {
   const data = await loadJSON("assets/data/experience.json");
   const box = document.getElementById("experience");
   if (!box) return;
 
-  box.innerHTML = `<div class="timeline"></div>`;
-  const timeline = box.querySelector(".timeline");
+  box.innerHTML = "";
 
-  data.forEach(e => {
-    timeline.innerHTML += `
-      <div class="timeline-item">
-        <h3>${e.company}</h3>
-        <p><strong>${e.designation}</strong></p>
-        <p>${e.duration}</p>
-      </div>`;
+  data.forEach(exp => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${exp.role}</h3>
+      <p><strong>${exp.company}</strong></p>
+      <p>${exp.duration}</p>
+      <p>${exp.summary}</p>
+      <button data-id="${exp.id}">View Details</button>
+    `;
+    box.appendChild(card);
+
+    card.querySelector("button").onclick = () => openExperience(exp);
   });
 }
 
-async function loadSkills() {
-  const data = await loadJSON("assets/data/skills.json");
-  const box = document.getElementById("skills");
-  if (box) box.textContent = data.join(" • ");
+function openExperience(exp) {
+  const modal = document.getElementById("modal");
+  const content = document.getElementById("modal-content");
+
+  content.innerHTML = `
+    <h2>${exp.role} – ${exp.company}</h2>
+    <p>${exp.duration}</p>
+
+    <h3>Responsibilities</h3>
+    <ul>${exp.details.map(d => `<li>${d}</li>`).join("")}</ul>
+
+    <h3>Skills Used</h3>
+    <p>${exp.skills.join(" • ")}</p>
+  `;
+
+  modal.style.display = "flex";
 }
 
-async function loadProjects() {
-  const data = await loadJSON("assets/data/projects.json");
-  const box = document.getElementById("projects");
-  if (!box) return;
-
-  data.forEach(p => {
-    box.innerHTML += `
-      <div class="card">
-        <h3>${p.title}</h3>
-        <p>${p.tech}</p>
-        <p>${p.description}</p>
-        <div class="code">${p.code}</div>
-      </div>`;
-  });
+function closeModal() {
+  document.getElementById("modal").style.display = "none";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  loadProfile();
-  loadExperience();
-  loadSkills();
-  loadProjects();
-});
+document.addEventListener("DOMContentLoaded", loadExperience);
