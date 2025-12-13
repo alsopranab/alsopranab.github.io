@@ -1,87 +1,93 @@
-/* ===============================
-   ROOT THEME (APPLE-LIKE)
-================================ */
+/* ======================================================
+   ROOT THEME TOKENS (DARK FIRST)
+====================================================== */
 :root {
-  --bg-main: #f5f7fb;
-  --bg-soft: #ffffff;
-  --bg-glass: rgba(255, 255, 255, 0.75);
+  --bg: #0b0f14;
+  --bg-soft: #0f172a;
+  --card: rgba(18, 24, 38, 0.92);
+  --border: rgba(56, 189, 248, 0.25);
 
-  --text-main: #0f172a;
-  --text-muted: #64748b;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
 
-  --accent: #2563eb;
-  --accent-soft: #93c5fd;
-  --border: rgba(37, 99, 235, 0.15);
+  --accent: #38bdf8;
+  --accent-2: #22d3ee;
+  --success: #22c55e;
 
-  --success: #16a34a;
   --radius: 18px;
+  --blur: 16px;
 }
 
-/* ===============================
-   RESET
-================================ */
+/* ======================================================
+   RESET & BASE
+====================================================== */
 * {
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
-  color: var(--text-main);
-  background:
-    radial-gradient(circle at 20% 10%, #e0ecff, transparent 40%),
-    radial-gradient(circle at 80% 30%, #eaf2ff, transparent 45%),
-    var(--bg-main);
+html {
+  scroll-behavior: smooth;
 }
 
-/* ===============================
-   NAV
-================================ */
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #0f172a, var(--bg));
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* ======================================================
+   NAVIGATION
+====================================================== */
 nav {
   position: sticky;
   top: 0;
-  z-index: 50;
+  z-index: 100;
+  padding: 14px 28px;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 28px;
-  background: var(--bg-glass);
-  backdrop-filter: blur(18px);
+
+  backdrop-filter: blur(var(--blur));
+  background: rgba(11, 15, 20, 0.7);
   border-bottom: 1px solid var(--border);
 }
 
 nav a {
-  text-decoration: none;
-  color: var(--text-main);
   margin-left: 18px;
-  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 nav a:hover {
-  color: var(--accent);
+  text-decoration: underline;
 }
 
 .logo {
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  font-weight: 900;
+  letter-spacing: 1px;
 }
 
-/* ===============================
-   MAIN
-================================ */
+/* ======================================================
+   MAIN / SPA TRANSITION
+====================================================== */
 main {
-  padding: 48px 28px;
+  padding: 36px 24px;
   min-height: 85vh;
 }
 
 .fade-in {
-  animation: fade 0.35s ease;
+  animation: fadeIn 0.35s ease forwards;
 }
 
-@keyframes fade {
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
@@ -89,9 +95,15 @@ main {
   }
 }
 
-/* ===============================
+/* ======================================================
    TYPOGRAPHY
-================================ */
+====================================================== */
+section {
+  max-width: 1200px;
+  margin: auto;
+  margin-bottom: 56px;
+}
+
 h1 {
   font-size: 42px;
   margin-bottom: 8px;
@@ -99,186 +111,180 @@ h1 {
 
 h2 {
   font-size: 26px;
-  margin: 40px 0 16px;
+  margin-bottom: 16px;
   border-left: 4px solid var(--accent);
   padding-left: 12px;
 }
 
 h3 {
-  font-size: 18px;
   margin-bottom: 6px;
 }
 
 p {
-  color: var(--text-muted);
+  color: var(--muted);
+  max-width: 720px;
   line-height: 1.6;
-  max-width: 760px;
 }
 
-/* ===============================
-   LAYOUT
-================================ */
-section {
-  max-width: 1200px;
-  margin: auto;
-  margin-bottom: 56px;
+.muted {
+  color: var(--muted);
 }
 
+/* ======================================================
+   GRID SYSTEM
+====================================================== */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 26px;
 }
 
-/* ===============================
-   CARDS
-================================ */
+/* ======================================================
+   CARDS (UNIVERSAL)
+====================================================== */
 .card {
-  background: var(--bg-soft);
+  background: linear-gradient(
+    145deg,
+    rgba(18, 24, 38, 0.95),
+    rgba(18, 24, 38, 0.75)
+  );
+  backdrop-filter: blur(var(--blur));
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 22px;
-  border: 1px solid var(--border);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  position: relative;
+  overflow: hidden;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
 }
 
 .card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+  border-color: var(--accent);
 }
 
-/* ===============================
-   KPI
-================================ */
+/* ======================================================
+   KPI CARDS
+====================================================== */
 .kpi {
   text-align: center;
 }
 
 .kpi-value {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 36px;
+  font-weight: 800;
   color: var(--accent);
   margin-bottom: 6px;
 }
 
-/* ===============================
-   EXPERIENCE / LEARNINGS TOGGLE
-================================ */
-.experience-card {
-  cursor: pointer;
-}
-
-.experience-details {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease;
-}
-
-.experience-card.active .experience-details {
-  max-height: 400px;
-  margin-top: 10px;
-}
-
-/* ===============================
-   FUNNEL
-================================ */
-.funnel-row {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  overflow-x: auto;
-  padding-bottom: 12px;
-}
-
-.funnel-stage {
-  min-width: 240px;
-}
-
-.funnel-arrow {
-  font-size: 26px;
-  color: var(--accent);
-}
-
-/* ===============================
-   BUTTONS
-================================ */
-button {
-  background: linear-gradient(135deg, var(--accent), #4f46e5);
-  border: none;
-  color: #fff;
-  padding: 8px 16px;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* ===============================
-   LINKS / CTA
-================================ */
-a {
-  color: var(--accent);
-}
-
-.impact-link {
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.impact-link .arrow {
-  transition: transform 0.2s ease;
-}
-
-.impact-link:hover .arrow {
-  transform: translateX(4px);
-}
-
-/* ===============================
-   CODE VIEWER (FIXED)
-================================ */
-.code-block {
-  background: #0f172a;
-  color: #e5e7eb;
-  padding: 14px;
-  border-radius: 12px;
-  font-size: 12px;
-  line-height: 1.45;
-  max-height: 320px;
-  overflow-y: auto;
-  overflow-x: auto;
-  margin-top: 12px;
-}
-
-/* Scrollbar polish */
-.code-block::-webkit-scrollbar {
-  width: 6px;
-}
-.code-block::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.25);
-  border-radius: 4px;
-}
-
-pre {
-  margin: 0;
-  white-space: pre;
-}
-
-/* ===============================
-   SKILL BAR (DASHBOARD)
-================================ */
+/* ======================================================
+   SKILL BARS
+====================================================== */
 .skill-bar {
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 6px;
-  margin: 10px 0;
+  height: 10px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 999px;
   overflow: hidden;
+  margin: 12px 0;
 }
 
 .skill-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 999px;
+  animation: fillBar 1.2s ease forwards;
+}
+
+@keyframes fillBar {
+  from { width: 0; }
+}
+
+/* ======================================================
+   EXPERIENCE / FUNNEL
+====================================================== */
+.experience-card,
+.funnel-stage {
+  cursor: pointer;
+}
+
+.experience-details,
+.funnel-details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.45s ease;
+}
+
+.experience-card.active .experience-details,
+.funnel-stage.active .funnel-details {
+  max-height: 500px;
+}
+
+.funnel-row {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.funnel-arrow {
+  font-size: 32px;
+  color: var(--accent);
+  align-self: center;
+}
+
+/* ======================================================
+   BUTTONS
+====================================================== */
+button {
+  margin-top: 14px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  font-weight: 700;
+  color: #000;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(56,189,248,0.35);
+}
+
+/* ======================================================
+   CODE BLOCKS (PRISM)
+====================================================== */
+pre {
+  background: #020617;
+  padding: 20px;
+  border-radius: 14px;
+  overflow-x: auto;
+  font-size: 14px;
+}
+
+code {
+  font-family: Consolas, Monaco, monospace;
+}
+
+/* ======================================================
+   MOBILE ADJUSTMENTS
+====================================================== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 34px;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
