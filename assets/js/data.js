@@ -1,13 +1,9 @@
 /* =====================================================
    PROFILE MASTER DATA
    Single Source of Truth (SSOT)
-   SPA-SAFE • NULL-SAFE • FUTURE-PROOF
 ===================================================== */
 
 const PROFILE = {
-  /* =====================
-     IDENTITY
-  ====================== */
   identity: {
     name: "Pranab Debnath",
     role: "Data Analyst",
@@ -16,14 +12,10 @@ const PROFILE = {
       "Turning raw business data into clarity, automation, and measurable outcomes."
   },
 
-  /* =====================
-     CONTACT & SOCIAL (SAFE)
-  ====================== */
   contact: {
     email: "career.pranab@gmail.com",
     github: "alsopranab",
     linkedin: "pranab-dnath",
-
     social: {
       instagram_data: "the.queryguy",
       instagram_personal: "alsopranab",
@@ -32,58 +24,43 @@ const PROFILE = {
     }
   },
 
-  /* =====================
-     SKILLS (SCALABLE)
-  ====================== */
   skills: {
     primary: [
       {
-        id: "sql",
         name: "SQL",
         focus: ["Joins", "CTEs", "Window Functions", "Query Optimization"],
         proficiency: 90
       },
       {
-        id: "python",
         name: "Python",
         focus: ["EDA", "Automation", "Scripting", "Data Cleaning"],
         proficiency: 80
       },
       {
-        id: "excel",
         name: "Excel",
         focus: ["Dashboards", "KPI Models", "Reporting"],
         proficiency: 75
       },
       {
-        id: "analytics",
         name: "Business Analytics",
         focus: ["Funnels", "Metrics", "Reporting"],
         proficiency: 85
       }
     ],
 
-    tools: [
-      "Excel",
-      "Power BI",
-      "Tableau",
-      "GitHub"
-    ]
+    tools: ["Excel", "Power BI", "Tableau", "GitHub"]
   },
 
-  /* =====================
-     EXPERIENCE (ORDERED)
-  ====================== */
   experience: [
     {
       company: "MagicBricks",
       role: "Operations Data Analyst",
       period: "2025 – Present",
       highlights: [
-        "Automated reporting pipelines using SQL & Python",
-        "EDA on lead quality, schedules, and funnel drop-offs",
-        "Built KPI dashboards for leadership",
-        "Unified CRM & dialer data models"
+        "Automated reporting pipelines using SQL, Python, and scripts",
+        "EDA on lead quality, schedule rate, and funnel drop-offs",
+        "Built KPI dashboards for leadership decision-making",
+        "Unified CRM and dialer data into structured models"
       ],
       metrics: {
         impact: "Improved reporting accuracy & speed"
@@ -94,9 +71,9 @@ const PROFILE = {
       role: "Account Manager",
       period: "2024 – 2025",
       highlights: [
-        "Analyzed lead flow & conversion bottlenecks",
-        "Exceeded site-visit targets",
-        "Delivered actionable insights to management"
+        "Analyzed lead flow and conversion bottlenecks",
+        "Exceeded site-visit targets consistently",
+        "Provided actionable insights to management"
       ],
       metrics: {
         performance: "Consistent over-achievement"
@@ -107,9 +84,9 @@ const PROFILE = {
       role: "Senior Account Manager",
       period: "2023 – 2024",
       highlights: [
-        "Revenue & conversion analytics",
-        "Sales call analysis",
-        "~15% MoM conversion growth"
+        "Led revenue & conversion analytics",
+        "Performed sales call analysis for coaching",
+        "Drove ~15% MoM conversion growth"
       ],
       metrics: {
         growth: "15% average monthly improvement"
@@ -117,35 +94,27 @@ const PROFILE = {
     }
   ],
 
-  /* =====================
-     DASHBOARD (CHART SAFE)
-  ====================== */
   dashboard: {
     kpis: [
-      { key: "repos", label: "GitHub Repositories", value: "12+" },
-      { key: "domains", label: "Core Domains", value: "3" },
-      { key: "sql", label: "SQL Problems Solved", value: "100+" },
-      { key: "impact", label: "Avg Business Impact", value: "15%" }
+      { label: "GitHub Repositories", value: "12+" },
+      { label: "Core Domains", value: "3" },
+      { label: "SQL Problems Solved", value: "100+" },
+      { label: "Avg Business Impact", value: "15%" }
     ],
-
     growthTimeline: {
       years: ["2022", "2023", "2024", "2025"],
       values: [20, 40, 70, 90]
     },
-
     skillDistribution: {
       labels: ["SQL", "Python", "Excel", "Automation", "Analytics"],
       values: [30, 25, 15, 15, 15]
     }
   },
 
-  /* =====================
-     CAREER FUNNEL
-  ====================== */
   funnel: [
     {
       stage: "Experience",
-      description: "Real-world problems",
+      description: "Real-world problems faced in production environments",
       points: [
         "Client & site-visit analytics",
         "Revenue & conversion tracking",
@@ -154,12 +123,53 @@ const PROFILE = {
     },
     {
       stage: "Skills",
-      description: "Tools applied",
+      description: "Tools used to solve those problems",
       points: [
-        "SQL — joins, CTEs, windows",
+        "SQL — joins, CTEs, window functions",
         "Python — EDA & automation",
-        "Excel — KPI dashboards"
+        "Excel — dashboards & KPI models"
       ]
     },
     {
-      stage: "Proj
+      stage: "Projects",
+      description: "Hands-on implementations",
+      points: [
+        "SQL practice systems",
+        "Automation scripts",
+        "Analytics dashboards"
+      ]
+    },
+    {
+      stage: "Impact",
+      description: "Measurable business outcomes",
+      points: [
+        "Reduced manual reporting",
+        "Improved conversion visibility",
+        "Faster decision-making"
+      ]
+    }
+  ],
+
+  learnings: [
+    {
+      title: "CTEs & Readable SQL",
+      summary:
+        "Readable SQL scales better than clever SQL in production systems."
+    },
+    {
+      title: "Python as a Glue",
+      summary:
+        "Python works best when connecting systems, not over-engineering logic."
+    },
+    {
+      title: "Automate the Boring",
+      summary:
+        "Automation creates more impact than micro-optimizations."
+    }
+  ]
+};
+
+/* =====================================================
+   GLOBAL EXPORT (CRITICAL)
+===================================================== */
+window.PROFILE = PROFILE;
