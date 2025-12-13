@@ -11,7 +11,7 @@ function renderProject(query) {
     <section>
       <a href="#/projects">← Back to Projects</a>
       <h1>${repo}</h1>
-      <p>Repository files preview (code only).</p>
+      <p>Code files preview (SQL / Python / JS).</p>
       <div id="files" class="grid"></div>
     </section>
   `;
@@ -26,23 +26,40 @@ function renderProject(query) {
           card.className = "card";
           card.innerHTML = `
             <h3>${file.name}</h3>
-            <button onclick="loadFile('${repo}','${file.path}')">
+            <button onclick="loadFile(this, '${file.download_url}', '${file.name}')">
               View Code
             </button>
-            <pre class="code-block"><code id="code-${file.sha}"></code></pre>
+            <pre class="code-block" style="display:none">
+              <code class="language-${getLang(file.name)}"></code>
+            </pre>
           `;
           document.getElementById("files").appendChild(card);
         });
     });
 }
 
-function loadFile(repo, path) {
-  fetch(`https://api.github.com/repos/alsopranab/${repo}/contents/${path}`)
-    .then(res => res.json())
-    .then(file => {
-      const code = atob(file.content);
-      const el = document.querySelector(`[id^="code-"]`);
-      el.textContent = code;
-      Prism.highlightElement(el);
+function loadFile(btn, url, filename) {
+  const card = btn.closest(".card");
+  const block = card.querySelector("pre");
+  const codeEl = block.querySelector("code");
+
+  if (block.style.display === "block") {
+    block.style.display = "none";
+    return;
+  }
+
+  fetch(url)
+    .then(res => res.text())
+    .then(code => {
+      codeEl.textContent = code;
+      block.style.display = "block";
+      Prism.highlightElement(codeEl);
     });
+}
+
+function getLang(name) {
+  if (name.endsWith(".sql")) return "sql";
+  if (name.endsWith(".py")) return "python";
+  if (name.endsWith(".js")) return "javascript";
+  return "none";
 }
