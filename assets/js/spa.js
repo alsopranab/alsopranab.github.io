@@ -1,10 +1,5 @@
-/* =========================
-   SIMPLE SPA ROUTER
-   ========================= */
-
 const app = document.getElementById("app");
 
-/* ROUTE → VIEW FUNCTION MAP */
 const routes = {
   "/": renderHome,
   "/dashboard": renderDashboard,
@@ -12,10 +7,9 @@ const routes = {
   "/projects": renderProjects,
   "/project": renderProject,
   "/learnings": renderLearnings,
-  "/contacts": renderContacts,
+  "/contacts": renderContacts
 };
 
-/* NAVIGATION HANDLER */
 function navigate() {
   const hash = location.hash || "#/";
   const [path, query] = hash.replace("#", "").split("?");
@@ -39,9 +33,12 @@ function navigate() {
 
     view(query);
     app.classList.add("fade-in");
+
+    if (typeof runMotionEnhancements === "function") {
+      runMotionEnhancements();
+    }
   }, 120);
 }
 
-/* INITIAL LOAD + HASH CHANGE */
 window.addEventListener("load", navigate);
 window.addEventListener("hashchange", navigate);
