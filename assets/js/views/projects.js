@@ -4,16 +4,16 @@ function renderProjects() {
   app.innerHTML = `
     <section>
       <h1>Projects</h1>
-      <p>All projects are fetched from GitHub and grouped by domain.</p>
+      <p>Live GitHub repositories grouped by domain.</p>
     </section>
 
     <section>
-      <h2>SQL Projects</h2>
+      <h2>SQL</h2>
       <div id="sql-projects" class="grid"></div>
     </section>
 
     <section>
-      <h2>Python Projects</h2>
+      <h2>Python</h2>
       <div id="python-projects" class="grid"></div>
     </section>
 
@@ -23,33 +23,42 @@ function renderProjects() {
     </section>
   `;
 
-  loadProjects();
+  fetchProjects();
 }
 
-function loadProjects() {
+function fetchProjects() {
   fetch("https://api.github.com/users/alsopranab/repos")
     .then(res => res.json())
     .then(repos => {
-      repos
-        .filter(r => !r.fork)
-        .forEach(repo => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <h3>${repo.name}</h3>
-            <p>${repo.description || "No description provided."}</p>
-            <button onclick="location.hash='#/project?repo=${repo.name}'">
-              View Inside
-            </button>
-          `;
+      repos.filter(r => !r.fork).forEach(repo => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${repo.name}</h3>
+          <p>${repo.description || "No description available."}</p>
+          <button onclick="location.hash='#/project?repo=${repo.name}'">
+            Open Project
+          </button>
+        `;
 
-          if (repo.name.toLowerCase().includes("sql")) {
-            document.getElementById("sql-projects").appendChild(card);
-          } else if (repo.name.toLowerCase().includes("python") || repo.language === "Python") {
-            document.getElementById("python-projects").appendChild(card);
-          } else {
-            document.getElementById("automation-projects").appendChild(card);
-          }
-        });
+        const name = repo.name.toLowerCase();
+        if (name.includes("sql")) {
+          sqlAppend(card);
+        } else if (repo.language === "Python") {
+          pythonAppend(card);
+        } else {
+          autoAppend(card);
+        }
+      });
     });
+}
+
+function sqlAppend(el) {
+  document.getElementById("sql-projects").appendChild(el);
+}
+function pythonAppend(el) {
+  document.getElementById("python-projects").appendChild(el);
+}
+function autoAppend(el) {
+  document.getElementById("automation-projects").appendChild(el);
 }
