@@ -212,3 +212,14 @@ button {
 a {
   color: var(--accent);
 }
+
+.kpi {
+  text-align: center;
+}
+
+.kpi-value {
+  font-size: 36px;
+  font-weight: 800;
+  margin-top: 12px;
+  color: var(--accent);
+}
