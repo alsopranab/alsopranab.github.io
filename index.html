@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<!-- NAVIGATION -->
 <nav class="nav">
   <span class="logo">PD</span>
   <div>
@@ -21,16 +20,12 @@
   </div>
 </nav>
 
-<!-- SPA ROOT -->
 <main id="app"></main>
 
-<!-- GLOBAL DATA -->
+<!-- DATA FIRST -->
 <script src="assets/js/data.js"></script>
 
-<!-- SPA ROUTER -->
-<script src="assets/js/spa.js"></script>
-
-<!-- VIEW FILES -->
+<!-- VIEW FILES FIRST -->
 <script src="assets/js/views/home.js"></script>
 <script src="assets/js/views/dashboard.js"></script>
 <script src="assets/js/views/projects.js"></script>
@@ -38,9 +33,12 @@
 <script src="assets/js/views/learnings.js"></script>
 <script src="assets/js/views/contacts.js"></script>
 
-<!-- CHARTS (LOAD BEFORE charts.js USES IT) -->
+<!-- CHARTS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="assets/js/charts.js"></script>
+
+<!-- SPA ROUTER LAST -->
+<script src="assets/js/spa.js"></script>
 
 </body>
 </html>
