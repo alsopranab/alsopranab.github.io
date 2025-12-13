@@ -195,3 +195,15 @@ a:hover {
   transition: width 1s ease;
 }
 
+
+.code-block {
+  background: #020617;
+  color: #e5e7eb;
+  padding: 16px;
+  border-radius: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 14px;
+  overflow-x: auto;
+  margin-top: 12px;
+}
+
