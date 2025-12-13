@@ -4,116 +4,106 @@ function renderLearnings() {
   app.innerHTML = `
     <section>
       <h1>Learnings</h1>
-      <p>
-        Practical concepts I’ve learned while solving real-world
-        business and data problems. These are not tutorials — they are
-        patterns that work.
+      <p class="muted">
+        Practical insights gathered from real-world analytics,
+        automation, and decision-making work.
       </p>
-    </section>
-
-    <section class="grid">
-      ${learningCard(
-        "SQL Joins & CTEs",
-        "How complex joins and CTEs simplify business logic",
-        `
-        <ul>
-          <li>Use CTEs to isolate business logic</li>
-          <li>Avoid nested queries for readability</li>
-          <li>LEFT JOIN is safer than INNER JOIN in analytics</li>
-        </ul>
-        <p>
-          Used heavily in my SQL practice repositories and reporting work.
-        </p>
-        <a href="#/projects">See SQL Projects →</a>
-        `
-      )}
-
-      ${learningCard(
-        "Python for Analysis",
-        "Why Python is best used as a glue, not a hammer",
-        `
-        <ul>
-          <li>Pandas for EDA, not production pipelines</li>
-          <li>Use scripts to automate repetitive analysis</li>
-          <li>Keep notebooks readable, not clever</li>
-        </ul>
-        <p>
-          Applied in Titanic survival prediction and automation projects.
-        </p>
-        <a href="#/projects">See Python Projects →</a>
-        `
-      )}
-
-      ${learningCard(
-        "Analytics Automation",
-        "Reducing manual work creates real impact",
-        `
-        <ul>
-          <li>Email-based data ingestion saves hours</li>
-          <li>Automation beats dashboards without freshness</li>
-          <li>Logs matter more than UI</li>
-        </ul>
-        <p>
-          Built automations for weekly reporting and lead processing.
-        </p>
-        <a href="#/funnels">See Workflow Funnel →</a>
-        `
-      )}
     </section>
 
     <section>
-      <h2>Recommended Tools</h2>
-      <p>
-        Tools I personally use or have evaluated for analytics work.
-        (No paid promotions yet.)
-      </p>
-
+      <h2>SQL & Data Modeling</h2>
       <div class="grid">
-        ${toolCard(
-          "SQL Editors",
-          "DBeaver, MySQL Workbench",
-          "Reliable tools for writing and testing complex queries."
+        ${learningCard(
+          "CTEs vs Subqueries",
+          "Why readability and reusability matter in production SQL",
+          [
+            "CTEs improve query readability",
+            "Easier debugging and testing",
+            "Better for complex transformations"
+          ]
         )}
 
-        ${toolCard(
-          "Python Stack",
-          "Pandas, NumPy, Jupyter",
-          "Best balance of speed, readability, and flexibility."
+        ${learningCard(
+          "Joins & Cardinality",
+          "How wrong joins silently break dashboards",
+          [
+            "Always validate row counts",
+            "Many-to-many joins inflate metrics",
+            "Pre-aggregate when possible"
+          ]
+        )}
+      </div>
+    </section>
+
+    <section>
+      <h2>Python & Automation</h2>
+      <div class="grid">
+        ${learningCard(
+          "Automate Before Optimizing",
+          "Time saved beats micro-optimizations",
+          [
+            "Remove manual steps first",
+            "Automate repeatable logic",
+            "Measure time saved, not code elegance"
+          ]
         )}
 
-        ${toolCard(
-          "Visualization",
-          "Excel, Power BI, Tableau",
-          "Still the fastest way to explain data to stakeholders."
+        ${learningCard(
+          "Scripts Over Tools",
+          "Why simple scripts often outperform heavy tools",
+          [
+            "Lower maintenance",
+            "Faster iteration",
+            "Easier debugging"
+          ]
+        )}
+      </div>
+    </section>
+
+    <section>
+      <h2>Analytics & Business Thinking</h2>
+      <div class="grid">
+        ${learningCard(
+          "Funnels Reveal Leaks",
+          "Most problems hide between steps, not totals",
+          [
+            "Track transitions, not just outcomes",
+            "Drop-offs matter more than peaks",
+            "Always segment funnels"
+          ]
+        )}
+
+        ${learningCard(
+          "Dashboards Should Answer One Question",
+          "Clarity beats feature-rich visuals",
+          [
+            "One dashboard = one decision",
+            "Avoid vanity metrics",
+            "Design for action"
+          ]
         )}
       </div>
     </section>
   `;
+
+  app.classList.add("fade-in");
 }
 
-/* ---------- HELPERS ---------- */
+/* =========================
+   HELPERS
+========================= */
 
-function learningCard(title, subtitle, content) {
+function learningCard(title, context, points) {
   return `
-    <div class="card">
+    <div class="card experience-card" onclick="this.classList.toggle('active')">
       <h3>${title}</h3>
-      <p>${subtitle}</p>
-      <div class="experience-details">
-        ${content}
-      </div>
-      <button onclick="this.previousElementSibling.classList.toggle('active')">
-        Toggle Details
-      </button>
-    </div>
-  `;
-}
+      <p class="muted">${context}</p>
 
-function toolCard(name, tools, description) {
-  return `
-    <div class="card">
-      <h3>${name}</h3>
-      <p><strong>${tools}</strong></p>
-      <p>${description}</p>
+      <div class="experience-details">
+        <ul>
+          ${points.map(p => `<li>${p}</li>`).join("")}
+        </ul>
+      </div>
     </div>
   `;
 }
