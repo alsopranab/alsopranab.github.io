@@ -1,0 +1,7 @@
+[
+  {
+    "title": "Customer Churn Analysis",
+    "tech": "Python | Pandas | Matplotlib",
+    "code": "df.groupby('churn').mean()"
+  }
+]
