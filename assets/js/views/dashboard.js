@@ -1,40 +1,49 @@
 function renderDashboard() {
+  const app = document.getElementById("app");
+
   app.innerHTML = `
-    <section class="fade-in">
+    <section>
       <h1>Analytics Dashboard</h1>
-      <p>Live view of skills, learning depth, and project distribution.</p>
+      <p>High-level view of my work, skills, and project distribution.</p>
     </section>
 
-    <section class="grid">
-      <div class="card kpi">
-        <h3>Projects</h3>
-        <span class="kpi-value" data-target="12">0</span>
-      </div>
-
-      <div class="card kpi">
-        <h3>SQL Topics</h3>
-        <span class="kpi-value" data-target="18">0</span>
-      </div>
-
-      <div class="card kpi">
-        <h3>Python Use-Cases</h3>
-        <span class="kpi-value" data-target="10">0</span>
+    <!-- KPI ROW -->
+    <section>
+      <div class="grid">
+        <div class="card kpi">
+          <div class="kpi-value">12+</div>
+          <p>Active Repositories</p>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-value">3</div>
+          <p>Core Domains</p>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-value">100+</div>
+          <p>SQL Problems Solved</p>
+        </div>
+        <div class="card kpi">
+          <div class="kpi-value">15%</div>
+          <p>Revenue Impact (Avg)</p>
+        </div>
       </div>
     </section>
 
-    <section class="grid">
+    <!-- CHARTS -->
+    <section>
+      <h2>Skill Distribution</h2>
       <div class="card">
-        <h3>Skill Distribution</h3>
-        <canvas id="skillChart"></canvas>
+        <canvas id="skillsChart" height="120"></canvas>
       </div>
+    </section>
 
+    <section>
+      <h2>Project Classification</h2>
       <div class="card">
-        <h3>Learning Growth</h3>
-        <canvas id="growthChart"></canvas>
+        <canvas id="projectsChart" height="120"></canvas>
       </div>
     </section>
   `;
 
-  animateKPIs();
-  renderCharts();
+  renderDashboardCharts();
 }
