@@ -1,232 +1,448 @@
-/* =========================
-   THEME VARIABLES
-========================= */
-:root {
-  --bg: #0b0f14;
-  --bg-soft: #0f172a;
-  --card: #121826;
-  --border: #1e293b;
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #38bdf8;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Analytics Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #1a1f2e;
+      --card-bg: rgba(35, 42, 62, 0.8);
+      --card-glow: rgba(56, 189, 248, 0.3);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #38bdf8;
+      --accent-secondary: #06b6d4;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+      --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --border: rgba(56, 189, 248, 0.2);
+    }
 
-[data-theme="light"] {
-  --bg: #f8fafc;
-  --bg-soft: #e5e7eb;
-  --card: #ffffff;
-  --border: #cbd5f5;
-  --text: #020617;
-  --muted: #475569;
-}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* =========================
-   BASE
-========================= */
-* {
-  box-sizing: border-box;
-}
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
 
-body {
-  margin: 0;
-  background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
-  color: var(--text);
-  font-family: Inter, system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
-}
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
 
-main {
-  min-height: 80vh;
-  padding: 32px;
-}
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
 
-/* =========================
-   NAVBAR
-========================= */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 32px;
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(8px);
-}
+    .header h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
 
-nav a {
-  color: var(--accent);
-  text-decoration: none;
-  font-weight: 600;
-  margin-left: 16px;
-}
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
 
-.logo {
-  font-weight: 800;
-  letter-spacing: 1px;
-}
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 
-/* =========================
-   TYPOGRAPHY
-========================= */
-h1 {
-  font-size: 40px;
-  margin-bottom: 8px;
-}
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
 
-h2 {
-  font-size: 26px;
-  margin: 24px 0 16px;
-  border-left: 4px solid var(--accent);
-  padding-left: 12px;
-}
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 32px 64px rgba(0,0,0,0.3);
+      border-color: var(--accent-primary);
+    }
 
-h3 {
-  margin: 0 0 8px;
-}
+    .stat-card:hover::before {
+      transform: scaleX(1);
+    }
 
-p {
-  color: var(--muted);
-  max-width: 700px;
-}
+    .stat-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
 
-/* =========================
-   LAYOUT HELPERS
-========================= */
-section {
-  max-width: 1200px;
-  margin: auto;
-  padding: 40px 16px;
-}
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-}
+    .stat-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
 
-/* =========================
-   HERO
-========================= */
-.hero {
-  padding-top: 60px;
-}
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
 
-.hero h2 {
-  border: none;
-  padding-left: 0;
-  color: var(--accent);
-}
+    .chart-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* =========================
-   CARDS (Gaming-style)
-========================= */
-.card {
-  background: linear-gradient(145deg, var(--bg-soft), var(--card));
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 20px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
+    .chart-card h3 {
+      margin-bottom: 24px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
-}
+    .transactions-table {
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+    }
 
-/* =========================
-   BUTTONS
-========================= */
-button {
-  background: linear-gradient(135deg, var(--accent), #22d3ee);
-  color: #000;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: 700;
-  margin-top: 10px;
-}
+    .table-header {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 0.8fr 1fr 0.6fr;
+      gap: 16px;
+      padding: 24px 28px;
+      background: rgba(56, 189, 248, 0.1);
+      border-bottom: 1px solid var(--border);
+      font-weight: 600;
+      color: var(--accent-primary);
+    }
 
-button:hover {
-  opacity: 0.9;
-}
+    .transaction-row {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr 0.8fr 1fr 0.6fr;
+      gap: 16px;
+      padding: 20px 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
 
-/* =========================
-   PILLS (Skills)
-========================= */
-.pill {
-  background: var(--card);
-  border: 1px solid var(--border);
-  padding: 10px 18px;
-  border-radius: 999px;
-  font-weight: 600;
-  text-align: center;
-}
+    .transaction-row:hover {
+      background: rgba(56, 189, 248, 0.1);
+      transform: translateX(8px);
+    }
 
-.skill-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
+    .status {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
 
-/* =========================
-   CODE BLOCK
-========================= */
-.code-block {
-  background: #020617;
-  color: #e5e7eb;
-  padding: 16px;
-  border-radius: 12px;
-  font-family: monospace;
-  overflow-x: auto;
-}
+    .status.profit { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+    .status.loss { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+    .status.hold { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
 
-/* =========================
-   MODAL
-========================= */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.75);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
+    .amount {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
 
-.modal-box {
-  background: var(--card);
-  border-radius: 18px;
-  padding: 24px;
-  max-width: 600px;
-  width: 90%;
-  position: relative;
-}
+    .profit { color: var(--success); }
+    .loss { color: var(--danger); }
 
-.modal-close {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  background: none;
-  border: none;
-  color: var(--text);
-  font-size: 22px;
-  cursor: pointer;
-}
+    @media (max-width: 1024px) {
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-/* =========================
-   SPA TRANSITIONS
-========================= */
-.fade-in {
-  animation: fade 0.3s ease;
-}
+    @media (max-width: 768px) {
+      .table-header,
+      .transaction-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .container {
+        padding: 16px;
+      }
+    }
 
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Portfolio Analytics</h1>
+      <p>Real-time insights into your investment performance</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(56, 189, 248, 0.2); color: var(--accent-primary);">📈</div>
+        <div class="stat-value" data-value="247.8K">$247.8K</div>
+        <div class="stat-label">Total Portfolio Value</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.2); color: var(--success);">📊</div>
+        <div class="stat-value" data-value="+18.4%">+18.4%</div>
+        <div class="stat-label">Total Return (YTD)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.2); color: var(--purple);">⚡</div>
+        <div class="stat-value" data-value="12.7%">12.7%</div>
+        <div class="stat-label">Sharpe Ratio</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.2); color: var(--warning);">🔥</div>
+        <div class="stat-value" data-value="4">4</div>
+        <div class="stat-label">Active Positions</div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>📈 Portfolio Performance</h3>
+        <canvas id="performanceChart" height="400"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>🎯 Asset Allocation</h3>
+        <canvas id="allocationChart" height="400"></canvas>
+      </div>
+    </div>
+
+    <div class="transactions-table">
+      <div class="table-header">
+        <span>Asset</span>
+        <span>Transaction</span>
+        <span>Date</span>
+        <span>Amount</span>
+        <span>Status</span>
+      </div>
+      
+      <div class="transaction-row">
+        <div><strong>BTC/USD</strong></div>
+        <div>Buy • 0.245 BTC @ $68,420</div>
+        <div>Dec 10, 2025</div>
+        <div class="amount profit">+$16,763</div>
+        <div><span class="status profit">Profit</span></div>
+      </div>
+      
+      <div class="transaction-row">
+        <div><strong>ETH/USD</strong></div>
+        <div>Sell • 2.8 ETH @ $3,245</div>
+        <div>Dec 08, 2025</div>
+        <div class="amount profit">+$2,847</div>
+        <div><span class="status profit">Profit</span></div>
+      </div>
+      
+      <div class="transaction-row">
+        <div><strong>SOL/USD</strong></div>
+        <div>Buy • 45 SOL @ $156.80</div>
+        <div>Dec 05, 2025</div>
+        <div class="amount loss">-$892</div>
+        <div><span class="status loss">Loss</span></div>
+      </div>
+      
+      <div class="transaction-row">
+        <div><strong>ADA/USD</strong></div>
+        <div>Buy • 1,250 ADA @ $0.42</div>
+        <div>Dec 03, 2025</div>
+        <div class="amount profit">+$1,247</div>
+        <div><span class="status profit">Profit</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Performance Chart
+    const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+    new Chart(performanceCtx, {
+      type: 'line',
+       {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+          label: 'Portfolio',
+           [100000, 112000, 118000, 135000, 142000, 158000, 172000, 185000, 198000, 215000, 235000, 247800],
+          borderColor: '#38bdf8',
+          backgroundColor: 'rgba(56, 189, 248, 0.1)',
+          borderWidth: 4,
+          fill: true,
+          tension: 0.4,
+          pointBackgroundColor: '#38bdf8',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 3,
+          pointRadius: 6,
+          pointHoverRadius: 8
+        }, {
+          label: 'S&P 500',
+           [100000, 105000, 108000, 112000, 115000, 118000, 122000, 125000, 128000, 130000, 132000, 135000],
+          borderColor: '#94a3b8',
+          borderWidth: 3,
+          fill: false,
+          tension: 0.3,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            labels: {
+              color: '#f8fafc',
+              font: { size: 14, weight: '600' }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#94a3b8' },
+            grid: { color: 'rgba(255,255,255,0.05)' }
+          },
+          y: {
+            ticks: { 
+              color: '#94a3b8',
+              callback: function(value) { return '$' + value.toLocaleString(); }
+            },
+            grid: { color: 'rgba(255,255,255,0.05)' }
+          }
+        },
+        interaction: {
+          intersect: false,
+          mode: 'index'
+        }
+      }
+    });
+
+    // Allocation Chart
+    const allocationCtx = document.getElementById('allocationChart').getContext('2d');
+    new Chart(allocationCtx, {
+      type: 'doughnut',
+       {
+        labels: ['Bitcoin', 'Ethereum', 'Solana', 'Cardano', 'Cash'],
+        datasets: [{
+           [42, 28, 15, 10, 5],
+          backgroundColor: [
+            '#38bdf8',
+            '#06b6d4',
+            '#10b981',
+            '#8b5cf6',
+            '#f59e0b'
+          ],
+          borderColor: '#1a1f2e',
+          borderWidth: 3,
+          hoverOffset: 12
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              color: '#f8fafc',
+              padding: 20,
+              usePointStyle: true,
+              font: { size: 13 }
+            }
+          }
+        }
+      }
+    });
+
+    // Animate stats on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const valueEl = entry.target.querySelector('[data-value]');
+          if (valueEl) {
+            const target = parseFloat(valueEl.dataset.value.replace(/[^\d.-]/g, ''));
+            const increment = target / 100;
+            let current = 0;
+            const timer = setInterval(() => {
+              current += increment;
+              if (current < target) {
+                valueEl.textContent = (current < 0 ? '-' : '+') + 
+                  new Intl.NumberFormat('en-US', {
+                    style: current > 1000 ? 'currency' : 'percent',
+                    currency: 'USD',
+                    maximumFractionDigits: 1
+                  }).format(Math.abs(current));
+              } else {
+                valueEl.textContent = valueEl.dataset.value;
+                clearInterval(timer);
+              }
+            }, 30);
+          }
+        }
+      });
+    });
+
+    document.querySelectorAll('.stat-card').forEach(card => {
+      observer.observe(card);
+    });
+  </script>
+</body>
+</html>
