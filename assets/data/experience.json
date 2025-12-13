@@ -1,7 +1,28 @@
 [
   {
+    "id": "exp1",
     "company": "Magicbricks",
-    "designation": "Account Manager",
-    "duration": "2024 – Present"
+    "role": "Account Manager",
+    "duration": "2024 – Present",
+    "summary": "Handled client relationships, site visits, and revenue coordination.",
+    "details": [
+      "Managed client expectations and site visit coordination",
+      "Worked with internal sales and operations teams",
+      "Tracked performance metrics and conversion data"
+    ],
+    "skills": ["Excel", "Sales Analytics", "Client Management"]
+  },
+  {
+    "id": "exp2",
+    "company": "NoBroker",
+    "role": "Senior Account Manager",
+    "duration": "2023 – 2024",
+    "summary": "Led a high-performing team and improved conversion metrics.",
+    "details": [
+      "Promoted after achieving top conversion rates",
+      "Led a revenue-focused team",
+      "Analyzed sales calls to improve performance"
+    ],
+    "skills": ["Excel", "Data Analysis", "Team Leadership"]
   }
 ]
