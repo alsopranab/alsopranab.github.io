@@ -2,60 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <title>Pranab Debnath | Data Analyst</title>
+
+  <!-- SEO / META -->
+  <meta name="description" content="Pranab Debnath — Data Analyst specializing in SQL, analytics, automation, and business insights." />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0f14" />
 
   <!-- MAIN STYLES -->
   <link rel="stylesheet" href="assets/css/style.css" />
 
-  <!-- PRISM THEME -->
+  <!-- PRISM (CODE HIGHLIGHTING) -->
   <link
-    href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"
     rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css"
   />
 </head>
+
 <body>
 
-<nav class="nav">
-  <span class="logo">PD</span>
-  <div>
-    <a href="#/">Home</a>
-    <a href="#/dashboard">Dashboard</a>
-    <a href="#/funnels">Funnel</a>
-    <a href="#/projects">Projects</a>
-    <a href="#/learnings">Learnings</a>
-    <a href="#/contacts">Contacts</a>
-    <a href="resume.html">Resume</a>
-  </div>
-</nav>
+  <!-- NAVIGATION -->
+  <nav>
+    <span class="logo">PD</span>
+    <div>
+      <a href="#/">Home</a>
+      <a href="#/dashboard">Dashboard</a>
+      <a href="#/funnels">Funnel</a>
+      <a href="#/projects">Projects</a>
+      <a href="#/learnings">Learnings</a>
+      <a href="#/contacts">Contacts</a>
+      <a href="resume/Pranab_Debnath_Resume.pdf" target="_blank">Resume</a>
+    </div>
+  </nav>
 
-<main id="app"></main>
+  <!-- SPA ROOT -->
+  <main id="app"></main>
 
-<!-- DATA -->
-<script src="assets/js/data.js"></script>
+  <!-- =====================
+       DATA (SSOT)
+  ====================== -->
+  <script src="assets/js/data.js"></script>
 
-<!-- VIEWS -->
-<script src="assets/js/views/home.js"></script>
-<script src="assets/js/views/dashboard.js"></script>
-<script src="assets/js/views/funnels.js"></script>
-<script src="assets/js/views/projects.js"></script>
-<script src="assets/js/views/project.js"></script>
-<script src="assets/js/views/learnings.js"></script>
-<script src="assets/js/views/contacts.js"></script>
+  <!-- =====================
+       VIEW RENDERERS
+  ====================== -->
+  <script src="assets/js/views/home.js"></script>
+  <script src="assets/js/views/dashboard.js"></script>
+  <script src="assets/js/views/funnels.js"></script>
+  <script src="assets/js/views/projects.js"></script>
+  <script src="assets/js/views/project.js"></script>
+  <script src="assets/js/views/learnings.js"></script>
+  <script src="assets/js/views/contacts.js"></script>
 
-<!-- CHARTS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="assets/js/charts.js"></script>
+  <!-- =====================
+       CHARTS
+  ====================== -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="assets/js/charts.js"></script>
 
-<!-- PRISM -->
-<script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+  <!-- =====================
+       PRISM (CODE VIEWER)
+  ====================== -->
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-sql.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-json.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-markdown.min.js"></script>
 
-<!-- SPA ROUTER (LAST) -->
-<script src="assets/js/motion.js"></script>
-<script src="assets/js/spa.js"></script>
+  <!-- =====================
+       MOTION + SPA (LAST)
+  ====================== -->
+  <script src="assets/js/motion.js"></script>
+  <script src="assets/js/spa.js"></script>
 
 </body>
 </html>
