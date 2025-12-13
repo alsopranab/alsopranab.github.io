@@ -9,25 +9,23 @@ const routes = {
   "/contacts": renderContacts
 };
 
-function parseParams(query) {
-  const params = {};
-  if (!query) return params;
-  query.split("&").forEach(p => {
-    const [k, v] = p.split("=");
-    params[k] = decodeURIComponent(v);
+function parseParams(q) {
+  const p = {};
+  if (!q) return p;
+  q.split("&").forEach(x => {
+    const [k, v] = x.split("=");
+    p[k] = decodeURIComponent(v);
   });
-  return params;
+  return p;
 }
 
 async function navigate() {
   const hash = location.hash.replace("#", "") || "/";
   const [path, query] = hash.split("?");
 
-  app.innerHTML = `<p>Loading...</p>`;
-
   const route = routes[path];
   if (!route) {
-    app.innerHTML = `<h2>404 – Page not found</h2>`;
+    app.innerHTML = "<h2>404</h2>";
     return;
   }
 
