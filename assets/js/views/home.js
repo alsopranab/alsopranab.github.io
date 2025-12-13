@@ -2,45 +2,73 @@ function renderHome() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
+    <!-- HERO -->
     <section class="home-hero">
       <h1 class="home-name">Pranab Debnath</h1>
       <h2 class="home-role">Data Analyst</h2>
 
       <p class="home-summary">
-        Turning raw business data into clarity, automation,
-        and measurable outcomes through analytics systems.
+        Results-oriented analytics professional specializing in SQL,
+        automation, and performance reporting across multi-city operations.
+        Focused on building efficient data systems that improve business outcomes.
       </p>
 
       <div class="grid home-skills">
-        ${skillCard("SQL", "Business queries, joins, CTEs")}
+        ${skillCard("SQL", "CTEs, joins, window functions")}
         ${skillCard("Python", "EDA, automation, scripting")}
-        ${skillCard("Analytics", "Funnels, KPIs, reporting")}
+        ${skillCard("Analytics", "Funnels, KPIs, dashboards")}
       </div>
     </section>
 
+    <!-- EXPERIENCE -->
     <section>
       <h2>Experience Snapshot</h2>
 
       <div class="grid">
         ${experienceCard(
           "MagicBricks",
-          "Account Manager",
-          "2024 – Present",
+          "Operations Data Analyst",
+          "Jan 2025 – Present",
           [
-            "Lead performance tracking & reporting",
-            "Site-visit funnel analysis",
-            "Daily operational dashboards"
+            "Built automated reporting pipelines using SQL, Python, Google Apps Script, and Power Automate",
+            "Performed EDA on agent performance, lead funnels, schedule rates, and user behavior",
+            "Developed dashboards tracking KPIs such as contractability, schedule rate, SV timelines, QA trends",
+            "Unified CRM and dialer data into structured analytical models, improving data accuracy and consistency",
+            "Designed frameworks for new vs repeat leads, builder engagement, and conversion metrics"
+          ]
+        )}
+
+        ${experienceCard(
+          "MagicBricks",
+          "Account Manager",
+          "Jan 2025 – Present",
+          [
+            "Analyzed lead flow patterns and conversion drop-offs to identify funnel issues",
+            "Shared actionable insights with leadership to improve conversion performance",
+            "Consistently exceeded monthly Site Visit Done targets and recognized as an over-achiever",
+            "Maintained strong client relationships and ensured timely issue resolution"
           ]
         )}
 
         ${experienceCard(
           "NoBroker",
-          "Senior Account Manager",
-          "2023 – 2024",
+          "Unit Head",
+          "Jun 2024 – Oct 2024",
           [
-            "Revenue & conversion analytics",
-            "Sales call analysis",
-            "Team-level performance tracking"
+            "Led a sales unit achieving ~15% month-on-month growth in conversions",
+            "Analyzed sales calls to identify coaching and performance improvement areas",
+            "Mentored team members and aligned sales strategy with business goals"
+          ]
+        )}
+
+        ${experienceCard(
+          "NoBroker",
+          "Business Development Executive",
+          "Dec 2023 – May 2024",
+          [
+            "Delivered tailored real estate solutions for NRI tenants and buyers",
+            "Achieved consistent over-performance with multiple months above 130–230% of targets",
+            "Recognized as top performer for six consecutive months"
           ]
         )}
       </div>
@@ -52,6 +80,7 @@ function renderHome() {
       </div>
     </section>
 
+    <!-- WHAT I BUILD -->
     <section>
       <h2>What I Build</h2>
 
@@ -63,23 +92,24 @@ function renderHome() {
         )}
 
         ${buildCard(
-          "Automation",
-          "Scripts that reduce manual reporting and operational errors",
-          "#/funnels"
+          "Automation & ETL",
+          "End-to-end pipelines that remove manual reporting and errors",
+          "#/projects"
         )}
 
         ${buildCard(
           "Learning Notes",
-          "Clear explanations of concepts that actually work",
+          "Clear explanations of concepts that work in production",
           "#/learnings"
         )}
       </div>
     </section>
 
+    <!-- EXPLORE -->
     <section>
       <h2>Explore</h2>
       <p class="muted">
-        This site is both a portfolio and a knowledge base.
+        This site is both a portfolio and a practical knowledge base.
       </p>
 
       <div class="grid">
