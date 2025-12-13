@@ -1,42 +1,55 @@
 /* =========================
    MOTION & INTERACTION LAYER
-   ========================= */
+   (SPA SAFE)
+========================= */
 
-/* Smooth scroll on route change */
+/* ---------- SCROLL ---------- */
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* Disable double clicks on buttons */
-function lockButtons() {
+/* ---------- BUTTON LOCK (SAFE) ---------- */
+function lockActionButtons() {
   document.querySelectorAll("button").forEach(btn => {
+    if (btn.dataset.locked) return;
+
+    btn.dataset.locked = "true";
+
     btn.addEventListener("click", () => {
-      btn.disabled = true;
-      setTimeout(() => (btn.disabled = false), 500);
+      if (btn.dataset.busy === "true") return;
+
+      btn.dataset.busy = "true";
+      setTimeout(() => {
+        btn.dataset.busy = "false";
+      }, 300);
     });
   });
 }
 
-/* Card press feedback */
+/* ---------- CARD PRESS FEEDBACK ---------- */
 function enableCardInteraction() {
   document.querySelectorAll(".card").forEach(card => {
+    if (card.dataset.interactive) return;
+
+    card.dataset.interactive = "true";
+
     card.addEventListener("mousedown", () => {
-      card.style.transform += " scale(0.98)";
+      card.classList.add("pressed");
     });
 
     card.addEventListener("mouseup", () => {
-      card.style.transform = card.style.transform.replace(" scale(0.98)", "");
+      card.classList.remove("pressed");
     });
 
     card.addEventListener("mouseleave", () => {
-      card.style.transform = card.style.transform.replace(" scale(0.98)", "");
+      card.classList.remove("pressed");
     });
   });
 }
 
-/* Run after each SPA render */
+/* ---------- MASTER RUNNER ---------- */
 function runMotionEnhancements() {
   scrollToTop();
-  lockButtons();
+  lockActionButtons();
   enableCardInteraction();
 }
