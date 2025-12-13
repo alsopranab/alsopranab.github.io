@@ -158,3 +158,40 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+/* =========================
+   ANALYTICS GRAPHS
+   ========================= */
+
+.bar-chart {
+  display: grid;
+  gap: 14px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  width: 160px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.bar-track {
+  flex: 1;
+  height: 10px;
+  background: var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0;
+  transition: width 1s ease;
+}
+
