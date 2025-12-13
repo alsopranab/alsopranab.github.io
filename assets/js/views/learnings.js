@@ -10,8 +10,15 @@ function renderLearnings() {
       </p>
     </section>
 
+    <!-- SQL -->
     <section>
-      <h2>SQL & Data Modeling</h2>
+      <h2>
+        <img src="https://cdn.simpleicons.org/postgresql/38bdf8"
+             alt="SQL"
+             style="height:28px;vertical-align:middle;margin-right:8px;" />
+        SQL & Data Modeling
+      </h2>
+
       <div class="grid">
         ${learningCard(
           "CTEs vs Subqueries",
@@ -35,8 +42,15 @@ function renderLearnings() {
       </div>
     </section>
 
+    <!-- PYTHON -->
     <section>
-      <h2>Python & Automation</h2>
+      <h2>
+        <img src="https://cdn.simpleicons.org/python/38bdf8"
+             alt="Python"
+             style="height:28px;vertical-align:middle;margin-right:8px;" />
+        Python & Automation
+      </h2>
+
       <div class="grid">
         ${learningCard(
           "Automate Before Optimizing",
@@ -60,8 +74,15 @@ function renderLearnings() {
       </div>
     </section>
 
+    <!-- ANALYTICS -->
     <section>
-      <h2>Analytics & Business Thinking</h2>
+      <h2>
+        <img src="https://cdn.simpleicons.org/googleanalytics/38bdf8"
+             alt="Analytics"
+             style="height:28px;vertical-align:middle;margin-right:8px;" />
+        Analytics & Business Thinking
+      </h2>
+
       <div class="grid">
         ${learningCard(
           "Funnels Reveal Leaks",
