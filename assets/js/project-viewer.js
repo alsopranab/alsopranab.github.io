@@ -1,11 +1,6 @@
 const params = new URLSearchParams(window.location.search);
 const repoPath = params.get("repo");
 
-if (!repoPath) {
-  document.body.innerHTML = "<p>Invalid project.</p>";
-  throw new Error("No repo specified");
-}
-
 const [owner, repo] = repoPath.split("/");
 
 const nameEl = document.getElementById("project-name");
@@ -17,27 +12,36 @@ nameEl.textContent = repo.replace(/-/g, " ");
 
 fetch(`https://api.github.com/repos/${owner}/${repo}`)
   .then(r => r.json())
-  .then(data => {
-    descEl.textContent = data.description || "";
-  });
+  .then(d => descEl.textContent = d.description || "");
 
+/* README AS CONTENT */
 fetch(`https://api.github.com/repos/${owner}/${repo}/readme`)
   .then(r => r.json())
-  .then(data => {
-    const content = atob(data.content);
-    readmeEl.textContent = content;
-  })
-  .catch(() => {
-    readmeEl.textContent = "README not available.";
+  .then(d => {
+    readmeEl.textContent = atob(d.content);
   });
 
+/* FILE FILTERING */
 fetch(`https://api.github.com/repos/${owner}/${repo}/contents`)
   .then(r => r.json())
   .then(files => {
-    files.forEach(file => {
-      const div = document.createElement("div");
-      div.className = "card";
-      div.textContent = file.name;
-      filesEl.appendChild(div);
-    });
+    files
+      .filter(f =>
+        f.type === "dir" ||
+        f.name.endsWith(".sql") ||
+        f.name.endsWith(".py")
+      )
+      .forEach(f => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = f.name;
+
+        if (f.type === "file") {
+          card.onclick = () =>
+            window.location.href =
+              `file.html?repo=${owner}/${repo}&path=${f.path}`;
+        }
+
+        filesEl.appendChild(card);
+      });
   });
