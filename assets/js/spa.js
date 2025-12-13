@@ -1,5 +1,8 @@
 const app = document.getElementById("app");
 
+/* =========================
+   ROUTES (SINGLE SOURCE)
+========================= */
 const routes = {
   "/": renderHome,
   "/dashboard": renderDashboard,
@@ -7,18 +10,24 @@ const routes = {
   "/projects": renderProjects,
   "/project": renderProject,
   "/learnings": renderLearnings,
-  "/contacts": renderContacts
+  "/contacts": renderContacts,
+  "/resume": renderResume
 };
 
+/* =========================
+   NAVIGATION HANDLER
+========================= */
 function navigate() {
   const hash = location.hash || "#/";
   const [path, query] = hash.replace("#", "").split("?");
 
   const view = routes[path];
 
+  // Remove animation before render
   app.classList.remove("fade-in");
 
-  setTimeout(() => {
+  // Ensure clean render cycle
+  requestAnimationFrame(() => {
     app.innerHTML = "";
 
     if (!view) {
@@ -28,17 +37,25 @@ function navigate() {
           <p>Page not found</p>
         </section>
       `;
+      app.classList.add("fade-in");
       return;
     }
 
-    view(query);
+    // Render view
+    view(query || "");
+
+    // Re-apply animation
     app.classList.add("fade-in");
 
+    // Run motion hooks safely
     if (typeof runMotionEnhancements === "function") {
       runMotionEnhancements();
     }
-  }, 120);
+  });
 }
 
+/* =========================
+   LISTENERS
+========================= */
 window.addEventListener("load", navigate);
 window.addEventListener("hashchange", navigate);
