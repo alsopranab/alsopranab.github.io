@@ -1,6 +1,7 @@
 /* =====================================================
    PROFILE MASTER DATA
    Single Source of Truth (SSOT)
+   SPA-SAFE • NULL-SAFE • FUTURE-PROOF
 ===================================================== */
 
 const PROFILE = {
@@ -16,12 +17,13 @@ const PROFILE = {
   },
 
   /* =====================
-     CONTACT & SOCIAL
+     CONTACT & SOCIAL (SAFE)
   ====================== */
   contact: {
     email: "career.pranab@gmail.com",
     github: "alsopranab",
     linkedin: "pranab-dnath",
+
     social: {
       instagram_data: "the.queryguy",
       instagram_personal: "alsopranab",
@@ -31,26 +33,30 @@ const PROFILE = {
   },
 
   /* =====================
-     SKILLS (CAN SCALE)
+     SKILLS (SCALABLE)
   ====================== */
   skills: {
     primary: [
       {
+        id: "sql",
         name: "SQL",
         focus: ["Joins", "CTEs", "Window Functions", "Query Optimization"],
         proficiency: 90
       },
       {
+        id: "python",
         name: "Python",
         focus: ["EDA", "Automation", "Scripting", "Data Cleaning"],
         proficiency: 80
       },
       {
+        id: "excel",
         name: "Excel",
         focus: ["Dashboards", "KPI Models", "Reporting"],
         proficiency: 75
       },
       {
+        id: "analytics",
         name: "Business Analytics",
         focus: ["Funnels", "Metrics", "Reporting"],
         proficiency: 85
@@ -74,10 +80,10 @@ const PROFILE = {
       role: "Operations Data Analyst",
       period: "2025 – Present",
       highlights: [
-        "Automated reporting pipelines using SQL, Python, and scripts",
-        "EDA on lead quality, schedule rate, and funnel drop-offs",
-        "Built KPI dashboards for leadership decision-making",
-        "Unified CRM and dialer data into structured models"
+        "Automated reporting pipelines using SQL & Python",
+        "EDA on lead quality, schedules, and funnel drop-offs",
+        "Built KPI dashboards for leadership",
+        "Unified CRM & dialer data models"
       ],
       metrics: {
         impact: "Improved reporting accuracy & speed"
@@ -88,9 +94,9 @@ const PROFILE = {
       role: "Account Manager",
       period: "2024 – 2025",
       highlights: [
-        "Analyzed lead flow and conversion bottlenecks",
-        "Exceeded site-visit targets consistently",
-        "Provided actionable insights to management"
+        "Analyzed lead flow & conversion bottlenecks",
+        "Exceeded site-visit targets",
+        "Delivered actionable insights to management"
       ],
       metrics: {
         performance: "Consistent over-achievement"
@@ -101,9 +107,9 @@ const PROFILE = {
       role: "Senior Account Manager",
       period: "2023 – 2024",
       highlights: [
-        "Led revenue & conversion analytics",
-        "Performed sales call analysis for coaching",
-        "Drove ~15% MoM conversion growth"
+        "Revenue & conversion analytics",
+        "Sales call analysis",
+        "~15% MoM conversion growth"
       ],
       metrics: {
         growth: "15% average monthly improvement"
@@ -112,14 +118,14 @@ const PROFILE = {
   ],
 
   /* =====================
-     DASHBOARD KPIs
+     DASHBOARD (CHART SAFE)
   ====================== */
   dashboard: {
     kpis: [
-      { label: "GitHub Repositories", value: "12+" },
-      { label: "Core Domains", value: "3" },
-      { label: "SQL Problems Solved", value: "100+" },
-      { label: "Avg Business Impact", value: "15%" }
+      { key: "repos", label: "GitHub Repositories", value: "12+" },
+      { key: "domains", label: "Core Domains", value: "3" },
+      { key: "sql", label: "SQL Problems Solved", value: "100+" },
+      { key: "impact", label: "Avg Business Impact", value: "15%" }
     ],
 
     growthTimeline: {
@@ -139,7 +145,7 @@ const PROFILE = {
   funnel: [
     {
       stage: "Experience",
-      description: "Real-world problems faced in production environments",
+      description: "Real-world problems",
       points: [
         "Client & site-visit analytics",
         "Revenue & conversion tracking",
@@ -148,56 +154,12 @@ const PROFILE = {
     },
     {
       stage: "Skills",
-      description: "Tools used to solve those problems",
+      description: "Tools applied",
       points: [
-        "SQL — joins, CTEs, window functions",
+        "SQL — joins, CTEs, windows",
         "Python — EDA & automation",
-        "Excel — dashboards & KPI models"
+        "Excel — KPI dashboards"
       ]
     },
     {
-      stage: "Projects",
-      description: "Hands-on implementations",
-      points: [
-        "SQL practice systems",
-        "Automation scripts",
-        "Analytics dashboards"
-      ]
-    },
-    {
-      stage: "Impact",
-      description: "Measurable business outcomes",
-      points: [
-        "Reduced manual reporting",
-        "Improved conversion visibility",
-        "Faster decision-making"
-      ]
-    }
-  ],
-
-  /* =====================
-     LEARNINGS
-  ====================== */
-  learnings: [
-    {
-      title: "CTEs & Readable SQL",
-      summary:
-        "Readable SQL scales better than clever SQL in production systems."
-    },
-    {
-      title: "Python as a Glue",
-      summary:
-        "Python works best when connecting systems, not over-engineering logic."
-    },
-    {
-      title: "Automate the Boring",
-      summary:
-        "Automation creates more impact than micro-optimizations."
-    }
-  ]
-};
-
-/* =====================================================
-   EXPORT SAFETY (SPA)
-===================================================== */
-window.PROFILE = PROFILE;
+      stage: "Proj
