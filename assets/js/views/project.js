@@ -1,73 +1,80 @@
 function renderProject(query) {
   const app = document.getElementById("app");
-  const repo = new URLSearchParams(query).get("repo");
+  const params = new URLSearchParams(query);
+  const repoName = params.get("repo");
 
-  if (!repo) {
-    app.innerHTML = "<p>Project not found.</p>";
+  if (!repoName) {
+    app.innerHTML = `<p class="muted">Project not found.</p>`;
     return;
   }
 
   app.innerHTML = `
     <section>
-      <a href="#/projects">← Back to Projects</a>
-      <h1>${repo}</h1>
-      <p class="muted">
-        Select a file to view clean, readable source code.
-      </p>
-      <div id="file-list" class="grid"></div>
+      <h1>${repoName}</h1>
+      <p class="muted">Loading project details...</p>
     </section>
   `;
 
-  fetch(`https://api.github.com/repos/alsopranab/${repo}/contents`)
+  fetch(`https://api.github.com/repos/alsopranab/${repoName}`)
     .then(res => res.json())
-    .then(files => {
-      files
-        .filter(f => f.type === "file" && /\.(sql|py|js)$/i.test(f.name))
-        .forEach(file => {
-          const card = document.createElement("div");
-          card.className = "card";
+    .then(repo => {
+      renderProjectDetails(repo);
+      fetchReadme(repoName);
+    });
+}
 
-          card.innerHTML = `
-            <h3>${file.name}</h3>
-            <button onclick="toggleCode(this, '${file.download_url}', '${file.name}')">
-              View Code
-            </button>
-            <pre class="code-block" style="display:none">
-              <code class="language-${getLang(file.name)}"></code>
-            </pre>
-          `;
+function renderProjectDetails(repo) {
+  const app = document.getElementById("app");
 
-          document.getElementById("file-list").appendChild(card);
-        });
+  app.innerHTML = `
+    <section>
+      <h1>${repo.name}</h1>
+      <p class="muted">${repo.description || ""}</p>
+
+      <div class="grid">
+        <div class="card">
+          <p><strong>Language:</strong> ${repo.language || "N/A"}</p>
+          <p><strong>Stars:</strong> ${repo.stargazers_count}</p>
+          <p><strong>Updated:</strong> ${new Date(repo.updated_at).toDateString()}</p>
+
+          <button onclick="window.open('${repo.html_url}', '_blank')">
+            Open on GitHub
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>README</h2>
+      <div class="card" id="readme">
+        <p class="muted">Loading README...</p>
+      </div>
+    </section>
+  `;
+}
+
+function fetchReadme(repo) {
+  fetch(`https://api.github.com/repos/alsopranab/${repo}/readme`)
+    .then(res => res.json())
+    .then(data => {
+      const content = atob(data.content);
+      document.getElementById("readme").innerHTML = `
+        <pre><code>${escapeHtml(content)}</code></pre>
+      `;
+    })
+    .catch(() => {
+      document.getElementById("readme").innerHTML =
+        "<p class='muted'>No README available.</p>";
     });
 }
 
 /* =========================
-   CODE HANDLING
+   UTIL
 ========================= */
 
-function toggleCode(btn, url, filename) {
-  const card = btn.closest(".card");
-  const block = card.querySelector(".code-block");
-  const codeEl = block.querySelector("code");
-
-  if (block.style.display === "block") {
-    block.style.display = "none";
-    return;
-  }
-
-  fetch(url)
-    .then(res => res.text())
-    .then(code => {
-      codeEl.textContent = code;
-      block.style.display = "block";
-      Prism.highlightElement(codeEl);
-    });
-}
-
-function getLang(name) {
-  if (name.endsWith(".sql")) return "sql";
-  if (name.endsWith(".py")) return "python";
-  if (name.endsWith(".js")) return "javascript";
-  return "none";
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
