@@ -1,48 +1,62 @@
-/* =========================
+/* =====================================================
    PROFILE MASTER DATA
-   Single source of truth
-========================= */
+   Single Source of Truth (SSOT)
+===================================================== */
 
 const PROFILE = {
-  /* ---------- IDENTITY ---------- */
-  name: "Pranab Debnath",
-  role: "Data Analyst",
-  location: "Bangalore, India",
-  tagline:
-    "Turning raw business data into clarity, automation, and measurable outcomes.",
-
-  /* ---------- CONTACT ---------- */
-  email: "career.pranab@gmail.com",
-  github: "alsopranab",
-  linkedin: "pranab-dnath",
-
-  social: {
-    instagram_data: "the.queryguy",
-    instagram_personal: "alsopranab",
-    leetcode: "alsopranab",
-    hackerrank: "alsopranab"
+  /* =====================
+     IDENTITY
+  ====================== */
+  identity: {
+    name: "Pranab Debnath",
+    role: "Data Analyst",
+    location: "Bangalore, India",
+    tagline:
+      "Turning raw business data into clarity, automation, and measurable outcomes."
   },
 
-  /* ---------- CORE SKILLS ---------- */
+  /* =====================
+     CONTACT & SOCIAL
+  ====================== */
+  contact: {
+    email: "career.pranab@gmail.com",
+    github: "alsopranab",
+    linkedin: "pranab-dnath",
+    social: {
+      instagram_data: "the.queryguy",
+      instagram_personal: "alsopranab",
+      leetcode: "alsopranab",
+      hackerrank: "alsopranab"
+    }
+  },
+
+  /* =====================
+     SKILLS (CAN SCALE)
+  ====================== */
   skills: {
-    sql: [
-      "Joins",
-      "CTEs",
-      "Window Functions",
-      "Query Optimization"
+    primary: [
+      {
+        name: "SQL",
+        focus: ["Joins", "CTEs", "Window Functions", "Query Optimization"],
+        proficiency: 90
+      },
+      {
+        name: "Python",
+        focus: ["EDA", "Automation", "Scripting", "Data Cleaning"],
+        proficiency: 80
+      },
+      {
+        name: "Excel",
+        focus: ["Dashboards", "KPI Models", "Reporting"],
+        proficiency: 75
+      },
+      {
+        name: "Business Analytics",
+        focus: ["Funnels", "Metrics", "Reporting"],
+        proficiency: 85
+      }
     ],
-    python: [
-      "EDA",
-      "Automation",
-      "Scripting",
-      "Data Cleaning"
-    ],
-    analytics: [
-      "Funnels",
-      "KPIs",
-      "Reporting",
-      "Business Metrics"
-    ],
+
     tools: [
       "Excel",
       "Power BI",
@@ -51,49 +65,81 @@ const PROFILE = {
     ]
   },
 
-  /* ---------- EXPERIENCE ---------- */
+  /* =====================
+     EXPERIENCE (ORDERED)
+  ====================== */
   experience: [
     {
       company: "MagicBricks",
-      role: "Account Manager",
-      period: "2024 – Present",
-      impact: [
-        "Client & site-visit funnel analytics",
-        "Daily operational dashboards",
-        "Automation using Excel & scripts"
+      role: "Operations Data Analyst",
+      period: "2025 – Present",
+      highlights: [
+        "Automated reporting pipelines using SQL, Python, and scripts",
+        "EDA on lead quality, schedule rate, and funnel drop-offs",
+        "Built KPI dashboards for leadership decision-making",
+        "Unified CRM and dialer data into structured models"
       ],
       metrics: {
-        focus: "Funnel & operational analytics"
+        impact: "Improved reporting accuracy & speed"
+      }
+    },
+    {
+      company: "MagicBricks",
+      role: "Account Manager",
+      period: "2024 – 2025",
+      highlights: [
+        "Analyzed lead flow and conversion bottlenecks",
+        "Exceeded site-visit targets consistently",
+        "Provided actionable insights to management"
+      ],
+      metrics: {
+        performance: "Consistent over-achievement"
       }
     },
     {
       company: "NoBroker",
       role: "Senior Account Manager",
       period: "2023 – 2024",
-      impact: [
-        "Revenue & conversion analytics",
-        "Sales call analysis",
-        "Team-level performance tracking"
+      highlights: [
+        "Led revenue & conversion analytics",
+        "Performed sales call analysis for coaching",
+        "Drove ~15% MoM conversion growth"
       ],
       metrics: {
-        growth: "15% avg monthly improvement"
+        growth: "15% average monthly improvement"
       }
     }
   ],
 
-  /* ---------- DASHBOARD METRICS ---------- */
+  /* =====================
+     DASHBOARD KPIs
+  ====================== */
   dashboard: {
-    repositories: 12,
-    coreDomains: 3,
-    sqlProblemsSolved: 100,
-    avgImpact: "15%"
+    kpis: [
+      { label: "GitHub Repositories", value: "12+" },
+      { label: "Core Domains", value: "3" },
+      { label: "SQL Problems Solved", value: "100+" },
+      { label: "Avg Business Impact", value: "15%" }
+    ],
+
+    growthTimeline: {
+      years: ["2022", "2023", "2024", "2025"],
+      values: [20, 40, 70, 90]
+    },
+
+    skillDistribution: {
+      labels: ["SQL", "Python", "Excel", "Automation", "Analytics"],
+      values: [30, 25, 15, 15, 15]
+    }
   },
 
-  /* ---------- CAREER FUNNEL ---------- */
+  /* =====================
+     CAREER FUNNEL
+  ====================== */
   funnel: [
     {
       stage: "Experience",
-      description: "Real-world business problems",
+      description: "Real-world problems faced in production environments",
       points: [
         "Client & site-visit analytics",
         "Revenue & conversion tracking",
@@ -120,31 +166,38 @@ const PROFILE = {
     },
     {
       stage: "Impact",
-      description: "Measurable outcomes",
+      description: "Measurable business outcomes",
       points: [
-        "Faster reporting",
-        "Reduced manual work",
-        "Improved conversions"
+        "Reduced manual reporting",
+        "Improved conversion visibility",
+        "Faster decision-making"
       ]
     }
   ],
 
-  /* ---------- LEARNINGS ---------- */
+  /* =====================
+     LEARNINGS
+  ====================== */
   learnings: [
     {
-      title: "SQL Joins & CTEs",
+      title: "CTEs & Readable SQL",
       summary:
-        "How complex joins and CTEs simplify business logic in real analytics systems."
+        "Readable SQL scales better than clever SQL in production systems."
     },
     {
-      title: "Python for Analysis",
+      title: "Python as a Glue",
       summary:
-        "Why Python works best as a glue language, not a hammer."
+        "Python works best when connecting systems, not over-engineering logic."
     },
     {
-      title: "Analytics Automation",
+      title: "Automate the Boring",
       summary:
-        "Reducing manual reporting creates real business impact."
+        "Automation creates more impact than micro-optimizations."
     }
   ]
 };
+
+/* =====================================================
+   EXPORT SAFETY (SPA)
+===================================================== */
+window.PROFILE = PROFILE;
