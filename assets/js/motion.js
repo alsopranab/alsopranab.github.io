@@ -1,49 +1,59 @@
 /* =====================================================
    MOTION & INTERACTION LAYER
-   SPA-SAFE · SUBTLE · PROFESSIONAL
+   macOS-STYLE · BUTTERY · SPA-SAFE
 ===================================================== */
 
+let fadeObserver = null;
+
 /* =====================
-   SCROLL CONTROL
+   SCROLL CONTROL (SAFE)
 ===================== */
 function scrollToTop() {
-  window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+  // instant on route change to avoid motion sickness
+  window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 /* =====================
-   BUTTON INTERACTION LOCK
-   Prevents double-trigger in SPA
+   BUTTON INTERACTION
+   No locks, just physics
 ===================== */
-function lockActionButtons() {
+function enhanceButtons() {
   document.querySelectorAll("button").forEach(btn => {
-    if (btn.dataset.locked === "true") return;
+    if (btn.dataset.enhanced) return;
+    btn.dataset.enhanced = "true";
 
-    btn.dataset.locked = "true";
+    btn.addEventListener("pointerdown", () => {
+      btn.classList.add("pressed");
+    });
 
-    btn.addEventListener("click", () => {
-      if (btn.dataset.busy === "true") return;
+    btn.addEventListener("pointerup", () => {
+      btn.classList.remove("pressed");
+    });
 
-      btn.dataset.busy = "true";
-      btn.classList.add("btn-busy");
-
-      setTimeout(() => {
-        btn.dataset.busy = "false";
-        btn.classList.remove("btn-busy");
-      }, 300);
+    btn.addEventListener("pointerleave", () => {
+      btn.classList.remove("pressed");
     });
   });
 }
 
 /* =====================
-   CARD MICRO-INTERACTIONS
+   CARD INTERACTION
+   macOS trackpad feel
 ===================== */
-function enableCardInteraction() {
+function enhanceCards() {
   document.querySelectorAll(".card").forEach(card => {
-    if (card.dataset.interactive === "true") return;
+    if (card.dataset.enhanced) return;
+    card.dataset.enhanced = "true";
 
-    card.dataset.interactive = "true";
+    card.addEventListener("pointerenter", () => {
+      card.classList.add("hovered");
+    });
 
-    // Press feedback
+    card.addEventListener("pointerleave", () => {
+      card.classList.remove("hovered");
+      card.classList.remove("pressed");
+    });
+
     card.addEventListener("pointerdown", () => {
       card.classList.add("pressed");
     });
@@ -51,45 +61,47 @@ function enableCardInteraction() {
     card.addEventListener("pointerup", () => {
       card.classList.remove("pressed");
     });
-
-    card.addEventListener("pointerleave", () => {
-      card.classList.remove("pressed");
-    });
   });
 }
 
 /* =====================
-   FADE-IN ON VIEW (SPA SAFE)
+   FADE-IN OBSERVER
+   SINGLE INSTANCE ONLY
 ===================== */
-function observeFadeIn() {
-  const observer = new IntersectionObserver(
+function setupFadeObserver() {
+  if (fadeObserver) {
+    fadeObserver.disconnect();
+    fadeObserver = null;
+  }
+
+  fadeObserver = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("fade-in");
-          observer.unobserve(entry.target);
+          entry.target.classList.add("in-view");
+          fadeObserver.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.15 }
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -40px 0px"
+    }
   );
 
-  document
-    .querySelectorAll("section, .card")
-    .forEach(el => {
-      if (!el.classList.contains("fade-in")) {
-        observer.observe(el);
-      }
-    });
+  document.querySelectorAll("section, .card").forEach(el => {
+    el.classList.remove("in-view"); // reset on route change
+    fadeObserver.observe(el);
+  });
 }
 
 /* =====================
    MASTER RUNNER
-   Called ONCE per route
+   CALL ON EVERY ROUTE
 ===================== */
 function runMotionEnhancements() {
   scrollToTop();
-  lockActionButtons();
-  enableCardInteraction();
-  observeFadeIn();
+  enhanceButtons();
+  enhanceCards();
+  setupFadeObserver();
 }
