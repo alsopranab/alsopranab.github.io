@@ -7,12 +7,14 @@ async function renderProjects() {
   repos.filter(r => !r.fork).forEach(r => {
     document.getElementById("proj").innerHTML += `
       <div class="card">
-        <h4>${r.name}</h4>
+        <h3>${r.name}</h3>
         <p>${r.description || ""}</p>
-        function openProject(repo) {
-  location.hash = `#/project?repo=${repo}`;
-}
+        <button onclick="openProject('${r.name}')">Open</button>
       </div>
     `;
   });
+}
+
+function openProject(repo) {
+  location.hash = "#/project?repo=" + repo;
 }
