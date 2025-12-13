@@ -9,9 +9,9 @@ async function renderProjects() {
       <div class="card">
         <h4>${r.name}</h4>
         <p>${r.description || ""}</p>
-        <button onclick="location.hash='#/project?repo=${r.name}'">
-          Open
-        </button>
+        function openProject(repo) {
+  location.hash = `#/project?repo=${repo}`;
+}
       </div>
     `;
   });
