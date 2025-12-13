@@ -1,75 +1,60 @@
-/* =========================
-   DESIGN SYSTEM — ANALYTICS
-========================= */
-
+/* ===============================
+   ROOT THEME (APPLE-LIKE)
+================================ */
 :root {
-  --bg: #0b0f14;
-  --bg-soft: #0f172a;
-  --panel: #111827;
-  --panel-soft: #0f172a;
-  --border: rgba(148, 163, 184, 0.18);
+  --bg-main: #f5f7fb;
+  --bg-soft: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.75);
 
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --accent: #38bdf8;
-  --accent-soft: rgba(56, 189, 248, 0.15);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
 
-  --success: #22c55e;
+  --accent: #2563eb;
+  --accent-soft: #93c5fd;
+  --border: rgba(37, 99, 235, 0.15);
+
+  --success: #16a34a;
+  --radius: 18px;
 }
 
-/* Light mode (kept but secondary) */
-[data-theme="light"] {
-  --bg: #f8fafc;
-  --bg-soft: #e5e7eb;
-  --panel: #ffffff;
-  --panel-soft: #f1f5f9;
-  --border: rgba(15, 23, 42, 0.12);
-
-  --text: #020617;
-  --muted: #475569;
-  --accent: #0284c7;
-  --accent-soft: rgba(2, 132, 199, 0.15);
-}
-
-/* =========================
-   RESET & BASE
-========================= */
-
+/* ===============================
+   RESET
+================================ */
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: radial-gradient(circle at top, var(--bg-soft), var(--bg));
-  color: var(--text);
-  overflow-x: hidden;
-  transition: background 0.3s ease, color 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at 20% 10%, #e0ecff, transparent 40%),
+    radial-gradient(circle at 80% 30%, #eaf2ff, transparent 45%),
+    var(--bg-main);
 }
 
-/* =========================
-   NAVIGATION
-========================= */
-
+/* ===============================
+   NAV
+================================ */
 nav {
   position: sticky;
   top: 0;
-  z-index: 30;
+  z-index: 50;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 14px 28px;
-  background: rgba(11, 15, 20, 0.7);
-  backdrop-filter: blur(10px);
+  background: var(--bg-glass);
+  backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
 }
 
 nav a {
-  margin-left: 18px;
   text-decoration: none;
-  font-weight: 600;
-  color: var(--muted);
+  color: var(--text-main);
+  margin-left: 18px;
+  font-weight: 500;
 }
 
 nav a:hover {
@@ -77,196 +62,210 @@ nav a:hover {
 }
 
 .logo {
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: var(--text);
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
-/* =========================
-   LAYOUT
-========================= */
-
+/* ===============================
+   MAIN
+================================ */
 main {
-  padding: 36px 28px;
+  padding: 48px 28px;
   min-height: 85vh;
 }
 
-section {
-  max-width: 1200px;
-  margin: 0 auto 56px;
+.fade-in {
+  animation: fade 0.35s ease;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
-/* =========================
+/* ===============================
    TYPOGRAPHY
-========================= */
-
+================================ */
 h1 {
-  font-size: 38px;
-  margin-bottom: 6px;
+  font-size: 42px;
+  margin-bottom: 8px;
 }
 
 h2 {
   font-size: 26px;
-  margin-bottom: 12px;
+  margin: 40px 0 16px;
   border-left: 4px solid var(--accent);
   padding-left: 12px;
 }
 
 h3 {
+  font-size: 18px;
   margin-bottom: 6px;
 }
 
 p {
-  color: var(--muted);
+  color: var(--text-muted);
+  line-height: 1.6;
   max-width: 760px;
 }
 
-/* =========================
-   CARDS (CORE COMPONENT)
-========================= */
+/* ===============================
+   LAYOUT
+================================ */
+section {
+  max-width: 1200px;
+  margin: auto;
+  margin-bottom: 56px;
+}
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+
+/* ===============================
+   CARDS
+================================ */
 .card {
-  background: linear-gradient(
-    180deg,
-    var(--panel),
-    var(--panel-soft)
-  );
+  background: var(--bg-soft);
+  border-radius: var(--radius);
+  padding: 22px;
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
-  position: relative;
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  transform: translateY(-6px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
 }
 
-/* =========================
-   KPI BLOCKS
-========================= */
-
+/* ===============================
+   KPI
+================================ */
 .kpi {
   text-align: center;
 }
 
 .kpi-value {
-  font-size: 36px;
-  font-weight: 800;
+  font-size: 32px;
+  font-weight: 700;
   color: var(--accent);
-  margin-top: 10px;
+  margin-bottom: 6px;
 }
 
-/* =========================
-   FUNNELS / EXPERIENCE
-========================= */
-
-.funnel {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 22px;
-}
-
-.funnel-stage {
-  width: 100%;
-  max-width: 680px;
+/* ===============================
+   EXPERIENCE / LEARNINGS TOGGLE
+================================ */
+.experience-card {
   cursor: pointer;
 }
 
-.funnel-arrow {
-  font-size: 22px;
-  color: var(--accent);
-}
-
-.funnel-details {
-  margin-top: 12px;
-  display: none;
-}
-
-.funnel-stage.active .funnel-details {
-  display: block;
-}
-
-/* =========================
-   EXPERIENCE CARDS
-========================= */
-
 .experience-details {
-  margin-top: 12px;
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
 }
 
 .experience-card.active .experience-details {
-  display: block;
+  max-height: 400px;
+  margin-top: 10px;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+/* ===============================
+   FUNNEL
+================================ */
+.funnel-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
 
+.funnel-stage {
+  min-width: 240px;
+}
+
+.funnel-arrow {
+  font-size: 26px;
+  color: var(--accent);
+}
+
+/* ===============================
+   BUTTONS
+================================ */
 button {
-  background: linear-gradient(
-    135deg,
-    var(--accent),
-    #0ea5e9
-  );
+  background: linear-gradient(135deg, var(--accent), #4f46e5);
   border: none;
-  color: #020617;
-  padding: 8px 18px;
+  color: #fff;
+  padding: 8px 16px;
   border-radius: 999px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 12px;
 }
 
 button:hover {
-  opacity: 0.95;
+  opacity: 0.9;
 }
 
-/* =========================
-   CODE VIEWER
-========================= */
+/* ===============================
+   LINKS / CTA
+================================ */
+a {
+  color: var(--accent);
+}
 
+.impact-link {
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.impact-link .arrow {
+  transition: transform 0.2s ease;
+}
+
+.impact-link:hover .arrow {
+  transform: translateX(4px);
+}
+
+/* ===============================
+   CODE VIEWER
+================================ */
 .code-block {
-  background: #020617;
-  padding: 18px;
+  background: #0f172a;
+  color: #e5e7eb;
+  padding: 16px;
   border-radius: 14px;
+  font-size: 13px;
   overflow-x: auto;
-  margin-top: 18px;
-  font-size: 14px;
+  margin-top: 14px;
 }
 
 pre {
   margin: 0;
 }
 
-/* =========================
-   SPA TRANSITION
-========================= */
-
-.fade-in {
-  animation: fadeIn 0.25s ease;
+/* ===============================
+   SKILL BAR (DASHBOARD)
+================================ */
+.skill-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 6px;
+  margin: 10px 0;
+  overflow: hidden;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+.skill-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
 }
