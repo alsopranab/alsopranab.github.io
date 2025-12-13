@@ -1,11 +1,5 @@
-// assets/js/spa.js
-
 const app = document.getElementById("app");
 
-/**
- * Central route registry
- * Each route maps to a render function
- */
 const routes = {
   "/": () => renderHome(),
   "/projects": () => renderProjects(),
@@ -14,57 +8,30 @@ const routes = {
   "/contacts": () => renderContacts()
 };
 
-/**
- * Parse query params from hash
- * Example: #/project?repo=abc
- */
-function parseParams(queryString) {
+function parseParams(query) {
   const params = {};
-  if (!queryString) return params;
-
-  queryString.split("&").forEach(pair => {
-    const [key, value] = pair.split("=");
-    params[key] = decodeURIComponent(value || "");
+  if (!query) return params;
+  query.split("&").forEach(p => {
+    const [k, v] = p.split("=");
+    params[k] = decodeURIComponent(v);
   });
-
   return params;
 }
 
-/**
- * SPA navigation handler
- */
 function navigate() {
-  let hash = location.hash.replace("#", "") || "/";
-  let [path, query] = hash.split("?");
+  const hash = location.hash.replace("#", "") || "/";
+  const [path, query] = hash.split("?");
+
+  app.innerHTML = "";
 
   const route = routes[path];
+  if (!route) {
+    app.innerHTML = "<h2>404</h2>";
+    return;
+  }
 
-  // Clear + animate
-  app.classList.remove("fade-in");
-
-  setTimeout(() => {
-    app.innerHTML = "";
-
-    if (!route) {
-      app.innerHTML = `
-        <section class="fade-in">
-          <h1>404</h1>
-          <p>Page not found.</p>
-        </section>
-      `;
-      app.classList.add("fade-in");
-      return;
-    }
-
-    const params = parseParams(query);
-    route(params);
-
-    app.classList.add("fade-in");
-  }, 120);
+  route(parseParams(query));
 }
 
-/**
- * Attach listeners
- */
 window.addEventListener("hashchange", navigate);
 window.addEventListener("load", navigate);
