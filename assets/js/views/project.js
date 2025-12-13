@@ -11,8 +11,10 @@ function renderProject(query) {
     <section>
       <a href="#/projects">← Back to Projects</a>
       <h1>${repo}</h1>
-      <p>Code files preview (SQL / Python / JS).</p>
-      <div id="files" class="grid"></div>
+      <p class="muted">
+        Select a file to view clean, readable source code.
+      </p>
+      <div id="file-list" class="grid"></div>
     </section>
   `;
 
@@ -24,23 +26,29 @@ function renderProject(query) {
         .forEach(file => {
           const card = document.createElement("div");
           card.className = "card";
+
           card.innerHTML = `
             <h3>${file.name}</h3>
-            <button onclick="loadFile(this, '${file.download_url}', '${file.name}')">
+            <button onclick="toggleCode(this, '${file.download_url}', '${file.name}')">
               View Code
             </button>
             <pre class="code-block" style="display:none">
               <code class="language-${getLang(file.name)}"></code>
             </pre>
           `;
-          document.getElementById("files").appendChild(card);
+
+          document.getElementById("file-list").appendChild(card);
         });
     });
 }
 
-function loadFile(btn, url, filename) {
+/* =========================
+   CODE HANDLING
+========================= */
+
+function toggleCode(btn, url, filename) {
   const card = btn.closest(".card");
-  const block = card.querySelector("pre");
+  const block = card.querySelector(".code-block");
   const codeEl = block.querySelector("code");
 
   if (block.style.display === "block") {
