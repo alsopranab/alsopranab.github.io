@@ -6,18 +6,18 @@ function renderContacts() {
       <h1>Contact</h1>
       <p class="muted">
         Reach out for opportunities, collaboration, or discussion.
-        I respond fastest via email.
+        Email is the fastest way to connect.
       </p>
     </section>
 
-    <!-- PRIMARY CONTACT -->
+    <!-- EMAIL -->
     <section>
       <div class="grid">
         <div class="card">
           <h3>Email</h3>
           <p class="muted">Direct communication</p>
-          <p><strong>career.pranab@gmail.com</strong></p>
-          <button onclick="location.href='mailto:career.pranab@gmail.com'">
+          <p><strong>${PROFILE.email}</strong></p>
+          <button onclick="openEmail()">
             Write Email
           </button>
         </div>
@@ -27,30 +27,29 @@ function renderContacts() {
     <!-- PROFESSIONAL PROFILES -->
     <section>
       <h2>Professional Profiles</h2>
-
       <div class="grid">
-        ${contactCard(
+        ${profileCard(
           "LinkedIn",
           "Professional background & experience",
-          "https://www.linkedin.com/in/pranab-dnath"
+          `https://www.linkedin.com/in/${PROFILE.linkedin}`
         )}
 
-        ${contactCard(
+        ${profileCard(
           "GitHub",
           "Projects, code, and automation work",
-          "https://github.com/alsopranab"
+          `https://github.com/${PROFILE.github}`
         )}
 
-        ${contactCard(
+        ${profileCard(
           "LeetCode",
           "Problem solving & DSA practice",
-          "https://leetcode.com/alsopranab"
+          `https://leetcode.com/${PROFILE.social.leetcode}`
         )}
 
-        ${contactCard(
+        ${profileCard(
           "HackerRank",
           "SQL & problem-solving practice",
-          "https://www.hackerrank.com/alsopranab"
+          `https://www.hackerrank.com/${PROFILE.social.hackerrank}`
         )}
       </div>
     </section>
@@ -58,31 +57,28 @@ function renderContacts() {
     <!-- INSTAGRAM -->
     <section>
       <h2>Instagram</h2>
-
       <div class="grid">
-        ${contactCard(
+        ${profileCard(
           "The Query Guy",
           "Data analytics content & insights",
-          "https://www.instagram.com/the.queryguy"
+          `https://www.instagram.com/${PROFILE.social.instagram_data}`
         )}
 
-        ${contactCard(
+        ${profileCard(
           "Personal",
           "Personal updates & life",
-          "https://www.instagram.com/alsopranab"
+          `https://www.instagram.com/${PROFILE.social.instagram_personal}`
         )}
       </div>
     </section>
   `;
-
-  app.classList.add("fade-in");
 }
 
 /* =========================
    HELPERS
 ========================= */
 
-function contactCard(title, desc, link) {
+function profileCard(title, desc, link) {
   return `
     <div class="card">
       <h3>${title}</h3>
@@ -92,4 +88,13 @@ function contactCard(title, desc, link) {
       </button>
     </div>
   `;
+}
+
+function openEmail() {
+  const subject = encodeURIComponent("Opportunity / Collaboration");
+  const body = encodeURIComponent(
+    "Hi Pranab,\n\nI came across your portfolio and would like to connect.\n\nRegards,"
+  );
+
+  window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
 }
