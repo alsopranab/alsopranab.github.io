@@ -4,88 +4,95 @@ function renderFunnels() {
   app.innerHTML = `
     <section>
       <h1>Career Funnel</h1>
-      <p>
-        How my professional experience converts into skills,
-        projects, and real business impact.
+      <p class="muted">
+        A left-to-right view of how experience transforms into skills,
+        projects, and measurable impact.
       </p>
     </section>
 
-    <section class="funnel">
-      <!-- EXPERIENCE -->
-      <div class="card funnel-stage" onclick="toggleFunnel(this)">
-        <h2>Experience</h2>
-        <p>Where real-world problems come from</p>
+    <section class="funnel-row">
+      ${funnelStage(
+        "Experience",
+        "Where real-world problems originate",
+        [
+          "MagicBricks — lead & site-visit analytics",
+          "NoBroker — revenue & conversion analysis",
+          "Daily reporting & operational dashboards"
+        ]
+      )}
 
-        <div class="funnel-details">
-          <ul>
-            <li>MagicBricks — Client & site-visit analytics</li>
-            <li>NoBroker — Revenue, conversion & team performance</li>
-            <li>Daily operational reporting & tracking</li>
-          </ul>
-        </div>
-      </div>
+      ${funnelArrow()}
 
-      <div class="funnel-arrow">↓</div>
+      ${funnelStage(
+        "Skills",
+        "Tools used to solve those problems",
+        [
+          "SQL — joins, CTEs, window functions",
+          "Python — EDA, automation scripts",
+          "Excel — dashboards & KPI tracking"
+        ]
+      )}
 
-      <!-- SKILLS -->
-      <div class="card funnel-stage" onclick="toggleFunnel(this)">
-        <h2>Skills</h2>
-        <p>Tools used to solve those problems</p>
+      ${funnelArrow()}
 
-        <div class="funnel-details">
-          <ul>
-            <li>SQL — joins, CTEs, window functions</li>
-            <li>Python — EDA, automation, scripting</li>
-            <li>Excel — dashboards & KPI models</li>
-            <li>Business analysis — funnels & metrics</li>
-          </ul>
-        </div>
-      </div>
+      ${funnelStage(
+        "Projects",
+        "Hands-on implementations",
+        [
+          "SQL practice repositories",
+          "Titanic survival prediction (Python)",
+          "Email & report automation scripts"
+        ],
+        "#/projects"
+      )}
 
-      <div class="funnel-arrow">↓</div>
+      ${funnelArrow()}
 
-      <!-- PROJECTS -->
-      <div class="card funnel-stage" onclick="toggleFunnel(this)">
-        <h2>Projects</h2>
-        <p>Hands-on implementation</p>
-
-        <div class="funnel-details">
-          <ul>
-            <li>SQL problem repositories</li>
-            <li>Titanic survival prediction (Python)</li>
-            <li>Email & report automation scripts</li>
-          </ul>
-
-          <button onclick="location.hash='#/projects'">
-            View Projects
-          </button>
-        </div>
-      </div>
-
-      <div class="funnel-arrow">↓</div>
-
-      <!-- IMPACT -->
-      <div class="card funnel-stage" onclick="toggleFunnel(this)">
-        <h2>Impact</h2>
-        <p>What changed because of the work</p>
-
-        <div class="funnel-details">
-          <ul>
-            <li>~15% monthly revenue growth at NoBroker</li>
-            <li>Improved lead-to-visit visibility</li>
-            <li>Reduced manual reporting effort</li>
-          </ul>
-
-          <button onclick="location.hash='#/dashboard'">
-            View Dashboard
-          </button>
-        </div>
-      </div>
+      ${funnelStage(
+        "Impact",
+        "What changed because of the work",
+        [
+          "~15% monthly revenue growth",
+          "Improved lead-to-visit visibility",
+          "Reduced manual reporting effort"
+        ],
+        "#/dashboard"
+      )}
     </section>
+  `;
+
+  app.classList.add("fade-in");
+}
+
+/* =========================
+   HELPERS
+========================= */
+
+function funnelStage(title, subtitle, points, link) {
+  return `
+    <div class="card funnel-stage" onclick="this.classList.toggle('active')">
+      <h3>${title}</h3>
+      <p class="muted">${subtitle}</p>
+
+      <div class="funnel-details">
+        <ul>
+          ${points.map(p => `<li>${p}</li>`).join("")}
+        </ul>
+
+        ${
+          link
+            ? `<button onclick="event.stopPropagation(); location.hash='${link}'">
+                 Explore
+               </button>`
+            : ""
+        }
+      </div>
+    </div>
   `;
 }
 
-/* TOGGLE FUNNEL STAGES */
-function toggleFunnel(stage) {
-  stage.classList.toggle("active");
+function funnelArrow() {
+  return `
+    <div class="funnel-arrow">→</div>
+  `;
 }
