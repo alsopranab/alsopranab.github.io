@@ -106,3 +106,23 @@ button {
   font-size: 22px;
   cursor: pointer;
 }
+
+.skill-network {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  justify-items: center;
+}
+
+.node {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.node.center {
+  background: var(--accent);
+  color: #000;
+}
