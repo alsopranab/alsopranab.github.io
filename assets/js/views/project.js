@@ -1,63 +1,48 @@
-async function renderProject(params) {
-  const repo = params.repo;
+function renderProject(query) {
+  const app = document.getElementById("app");
+  const repo = new URLSearchParams(query).get("repo");
+
   if (!repo) {
-    app.innerHTML = "<p>Project not found</p>";
+    app.innerHTML = "<p>Project not found.</p>";
     return;
   }
 
-  app.innerHTML = `<p>Loading project...</p>`;
-
-  const base = `https://api.github.com/repos/${PROFILE.github}/${repo}/contents`;
-
-  const res = await fetch(base);
-  const files = await res.json();
-
   app.innerHTML = `
-    <a href="#/projects">← Back</a>
-    <h2>${repo}</h2>
-    <div id="file-list" class="grid"></div>
-    <div id="code-viewer"></div>
+    <section>
+      <a href="#/projects">← Back to Projects</a>
+      <h1>${repo}</h1>
+      <p>Repository files preview (code only).</p>
+      <div id="files" class="grid"></div>
+    </section>
   `;
 
-  files
-    .filter(f => f.type === "file")
-    .forEach(f => {
-      document.getElementById("file-list").innerHTML += `
-        <div class="card">
-          <strong>${f.name}</strong><br/>
-          <button onclick="openFile('${repo}','${f.name}','${f.download_url}')">
-            Open
-          </button>
-        </div>
-      `;
+  fetch(`https://api.github.com/repos/alsopranab/${repo}/contents`)
+    .then(res => res.json())
+    .then(files => {
+      files
+        .filter(f => f.type === "file" && /\.(sql|py|js)$/i.test(f.name))
+        .forEach(file => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <h3>${file.name}</h3>
+            <button onclick="loadFile('${repo}','${file.path}')">
+              View Code
+            </button>
+            <pre class="code-block"><code id="code-${file.sha}"></code></pre>
+          `;
+          document.getElementById("files").appendChild(card);
+        });
     });
 }
 
-async function openFile(repo, name, url) {
-  const res = await fetch(url);
-  const code = await res.text();
-
-  const lang =
-    name.endsWith(".sql") ? "sql" :
-    name.endsWith(".py") ? "python" :
-    name.endsWith(".js") ? "javascript" :
-    "none";
-
-  document.getElementById("code-viewer").innerHTML = `
-    <h3>${name}</h3>
-    <pre class="code-block">
-      <code class="language-${lang}">
-${escapeHTML(code)}
-      </code>
-    </pre>
-  `;
-
-  Prism.highlightAll();
-}
-
-function escapeHTML(str) {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
+function loadFile(repo, path) {
+  fetch(`https://api.github.com/repos/alsopranab/${repo}/contents/${path}`)
+    .then(res => res.json())
+    .then(file => {
+      const code = atob(file.content);
+      const el = document.querySelector(`[id^="code-"]`);
+      el.textContent = code;
+      Prism.highlightElement(el);
+    });
 }
