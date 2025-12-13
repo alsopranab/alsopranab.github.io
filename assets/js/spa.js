@@ -1,40 +1,47 @@
+/* =========================
+   SIMPLE SPA ROUTER
+   ========================= */
+
 const app = document.getElementById("app");
 
+/* ROUTE → VIEW FUNCTION MAP */
 const routes = {
   "/": renderHome,
   "/dashboard": renderDashboard,
+  "/funnels": renderFunnels,
   "/projects": renderProjects,
   "/project": renderProject,
   "/learnings": renderLearnings,
   "/contacts": renderContacts,
-  "/funnels": renderFunnels
 };
 
-function parseParams(q) {
-  const p = {};
-  if (!q) return p;
-  q.split("&").forEach(x => {
-    const [k, v] = x.split("=");
-    p[k] = decodeURIComponent(v);
-  });
-  return p;
-}
+/* NAVIGATION HANDLER */
+function navigate() {
+  const hash = location.hash || "#/";
+  const [path, query] = hash.replace("#", "").split("?");
 
-async function navigate() {
-  const hash = location.hash.replace("#", "") || "/";
-  const [path, query] = hash.split("?");
-
-  const route = routes[path];
-  if (!route) {
-    app.innerHTML = "<h2>404</h2>";
-    return;
-  }
+  const view = routes[path];
 
   app.classList.remove("fade-in");
-  app.innerHTML = "";
-  await route(parseParams(query));
-  app.classList.add("fade-in");
+
+  setTimeout(() => {
+    app.innerHTML = "";
+
+    if (!view) {
+      app.innerHTML = `
+        <section>
+          <h1>404</h1>
+          <p>Page not found</p>
+        </section>
+      `;
+      return;
+    }
+
+    view(query);
+    app.classList.add("fade-in");
+  }, 120);
 }
 
-window.addEventListener("hashchange", navigate);
+/* INITIAL LOAD + HASH CHANGE */
 window.addEventListener("load", navigate);
+window.addEventListener("hashchange", navigate);
