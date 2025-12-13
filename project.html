@@ -1,30 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Project Viewer | Pranab Debnath</title>
+  <title>Projects</title>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
 <nav>
-  <a href="projects.html">← Back to Projects</a>
+  <a href="index.html">Home</a>
 </nav>
 
 <section>
-  <h1 id="project-name"></h1>
-  <p id="project-desc"></p>
+  <h1>Projects</h1>
+  <div id="projects" class="grid"></div>
 </section>
 
-<section>
-  <h2>README</h2>
-  <div class="card" id="readme">Loading README...</div>
-</section>
+<script>
+fetch("https://api.github.com/users/alsopranab/repos")
+  .then(r => r.json())
+  .then(repos => {
+    repos
+      .filter(r => !r.fork)
+      .forEach(r => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <h3>${r.name}</h3>
+          <p>${r.description || ""}</p>
+          <button onclick="location.href='project.html?repo=${r.name}'">
+            Open
+          </button>
+        `;
+        document.getElementById("projects").appendChild(card);
+      });
+  });
+</script>
 
-<section>
-  <h2>Repository Files</h2>
-  <div id="file-list"></div>
-</section>
-
-<script src="assets/js/project-viewer.js"></script>
 </body>
 </html>
