@@ -223,3 +223,13 @@ a {
   margin-top: 12px;
   color: var(--accent);
 }
+
+button {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}
+
+.card {
+  pointer-events: auto;
+}
