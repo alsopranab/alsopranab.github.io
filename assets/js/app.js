@@ -3,7 +3,7 @@ async function loadJSON(path) {
   return res.json();
 }
 
-/* EXPERIENCE STACK WITH POPUP */
+/* EXPERIENCE STACK + POPUP */
 async function loadExperience() {
   const data = await loadJSON("assets/data/experience.json");
   const box = document.getElementById("experience");
@@ -19,11 +19,9 @@ async function loadExperience() {
       <p><strong>${exp.company}</strong></p>
       <p>${exp.duration}</p>
       <p>${exp.summary}</p>
-      <button data-id="${exp.id}">View Details</button>
+      <button onclick='openExperience(${JSON.stringify(exp)})'>View Details</button>
     `;
     box.appendChild(card);
-
-    card.querySelector("button").onclick = () => openExperience(exp);
   });
 }
 
@@ -49,4 +47,29 @@ function closeModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-document.addEventListener("DOMContentLoaded", loadExperience);
+/* SKILLS GRAPH */
+async function loadSkillGraph() {
+  const data = await loadJSON("assets/data/skill-metrics.json");
+  const box = document.getElementById("skill-graph");
+  if (!box) return;
+
+  box.innerHTML = '<div class="bar-chart"></div>';
+  const chart = box.querySelector(".bar-chart");
+
+  data.forEach(s => {
+    const row = document.createElement("div");
+    row.className = "bar";
+    row.innerHTML = `
+      <div class="bar-label">${s.skill}</div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width: ${s.level}%"></div>
+      </div>
+    `;
+    chart.appendChild(row);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadExperience();
+  loadSkillGraph();
+});
