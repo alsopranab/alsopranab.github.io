@@ -1,34 +1,27 @@
 const app = document.getElementById("app");
 
-/* =========================
-   ROUTES (SINGLE SOURCE)
-========================= */
 const routes = {
-  "/": renderHome,
-  "/dashboard": renderDashboard,
-  "/funnels": renderFunnels,
-  "/projects": renderProjects,
-  "/project": renderProject,
-  "/learnings": renderLearnings,
-  "/contacts": renderContacts,
-  "/resume": renderResume
+  "/": () => window.renderHome?.(),
+  "/dashboard": () => window.renderDashboard?.(),
+  "/funnels": () => window.renderFunnels?.(),
+  "/projects": () => window.renderProjects?.(),
+  "/project": (q) => window.renderProject?.(q),
+  "/learnings": () => window.renderLearnings?.(),
+  "/contacts": () => window.renderContacts?.()
 };
 
-/* =========================
-   NAVIGATION HANDLER
-========================= */
 function navigate() {
+  if (!app) return;
+
   const hash = location.hash || "#/";
   const [path, query] = hash.replace("#", "").split("?");
 
-  const view = routes[path];
-
-  // Remove animation before render
   app.classList.remove("fade-in");
 
-  // Ensure clean render cycle
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     app.innerHTML = "";
+
+    const view = routes[path];
 
     if (!view) {
       app.innerHTML = `
@@ -37,25 +30,27 @@ function navigate() {
           <p>Page not found</p>
         </section>
       `;
-      app.classList.add("fade-in");
       return;
     }
 
-    // Render view
-    view(query || "");
+    try {
+      view(query);
+      app.classList.add("fade-in");
 
-    // Re-apply animation
-    app.classList.add("fade-in");
-
-    // Run motion hooks safely
-    if (typeof runMotionEnhancements === "function") {
-      runMotionEnhancements();
+      if (typeof runMotionEnhancements === "function") {
+        runMotionEnhancements();
+      }
+    } catch (err) {
+      console.error(err);
+      app.innerHTML = `
+        <section>
+          <h1>Runtime Error</h1>
+          <pre>${err.message}</pre>
+        </section>
+      `;
     }
-  });
+  }, 100);
 }
 
-/* =========================
-   LISTENERS
-========================= */
 window.addEventListener("load", navigate);
 window.addEventListener("hashchange", navigate);
