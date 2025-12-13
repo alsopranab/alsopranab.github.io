@@ -1,209 +1,78 @@
-/* =========================
-   PROFESSIONAL ANALYTICAL THEME
-   ========================= */
-
 :root {
-  --bg-main: #0b0f14;
-  --bg-section: #111827;
-  --bg-card: #161e2e;
-
-  --text-primary: #e5e7eb;
-  --text-secondary: #9ca3af;
-
-  --accent: #38bdf8; /* calm analyst blue */
-  --border: rgba(255, 255, 255, 0.08);
-}
-
-/* Light mode for corporate users */
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg-main: #f8fafc;
-    --bg-section: #ffffff;
-    --bg-card: #ffffff;
-
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-
-    --accent: #2563eb;
-    --border: rgba(0, 0, 0, 0.08);
-  }
+  --bg: #0b0f14;
+  --section: #111827;
+  --card: #161e2e;
+  --border: #1f2937;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --accent: #38bdf8;
 }
 
 * {
   box-sizing: border-box;
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: system-ui, sans-serif;
 }
 
 body {
   margin: 0;
-  background: var(--bg-main);
-  color: var(--text-primary);
-  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* =========================
-   NAVIGATION
-   ========================= */
-
 nav {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  padding: 20px 0;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--border);
-  background: var(--bg-section);
 }
 
 nav a {
-  color: var(--text-secondary);
+  color: var(--accent);
   text-decoration: none;
   font-weight: 500;
-  position: relative;
 }
-
-nav a:hover {
-  color: var(--text-primary);
-}
-
-/* =========================
-   SECTIONS
-   ========================= */
 
 section {
   max-width: 1100px;
-  margin: 0 auto;
-  padding: 60px 24px;
+  margin: auto;
+  padding: 40px 24px;
 }
 
-section h1 {
-  font-size: 42px;
-  margin-bottom: 8px;
+h1 {
+  font-size: 36px;
 }
 
-section h2 {
-  font-size: 26px;
-  margin-bottom: 24px;
+h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
   border-left: 4px solid var(--accent);
   padding-left: 12px;
 }
 
-section p {
-  color: var(--text-secondary);
+p {
+  color: var(--muted);
 }
-
-/* =========================
-   CARDS
-   ========================= */
 
 .card {
-  background: var(--bg-card);
+  background: var(--card);
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 24px;
-  margin-bottom: 20px;
-  transition: border 0.25s ease, transform 0.25s ease;
+  padding: 20px;
+  margin-bottom: 16px;
 }
 
-.card:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
-}
-
-/* =========================
-   TIMELINE (EXPERIENCE)
-   ========================= */
-
-.timeline {
-  border-left: 2px solid var(--border);
-  padding-left: 24px;
-}
-
-.timeline-item {
-  margin-bottom: 28px;
-}
-
-.timeline-item h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.timeline-item p {
-  margin: 4px 0;
-  color: var(--text-secondary);
-}
-
-/* =========================
-   CODE BLOCKS (ANALYST STYLE)
-   ========================= */
-
-.code {
-  background: #020617;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 16px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
-  color: #e5e7eb;
-  overflow-x: auto;
-}
-
-/* =========================
-   LINKS
-   ========================= */
-
-a {
-  color: var(--accent);
-}
-
-a:hover {
-  text-decoration: underline;
-}
-
-/* =========================
-   ANALYTICS GRAPHS
-   ========================= */
-
-.bar-chart {
-  display: grid;
-  gap: 14px;
-}
-
-.bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.bar-label {
-  width: 160px;
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.bar-track {
-  flex: 1;
-  height: 10px;
-  background: var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.bar-fill {
-  height: 100%;
+button {
   background: var(--accent);
-  width: 0;
-  transition: width 1s ease;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
 }
-
 
 .code-block {
   background: #020617;
   color: #e5e7eb;
   padding: 16px;
   border-radius: 10px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 14px;
+  font-family: monospace;
   overflow-x: auto;
-  margin-top: 12px;
 }
-
