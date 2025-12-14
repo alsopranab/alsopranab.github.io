@@ -1,12 +1,12 @@
 /* ======================================================
-   ROOT THEME TOKENS (macOS AUTO LIGHT / DARK)
+   macOS AUTO LIGHT / DARK THEME (FINAL)
 ====================================================== */
 
-/* DARK (default) */
+/* ---------- DARK MODE (DEFAULT) ---------- */
 :root {
   --bg: #0b0f14;
-  --bg-soft: rgba(15, 23, 42, 0.55);
-  --card: rgba(18, 24, 38, 0.55);
+  --bg-soft: rgba(28, 30, 36, 0.6);
+  --card: rgba(28, 30, 36, 0.65);
   --border: rgba(255,255,255,0.08);
 
   --text: #e5e7eb;
@@ -15,26 +15,28 @@
   --accent: #38bdf8;
   --accent-2: #22d3ee;
 
-  --radius: 20px;
-  --blur: 22px;
+  --radius: 18px;
+  --blur: 20px;
 
   --ease-mac: cubic-bezier(0.2, 0.8, 0.2, 1);
   --shadow-mac: 0 18px 45px rgba(0,0,0,0.45);
 }
 
-/* LIGHT MODE (auto via macOS) */
+/* ---------- LIGHT MODE (macOS AUTO) ---------- */
 @media (prefers-color-scheme: light) {
   :root {
     --bg: #f5f7fb;
-    --bg-soft: rgba(255,255,255,0.65);
-    --card: rgba(255,255,255,0.75);
+    --bg-soft: rgba(255,255,255,0.75);
+    --card: rgba(255,255,255,0.7);
     --border: rgba(0,0,0,0.08);
 
     --text: #0f172a;
     --muted: #475569;
 
-    --accent: #2563eb;
+    --accent: #007aff;
     --accent-2: #38bdf8;
+
+    --shadow-mac: 0 18px 45px rgba(0,0,0,0.15);
   }
 }
 
@@ -72,21 +74,25 @@ body {
 }
 
 /* ======================================================
-   macOS GLASS BACKGROUND (STATIC – NO JANK)
+   STATIC macOS MATERIAL BACKGROUND (NO FLICKER)
 ====================================================== */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
+
   background:
-    radial-gradient(circle at 15% 10%, rgba(56,189,248,0.12), transparent 40%),
-    radial-gradient(circle at 85% 25%, rgba(34,211,238,0.08), transparent 45%),
-    linear-gradient(180deg, var(--bg), var(--bg));
+    radial-gradient(circle at 20% 15%, rgba(56,189,248,0.08), transparent 42%),
+    radial-gradient(circle at 80% 30%, rgba(34,211,238,0.06), transparent 46%),
+    var(--bg);
+
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* ======================================================
-   NAVIGATION — macOS DOCK STYLE
+   NAVIGATION (macOS DOCK STYLE)
 ====================================================== */
 nav {
   position: sticky;
@@ -99,16 +105,16 @@ nav {
   align-items: center;
 
   background: var(--bg-soft);
-  backdrop-filter: saturate(180%) blur(var(--blur));
-  -webkit-backdrop-filter: saturate(180%) blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
 
   border-bottom: 1px solid var(--border);
 }
 
 nav a {
   margin-left: 20px;
-  font-weight: 500;
   font-size: 14px;
+  font-weight: 500;
   color: var(--accent);
   text-decoration: none;
 
@@ -117,15 +123,14 @@ nav a {
     opacity 0.18s ease;
 }
 
-/* Dock hover */
 nav a:hover {
-  transform: scale(1.18) translateY(-2px);
+  transform: scale(1.15) translateY(-2px);
   opacity: 0.9;
 }
 
 .logo {
   font-weight: 800;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
 /* ======================================================
@@ -184,7 +189,7 @@ p {
 }
 
 /* ======================================================
-   GRID
+   GRID SYSTEM
 ====================================================== */
 .grid {
   display: grid;
@@ -198,12 +203,15 @@ p {
 .card {
   position: relative;
   background: var(--card);
-  backdrop-filter: saturate(160%) blur(var(--blur));
-  -webkit-backdrop-filter: saturate(160%) blur(var(--blur));
+
+  backdrop-filter: blur(calc(var(--blur) - 6px));
+  -webkit-backdrop-filter: blur(calc(var(--blur) - 6px));
 
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 26px;
+
+  will-change: transform;
 
   transition:
     transform 0.28s var(--ease-mac),
@@ -230,7 +238,6 @@ p {
   box-shadow: var(--shadow-mac);
 }
 
-/* Trackpad press physics */
 .card.pressed {
   transform: scale(0.985);
 }
@@ -249,7 +256,7 @@ p {
 }
 
 /* ======================================================
-   BUTTONS — macOS SYSTEM STYLE
+   BUTTONS — macOS FEEL
 ====================================================== */
 button {
   margin-top: 16px;
@@ -268,8 +275,12 @@ button {
     0 6px 14px rgba(0,0,0,0.25);
 
   transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease;
+    transform 0.14s var(--ease-mac),
+    box-shadow 0.14s var(--ease-mac);
+}
+
+button:hover {
+  transform: translateY(-1px);
 }
 
 button:active {
@@ -277,7 +288,7 @@ button:active {
 }
 
 /* ======================================================
-   CODE — TRUE DEV COLORS (PRISM)
+   CODE BLOCKS — DEV TRUE COLORS
 ====================================================== */
 pre {
   background: #020617;
@@ -296,7 +307,7 @@ code {
     monospace;
 }
 
-/* Clean Prism palette */
+/* Prism tuning */
 .token.keyword   { color: #c792ea; }
 .token.string    { color: #ecc48d; }
 .token.function  { color: #82aaff; }
