@@ -383,3 +383,23 @@ code {
     font-size: 13px;
   }
 }
+
+/* =====================================================
+   8.1 CHART LOCK (CRITICAL)
+   Charts must NEVER resize or animate
+===================================================== */
+
+.chart-card {
+  transform: none !important;
+  will-change: auto;
+}
+
+.chart-card:hover {
+  transform: none !important;
+  box-shadow: var(--shadow);
+}
+
+.chart-box {
+  position: relative;
+  height: 240px;
+}
