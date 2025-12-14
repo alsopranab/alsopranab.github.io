@@ -1,122 +1,131 @@
 /* =========================
-   CHART RENDERER (DESKTOP SAFE)
+   CHART RENDERER (SPA + APPLE SAFE)
+   Works for Home + Dashboard
 ========================= */
 
 let skillChartInstance = null;
 let growthChartInstance = null;
 
-function renderCharts() {
+/**
+ * @param {"home" | "dashboard"} context
+ */
+function renderCharts(context = "dashboard") {
   const skill = document.getElementById("skillChart");
   const growth = document.getElementById("growthChart");
 
-  // Exit safely if not on dashboard
+  // Exit safely if charts not present
   if (!skill || !growth || typeof Chart === "undefined") return;
 
-  // Destroy old instances (SPA safe)
+  /* =====================
+     HARD RESET (SPA SAFE)
+  ====================== */
   if (skillChartInstance) {
     skillChartInstance.destroy();
     skillChartInstance = null;
   }
+
   if (growthChartInstance) {
     growthChartInstance.destroy();
     growthChartInstance = null;
   }
 
-  /* ---------- SKILL DISTRIBUTION ---------- */
-  skillChartInstance = new Chart(skill, {
+  /* =====================
+     LOCK CANVAS SIZE
+     (CRITICAL FIX)
+  ====================== */
+  skill.style.height = "200px";
+  growth.style.height = "200px";
+
+  const isHome = context === "home";
+
+  /* =====================
+     SKILL DISTRIBUTION
+  ====================== */
+  skillChartInstance = new Chart(skill.getContext("2d"), {
     type: "doughnut",
     data: {
       labels: ["SQL", "Python", "Excel", "Automation", "Analytics"],
-      datasets: [
-        {
-          data: [30, 25, 15, 15, 15],
-          backgroundColor: [
-            "#38bdf8",
-            "#22c55e",
-            "#f59e0b",
-            "#a855f7",
-            "#06b6d4"
-          ],
-          borderWidth: 0,
-          hoverOffset: 12
-        }
-      ]
+      datasets: [{
+        data: [30, 25, 15, 15, 15],
+        backgroundColor: [
+          "#38bdf8",
+          "#22c55e",
+          "#f59e0b",
+          "#a855f7",
+          "#06b6d4"
+        ],
+        borderWidth: 0,
+        hoverOffset: isHome ? 6 : 10 // 👈 NO inflation on home
+      }]
     },
     options: {
-      responsive: true,                 // ✅ FIX
-      maintainAspectRatio: false,       // allows card to control size
-      cutout: "65%",
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: isHome ? "72%" : "65%",
       layout: {
-        padding: 10
+        padding: 8
       },
       plugins: {
         legend: {
+          display: !isHome, // 👈 hide legend on home
           position: "bottom",
           labels: {
             color: "#9ca3af",
-            padding: 16,
-            font: {
-              size: 13,
-              weight: "500"
-            }
+            padding: 14,
+            font: { size: 12 }
           }
         },
         tooltip: {
-          callbacks: {
-            label: ctx => `${ctx.label}: ${ctx.parsed}%`
-          }
+          enabled: !isHome
         }
       },
       animation: {
-        duration: 700,
-        easing: "easeOutQuart"
+        duration: 600,
+        easing: "easeOutCubic"
+      },
+      hover: {
+        mode: null // 👈 DISABLE layout-affecting hover
       }
     }
   });
 
-  /* ---------- GROWTH TREND ---------- */
-  growthChartInstance = new Chart(growth, {
+  /* =====================
+     GROWTH TREND
+  ====================== */
+  growthChartInstance = new Chart(growth.getContext("2d"), {
     type: "line",
     data: {
       labels: ["2022", "2023", "2024", "2025"],
-      datasets: [
-        {
-          label: "Skill Growth Index",
-          data: [20, 40, 70, 90],
-          borderColor: "#38bdf8",
-          backgroundColor: "rgba(56,189,248,0.15)",
-          borderWidth: 3,
-          tension: 0.35,
-          fill: true,
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          pointBackgroundColor: "#38bdf8"
-        }
-      ]
+      datasets: [{
+        data: [20, 40, 70, 90],
+        borderColor: "#38bdf8",
+        backgroundColor: "rgba(56,189,248,0.12)",
+        borderWidth: 3,
+        tension: 0.35,
+        fill: true,
+        pointRadius: isHome ? 3 : 5,
+        pointHoverRadius: isHome ? 4 : 6,
+        pointBackgroundColor: "#38bdf8"
+      }]
     },
     options: {
-      responsive: true,                 // ✅ FIX
+      responsive: true,
       maintainAspectRatio: false,
       layout: {
-        padding: 10
+        padding: 8
       },
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
         tooltip: {
+          enabled: !isHome,
           mode: "index",
           intersect: false
         }
       },
       scales: {
         x: {
-          ticks: {
-            color: "#9ca3af"
-          },
-          grid: {
-            display: false
-          }
+          grid: { display: false },
+          ticks: { color: "#9ca3af" }
         },
         y: {
           min: 0,
@@ -131,8 +140,11 @@ function renderCharts() {
         }
       },
       animation: {
-        duration: 800,
+        duration: 700,
         easing: "easeOutCubic"
+      },
+      hover: {
+        mode: null // 👈 prevents resize jitter
       }
     }
   });
