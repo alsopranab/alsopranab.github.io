@@ -6,6 +6,9 @@
 let homeSkillChart = null;
 let homeGrowthChart = null;
 
+/* =====================================================
+   MAIN RENDER
+===================================================== */
 function renderHome() {
   const app = document.getElementById("app");
   if (!app || !window.PROFILE) return;
@@ -137,19 +140,18 @@ function renderHome() {
     </section>
   `;
 
-  renderHomeCharts();
+  // Charts must render AFTER DOM paint
+  requestAnimationFrame(renderHomeCharts);
 }
 
 /* =====================================================
    HOME CHARTS (READ-ONLY PREVIEW)
 ===================================================== */
-
 function renderHomeCharts() {
   if (typeof Chart === "undefined" || !window.PROFILE) return;
 
   const skillCanvas = document.getElementById("homeSkillChart");
   const growthCanvas = document.getElementById("homeGrowthChart");
-
   if (!skillCanvas || !growthCanvas) return;
 
   homeSkillChart?.destroy();
@@ -181,10 +183,7 @@ function renderHomeCharts() {
         legend: { display: false },
         tooltip: { enabled: false }
       },
-      animation: {
-        duration: 450,
-        easing: "easeOutCubic"
-      }
+      animation: { duration: 400 }
     }
   });
 
@@ -213,10 +212,7 @@ function renderHomeCharts() {
         x: { display: false },
         y: { display: false }
       },
-      animation: {
-        duration: 500,
-        easing: "easeOutCubic"
-      }
+      animation: { duration: 450 }
     }
   });
 }
@@ -224,7 +220,6 @@ function renderHomeCharts() {
 /* =====================================================
    UI HELPERS
 ===================================================== */
-
 function metricCard(title, desc) {
   return `
     <div class="card kpi">
