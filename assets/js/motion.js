@@ -4,50 +4,69 @@
 ===================================================== */
 
 /* =====================================================
-   1. STATE
+   1. GLOBAL STATE
 ===================================================== */
 
 let fadeObserver = null;
-let lastScrollY = window.scrollY;
+let lastScrollY = 0;
 let headerVisible = true;
+let scrollTicking = false;
 
 /* =====================================================
    2. SCROLL CONTROL
-   (Instant on route change)
+   Instant on route change (no nausea)
 ===================================================== */
 function scrollToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  lastScrollY = 0;
 }
 
 /* =====================================================
-   3. DYNAMIC ISLAND HEADER BEHAVIOR
-   Hide on scroll down, show on scroll up
+   3. DYNAMIC ISLAND HEADER
+   - Hide on scroll down
+   - Show on scroll up
+   - Always visible near top
 ===================================================== */
 function setupDynamicHeader() {
   const header = document.querySelector(".dynamic-header");
   if (!header) return;
 
-  // Prevent duplicate listeners (SPA safe)
-  if (header.dataset.bound) return;
+  // SPA-safe: bind once
+  if (header.dataset.bound === "true") return;
   header.dataset.bound = "true";
 
+  // Ensure initial visible state
+  showHeader(header);
+
   window.addEventListener("scroll", () => {
-    const currentY = window.scrollY;
+    if (scrollTicking) return;
 
-    // Always show near top
-    if (currentY < 40) {
-      showHeader(header);
+    scrollTicking = true;
+
+    requestAnimationFrame(() => {
+      const currentY = window.scrollY;
+
+      // Always show near top
+      if (currentY < 40) {
+        showHeader(header);
+        lastScrollY = currentY;
+        scrollTicking = false;
+        return;
+      }
+
+      // Scroll down → hide
+      if (currentY > lastScrollY + 10 && headerVisible) {
+        hideHeader(header);
+      }
+
+      // Scroll up → show
+      if (currentY < lastScrollY - 10 && !headerVisible) {
+        showHeader(header);
+      }
+
       lastScrollY = currentY;
-      return;
-    }
-
-    if (currentY > lastScrollY + 8 && headerVisible) {
-      hideHeader(header);
-    } else if (currentY < lastScrollY - 8 && !headerVisible) {
-      showHeader(header);
-    }
-
-    lastScrollY = currentY;
+      scrollTicking = false;
+    });
   });
 }
 
@@ -65,11 +84,11 @@ function showHeader(header) {
 
 /* =====================================================
    4. BUTTON INTERACTION
-   macOS system press feel
+   Native macOS press feel
 ===================================================== */
 function enhanceButtons() {
   document.querySelectorAll("button").forEach(btn => {
-    if (btn.dataset.enhanced) return;
+    if (btn.dataset.enhanced === "true") return;
     btn.dataset.enhanced = "true";
 
     btn.addEventListener("pointerdown", () => {
@@ -88,15 +107,14 @@ function enhanceButtons() {
 
 /* =====================================================
    5. CARD INTERACTION
-   Trackpad-like physics
-   (Charts EXCLUDED)
+   Trackpad physics (charts excluded)
 ===================================================== */
 function enhanceCards() {
   document.querySelectorAll(".card").forEach(card => {
-    if (card.dataset.enhanced) return;
+    if (card.dataset.enhanced === "true") return;
     card.dataset.enhanced = "true";
 
-    // HARD EXCLUDE chart containers
+    // 🚫 Never animate chart containers
     if (card.classList.contains("chart-card")) return;
 
     card.addEventListener("pointerdown", () => {
@@ -115,7 +133,7 @@ function enhanceCards() {
 
 /* =====================================================
    6. FADE-IN OBSERVER
-   Sections ONLY (no cards, no charts)
+   Sections only (SPA safe)
 ===================================================== */
 function setupFadeObserver() {
   if (fadeObserver) {
@@ -146,7 +164,7 @@ function setupFadeObserver() {
 
 /* =====================================================
    7. MASTER RUNNER
-   Call ONCE per route
+   Called ONCE per route (SPA lifecycle)
 ===================================================== */
 function runMotionEnhancements() {
   scrollToTop();
