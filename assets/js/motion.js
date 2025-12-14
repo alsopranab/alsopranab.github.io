@@ -7,7 +7,7 @@ let fadeObserver = null;
 
 /* =====================
    SCROLL CONTROL
-   (Instant on route change)
+   Instant on route change
 ===================== */
 function scrollToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
@@ -38,15 +38,15 @@ function enhanceButtons() {
 
 /* =====================
    CARD INTERACTION
-   Trackpad-like physics
-   (Charts are excluded)
+   Trackpad physics
+   (Charts are EXCLUDED)
 ===================== */
 function enhanceCards() {
   document.querySelectorAll(".card").forEach(card => {
     if (card.dataset.enhanced) return;
     card.dataset.enhanced = "true";
 
-    // ❌ DO NOT animate chart containers
+    // 🚫 HARD EXCLUDE chart cards
     if (card.classList.contains("chart-card")) return;
 
     card.addEventListener("pointerenter", () => {
@@ -70,7 +70,7 @@ function enhanceCards() {
 
 /* =====================
    FADE-IN OBSERVER
-   Sections only (NO charts)
+   Sections ONLY (no cards, no charts)
 ===================== */
 function setupFadeObserver() {
   if (fadeObserver) {
@@ -93,7 +93,6 @@ function setupFadeObserver() {
     }
   );
 
-  // ✅ Observe ONLY sections
   document.querySelectorAll("section").forEach(el => {
     el.classList.remove("in-view");
     fadeObserver.observe(el);
@@ -102,7 +101,7 @@ function setupFadeObserver() {
 
 /* =====================
    MASTER RUNNER
-   Call ONCE per route
+   Called ONCE per route
 ===================== */
 function runMotionEnhancements() {
   scrollToTop();
