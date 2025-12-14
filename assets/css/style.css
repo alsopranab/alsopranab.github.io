@@ -1,35 +1,41 @@
 /* ======================================================
    macOS GLASS DESIGN SYSTEM
-   Premium · Stable · Flicker-Free
+   Dynamic Island · Liquid Glass · SPA Safe
 ====================================================== */
 
-/* =====================
-   COLOR TOKENS
-===================== */
+/* ======================================================
+   1. ROOT TOKENS
+====================================================== */
 
-/* DARK (default) */
 :root {
+  /* Background */
   --bg-base: #0b0f14;
   --bg-tint: rgba(56, 189, 248, 0.06);
 
+  /* Glass */
   --glass: rgba(22, 24, 30, 0.72);
   --glass-soft: rgba(22, 24, 30, 0.6);
   --border: rgba(255, 255, 255, 0.08);
 
+  /* Text */
   --text: #e5e7eb;
   --muted: #9ca3af;
 
+  /* Accent */
   --accent: #38bdf8;
   --accent-soft: rgba(56, 189, 248, 0.25);
 
+  /* Geometry */
   --radius: 18px;
+  --pill-radius: 999px;
   --blur: 22px;
 
+  /* Motion */
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
 }
 
-/* LIGHT (macOS auto) */
+/* Light mode */
 @media (prefers-color-scheme: light) {
   :root {
     --bg-base: #f4f6fb;
@@ -49,9 +55,9 @@
   }
 }
 
-/* =====================
-   RESET (IMPORTANT FIX)
-===================== */
+/* ======================================================
+   2. RESET
+====================================================== */
 
 *,
 *::before,
@@ -66,7 +72,6 @@ body {
   background: var(--bg-base);
 }
 
-/* ⛔️ REMOVED: body background repaint conflicts */
 body {
   color: var(--text);
   font-family:
@@ -82,10 +87,9 @@ body {
   overflow-x: hidden;
 }
 
-/* =====================
-   SINGLE AMBIENT BACKGROUND
-   (FIXED: no double tone)
-===================== */
+/* ======================================================
+   3. AMBIENT BACKGROUND (SINGLE LAYER)
+====================================================== */
 
 body::before {
   content: "";
@@ -94,95 +98,92 @@ body::before {
   z-index: -1;
 
   background:
-    radial-gradient(
-      900px 600px at 18% 12%,
-      var(--bg-tint),
-      transparent 65%
-    ),
-    radial-gradient(
-      800px 600px at 82% 35%,
-      rgba(34, 211, 238, 0.05),
-      transparent 65%
-    ),
+    radial-gradient(900px 600px at 18% 12%, var(--bg-tint), transparent 65%),
+    radial-gradient(800px 600px at 82% 35%, rgba(34,211,238,0.05), transparent 65%),
     linear-gradient(180deg, var(--bg-base), var(--bg-base));
 
-  /* ⛔️ Prevent GPU repaint flicker */
-  will-change: transform;
   transform: translateZ(0);
+  will-change: transform;
 }
 
-/* =====================
-   NAVIGATION (Dock Feel)
-===================== */
+/* ======================================================
+   4. DYNAMIC ISLAND HEADER
+====================================================== */
 
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 100;
+.dynamic-header {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+
+  pointer-events: none;
+}
+
+.dynamic-nav {
+  pointer-events: auto;
 
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 22px;
 
-  padding: 14px 28px;
+  padding: 12px 22px;
 
   background: var(--glass-soft);
   backdrop-filter: blur(var(--blur)) saturate(180%);
   -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
 
-  border-bottom: 1px solid var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--pill-radius);
+  box-shadow: var(--shadow);
+
+  transition:
+    transform 0.35s var(--ease),
+    opacity 0.35s var(--ease);
 }
 
-nav a {
-  margin-left: 20px;
+/* Logo */
+.logo {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.nav-links a {
   font-size: 14px;
   font-weight: 500;
   color: var(--accent);
   text-decoration: none;
+  white-space: nowrap;
 
   transition: transform 0.18s var(--ease), opacity 0.18s;
 }
 
-nav a:hover {
-  transform: scale(1.12) translateY(-2px);
+.nav-links a:hover {
+  transform: scale(1.12);
   opacity: 0.9;
 }
 
-.logo {
-  font-weight: 800;
-  letter-spacing: 0.4px;
-}
-
-/* =====================
-   MAIN / SPA
-===================== */
+/* ======================================================
+   5. MAIN SPA ROOT
+====================================================== */
 
 main {
-  padding: 42px 24px;
-  min-height: 85vh;
-
-  /* ⛔️ FIX: stop background banding */
+  padding: 110px 24px 42px; /* space for floating header */
+  min-height: 100vh;
   background: transparent;
 }
 
-.fade-in {
-  animation: fade 0.28s var(--ease) forwards;
-}
-
-@keyframes fade {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* =====================
-   TYPOGRAPHY
-===================== */
+/* ======================================================
+   6. TYPOGRAPHY
+====================================================== */
 
 section {
   max-width: 1200px;
@@ -213,9 +214,9 @@ p {
   line-height: 1.7;
 }
 
-/* =====================
-   GRID
-===================== */
+/* ======================================================
+   7. GRID SYSTEM
+====================================================== */
 
 .grid {
   display: grid;
@@ -223,9 +224,9 @@ p {
   gap: 28px;
 }
 
-/* =====================
-   CARDS (macOS WINDOW)
-===================== */
+/* ======================================================
+   8. CARDS (macOS WINDOW)
+====================================================== */
 
 .card {
   position: relative;
@@ -238,7 +239,6 @@ p {
   border-radius: var(--radius);
   padding: 26px;
 
-  /* ⛔️ FIX: prevent layout reflow */
   will-change: transform;
 
   transition:
@@ -246,7 +246,7 @@ p {
     box-shadow 0.25s var(--ease);
 }
 
-/* macOS window dots */
+/* Window dots */
 .card::before {
   content: "";
   position: absolute;
@@ -270,9 +270,9 @@ p {
   transform: scale(0.985);
 }
 
-/* =====================
-   KPI
-===================== */
+/* ======================================================
+   9. KPI
+====================================================== */
 
 .kpi {
   text-align: center;
@@ -284,15 +284,15 @@ p {
   color: var(--accent);
 }
 
-/* =====================
-   BUTTONS
-===================== */
+/* ======================================================
+   10. BUTTONS
+====================================================== */
 
 button {
   margin-top: 16px;
   padding: 10px 18px;
 
-  border-radius: 999px;
+  border-radius: var(--pill-radius);
   border: none;
   cursor: pointer;
 
@@ -316,9 +316,9 @@ button:active {
   transform: scale(0.96);
 }
 
-/* =====================
-   CODE BLOCKS
-===================== */
+/* ======================================================
+   11. CODE BLOCKS
+====================================================== */
 
 pre {
   background: #020617;
@@ -329,29 +329,25 @@ pre {
 }
 
 code {
-  font-family:
-    "SF Mono",
-    Menlo,
-    Monaco,
-    Consolas,
-    monospace;
+  font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
 }
 
-/* =====================
-   MOBILE
-===================== */
+/* ======================================================
+   12. MOBILE
+====================================================== */
 
 @media (max-width: 768px) {
   h1 {
     font-size: 34px;
   }
 
-  nav {
-    flex-direction: column;
-    gap: 10px;
+  .dynamic-nav {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  nav a:hover {
-    transform: none;
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
   }
 }
