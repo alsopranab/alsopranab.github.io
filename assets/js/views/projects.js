@@ -1,3 +1,8 @@
+/* =====================================================
+   PROJECTS VIEW
+   Safe · Rate-limit aware · SPA stable
+===================================================== */
+
 function renderProjects() {
   const app = document.getElementById("app");
 
@@ -28,66 +33,78 @@ function renderProjects() {
   fetchAndClassifyProjects();
 }
 
-/* =========================
-   FETCH & CLASSIFY (DYNAMIC)
-========================= */
+/* =====================================================
+   FETCH & CLASSIFY (SAFE)
+===================================================== */
 
-function fetchAndClassifyProjects() {
-  fetch("https://api.github.com/users/alsopranab/repos?per_page=100")
-    .then(res => res.json())
-    .then(repos => {
-      repos
-        .filter(r => !r.fork)
-        .forEach(repo => classifyRepoByFiles(repo));
-    });
+async function fetchAndClassifyProjects() {
+  let repos = [];
+
+  try {
+    const res = await fetch(
+      "https://api.github.com/users/alsopranab/repos?per_page=100",
+      { headers: { Accept: "application/vnd.github+json" } }
+    );
+
+    if (!res.ok) throw new Error(res.status);
+
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error("Invalid repo response");
+
+    repos = data.filter(r => !r.fork && !r.archived);
+
+  } catch (err) {
+    console.error("GitHub repo fetch failed:", err);
+    renderProjectsFallback();
+    return;
+  }
+
+  repos.forEach(repo => classifyRepo(repo));
 }
 
-function classifyRepoByFiles(repo) {
-  fetch(repo.contents_url.replace("{+path}", ""))
-    .then(res => res.json())
-    .then(files => {
-      const types = detectRepoTypes(files);
+/* =====================================================
+   CLASSIFICATION (FAST FIRST)
+===================================================== */
 
-      const card = projectCard(repo, types.primary);
+function classifyRepo(repo) {
+  const language = (repo.language || "").toLowerCase();
 
-      if (types.sql) {
-        document.getElementById("sql-projects").appendChild(card);
-      } else if (types.python) {
-        document.getElementById("python-projects").appendChild(card);
-      } else {
-        document.getElementById("other-projects").appendChild(card);
-      }
-    })
-    .catch(() => {
-      // Fallback
-      document.getElementById("other-projects").appendChild(
-        projectCard(repo, "other")
-      );
-    });
+  let bucket = "other";
+  if (language === "sql") bucket = "sql";
+  else if (language === "python") bucket = "python";
+
+  const card = projectCard(repo, bucket);
+
+  document
+    .getElementById(`${bucket}-projects`)
+    ?.appendChild(card);
 }
 
-/* =========================
-   TYPE DETECTION
-========================= */
+/* =====================================================
+   FALLBACK UI (RATE LIMIT SAFE)
+===================================================== */
 
-function detectRepoTypes(files) {
-  const names = files.map(f => f.name.toLowerCase());
+function renderProjectsFallback() {
+  const other = document.getElementById("other-projects");
+  if (!other) return;
 
-  const sql = names.some(n => n.endsWith(".sql"));
-  const python = names.some(n => n.endsWith(".py"));
-  const js = names.some(n => n.endsWith(".js"));
-
-  let primary = "other";
-  if (sql) primary = "sql";
-  else if (python) primary = "python";
-  else if (js) primary = "js";
-
-  return { sql, python, js, primary };
+  other.innerHTML = `
+    <div class="card">
+      <h3>GitHub API limit reached</h3>
+      <p class="muted">
+        GitHub temporarily blocked requests.
+        Please refresh later or browse projects directly on GitHub.
+      </p>
+      <button onclick="window.open('https://github.com/alsopranab', '_blank')">
+        Open GitHub Profile
+      </button>
+    </div>
+  `;
 }
 
-/* =========================
+/* =====================================================
    UI CARD
-========================= */
+===================================================== */
 
 function projectCard(repo, type) {
   const div = document.createElement("div");
@@ -114,18 +131,22 @@ function projectCard(repo, type) {
     </button>
   `;
 
-  div.onmouseenter = () =>
-    div.querySelector(".project-desc").style.display = "block";
+  div.addEventListener("mouseenter", () => {
+    const d = div.querySelector(".project-desc");
+    if (d) d.style.display = "block";
+  });
 
-  div.onmouseleave = () =>
-    div.querySelector(".project-desc").style.display = "none";
+  div.addEventListener("mouseleave", () => {
+    const d = div.querySelector(".project-desc");
+    if (d) d.style.display = "none";
+  });
 
   return div;
 }
 
-/* =========================
-   ICON MAPPER (FUTURE-PROOF)
-========================= */
+/* =====================================================
+   ICON MAP
+===================================================== */
 
 function techIcon(type) {
   const icons = {
