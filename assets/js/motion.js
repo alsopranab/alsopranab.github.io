@@ -1,22 +1,72 @@
 /* =====================================================
    MOTION & INTERACTION LAYER
-   macOS-STYLE · BUTTERY · SPA-SAFE · CHART-SAFE
+   macOS Dynamic Island · Buttery · SPA Safe
+===================================================== */
+
+/* =====================================================
+   1. STATE
 ===================================================== */
 
 let fadeObserver = null;
+let lastScrollY = window.scrollY;
+let headerVisible = true;
 
-/* =====================
-   SCROLL CONTROL
-   Instant on route change
-===================== */
+/* =====================================================
+   2. SCROLL CONTROL
+   (Instant on route change)
+===================================================== */
 function scrollToTop() {
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
-/* =====================
-   BUTTON INTERACTION
-   Subtle system press
-===================== */
+/* =====================================================
+   3. DYNAMIC ISLAND HEADER BEHAVIOR
+   Hide on scroll down, show on scroll up
+===================================================== */
+function setupDynamicHeader() {
+  const header = document.querySelector(".dynamic-header");
+  if (!header) return;
+
+  // Prevent duplicate listeners (SPA safe)
+  if (header.dataset.bound) return;
+  header.dataset.bound = "true";
+
+  window.addEventListener("scroll", () => {
+    const currentY = window.scrollY;
+
+    // Always show near top
+    if (currentY < 40) {
+      showHeader(header);
+      lastScrollY = currentY;
+      return;
+    }
+
+    if (currentY > lastScrollY + 8 && headerVisible) {
+      hideHeader(header);
+    } else if (currentY < lastScrollY - 8 && !headerVisible) {
+      showHeader(header);
+    }
+
+    lastScrollY = currentY;
+  });
+}
+
+function hideHeader(header) {
+  header.style.transform = "translateX(-50%) translateY(-120%)";
+  header.style.opacity = "0";
+  headerVisible = false;
+}
+
+function showHeader(header) {
+  header.style.transform = "translateX(-50%) translateY(0)";
+  header.style.opacity = "1";
+  headerVisible = true;
+}
+
+/* =====================================================
+   4. BUTTON INTERACTION
+   macOS system press feel
+===================================================== */
 function enhanceButtons() {
   document.querySelectorAll("button").forEach(btn => {
     if (btn.dataset.enhanced) return;
@@ -36,27 +86,18 @@ function enhanceButtons() {
   });
 }
 
-/* =====================
-   CARD INTERACTION
-   Trackpad physics
-   (Charts are EXCLUDED)
-===================== */
+/* =====================================================
+   5. CARD INTERACTION
+   Trackpad-like physics
+   (Charts EXCLUDED)
+===================================================== */
 function enhanceCards() {
   document.querySelectorAll(".card").forEach(card => {
     if (card.dataset.enhanced) return;
     card.dataset.enhanced = "true";
 
-    // 🚫 HARD EXCLUDE chart cards
+    // HARD EXCLUDE chart containers
     if (card.classList.contains("chart-card")) return;
-
-    card.addEventListener("pointerenter", () => {
-      card.classList.add("hovered");
-    });
-
-    card.addEventListener("pointerleave", () => {
-      card.classList.remove("hovered");
-      card.classList.remove("pressed");
-    });
 
     card.addEventListener("pointerdown", () => {
       card.classList.add("pressed");
@@ -65,13 +106,17 @@ function enhanceCards() {
     card.addEventListener("pointerup", () => {
       card.classList.remove("pressed");
     });
+
+    card.addEventListener("pointerleave", () => {
+      card.classList.remove("pressed");
+    });
   });
 }
 
-/* =====================
-   FADE-IN OBSERVER
+/* =====================================================
+   6. FADE-IN OBSERVER
    Sections ONLY (no cards, no charts)
-===================== */
+===================================================== */
 function setupFadeObserver() {
   if (fadeObserver) {
     fadeObserver.disconnect();
@@ -93,18 +138,19 @@ function setupFadeObserver() {
     }
   );
 
-  document.querySelectorAll("section").forEach(el => {
-    el.classList.remove("in-view");
-    fadeObserver.observe(el);
+  document.querySelectorAll("section").forEach(section => {
+    section.classList.remove("in-view");
+    fadeObserver.observe(section);
   });
 }
 
-/* =====================
-   MASTER RUNNER
-   Called ONCE per route
-===================== */
+/* =====================================================
+   7. MASTER RUNNER
+   Call ONCE per route
+===================================================== */
 function runMotionEnhancements() {
   scrollToTop();
+  setupDynamicHeader();
   enhanceButtons();
   enhanceCards();
   setupFadeObserver();
