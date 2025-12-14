@@ -27,12 +27,16 @@ function renderDashboard() {
       <div class="grid">
         <div class="card">
           <h3>Skill Distribution</h3>
-          <canvas id="skillChart" height="220"></canvas>
+          <div class="chart-box">
+            <canvas id="skillChart"></canvas>
+          </div>
         </div>
 
         <div class="card">
           <h3>Growth Over Time</h3>
-          <canvas id="growthChart" height="220"></canvas>
+          <div class="chart-box">
+            <canvas id="growthChart"></canvas>
+          </div>
         </div>
       </div>
     </section>
