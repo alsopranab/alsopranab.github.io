@@ -1,13 +1,16 @@
 /* =====================================================
    SPA ROUTER & LIFECYCLE CONTROLLER
-   macOS-STYLE · STABLE · NO FLICKER
+   macOS-STYLE · STABLE · NO FLICKER · MOTION-SAFE
 ===================================================== */
 
+/* =====================================================
+   1. ROOT
+===================================================== */
 const app = document.getElementById("app");
 
-/* =====================
-   ROUTE MAP
-===================== */
+/* =====================================================
+   2. ROUTE MAP
+===================================================== */
 const routes = {
   "/": () => window.renderHome?.(),
   "/dashboard": () => window.renderDashboard?.(),
@@ -18,16 +21,18 @@ const routes = {
   "/contacts": () => window.renderContacts?.()
 };
 
-/* =====================
-   CORE NAVIGATION
-===================== */
+/* =====================================================
+   3. NAVIGATION CORE
+===================================================== */
 function navigate() {
   if (!app) return;
 
   const hash = location.hash || "#/";
   const [path, query] = hash.replace("#", "").split("?");
 
-  // HARD RESET — prevents layout ghosts
+  /* ---------------------
+     HARD RESET (NO GHOSTS)
+  --------------------- */
   app.classList.remove("fade-in");
   app.innerHTML = "";
 
@@ -39,24 +44,39 @@ function navigate() {
   }
 
   try {
-    // 1️⃣ Render content synchronously
+    /* ---------------------
+       1️⃣ RENDER VIEW
+       (SYNC, NO MOTION)
+    --------------------- */
     view(query);
 
-    // 2️⃣ Charts ONLY after DOM is stable
-    if (path === "/dashboard" && typeof renderCharts === "function") {
+    /* ---------------------
+       2️⃣ RENDER CHARTS
+       (AFTER DOM PAINT)
+    --------------------- */
+    if (
+      (path === "/dashboard" || path === "/") &&
+      typeof renderCharts === "function"
+    ) {
       requestAnimationFrame(() => {
         renderCharts();
       });
     }
 
-    // 3️⃣ Motion AFTER content is final
+    /* ---------------------
+       3️⃣ RUN MOTION
+       (AFTER FINAL DOM)
+    --------------------- */
     if (typeof runMotionEnhancements === "function") {
       requestAnimationFrame(() => {
         runMotionEnhancements();
       });
     }
 
-    // 4️⃣ Fade-in LAST (single paint)
+    /* ---------------------
+       4️⃣ FADE-IN
+       (LAST PAINT ONLY)
+    --------------------- */
     requestAnimationFrame(() => {
       app.classList.add("fade-in");
     });
@@ -67,9 +87,9 @@ function navigate() {
   }
 }
 
-/* =====================
-   FALLBACK VIEWS
-===================== */
+/* =====================================================
+   4. FALLBACK VIEWS
+===================================================== */
 function render404() {
   app.innerHTML = `
     <section>
@@ -88,8 +108,8 @@ function renderError(err) {
   `;
 }
 
-/* =====================
-   INITIALIZE
-===================== */
+/* =====================================================
+   5. INITIALIZATION
+===================================================== */
 window.addEventListener("load", navigate);
 window.addEventListener("hashchange", navigate);
