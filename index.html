@@ -22,21 +22,29 @@
 
 <body>
 
-  <!-- NAVIGATION -->
-  <nav>
-    <span class="logo">PD</span>
-    <div>
-      <a href="#/">Home</a>
-      <a href="#/dashboard">Dashboard</a>
-      <a href="#/funnels">Funnel</a>
-      <a href="#/projects">Projects</a>
-      <a href="#/learnings">Learnings</a>
-      <a href="#/contacts">Contacts</a>
-      <a href="resume/Pranab_Debnath_Resume.pdf" target="_blank">Resume</a>
-    </div>
-  </nav>
+  <!-- =================================================
+       DYNAMIC ISLAND HEADER (GLOBAL)
+       Controlled by CSS + motion.js
+  ================================================== -->
+  <header class="dynamic-header">
+    <nav class="dynamic-nav">
+      <span class="logo">PD</span>
 
-  <!-- SPA ROOT -->
+      <div class="nav-links">
+        <a href="#/">Home</a>
+        <a href="#/dashboard">Dashboard</a>
+        <a href="#/funnels">Funnel</a>
+        <a href="#/projects">Projects</a>
+        <a href="#/learnings">Learnings</a>
+        <a href="#/contacts">Contacts</a>
+        <a href="resume/Pranab_Debnath_Resume.pdf" target="_blank">Resume</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- =================================================
+       SPA ROOT (ALL VIEWS RENDER HERE)
+  ================================================== -->
   <main id="app"></main>
 
   <!-- =====================
