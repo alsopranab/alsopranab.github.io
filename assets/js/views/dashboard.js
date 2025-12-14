@@ -1,5 +1,11 @@
+/* =====================================================
+   DASHBOARD VIEW
+   Stable · Analytics-First · SPA-Safe
+===================================================== */
+
 function renderDashboard() {
   const app = document.getElementById("app");
+  if (!app || !window.PROFILE) return;
 
   app.innerHTML = `
     <!-- =====================
@@ -25,7 +31,7 @@ function renderDashboard() {
     </section>
 
     <!-- =====================
-         CHARTS (LOCKED LAYOUT)
+         CHARTS (LOCKED, NO MOTION)
     ====================== -->
     <section>
       <h2>Skill & Growth Overview</h2>
@@ -88,17 +94,18 @@ function renderDashboard() {
   `;
 
   /* =====================
-     RENDER CHARTS
-     (Dashboard Context)
+     CHARTS (AFTER DOM)
   ====================== */
-  if (typeof renderCharts === "function") {
-    requestAnimationFrame(() => renderCharts("dashboard"));
-  }
+  requestAnimationFrame(() => {
+    if (typeof renderCharts === "function") {
+      renderCharts("dashboard");
+    }
+  });
 }
 
-/* =========================
-   HELPERS
-========================= */
+/* =====================================================
+   UI HELPERS
+===================================================== */
 
 function kpiCard(value, label) {
   return `
