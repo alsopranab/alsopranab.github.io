@@ -1,18 +1,26 @@
+/* =====================================================
+   HOME VIEW
+   Clean · Data-Driven · SPA-Safe
+===================================================== */
+
+let homeSkillChart = null;
+let homeGrowthChart = null;
+
 function renderHome() {
   const app = document.getElementById("app");
+  if (!app || !window.PROFILE) return;
 
   app.innerHTML = `
-    <!-- =================================================
-         HERO — PRIMARY POSITIONING
-    ================================================== -->
+    <!-- =====================
+         HERO
+    ====================== -->
     <section class="home-hero">
       <div class="card hero-card">
-        <h1 class="home-name">Pranab Debnath</h1>
-        <h2 class="home-role">Data Analyst</h2>
+        <h1 class="home-name">${PROFILE.identity.name}</h1>
+        <h2 class="home-role">${PROFILE.identity.role}</h2>
 
         <p class="home-summary">
-          I build analytics systems that convert operational data into clarity,
-          automation, and measurable business impact.
+          ${PROFILE.identity.tagline}
         </p>
 
         <div class="grid home-metrics">
@@ -23,21 +31,21 @@ function renderHome() {
       </div>
     </section>
 
-    <!-- =================================================
-         MINI ANALYTICS SNAPSHOT
-    ================================================== -->
+    <!-- =====================
+         MINI ANALYTICS
+    ====================== -->
     <section>
       <h2>Analytics Snapshot</h2>
 
       <div class="grid">
-        <div class="card">
+        <div class="card chart-card">
           <h3>Skill Distribution</h3>
           <div class="chart-box">
             <canvas id="homeSkillChart"></canvas>
           </div>
         </div>
 
-        <div class="card">
+        <div class="card chart-card">
           <h3>Growth Trend</h3>
           <div class="chart-box">
             <canvas id="homeGrowthChart"></canvas>
@@ -52,9 +60,9 @@ function renderHome() {
       </div>
     </section>
 
-    <!-- =================================================
+    <!-- =====================
          ANALYTICS FOCUS
-    ================================================== -->
+    ====================== -->
     <section>
       <h2>Analytics Focus</h2>
 
@@ -65,18 +73,18 @@ function renderHome() {
         )}
         ${focusCard(
           "Automation & ETL",
-          "SQL + Python pipelines that replace manual reporting"
+          "SQL + Python pipelines replacing manual reporting"
         )}
         ${focusCard(
           "Decision Dashboards",
-          "Executive-ready views for performance & conversion tracking"
+          "Executive-ready performance & conversion views"
         )}
       </div>
     </section>
 
-    <!-- =================================================
+    <!-- =====================
          EXPERIENCE SNAPSHOT
-    ================================================== -->
+    ====================== -->
     <section>
       <h2>Experience Snapshot</h2>
 
@@ -87,8 +95,8 @@ function renderHome() {
           "2025 – Present",
           [
             "Automated reporting using SQL, Python, Apps Script & Power Automate",
-            "EDA on agent performance, funnels, schedule rate & SV timelines",
-            "Built KPI dashboards for leadership",
+            "EDA on agent performance, funnels & schedule rate",
+            "Built KPI dashboards for leadership decisions",
             "Unified CRM & dialer data into analytical models"
           ]
         )}
@@ -112,34 +120,9 @@ function renderHome() {
       </div>
     </section>
 
-    <!-- =================================================
-         WHAT I BUILD
-    ================================================== -->
-    <section>
-      <h2>What I Build</h2>
-
-      <div class="grid">
-        ${buildCard(
-          "Analytics Projects",
-          "SQL, Python & Excel projects solving real business problems",
-          "#/projects"
-        )}
-        ${buildCard(
-          "Automation Systems",
-          "End-to-end pipelines eliminating manual reporting",
-          "#/projects"
-        )}
-        ${buildCard(
-          "Learning Notes",
-          "Clear explanations from production analytics work",
-          "#/learnings"
-        )}
-      </div>
-    </section>
-
-    <!-- =================================================
+    <!-- =====================
          EXPLORE
-    ================================================== -->
+    ====================== -->
     <section>
       <h2>Explore</h2>
       <p class="muted">
@@ -148,7 +131,7 @@ function renderHome() {
 
       <div class="grid">
         ${exploreCard("Dashboard", "Metrics, skills & growth", "#/dashboard")}
-        ${exploreCard("Projects", "Live GitHub code viewer", "#/projects")}
+        ${exploreCard("Projects", "Live GitHub repositories", "#/projects")}
         ${exploreCard("Learnings", "Production-tested insights", "#/learnings")}
       </div>
     </section>
@@ -158,29 +141,28 @@ function renderHome() {
 }
 
 /* =====================================================
-   MINI HOME CHARTS (READ-ONLY, STABLE)
+   HOME CHARTS (READ-ONLY PREVIEW)
 ===================================================== */
 
-let homeSkillChart = null;
-let homeGrowthChart = null;
-
 function renderHomeCharts() {
-  if (typeof Chart === "undefined") return;
+  if (typeof Chart === "undefined" || !window.PROFILE) return;
 
-  const skill = document.getElementById("homeSkillChart");
-  const growth = document.getElementById("homeGrowthChart");
+  const skillCanvas = document.getElementById("homeSkillChart");
+  const growthCanvas = document.getElementById("homeGrowthChart");
 
-  if (!skill || !growth) return;
+  if (!skillCanvas || !growthCanvas) return;
 
   homeSkillChart?.destroy();
   homeGrowthChart?.destroy();
 
-  homeSkillChart = new Chart(skill, {
+  const { skillDistribution, growthTimeline } = PROFILE.dashboard;
+
+  homeSkillChart = new Chart(skillCanvas, {
     type: "doughnut",
     data: {
-      labels: ["SQL", "Python", "Excel", "Automation", "Analytics"],
+      labels: skillDistribution.labels,
       datasets: [{
-        data: [30, 25, 15, 15, 15],
+        data: skillDistribution.values,
         backgroundColor: [
           "#38bdf8",
           "#22c55e",
@@ -199,18 +181,21 @@ function renderHomeCharts() {
         legend: { display: false },
         tooltip: { enabled: false }
       },
-      animation: { duration: 500 }
+      animation: {
+        duration: 450,
+        easing: "easeOutCubic"
+      }
     }
   });
 
-  homeGrowthChart = new Chart(growth, {
+  homeGrowthChart = new Chart(growthCanvas, {
     type: "line",
     data: {
-      labels: ["2022", "2023", "2024", "2025"],
+      labels: growthTimeline.years,
       datasets: [{
-        data: [20, 40, 70, 90],
+        data: growthTimeline.values,
         borderColor: "#38bdf8",
-        backgroundColor: "rgba(56,189,248,0.15)",
+        backgroundColor: "rgba(56,189,248,0.14)",
         borderWidth: 2,
         tension: 0.35,
         fill: true,
@@ -228,13 +213,16 @@ function renderHomeCharts() {
         x: { display: false },
         y: { display: false }
       },
-      animation: { duration: 600 }
+      animation: {
+        duration: 500,
+        easing: "easeOutCubic"
+      }
     }
   });
 }
 
 /* =====================================================
-   HELPERS
+   UI HELPERS
 ===================================================== */
 
 function metricCard(title, desc) {
@@ -262,16 +250,6 @@ function experienceCard(company, role, period, points) {
       <p><strong>${role}</strong></p>
       <p class="muted">${period}</p>
       <ul>${points.map(p => `<li>${p}</li>`).join("")}</ul>
-    </div>
-  `;
-}
-
-function buildCard(title, desc, link) {
-  return `
-    <div class="card">
-      <h3>${title}</h3>
-      <p class="muted">${desc}</p>
-      <button onclick="location.hash='${link}'">Explore</button>
     </div>
   `;
 }
