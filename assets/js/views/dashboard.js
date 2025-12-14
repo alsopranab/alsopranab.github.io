@@ -2,7 +2,9 @@ function renderDashboard() {
   const app = document.getElementById("app");
 
   app.innerHTML = `
-    <!-- HEADER -->
+    <!-- =====================
+         HEADER
+    ====================== -->
     <section>
       <h1>Analytics Dashboard</h1>
       <p class="muted">
@@ -10,7 +12,9 @@ function renderDashboard() {
       </p>
     </section>
 
-    <!-- KPI METRICS -->
+    <!-- =====================
+         KPI METRICS
+    ====================== -->
     <section>
       <div class="grid">
         ${kpiCard("12+", "GitHub Repositories")}
@@ -20,19 +24,21 @@ function renderDashboard() {
       </div>
     </section>
 
-    <!-- CHARTS -->
+    <!-- =====================
+         CHARTS (LOCKED LAYOUT)
+    ====================== -->
     <section>
       <h2>Skill & Growth Overview</h2>
 
       <div class="grid">
-        <div class="card">
+        <div class="card chart-card">
           <h3>Skill Distribution</h3>
           <div class="chart-box">
             <canvas id="skillChart"></canvas>
           </div>
         </div>
 
-        <div class="card">
+        <div class="card chart-card">
           <h3>Growth Over Time</h3>
           <div class="chart-box">
             <canvas id="growthChart"></canvas>
@@ -41,7 +47,9 @@ function renderDashboard() {
       </div>
     </section>
 
-    <!-- SKILL BREAKDOWN -->
+    <!-- =====================
+         SKILL BREAKDOWN
+    ====================== -->
     <section>
       <h2>Skill Proficiency</h2>
 
@@ -53,7 +61,9 @@ function renderDashboard() {
       </div>
     </section>
 
-    <!-- PROJECT DOMAINS -->
+    <!-- =====================
+         PROJECT DOMAINS
+    ====================== -->
     <section>
       <h2>Project Domains</h2>
 
@@ -63,13 +73,11 @@ function renderDashboard() {
           "Query optimization, schema design, reporting logic",
           "Multiple structured repositories"
         )}
-
         ${projectClassCard(
           "Python Projects",
           "EDA, ML basics, automation scripts",
           "End-to-end data projects"
         )}
-
         ${projectClassCard(
           "Automation & ETL",
           "Email parsing, CSV pipelines, workflow automation",
@@ -79,9 +87,12 @@ function renderDashboard() {
     </section>
   `;
 
-  // Render charts AFTER DOM is ready
+  /* =====================
+     RENDER CHARTS
+     (Dashboard Context)
+  ====================== */
   if (typeof renderCharts === "function") {
-    renderCharts();
+    requestAnimationFrame(() => renderCharts("dashboard"));
   }
 }
 
