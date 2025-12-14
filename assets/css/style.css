@@ -50,10 +50,12 @@
 }
 
 /* =====================
-   RESET
+   RESET (IMPORTANT FIX)
 ===================== */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -61,14 +63,11 @@ html,
 body {
   margin: 0;
   min-height: 100%;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
   background: var(--bg-base);
+}
+
+/* ⛔️ REMOVED: body background repaint conflicts */
+body {
   color: var(--text);
   font-family:
     -apple-system,
@@ -85,7 +84,7 @@ body {
 
 /* =====================
    SINGLE AMBIENT BACKGROUND
-   (NO LAYERS = NO FLICKER)
+   (FIXED: no double tone)
 ===================== */
 
 body::before {
@@ -96,17 +95,19 @@ body::before {
 
   background:
     radial-gradient(
-      800px 500px at 15% 10%,
+      900px 600px at 18% 12%,
       var(--bg-tint),
-      transparent 60%
+      transparent 65%
     ),
     radial-gradient(
-      700px 500px at 85% 30%,
+      800px 600px at 82% 35%,
       rgba(34, 211, 238, 0.05),
-      transparent 60%
+      transparent 65%
     ),
     linear-gradient(180deg, var(--bg-base), var(--bg-base));
 
+  /* ⛔️ Prevent GPU repaint flicker */
+  will-change: transform;
   transform: translateZ(0);
 }
 
@@ -139,11 +140,11 @@ nav a {
   color: var(--accent);
   text-decoration: none;
 
-  transition: transform 0.2s var(--ease), opacity 0.2s;
+  transition: transform 0.18s var(--ease), opacity 0.18s;
 }
 
 nav a:hover {
-  transform: scale(1.15) translateY(-2px);
+  transform: scale(1.12) translateY(-2px);
   opacity: 0.9;
 }
 
@@ -159,16 +160,19 @@ nav a:hover {
 main {
   padding: 42px 24px;
   min-height: 85vh;
+
+  /* ⛔️ FIX: stop background banding */
+  background: transparent;
 }
 
 .fade-in {
-  animation: fade 0.3s var(--ease) forwards;
+  animation: fade 0.28s var(--ease) forwards;
 }
 
 @keyframes fade {
   from {
     opacity: 0;
-    transform: translateY(8px);
+    transform: translateY(6px);
   }
   to {
     opacity: 1;
@@ -220,13 +224,13 @@ p {
 }
 
 /* =====================
-   CARDS (macOS Window)
+   CARDS (macOS WINDOW)
 ===================== */
 
 .card {
   position: relative;
-
   background: var(--glass);
+
   backdrop-filter: blur(var(--blur)) saturate(160%);
   -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
 
@@ -234,11 +238,15 @@ p {
   border-radius: var(--radius);
   padding: 26px;
 
+  /* ⛔️ FIX: prevent layout reflow */
+  will-change: transform;
+
   transition:
-    transform 0.28s var(--ease),
-    box-shadow 0.28s var(--ease);
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
 }
 
+/* macOS window dots */
 .card::before {
   content: "";
   position: absolute;
@@ -254,7 +262,7 @@ p {
 }
 
 .card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow);
 }
 
@@ -277,7 +285,7 @@ p {
 }
 
 /* =====================
-   BUTTONS (System Feel)
+   BUTTONS
 ===================== */
 
 button {
@@ -297,7 +305,7 @@ button {
     inset 0 1px 0 rgba(255,255,255,0.35),
     0 6px 16px rgba(0,0,0,0.25);
 
-  transition: transform 0.15s ease;
+  transition: transform 0.14s ease;
 }
 
 button:hover {
@@ -309,7 +317,7 @@ button:active {
 }
 
 /* =====================
-   CODE (PRISM SAFE)
+   CODE BLOCKS
 ===================== */
 
 pre {
