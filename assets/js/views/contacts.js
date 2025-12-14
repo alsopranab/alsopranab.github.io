@@ -1,6 +1,8 @@
 function renderContacts() {
   const app = document.getElementById("app");
 
+  const { contact } = PROFILE;
+
   app.innerHTML = `
     <!-- HEADER -->
     <section>
@@ -44,7 +46,7 @@ Regards,</textarea>
           </form>
 
           <p class="muted" style="margin-top:12px;">
-            Or email directly: <strong>${PROFILE.email}</strong>
+            Or email directly: <strong>${contact.email}</strong>
           </p>
         </div>
       </div>
@@ -58,25 +60,25 @@ Regards,</textarea>
         ${profileCard(
           "LinkedIn",
           "Professional background & experience",
-          `https://www.linkedin.com/in/${PROFILE.linkedin}`
+          `https://www.linkedin.com/in/${contact.linkedin}`
         )}
 
         ${profileCard(
           "GitHub",
           "Projects, code, and automation work",
-          `https://github.com/${PROFILE.github}`
+          `https://github.com/${contact.github}`
         )}
 
         ${profileCard(
           "LeetCode",
           "Problem solving & DSA practice",
-          `https://leetcode.com/${PROFILE.social.leetcode}`
+          `https://leetcode.com/${contact.social.leetcode}`
         )}
 
         ${profileCard(
           "HackerRank",
           "SQL & problem-solving practice",
-          `https://www.hackerrank.com/${PROFILE.social.hackerrank}`
+          `https://www.hackerrank.com/${contact.social.hackerrank}`
         )}
       </div>
     </section>
@@ -89,13 +91,13 @@ Regards,</textarea>
         ${instagramQueryGuyCard(
           "The Query Guy",
           "Analytics tips & SQL content",
-          PROFILE.social.instagram_data
+          contact.social.instagram_data
         )}
 
         ${profileCard(
           "Personal",
           "Personal updates & life",
-          `https://www.instagram.com/${PROFILE.social.instagram_personal}`
+          `https://www.instagram.com/${contact.social.instagram_personal}`
         )}
       </div>
     </section>
@@ -150,5 +152,6 @@ function sendEmail(e) {
     document.getElementById("emailBody").value
   );
 
-  window.location.href = `mailto:${PROFILE.email}?subject=${subject}&body=${body}`;
+  window.location.href =
+    `mailto:${PROFILE.contact.email}?subject=${subject}&body=${body}`;
 }
