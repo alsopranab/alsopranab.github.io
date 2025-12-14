@@ -2,11 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <title>Pranab Debnath | Data Analyst</title>
 
   <!-- SEO / META -->
-  <meta name="description" content="Pranab Debnath — Data Analyst specializing in SQL, analytics, automation, and business insights." />
+  <meta
+    name="description"
+    content="Pranab Debnath — Data Analyst specializing in SQL, analytics, automation, and business insights."
+  />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b0f14" />
 
@@ -24,11 +28,12 @@
 
   <!-- =================================================
        DYNAMIC ISLAND HEADER (GLOBAL)
-       Controlled by CSS + motion.js
+       Visual: CSS
+       Behavior: motion.js
   ================================================== -->
   <header class="dynamic-header">
-    <nav class="dynamic-nav">
-      <span class="logo">PD</span>
+    <nav class="dynamic-nav" aria-label="Primary navigation">
+      <a href="#/" class="logo">PD</a>
 
       <div class="nav-links">
         <a href="#/">Home</a>
@@ -37,13 +42,20 @@
         <a href="#/projects">Projects</a>
         <a href="#/learnings">Learnings</a>
         <a href="#/contacts">Contacts</a>
-        <a href="resume/Pranab_Debnath_Resume.pdf" target="_blank">Resume</a>
+        <a
+          href="resume/Pranab_Debnath_Resume.pdf"
+          target="_blank"
+          rel="noopener"
+        >
+          Resume
+        </a>
       </div>
     </nav>
   </header>
 
   <!-- =================================================
-       SPA ROOT (ALL VIEWS RENDER HERE)
+       SPA ROOT
+       All views render here
   ================================================== -->
   <main id="app"></main>
 
