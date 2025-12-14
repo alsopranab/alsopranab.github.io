@@ -1,57 +1,66 @@
 /* ======================================================
-   macOS AUTO LIGHT / DARK THEME (FINAL)
+   macOS GLASS DESIGN SYSTEM
+   Premium · Stable · Flicker-Free
 ====================================================== */
 
-/* ---------- DARK MODE (DEFAULT) ---------- */
+/* =====================
+   COLOR TOKENS
+===================== */
+
+/* DARK (default) */
 :root {
-  --bg: #0b0f14;
-  --bg-soft: rgba(28, 30, 36, 0.6);
-  --card: rgba(28, 30, 36, 0.65);
-  --border: rgba(255,255,255,0.08);
+  --bg-base: #0b0f14;
+  --bg-tint: rgba(56, 189, 248, 0.06);
+
+  --glass: rgba(22, 24, 30, 0.72);
+  --glass-soft: rgba(22, 24, 30, 0.6);
+  --border: rgba(255, 255, 255, 0.08);
 
   --text: #e5e7eb;
   --muted: #9ca3af;
 
   --accent: #38bdf8;
-  --accent-2: #22d3ee;
+  --accent-soft: rgba(56, 189, 248, 0.25);
 
   --radius: 18px;
-  --blur: 20px;
+  --blur: 22px;
 
-  --ease-mac: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --shadow-mac: 0 18px 45px rgba(0,0,0,0.45);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
 }
 
-/* ---------- LIGHT MODE (macOS AUTO) ---------- */
+/* LIGHT (macOS auto) */
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #f5f7fb;
-    --bg-soft: rgba(255,255,255,0.75);
-    --card: rgba(255,255,255,0.7);
-    --border: rgba(0,0,0,0.08);
+    --bg-base: #f4f6fb;
+    --bg-tint: rgba(0, 122, 255, 0.08);
+
+    --glass: rgba(255, 255, 255, 0.72);
+    --glass-soft: rgba(255, 255, 255, 0.6);
+    --border: rgba(0, 0, 0, 0.08);
 
     --text: #0f172a;
     --muted: #475569;
 
     --accent: #007aff;
-    --accent-2: #38bdf8;
+    --accent-soft: rgba(0, 122, 255, 0.25);
 
-    --shadow-mac: 0 18px 45px rgba(0,0,0,0.15);
+    --shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
   }
 }
 
-/* ======================================================
-   RESET & BASE
-====================================================== */
+/* =====================
+   RESET
+===================== */
+
 * {
   box-sizing: border-box;
 }
 
 html,
 body {
-  height: 100%;
   margin: 0;
-  background: var(--bg);
+  min-height: 100%;
 }
 
 html {
@@ -59,6 +68,8 @@ html {
 }
 
 body {
+  background: var(--bg-base);
+  color: var(--text);
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -68,14 +79,15 @@ body {
     system-ui,
     sans-serif;
 
-  color: var(--text);
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* ======================================================
-   STATIC macOS MATERIAL BACKGROUND (NO FLICKER)
-====================================================== */
+/* =====================
+   SINGLE AMBIENT BACKGROUND
+   (NO LAYERS = NO FLICKER)
+===================== */
+
 body::before {
   content: "";
   position: fixed;
@@ -83,30 +95,39 @@ body::before {
   z-index: -1;
 
   background:
-    radial-gradient(circle at 20% 15%, rgba(56,189,248,0.08), transparent 42%),
-    radial-gradient(circle at 80% 30%, rgba(34,211,238,0.06), transparent 46%),
-    var(--bg);
+    radial-gradient(
+      800px 500px at 15% 10%,
+      var(--bg-tint),
+      transparent 60%
+    ),
+    radial-gradient(
+      700px 500px at 85% 30%,
+      rgba(34, 211, 238, 0.05),
+      transparent 60%
+    ),
+    linear-gradient(180deg, var(--bg-base), var(--bg-base));
 
   transform: translateZ(0);
-  will-change: transform;
 }
 
-/* ======================================================
-   NAVIGATION (macOS DOCK STYLE)
-====================================================== */
+/* =====================
+   NAVIGATION (Dock Feel)
+===================== */
+
 nav {
   position: sticky;
   top: 0;
   z-index: 100;
 
-  padding: 14px 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  background: var(--bg-soft);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  padding: 14px 28px;
+
+  background: var(--glass-soft);
+  backdrop-filter: blur(var(--blur)) saturate(180%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
 
   border-bottom: 1px solid var(--border);
 }
@@ -118,9 +139,7 @@ nav a {
   color: var(--accent);
   text-decoration: none;
 
-  transition:
-    transform 0.18s var(--ease-mac),
-    opacity 0.18s ease;
+  transition: transform 0.2s var(--ease), opacity 0.2s;
 }
 
 nav a:hover {
@@ -133,19 +152,20 @@ nav a:hover {
   letter-spacing: 0.4px;
 }
 
-/* ======================================================
-   MAIN / SPA TRANSITION
-====================================================== */
+/* =====================
+   MAIN / SPA
+===================== */
+
 main {
   padding: 42px 24px;
   min-height: 85vh;
 }
 
 .fade-in {
-  animation: macFade 0.28s var(--ease-mac) forwards;
+  animation: fade 0.3s var(--ease) forwards;
 }
 
-@keyframes macFade {
+@keyframes fade {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -156,9 +176,10 @@ main {
   }
 }
 
-/* ======================================================
-   TYPOGRAPHY (APPLE RHYTHM)
-====================================================== */
+/* =====================
+   TYPOGRAPHY
+===================== */
+
 section {
   max-width: 1200px;
   margin: auto;
@@ -173,8 +194,8 @@ h1 {
 
 h2 {
   font-size: 26px;
-  border-left: 3px solid var(--accent);
   padding-left: 12px;
+  border-left: 3px solid var(--accent);
   margin-bottom: 18px;
 }
 
@@ -188,37 +209,36 @@ p {
   line-height: 1.7;
 }
 
-/* ======================================================
-   GRID SYSTEM
-====================================================== */
+/* =====================
+   GRID
+===================== */
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 28px;
 }
 
-/* ======================================================
-   CARDS — macOS WINDOW STYLE
-====================================================== */
+/* =====================
+   CARDS (macOS Window)
+===================== */
+
 .card {
   position: relative;
-  background: var(--card);
 
-  backdrop-filter: blur(calc(var(--blur) - 6px));
-  -webkit-backdrop-filter: blur(calc(var(--blur) - 6px));
+  background: var(--glass);
+  backdrop-filter: blur(var(--blur)) saturate(160%);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
 
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 26px;
 
-  will-change: transform;
-
   transition:
-    transform 0.28s var(--ease-mac),
-    box-shadow 0.28s var(--ease-mac);
+    transform 0.28s var(--ease),
+    box-shadow 0.28s var(--ease);
 }
 
-/* macOS window controls */
 .card::before {
   content: "";
   position: absolute;
@@ -235,16 +255,17 @@ p {
 
 .card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-mac);
+  box-shadow: var(--shadow);
 }
 
 .card.pressed {
   transform: scale(0.985);
 }
 
-/* ======================================================
+/* =====================
    KPI
-====================================================== */
+===================== */
+
 .kpi {
   text-align: center;
 }
@@ -255,28 +276,28 @@ p {
   color: var(--accent);
 }
 
-/* ======================================================
-   BUTTONS — macOS FEEL
-====================================================== */
+/* =====================
+   BUTTONS (System Feel)
+===================== */
+
 button {
   margin-top: 16px;
   padding: 10px 18px;
+
   border-radius: 999px;
   border: none;
   cursor: pointer;
 
   font-weight: 600;
-  color: #000;
+  color: #fff;
 
-  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  background: linear-gradient(180deg, var(--accent), #007aff);
 
   box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.45),
-    0 6px 14px rgba(0,0,0,0.25);
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    0 6px 16px rgba(0,0,0,0.25);
 
-  transition:
-    transform 0.14s var(--ease-mac),
-    box-shadow 0.14s var(--ease-mac);
+  transition: transform 0.15s ease;
 }
 
 button:hover {
@@ -287,9 +308,10 @@ button:active {
   transform: scale(0.96);
 }
 
-/* ======================================================
-   CODE BLOCKS — DEV TRUE COLORS
-====================================================== */
+/* =====================
+   CODE (PRISM SAFE)
+===================== */
+
 pre {
   background: #020617;
   padding: 18px;
@@ -307,18 +329,14 @@ code {
     monospace;
 }
 
-/* Prism tuning */
-.token.keyword   { color: #c792ea; }
-.token.string    { color: #ecc48d; }
-.token.function  { color: #82aaff; }
-.token.comment   { color: #6b7280; }
-.token.number    { color: #f78c6c; }
-
-/* ======================================================
+/* =====================
    MOBILE
-====================================================== */
+===================== */
+
 @media (max-width: 768px) {
-  h1 { font-size: 34px; }
+  h1 {
+    font-size: 34px;
+  }
 
   nav {
     flex-direction: column;
