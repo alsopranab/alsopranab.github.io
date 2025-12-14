@@ -1,21 +1,21 @@
 /* =====================================================
    MOTION & INTERACTION LAYER
-   macOS-STYLE · BUTTERY · SPA-SAFE
+   macOS-STYLE · BUTTERY · SPA-SAFE · CHART-SAFE
 ===================================================== */
 
 let fadeObserver = null;
 
 /* =====================
-   SCROLL CONTROL (SAFE)
+   SCROLL CONTROL
+   (Instant on route change)
 ===================== */
 function scrollToTop() {
-  // instant on route change to avoid motion sickness
   window.scrollTo({ top: 0, left: 0, behavior: "auto" });
 }
 
 /* =====================
    BUTTON INTERACTION
-   No locks, just physics
+   Subtle system press
 ===================== */
 function enhanceButtons() {
   document.querySelectorAll("button").forEach(btn => {
@@ -38,12 +38,16 @@ function enhanceButtons() {
 
 /* =====================
    CARD INTERACTION
-   macOS trackpad feel
+   Trackpad-like physics
+   (Charts are excluded)
 ===================== */
 function enhanceCards() {
   document.querySelectorAll(".card").forEach(card => {
     if (card.dataset.enhanced) return;
     card.dataset.enhanced = "true";
+
+    // ❌ DO NOT animate chart containers
+    if (card.classList.contains("chart-card")) return;
 
     card.addEventListener("pointerenter", () => {
       card.classList.add("hovered");
@@ -66,7 +70,7 @@ function enhanceCards() {
 
 /* =====================
    FADE-IN OBSERVER
-   SINGLE INSTANCE ONLY
+   Sections only (NO charts)
 ===================== */
 function setupFadeObserver() {
   if (fadeObserver) {
@@ -84,20 +88,21 @@ function setupFadeObserver() {
       });
     },
     {
-      threshold: 0.12,
-      rootMargin: "0px 0px -40px 0px"
+      threshold: 0.15,
+      rootMargin: "0px 0px -60px 0px"
     }
   );
 
-  document.querySelectorAll("section, .card").forEach(el => {
-    el.classList.remove("in-view"); // reset on route change
+  // ✅ Observe ONLY sections
+  document.querySelectorAll("section").forEach(el => {
+    el.classList.remove("in-view");
     fadeObserver.observe(el);
   });
 }
 
 /* =====================
    MASTER RUNNER
-   CALL ON EVERY ROUTE
+   Call ONCE per route
 ===================== */
 function runMotionEnhancements() {
   scrollToTop();
