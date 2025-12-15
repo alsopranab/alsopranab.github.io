@@ -1,281 +1,263 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Liquid Glass System</title>
+<!-- ===============================
+     LIQUID GLASS APP (SCOPED)
+     SAFE FOR ANY PAGE
+================================ -->
 
 <style>
+/* ===============================
+   ROOT TOKENS (SCOPED ONLY)
+================================ */
+.glass-app {
+  --bg-tint: rgba(56,189,248,0.08);
 
-/* ======================================================
-   macOS GLASS DESIGN SYSTEM
-====================================================== */
-
-:root {
-  --bg-base: #0b0f14;
-  --bg-tint: rgba(56,189,248,0.06);
-
-  --glass: rgba(22,24,30,0.72);
-  --glass-soft: rgba(22,24,30,0.6);
+  --glass: rgba(22,24,30,0.85);
+  --glass-soft: rgba(22,24,30,0.65);
   --border: rgba(255,255,255,0.08);
 
   --text: #e5e7eb;
   --muted: #9ca3af;
-
   --accent: #38bdf8;
+
   --radius: 18px;
   --pill: 999px;
   --blur: 22px;
-
   --ease: cubic-bezier(.2,.8,.2,1);
-  --shadow: 0 18px 50px rgba(0,0,0,.45);
+  --shadow: 0 18px 45px rgba(0,0,0,.45);
+
+  position: relative;
+  isolation: isolate;
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", Inter, system-ui;
 }
 
-/* ======================================================
-   RESET + BASE
-====================================================== */
-
-* { box-sizing: border-box; }
-
-html,body {
-  margin:0;
-  min-height:100%;
-  background:var(--bg-base);
-  color:var(--text);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,system-ui;
-}
-
-body::before{
+/* ===============================
+   AMBIENT BACKGROUND (SCOPED)
+================================ */
+.glass-app::before {
   content:"";
-  position:fixed;
+  position:absolute;
   inset:0;
   z-index:-1;
+  pointer-events:none;
+
   background:
     radial-gradient(900px 600px at 20% 10%, var(--bg-tint), transparent 65%),
     radial-gradient(700px 500px at 80% 30%, rgba(34,211,238,.05), transparent 65%);
 }
 
-/* ======================================================
+/* ===============================
    DYNAMIC ISLAND HEADER
-====================================================== */
-
-.dynamic-header{
-  position:fixed;
-  top:14px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:200;
+================================ */
+.glass-header {
+  position: sticky;
+  top: 14px;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
 }
 
-.dynamic-nav{
-  display:flex;
-  gap:20px;
-  padding:12px 22px;
-  background:var(--glass-soft);
-  backdrop-filter:blur(var(--blur)) saturate(180%);
-  border:1px solid var(--border);
-  border-radius:var(--pill);
-  box-shadow:var(--shadow);
+.glass-nav {
+  display: flex;
+  gap: 20px;
+  padding: 12px 22px;
+
+  background: var(--glass-soft);
+  backdrop-filter: blur(var(--blur)) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: var(--pill);
+  box-shadow: var(--shadow);
 }
 
-.nav-links a{
-  color:var(--accent);
-  text-decoration:none;
-  font-size:14px;
-  font-weight:500;
-  white-space:nowrap;
+.glass-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
 }
 
-/* ======================================================
-   MAIN
-====================================================== */
-
-main{
-  padding:120px 24px 80px;
+/* ===============================
+   LAYOUT
+================================ */
+.glass-main {
+  padding: 90px 24px 80px;
 }
 
-/* ======================================================
-   TYPOGRAPHY
-====================================================== */
-
-section{
-  max-width:1200px;
-  margin:auto;
-  margin-bottom:90px;
+.glass-section {
+  max-width: 1200px;
+  margin: 0 auto 90px;
 }
 
-h1{
-  font-size:44px;
-  letter-spacing:-.02em;
+.glass-section h1 {
+  font-size: 44px;
+  letter-spacing: -0.02em;
 }
 
-h2{
-  font-size:26px;
-  border-left:3px solid var(--accent);
-  padding-left:12px;
+.glass-section h2 {
+  font-size: 26px;
+  padding-left: 12px;
+  border-left: 3px solid var(--accent);
 }
 
-p{
-  max-width:720px;
-  color:var(--muted);
-  line-height:1.7;
+.glass-section p {
+  max-width: 720px;
+  color: var(--muted);
+  line-height: 1.7;
 }
 
-/* ======================================================
+/* ===============================
    GRID + CARDS
-====================================================== */
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:28px;
+================================ */
+.glass-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+  gap: 28px;
 }
 
-.card{
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:26px;
-  backdrop-filter:blur(var(--blur));
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 26px;
+
+  backdrop-filter: blur(var(--blur)) saturate(160%);
+
   transform:
     translateY(calc((1 - var(--scroll,0)) * 26px))
     scale(calc(.96 + var(--scroll,0) * .04));
-  opacity:calc(.6 + var(--scroll,0) * .4);
-  transition:box-shadow .3s var(--ease);
+
+  opacity: calc(.6 + var(--scroll,0) * .4);
+  transition: box-shadow .3s var(--ease);
 }
 
-.card:hover{
-  box-shadow:var(--shadow);
+.glass-card:hover {
+  box-shadow: var(--shadow);
 }
 
-/* ======================================================
+/* ===============================
    KPI
-====================================================== */
-
-.kpi-value{
-  font-size:34px;
-  font-weight:700;
-  color:var(--accent);
+================================ */
+.glass-kpi {
+  font-size: 34px;
+  font-weight: 700;
+  color: var(--accent);
 }
 
-/* ======================================================
+/* ===============================
    TESTIMONIALS (FRAMER STYLE)
-====================================================== */
-
-.testimonials{
-  overflow:hidden;
+================================ */
+.glass-testimonials {
+  overflow: hidden;
 }
 
-.testimonial-track{
-  display:flex;
-  gap:28px;
+.glass-track {
+  display: flex;
+  gap: 28px;
+
   transform:
     translateX(calc(-160px * var(--scroll,0)))
     scale(calc(.97 + var(--scroll,0) * .03));
 }
 
-.testimonial{
-  min-width:320px;
-  padding:22px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  backdrop-filter:blur(var(--blur));
-  font-weight:500;
+.glass-quote {
+  min-width: 320px;
+  padding: 22px;
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(var(--blur));
+  font-weight: 500;
 }
 
-/* ======================================================
+/* ===============================
    MOBILE
-====================================================== */
+================================ */
+@media (max-width:768px){
+  .glass-section h1 { font-size: 34px; }
 
-@media(max-width:768px){
-  h1{font-size:34px;}
-  .dynamic-nav{
-    overflow-x:auto;
-    border-radius:18px;
+  .glass-nav {
+    overflow-x: auto;
+    border-radius: 18px;
   }
 }
-
 </style>
-</head>
 
-<body>
+<!-- ===============================
+     APP START
+================================ -->
+<div class="glass-app">
 
-<header class="dynamic-header">
-  <nav class="dynamic-nav">
-    <strong>Namely</strong>
-    <div class="nav-links">
+  <header class="glass-header">
+    <nav class="glass-nav">
+      <strong>Namely</strong>
       <a href="#">Home</a>
       <a href="#">Shops</a>
       <a href="#">Stories</a>
       <a href="#">Join</a>
-    </div>
-  </nav>
-</header>
+    </nav>
+  </header>
 
-<main>
+  <main class="glass-main">
 
-<section>
-  <h1>Local Fashion, Instantly.</h1>
-  <p>A liquid-glass marketplace connecting nearby clothing stores into one seamless digital experience.</p>
-</section>
+    <section class="glass-section">
+      <h1>Local Fashion, Instantly.</h1>
+      <p>A premium hyperlocal clothing marketplace connecting nearby stores into one seamless experience.</p>
+    </section>
 
-<section class="grid">
-  <div class="card" data-scroll>
-    <h3>Nearby Shops</h3>
-    <p>Discover real stores around you.</p>
-  </div>
-  <div class="card" data-scroll>
-    <h3>Live Inventory</h3>
-    <p>What you see is what exists.</p>
-  </div>
-  <div class="card" data-scroll>
-    <h3>Instant Pickup</h3>
-    <p>No waiting. No warehouses.</p>
-  </div>
-</section>
+    <section class="glass-section glass-grid">
+      <div class="glass-card" data-scroll>
+        <h3>Nearby Shops</h3>
+        <p>Discover real stores around you.</p>
+      </div>
+      <div class="glass-card" data-scroll>
+        <h3>Live Inventory</h3>
+        <p>What you see actually exists.</p>
+      </div>
+      <div class="glass-card" data-scroll>
+        <h3>Instant Pickup</h3>
+        <p>No warehouses. No waiting.</p>
+      </div>
+    </section>
 
-<section>
-  <h2>Trusted by Local Fashion</h2>
-  <div class="testimonials">
-    <div class="testimonial-track" data-scroll>
-      <div class="testimonial">“This feels premium without being loud.”</div>
-      <div class="testimonial">“Our store finally feels digital.”</div>
-      <div class="testimonial">“Customers trust us more now.”</div>
-    </div>
-  </div>
-</section>
+    <section class="glass-section">
+      <h2>Trusted by Local Fashion</h2>
 
-<section class="grid">
-  <div class="card" data-scroll>
-    <div class="kpi-value">+62%</div>
-    <p>Footfall growth</p>
-  </div>
-  <div class="card" data-scroll>
-    <div class="kpi-value">3.2km</div>
-    <p>Average shop distance</p>
-  </div>
-</section>
+      <div class="glass-testimonials">
+        <div class="glass-track" data-scroll>
+          <div class="glass-quote">“Our store finally feels digital.”</div>
+          <div class="glass-quote">“This feels premium, not noisy.”</div>
+          <div class="glass-quote">“Customers trust us more now.”</div>
+        </div>
+      </div>
+    </section>
 
-</main>
+    <section class="glass-section glass-grid">
+      <div class="glass-card" data-scroll>
+        <div class="glass-kpi">+62%</div>
+        <p>Footfall growth</p>
+      </div>
+      <div class="glass-card" data-scroll>
+        <div class="glass-kpi">3.2km</div>
+        <p>Average shop distance</p>
+      </div>
+    </section>
 
+  </main>
+</div>
+
+<!-- ===============================
+     SCROLL ENGINE (SAFE)
+================================ -->
 <script>
-/* ======================================================
-   SCROLL ENGINE (CORE)
-====================================================== */
-
-const elements = document.querySelectorAll("[data-scroll]");
+const items = document.querySelectorAll('[data-scroll]');
 const clamp = (v,min,max)=>Math.min(Math.max(v,min),max);
 
-window.addEventListener("scroll",()=>{
+window.addEventListener('scroll',()=>{
   const vh = window.innerHeight;
-  elements.forEach(el=>{
+  items.forEach(el=>{
     const r = el.getBoundingClientRect();
     const p = clamp(1 - r.top / vh, 0, 1);
-    el.style.setProperty("--scroll", p.toFixed(3));
+    el.style.setProperty('--scroll', p.toFixed(3));
   });
 });
 </script>
-
-</body>
-</html>
