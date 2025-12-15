@@ -1,31 +1,45 @@
+/* =====================================================
+   PROJECT DETAIL VIEW
+   LANDIO-GRADE · MONOCHROME · PRODUCT-LEVEL
+===================================================== */
+
 function renderProject(query) {
   const app = document.getElementById("app");
   const params = new URLSearchParams(query);
-  const repo = params.get("repo");
+  const repoName = params.get("repo");
 
-  if (!repo) {
-    app.innerHTML = `<p class="muted">Project not found.</p>`;
+  if (!app || !repoName) {
+    app.innerHTML = `<section><p>Project not found.</p></section>`;
     return;
   }
 
   app.innerHTML = `
     <section>
-      <h1>${repo}</h1>
-      <p class="muted">Loading project data...</p>
+      <h1>${repoName}</h1>
+      <p>Loading repository details…</p>
     </section>
   `;
 
   Promise.all([
-    fetch(`https://api.github.com/repos/alsopranab/${repo}`).then(r => r.json()),
-    fetch(`https://api.github.com/repos/alsopranab/${repo}/contents`).then(r => r.json())
-  ]).then(([repoData, contents]) => {
-    renderProjectLayout(repoData, contents, repo);
-  });
+    fetch(`https://api.github.com/repos/alsopranab/${repoName}`).then(r => r.json()),
+    fetch(`https://api.github.com/repos/alsopranab/${repoName}/contents`).then(r => r.json())
+  ])
+    .then(([repoData, contents]) => {
+      renderProjectLayout(repoData, contents, repoName);
+    })
+    .catch(() => {
+      app.innerHTML = `
+        <section>
+          <h1>${repoName}</h1>
+          <p>Unable to load repository data.</p>
+        </section>
+      `;
+    });
 }
 
-/* =========================
+/* =====================================================
    MAIN LAYOUT
-========================= */
+===================================================== */
 
 function renderProjectLayout(repo, contents, repoName) {
   const app = document.getElementById("app");
@@ -33,24 +47,26 @@ function renderProjectLayout(repo, contents, repoName) {
   app.innerHTML = `
     <section>
       <h1>${repo.name}</h1>
-      <p class="muted">${repo.description || ""}</p>
+      <p>${repo.description || "No description provided."}</p>
 
       <div class="grid">
         <div class="card">
-          <p><strong>Language:</strong> ${repo.language || "Mixed"}</p>
+          <p><strong>Primary language:</strong> ${repo.language || "Mixed"}</p>
           <p><strong>Stars:</strong> ${repo.stargazers_count}</p>
-          <p><strong>Updated:</strong> ${new Date(repo.updated_at).toDateString()}</p>
+          <p><strong>Last updated:</strong> ${new Date(repo.updated_at).toDateString()}</p>
         </div>
       </div>
     </section>
 
     <section>
       <h2>Repository Files</h2>
+
       <div class="grid">
-        <div class="card" id="fileTree"></div>
-        <div class="card">
+        <div class="card repo-card" id="fileTree"></div>
+
+        <div class="card repo-card">
           <div id="fileViewer">
-            <p class="muted">Select a file to view its content.</p>
+            <p>Select a file to view its contents.</p>
           </div>
         </div>
       </div>
@@ -60,15 +76,16 @@ function renderProjectLayout(repo, contents, repoName) {
   renderFileTree(contents, repoName);
 }
 
-/* =========================
-   FILE TREE
-========================= */
+/* =====================================================
+   FILE TREE (COMPACT, MONOCHROME)
+===================================================== */
 
 function renderFileTree(contents, repo) {
   const tree = document.getElementById("fileTree");
+  if (!tree || !Array.isArray(contents)) return;
 
   tree.innerHTML = `
-    <ul style="list-style:none;padding-left:0;">
+    <ul style="list-style:none;padding:0;margin:0;">
       ${contents.map(item => fileItem(item, repo)).join("")}
     </ul>
   `;
@@ -77,41 +94,49 @@ function renderFileTree(contents, repo) {
 function fileItem(item, repo) {
   if (item.type === "dir") {
     return `
-      <li style="margin-bottom:8px;">
-        📁 <strong>${item.name}</strong>
+      <li style="margin-bottom:6px;font-weight:600;">
+        ${item.name}/
       </li>
     `;
   }
 
   return `
-    <li style="margin-bottom:8px;cursor:pointer;color:#38bdf8;"
-        onclick="openFile('${repo}','${item.path}')">
-      📄 ${item.name}
+    <li
+      style="margin-bottom:6px;cursor:pointer;"
+      onclick="openFile('${repo}','${item.path}')"
+    >
+      ${item.name}
     </li>
   `;
 }
 
-/* =========================
-   FILE VIEWER
-========================= */
+/* =====================================================
+   FILE VIEWER (EMBEDDED, BALANCED)
+===================================================== */
 
 function openFile(repo, path) {
   const viewer = document.getElementById("fileViewer");
+  if (!viewer) return;
 
-  viewer.innerHTML = `<p class="muted">Loading file...</p>`;
+  viewer.innerHTML = `<p>Loading file…</p>`;
 
   fetch(`https://api.github.com/repos/alsopranab/${repo}/contents/${path}`)
     .then(r => r.json())
     .then(file => {
-      const content = atob(file.content || "");
+      if (!file || !file.content) {
+        viewer.innerHTML = `<p>Unable to load file.</p>`;
+        return;
+      }
+
+      const content = atob(file.content);
       const lang = detectLanguage(path);
 
       viewer.innerHTML = `
         <h3>${path}</h3>
         <pre>
-          <code class="language-${lang}">
+<code class="language-${lang}">
 ${escapeHtml(content)}
-          </code>
+</code>
         </pre>
       `;
 
@@ -120,13 +145,13 @@ ${escapeHtml(content)}
       }
     })
     .catch(() => {
-      viewer.innerHTML = `<p class="muted">Unable to load file.</p>`;
+      viewer.innerHTML = `<p>Unable to load file.</p>`;
     });
 }
 
-/* =========================
+/* =====================================================
    HELPERS
-========================= */
+===================================================== */
 
 function detectLanguage(file) {
   if (file.endsWith(".js")) return "javascript";
