@@ -1,6 +1,6 @@
 /* =====================================================
    HOME VIEW
-   Clean · Data-Driven · SPA-Safe
+   LANDIO-GRADE · MONOCHROME · SCROLL-AWARE
 ===================================================== */
 
 let homeSkillChart = null;
@@ -19,23 +19,23 @@ function renderHome() {
     ====================== -->
     <section class="home-hero">
       <div class="card hero-card">
-        <h1 class="home-name">${PROFILE.identity.name}</h1>
-        <h2 class="home-role">${PROFILE.identity.role}</h2>
+        <h1>${PROFILE.identity.name}</h1>
+        <h2>${PROFILE.identity.role}</h2>
 
-        <p class="home-summary">
+        <p>
           ${PROFILE.identity.tagline}
         </p>
 
-        <div class="grid home-metrics">
-          ${metricCard("SQL", "Production queries & optimization")}
-          ${metricCard("Python", "EDA, automation, scripting")}
+        <div class="grid">
+          ${metricCard("SQL", "Production-grade queries & optimization")}
+          ${metricCard("Python", "EDA, automation, pipelines")}
           ${metricCard("Analytics", "Funnels, KPIs, dashboards")}
         </div>
       </div>
     </section>
 
     <!-- =====================
-         MINI ANALYTICS
+         ANALYTICS SNAPSHOT
     ====================== -->
     <section>
       <h2>Analytics Snapshot</h2>
@@ -57,9 +57,7 @@ function renderHome() {
       </div>
 
       <div class="home-cta">
-        <a href="#/dashboard" class="impact-link">
-          Open full analytics dashboard →
-        </a>
+        <a href="#/dashboard">Open full analytics dashboard →</a>
       </div>
     </section>
 
@@ -72,7 +70,7 @@ function renderHome() {
       <div class="grid">
         ${focusCard(
           "Operational Analytics",
-          "Lead flow, site visits, schedule rate, QA trends, funnel drop-offs"
+          "Lead flow, visit efficiency, QA trends, funnel drop-offs"
         )}
         ${focusCard(
           "Automation & ETL",
@@ -80,13 +78,13 @@ function renderHome() {
         )}
         ${focusCard(
           "Decision Dashboards",
-          "Executive-ready performance & conversion views"
+          "Executive-grade performance views"
         )}
       </div>
     </section>
 
     <!-- =====================
-         EXPERIENCE SNAPSHOT
+         EXPERIENCE
     ====================== -->
     <section>
       <h2>Experience Snapshot</h2>
@@ -97,10 +95,10 @@ function renderHome() {
           "Operations Data Analyst",
           "2025 – Present",
           [
-            "Automated reporting using SQL, Python, Apps Script & Power Automate",
-            "EDA on agent performance, funnels & schedule rate",
-            "Built KPI dashboards for leadership decisions",
-            "Unified CRM & dialer data into analytical models"
+            "Automated reporting using SQL & Python",
+            "EDA on agent performance & funnels",
+            "Built KPI dashboards for leadership",
+            "Unified CRM & dialer datasets"
           ]
         )}
 
@@ -109,17 +107,15 @@ function renderHome() {
           "Unit Head",
           "2024",
           [
-            "Led a unit achieving ~15% MoM conversion growth",
-            "Sales call analysis for coaching & uplift",
-            "Execution aligned with business targets"
+            "Led unit achieving ~15% MoM growth",
+            "Sales call analysis & coaching",
+            "Execution aligned to business KPIs"
           ]
         )}
       </div>
 
       <div class="home-cta">
-        <a href="#/funnels" class="impact-link">
-          See how experience converts into impact →
-        </a>
+        <a href="#/funnels">See funnel impact →</a>
       </div>
     </section>
 
@@ -128,24 +124,23 @@ function renderHome() {
     ====================== -->
     <section>
       <h2>Explore</h2>
-      <p class="muted">
+      <p>
         This site is both a portfolio and a working analytics knowledge base.
       </p>
 
       <div class="grid">
         ${exploreCard("Dashboard", "Metrics, skills & growth", "#/dashboard")}
-        ${exploreCard("Projects", "Live GitHub repositories", "#/projects")}
-        ${exploreCard("Learnings", "Production-tested insights", "#/learnings")}
+        ${exploreCard("Projects", "Production repositories", "#/projects")}
+        ${exploreCard("Learnings", "Applied analytics insights", "#/learnings")}
       </div>
     </section>
   `;
 
-  // Charts must render AFTER DOM paint
   requestAnimationFrame(renderHomeCharts);
 }
 
 /* =====================================================
-   HOME CHARTS (READ-ONLY PREVIEW)
+   HOME CHARTS (MONOCHROME · STATIC)
 ===================================================== */
 function renderHomeCharts() {
   if (typeof Chart === "undefined" || !window.PROFILE) return;
@@ -162,15 +157,14 @@ function renderHomeCharts() {
   homeSkillChart = new Chart(skillCanvas, {
     type: "doughnut",
     data: {
-      labels: skillDistribution.labels,
       datasets: [{
         data: skillDistribution.values,
         backgroundColor: [
-          "#38bdf8",
-          "#22c55e",
-          "#f59e0b",
-          "#a855f7",
-          "#06b6d4"
+          "#ffffff",
+          "rgba(255,255,255,0.85)",
+          "rgba(255,255,255,0.7)",
+          "rgba(255,255,255,0.55)",
+          "rgba(255,255,255,0.4)"
         ],
         borderWidth: 0
       }]
@@ -183,7 +177,7 @@ function renderHomeCharts() {
         legend: { display: false },
         tooltip: { enabled: false }
       },
-      animation: { duration: 400 }
+      animation: false
     }
   });
 
@@ -193,11 +187,10 @@ function renderHomeCharts() {
       labels: growthTimeline.years,
       datasets: [{
         data: growthTimeline.values,
-        borderColor: "#38bdf8",
-        backgroundColor: "rgba(56,189,248,0.14)",
-        borderWidth: 2,
+        borderColor: "#ffffff",
+        borderWidth: 1.5,
         tension: 0.35,
-        fill: true,
+        fill: false,
         pointRadius: 0
       }]
     },
@@ -212,7 +205,7 @@ function renderHomeCharts() {
         x: { display: false },
         y: { display: false }
       },
-      animation: { duration: 450 }
+      animation: false
     }
   });
 }
@@ -222,9 +215,9 @@ function renderHomeCharts() {
 ===================================================== */
 function metricCard(title, desc) {
   return `
-    <div class="card kpi">
-      <div class="kpi-value">${title}</div>
-      <p class="muted">${desc}</p>
+    <div class="card">
+      <h3>${title}</h3>
+      <p>${desc}</p>
     </div>
   `;
 }
@@ -233,7 +226,7 @@ function focusCard(title, desc) {
   return `
     <div class="card">
       <h3>${title}</h3>
-      <p class="muted">${desc}</p>
+      <p>${desc}</p>
     </div>
   `;
 }
@@ -243,7 +236,7 @@ function experienceCard(company, role, period, points) {
     <div class="card">
       <h3>${company}</h3>
       <p><strong>${role}</strong></p>
-      <p class="muted">${period}</p>
+      <p>${period}</p>
       <ul>${points.map(p => `<li>${p}</li>`).join("")}</ul>
     </div>
   `;
@@ -253,7 +246,7 @@ function exploreCard(title, desc, link) {
   return `
     <div class="card">
       <h3>${title}</h3>
-      <p class="muted">${desc}</p>
+      <p>${desc}</p>
       <button onclick="location.hash='${link}'">Open</button>
     </div>
   `;
