@@ -1,43 +1,33 @@
 /* ======================================================
-   REFINED AI DASHBOARD DESIGN SYSTEM
-   Calm · Matte · Zero-Lag · Production Safe
+   LANDIO BLACK / WHITE SYSTEM
+   Matte · Embedded · Zero Noise · Zero Lag
 ====================================================== */
 
 /* ======================================================
-   1. ROOT TOKENS (CRITICAL)
+   1. ROOT TOKENS (NO COLORS)
 ====================================================== */
 
 :root {
-  /* Background */
-  --bg-base: #05070b;
-  --bg-tint: rgba(255,255,255,0.035);
+  --bg-base: #050608;
+  --bg-layer: #0a0b0e;
 
-  /* Glass / Surface */
-  --glass: rgba(10,13,18,0.88);
-  --glass-soft: rgba(10,13,18,0.72);
-  --border: rgba(255,255,255,0.045);
+  --glass: rgba(10,12,16,0.9);
+  --glass-soft: rgba(10,12,16,0.75);
+  --border: rgba(255,255,255,0.04);
 
-  /* Text */
-  --text: #e5e7eb;
-  --muted: #9ca3af;
-  --dim: #6b7280;
+  --text: #e6e6e6;
+  --muted: #9a9a9a;
+  --dim: #6a6a6a;
 
-  /* Accent (VERY controlled) */
-  --accent: #8ab4f8;
-  --accent-soft: rgba(138,180,248,0.12);
-
-  /* Geometry */
   --radius: 22px;
   --pill-radius: 999px;
-  --blur: 32px;
+  --blur: 34px;
 
-  /* Motion (slow, natural, no snap) */
   --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
 
-  /* Depth (embedded look) */
   --shadow:
-    0 40px 120px rgba(0,0,0,0.85),
-    inset 0 1px 0 rgba(255,255,255,0.03);
+    0 40px 120px rgba(0,0,0,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.025);
 }
 
 /* ======================================================
@@ -50,8 +40,7 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   min-height: 100%;
   background: var(--bg-base);
@@ -72,7 +61,7 @@ body {
 }
 
 /* ======================================================
-   3. ATMOSPHERIC BACKGROUND (VERY SUBTLE)
+   3. ATMOSPHERIC BACKGROUND (VERY SOFT)
 ====================================================== */
 
 body::before {
@@ -84,21 +73,14 @@ body::before {
   background:
     radial-gradient(
       1200px 600px at 50% 15%,
-      rgba(255,255,255,0.05),
+      rgba(255,255,255,0.035),
       transparent 70%
     ),
-    linear-gradient(
-      180deg,
-      #05070b,
-      #06090f 40%,
-      #05070b
-    );
-
-  will-change: transform;
+    linear-gradient(180deg, #040507, #050608 40%, #040507);
 }
 
 /* ======================================================
-   4. DYNAMIC ISLAND HEADER (CALM)
+   4. DYNAMIC ISLAND NAV
 ====================================================== */
 
 .dynamic-header {
@@ -117,30 +99,19 @@ body::before {
   gap: 22px;
 
   padding: 12px 24px;
-
   background: var(--glass-soft);
   backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
-
   border: 1px solid var(--border);
   border-radius: var(--pill-radius);
   box-shadow: var(--shadow);
-
-  transition:
-    opacity 0.35s var(--ease),
-    transform 0.35s var(--ease);
 }
 
-.logo {
-  font-weight: 700;
-  letter-spacing: 0.4px;
+/* REMOVE "PD" NAV ITEM */
+.nav-links a:first-child {
+  display: none;
 }
 
-.nav-links {
-  display: flex;
-  gap: 18px;
-}
-
+/* Nav text */
 .nav-links a {
   font-size: 13px;
   font-weight: 500;
@@ -153,12 +124,11 @@ body::before {
 }
 
 /* ======================================================
-   5. MAIN ROOT
+   5. MAIN
 ====================================================== */
 
 main {
-  padding: 120px 24px 60px;
-  min-height: 100vh;
+  padding: 120px 24px 80px;
 }
 
 /* ======================================================
@@ -168,23 +138,18 @@ main {
 section {
   max-width: 1200px;
   margin: auto;
-  margin-bottom: 96px;
+  margin-bottom: 120px;
 }
 
 h1 {
-  font-size: clamp(40px, 6vw, 68px);
+  font-size: clamp(42px, 6vw, 72px);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.05;
 }
 
-h1 em {
-  font-style: italic;
-  font-weight: 500;
-}
-
 h2 {
-  font-size: 34px;
+  font-size: 36px;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -206,39 +171,42 @@ p {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
   gap: 32px;
 }
 
 /* ======================================================
-   8. CARDS (EMBEDDED, NOT FLOATING)
+   8. CARDS (EMBEDDED DASHBOARD)
 ====================================================== */
 
 .card {
-  position: relative;
   background: var(--glass);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 28px;
-
   box-shadow: var(--shadow);
 
-  transition:
-    opacity 0.25s var(--ease);
+  /* SUBTLE ENTRY ANIMATION */
+  opacity: 0;
+  transform: translateY(14px);
+  animation: fadeUp 0.9s var(--ease) forwards;
 }
 
-/* NO lift animation */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hover = almost nothing */
 .card:hover {
-  opacity: 0.96;
+  opacity: 0.97;
 }
 
 /* ======================================================
-   9. DASHBOARD / KPI
+   9. DASHBOARD / KPI (BLACK & WHITE)
 ====================================================== */
-
-.kpi {
-  text-align: center;
-}
 
 .kpi-value {
   font-size: 36px;
@@ -248,7 +216,6 @@ p {
 }
 
 .kpi-label {
-  margin-top: 6px;
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -262,58 +229,25 @@ p {
 button {
   margin-top: 24px;
   padding: 12px 26px;
-
   border-radius: var(--pill-radius);
   border: 1px solid var(--border);
   background: rgba(255,255,255,0.04);
-
   color: var(--text);
   font-size: 14px;
-  font-weight: 500;
-
   cursor: pointer;
-  backdrop-filter: blur(14px);
-
-  transition:
-    background 0.2s ease;
 }
 
 button:hover {
-  background: rgba(255,255,255,0.08);
-}
-
-button:active {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.07);
 }
 
 /* ======================================================
-   11. CODE / DASHBOARD PANELS
+   11. CHART LOCK (ABSOLUTE)
 ====================================================== */
 
-pre {
-  background: #020617;
-  padding: 20px;
-  border-radius: 16px;
-  overflow-x: auto;
-  font-size: 13px;
-}
-
-code {
-  font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
-}
-
-/* ======================================================
-   12. CHART LOCK (ABSOLUTE)
-====================================================== */
-
-.chart-card {
-  transform: none !important;
-  will-change: auto;
-}
-
+.chart-card,
 .chart-card:hover {
   transform: none !important;
-  box-shadow: var(--shadow);
 }
 
 .chart-box {
@@ -326,18 +260,15 @@ code {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  border-radius: inherit;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.04),
-      transparent 45%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.03),
+    transparent 45%
+  );
 }
 
 /* ======================================================
-   13. MOBILE (NO BREAKAGE)
+   12. MOBILE
 ====================================================== */
 
 @media (max-width: 768px) {
