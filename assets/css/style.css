@@ -1,33 +1,37 @@
 /* ======================================================
-   LANDIO BLACK / WHITE SYSTEM
-   Matte · Embedded · Zero Noise · Zero Lag
+   BLACK GLASS · WORLD-CLASS UI SYSTEM
+   Inspired by Landio (Framer)
+   Zero color · Zero clutter · GPU safe
 ====================================================== */
 
 /* ======================================================
-   1. ROOT TOKENS (NO COLORS)
+   1. ROOT TOKENS (BLACK / WHITE ONLY)
 ====================================================== */
 
 :root {
-  --bg-base: #050608;
-  --bg-layer: #0a0b0e;
+  --bg-base: #07090c;
+  --bg-elevated: #0b0e13;
 
-  --glass: rgba(10,12,16,0.9);
-  --glass-soft: rgba(10,12,16,0.75);
-  --border: rgba(255,255,255,0.04);
+  --glass: rgba(255, 255, 255, 0.035);
+  --glass-strong: rgba(255, 255, 255, 0.06);
 
-  --text: #e6e6e6;
-  --muted: #9a9a9a;
-  --dim: #6a6a6a;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-soft: rgba(255, 255, 255, 0.05);
 
-  --radius: 22px;
-  --pill-radius: 999px;
-  --blur: 34px;
+  --text-main: #f5f7fa;
+  --text-muted: rgba(255, 255, 255, 0.55);
 
-  --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --glow-soft: 0 0 0 transparent;
+  --glow-hover: 0 0 0 transparent;
 
-  --shadow:
-    0 40px 120px rgba(0,0,0,0.9),
-    inset 0 1px 0 rgba(255,255,255,0.025);
+  --radius: 18px;
+  --radius-lg: 22px;
+  --pill: 999px;
+
+  --blur: 22px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
 }
 
 /* ======================================================
@@ -40,14 +44,14 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
-  min-height: 100%;
   background: var(--bg-base);
 }
 
 body {
-  color: var(--text);
+  color: var(--text-main);
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -61,7 +65,7 @@ body {
 }
 
 /* ======================================================
-   3. ATMOSPHERIC BACKGROUND (VERY SOFT)
+   3. AMBIENT BACKGROUND (SOFT ONLY)
 ====================================================== */
 
 body::before {
@@ -71,16 +75,19 @@ body::before {
   z-index: -1;
 
   background:
-    radial-gradient(
-      1200px 600px at 50% 15%,
+    radial-gradient(900px 600px at 15% 10%,
       rgba(255,255,255,0.035),
-      transparent 70%
-    ),
-    linear-gradient(180deg, #040507, #050608 40%, #040507);
+      transparent 65%),
+    radial-gradient(900px 600px at 85% 40%,
+      rgba(255,255,255,0.025),
+      transparent 70%),
+    linear-gradient(180deg, var(--bg-base), var(--bg-base));
+
+  transform: translateZ(0);
 }
 
 /* ======================================================
-   4. DYNAMIC ISLAND NAV
+   4. DYNAMIC ISLAND NAV (MONOCHROME)
 ====================================================== */
 
 .dynamic-header {
@@ -88,207 +95,227 @@ body::before {
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 200;
+  z-index: 100;
   pointer-events: none;
 }
 
 .dynamic-nav {
   pointer-events: auto;
-  display: flex;
-  align-items: center;
-  gap: 22px;
 
-  padding: 12px 24px;
-  background: var(--glass-soft);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+
+  padding: 12px 20px;
+
+  background: var(--glass);
   backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+
   border: 1px solid var(--border);
-  border-radius: var(--pill-radius);
+  border-radius: var(--pill);
   box-shadow: var(--shadow);
+
+  transition: opacity 0.4s var(--ease),
+              transform 0.4s var(--ease);
 }
 
-/* REMOVE "PD" NAV ITEM */
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+
+  transition: opacity 0.25s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.85;
+}
+
+/* Remove PD badge visual impact */
 .nav-links a:first-child {
   display: none;
 }
 
-/* Nav text */
-.nav-links a {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--muted);
-  text-decoration: none;
-}
-
-.nav-links a:hover {
-  color: var(--text);
-}
-
 /* ======================================================
-   5. MAIN
+   5. SCROLL REVEAL SYSTEM (CORE)
 ====================================================== */
 
-main {
-  padding: 120px 24px 80px;
+/* Apply to ALL major blocks */
+section,
+.card,
+.grid > *,
+.chart-card,
+.project-card,
+.repo-card {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
+  will-change: transform, opacity;
+}
+
+/* Reveal trigger */
+.reveal {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 /* ======================================================
-   6. TYPOGRAPHY (EDITORIAL)
+   6. TYPOGRAPHY (LANDIO-STYLE)
 ====================================================== */
 
 section {
   max-width: 1200px;
   margin: auto;
-  margin-bottom: 120px;
+  padding: 120px 24px 0;
 }
 
 h1 {
-  font-size: clamp(42px, 6vw, 72px);
-  font-weight: 600;
+  font-size: clamp(42px, 5vw, 64px);
+  font-weight: 700;
   letter-spacing: -0.03em;
-  line-height: 1.05;
 }
 
 h2 {
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-h3 {
-  font-size: 18px;
-  font-weight: 600;
+  margin-bottom: 18px;
 }
 
 p {
-  color: var(--muted);
+  color: var(--text-muted);
   max-width: 720px;
   line-height: 1.7;
 }
 
 /* ======================================================
-   7. GRID
+   7. CARDS / DASHBOARD BLOCKS
 ====================================================== */
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-  gap: 32px;
-}
-
-/* ======================================================
-   8. CARDS (EMBEDDED DASHBOARD)
-====================================================== */
-
-.card {
+.card,
+.chart-card,
+.project-card,
+.repo-card {
   background: var(--glass);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 28px;
+  backdrop-filter: blur(var(--blur));
+  -webkit-backdrop-filter: blur(var(--blur));
+
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 26px;
+
   box-shadow: var(--shadow);
-
-  /* SUBTLE ENTRY ANIMATION */
-  opacity: 0;
-  transform: translateY(14px);
-  animation: fadeUp 0.9s var(--ease) forwards;
 }
 
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Hover = almost nothing */
-.card:hover {
-  opacity: 0.97;
+/* Hover = subtle lift only */
+.card:hover,
+.project-card:hover {
+  transform: translateY(-4px);
 }
 
 /* ======================================================
-   9. DASHBOARD / KPI (BLACK & WHITE)
+   8. DASHBOARD / CHART LOCK (MONOCHROME)
 ====================================================== */
 
-.kpi-value {
-  font-size: 36px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text);
+canvas,
+svg {
+  filter: grayscale(100%) brightness(1.05) contrast(1.1);
 }
-
-.kpi-label {
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dim);
-}
-
-/* ======================================================
-   10. BUTTONS (QUIET)
-====================================================== */
-
-button {
-  margin-top: 24px;
-  padding: 12px 26px;
-  border-radius: var(--pill-radius);
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.04);
-  color: var(--text);
-  font-size: 14px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: rgba(255,255,255,0.07);
-}
-
-/* ======================================================
-   11. CHART LOCK (ABSOLUTE)
-====================================================== */
 
 .chart-card,
-.chart-card:hover {
-  transform: none !important;
-}
-
 .chart-box {
-  position: relative;
-  height: 240px;
-}
-
-.chart-box::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.03),
-    transparent 45%
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0.02)
   );
 }
 
+.chart-card * {
+  animation: none !important;
+}
+
 /* ======================================================
-   12. MOBILE
+   9. PROJECT PAGE FIXES
+====================================================== */
+
+/* Project category headings */
+.project-section h3 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+
+/* Repository container */
+.repo-card {
+  padding: 18px;
+}
+
+/* Code viewer FIX */
+pre {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+
+  padding: 16px;
+  font-size: 13px;
+
+  max-height: 320px;
+  overflow: auto;
+}
+
+/* No color syntax */
+code {
+  color: var(--text-main);
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* ======================================================
+   10. BUTTONS (BLACK GLASS)
+====================================================== */
+
+button,
+.btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--pill);
+
+  color: var(--text-main);
+  padding: 10px 18px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: opacity 0.25s ease,
+              transform 0.25s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ======================================================
+   11. MOBILE
 ====================================================== */
 
 @media (max-width: 768px) {
   h1 {
-    font-size: 38px;
+    font-size: 36px;
+  }
+
+  section {
+    padding-top: 90px;
   }
 
   .dynamic-nav {
-    width: calc(100% - 24px);
     overflow-x: auto;
-    flex-wrap: nowrap;
-    border-radius: 18px;
+    scrollbar-width: none;
   }
 
-  .nav-links {
-    flex-wrap: nowrap;
-  }
-
-  .nav-links a {
-    white-space: nowrap;
-    font-size: 13px;
+  .dynamic-nav::-webkit-scrollbar {
+    display: none;
   }
 }
