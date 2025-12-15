@@ -1,533 +1,313 @@
 /* ======================================================
-  macOS GLASS DESIGN SYSTEM v2.0
-  Dynamic Island · Liquid Glass · Enhanced Color Palette
+  macOS GLASS DESIGN SYSTEM v2.1 - SMOOTH EDITION
+  Ultra-Smooth Animations · Glowing Logos · Tech Portfolio Feel
 ====================================================== */
 
 /* ======================================================
-  1. ENHANCED ROOT TOKENS (Premium Palette)
+  1. ENHANCED ROOT TOKENS (Ultra Smooth)
 ====================================================== */
 
 :root {
-/* Enhanced Background System */
---bg-base: #0a0e17;
---bg-gradient: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #16213e 100%);
---bg-tint-1: rgba(99, 102, 255, 0.08);
---bg-tint-2: rgba(236, 72, 153, 0.06);
---bg-tint-3: rgba(34, 197, 94, 0.05);
+--ease-ultra: cubic-bezier(0.25, 0.1, 0.25, 1.05);
+--ease-glow: cubic-bezier(0.4, 0, 0.2, 1);
+--ease-float: cubic-bezier(0.23, 1, 0.32, 1);
 
-/* Premium Glass System */
---glass-primary: rgba(15, 23, 42, 0.85);
---glass-secondary: rgba(15, 23, 42, 0.75);
---glass-tertiary: rgba(15, 23, 42, 0.65);
---glass-overlay: rgba(15, 23, 42, 0.92);
---border-primary: rgba(148, 163, 184, 0.12);
---border-glow: rgba(99, 102, 255, 0.2);
+/* GLOW SYSTEM */
+--glow-indigo: 0 0 20px rgba(99, 102, 255, 0.4), 0 0 40px rgba(99, 102, 255, 0.15);
+--glow-pink: 0 0 20px rgba(236, 72, 153, 0.4), 0 0 40px rgba(236, 72, 153, 0.15);
+--glow-white: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.2);
 
-/* Typography Hierarchy */
---text-primary: #f8fafc;
---text-secondary: #e2e8f0;
---text-muted: #94a3b8;
---text-dim: #64748b;
-
-/* Indigo Spectrum (Primary) */
---accent-indigo-50: rgba(99, 102, 255, 0.08);
---accent-indigo-100: rgba(99, 102, 255, 0.15);
---accent-indigo-200: rgba(99, 102, 255, 0.25);
---accent-indigo-400: #6366f1;
---accent-indigo-500: #4f46e5;
---accent-indigo-600: #4338ca;
-
-/* Pink Spectrum (Secondary) */
---accent-pink-400: #ec4899;
---accent-pink-500: #db2777;
---accent-pink-600: #be185d;
-
-/* Teal Spectrum (Success) */
---accent-teal-400: #22d3ee;
---accent-teal-500: #14b8a6;
-
-/* Gold Spectrum (Warning) */
---accent-gold-400: #f59e0b;
---accent-gold-500: #d97706;
-
-/* Geometry & Effects */
---radius: 20px;
---pill-radius: 9999px;
---blur: 28px;
---shadow-ambient: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
---shadow-glow: 0 0 0 1px rgba(99, 102, 255, 0.2);
-}
-
-/* Premium Light Mode */
-@media (prefers-color-scheme: light) {
-:root {
---bg-base: #f8fafc;
---bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
---bg-tint-1: rgba(99, 102, 255, 0.1);
---bg-tint-2: rgba(236, 72, 153, 0.08);
---bg-tint-3: rgba(34, 197, 94, 0.06);
-
---glass-primary: rgba(255, 255, 255, 0.92);
---glass-secondary: rgba(255, 255, 255, 0.88);
---glass-tertiary: rgba(255, 255, 255, 0.82);
---glass-overlay: rgba(255, 255, 255, 0.96);
---border-primary: rgba(148, 163, 184, 0.15);
---border-glow: rgba(99, 102, 255, 0.25);
-
---text-primary: #0f172a;
---text-secondary: #1e293b;
---text-muted: #475569;
---text-dim: #64748b;
-
---accent-indigo-400: #6366f1;
---accent-indigo-500: #4f46e5;
---accent-indigo-600: #4338ca;
-
---shadow-ambient: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-}
+/* Ultra Smooth Durations */
+--motion-duration-short: 0.2s;
+--motion-duration-base: 0.35s;
+--motion-duration-long: 0.6s;
 }
 
 /* ======================================================
-  2. ENHANCED RESET & BASE
+  2. ULTRA SMOOTH BASE UPDATES
 ====================================================== */
 
-*,
-*::before,
-*::after {
-box-sizing: border-box;
-}
-
-html,
-body {
-margin: 0;
-min-height: 100%;
-background: var(--bg-gradient);
+html {
+scroll-behavior: smooth;
+scroll-padding-top: 100px;
 }
 
 body {
-color: var(--text-primary);
-font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, system-ui, sans-serif;
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
-overflow-x: hidden;
-line-height: 1.6;
+transition: all var(--motion-duration-long) var(--ease-ultra);
 }
 
 /* ======================================================
-  3. MULTI-LAYER AMBIENT BACKGROUND
+  3. HYPER-SMOOTH AMBIENT BACKGROUND
 ====================================================== */
 
 body::before {
-content: "";
-position: fixed;
-inset: 0;
-z-index: -1;
-
-background:
-radial-gradient(900px 600px at 20% 10%, var(--bg-tint-1), transparent 70%),
-radial-gradient(800px 600px at 80% 30%, var(--bg-tint-2), transparent 65%),
-radial-gradient(700px 500px at 45% 80%, var(--bg-tint-3), transparent 60%),
-var(--bg-gradient);
-
-transform: translateZ(0);
-will-change: transform;
-animation: ambientFloat 20s ease-in-out infinite;
+animation: 
+  ambientFloat 25s var(--ease-float) infinite,
+  ambientShift 15s var(--ease-glow) infinite alternate;
 }
 
 @keyframes ambientFloat {
-0%, 100% { transform: translateZ(0) scale(1); }
-50% { transform: translateZ(0) scale(1.02); }
+  0%, 100% { 
+    transform: translateZ(0) scale(1) rotate(0deg); 
+    filter: brightness(1) saturate(1);
+  }
+  33% { 
+    transform: translateZ(0) scale(1.015) rotate(0.3deg); 
+    filter: brightness(1.05) saturate(1.1);
+  }
+  66% { 
+    transform: translateZ(0) scale(1.01) rotate(-0.2deg); 
+    filter: brightness(0.95) saturate(1.05);
+  }
+}
+
+@keyframes ambientShift {
+  0% { opacity: 0.85; }
+  100% { opacity: 0.95; }
 }
 
 /* ======================================================
-  4. PREMIUM DYNAMIC ISLAND
+  4. GLOWING DYNAMIC ISLAND (Tech Portfolio Style)
 ====================================================== */
 
-.dynamic-header {
-position: fixed;
-top: 16px;
-left: 50%;
-transform: translateX(-50%);
-z-index: 200;
-pointer-events: none;
+.dynamic-nav {
+  transition: all var(--motion-duration-base) var(--ease-ultra);
+  animation: islandPulse 4s var(--ease-glow) infinite;
 }
 
-.dynamic-nav {
-pointer-events: auto;
-display: flex;
-align-items: center;
-gap: 24px;
-padding: 14px 28px;
-background: var(--glass-overlay);
-backdrop-filter: blur(var(--blur)) saturate(200%) brightness(1.05);
--webkit-backdrop-filter: blur(var(--blur)) saturate(200%) brightness(1.05);
-border: 1px solid var(--border-glow);
-border-radius: var(--pill-radius);
-box-shadow: 
-  var(--shadow-ambient),
-  var(--shadow-glow),
-  inset 0 1px 0 rgba(255, 255, 255, 0.2);
-
-transition: all 0.4s var(--ease);
+@keyframes islandPulse {
+  0%, 100% { 
+    box-shadow: 
+      var(--shadow-ambient),
+      var(--shadow-glow),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+  50% { 
+    box-shadow: 
+      0 35px 70px -15px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(99, 102, 255, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
 }
 
 .dynamic-nav:hover {
-background: var(--glass-primary);
-box-shadow: 
-  0 35px 70px -15px rgba(0, 0, 0, 0.6),
-  var(--shadow-glow),
-  inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  animation-play-state: paused;
+  background: var(--glass-primary);
+  box-shadow: 
+    0 45px 90px -20px rgba(0, 0, 0, 0.7),
+    var(--glow-indigo),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-4px) scale(1.02);
 }
 
-/* Logo Enhancement */
+/* ======================================================
+  5. GLOWING LOGO SYSTEM (Dark/White Tech Effect)
+====================================================== */
+
 .logo {
-font-weight: 800;
-letter-spacing: -0.02em;
-background: linear-gradient(135deg, var(--accent-indigo-400), var(--accent-pink-400));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+  position: relative;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  animation: logoShimmer 3s var(--ease-glow) infinite;
 }
 
-/* Enhanced Nav Links */
-.nav-links {
-display: flex;
-align-items: center;
-gap: 20px;
+.logo::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent);
+  transition: left 0.8s var(--ease-ultra);
+  animation: logoShimmerSweep 3s var(--ease-glow) infinite;
 }
+
+.logo:hover::before {
+  animation-play-state: paused;
+  left: 100%;
+}
+
+@keyframes logoShimmer {
+  0%, 100% { 
+    filter: brightness(1) drop-shadow(var(--glow-white));
+  }
+  50% { 
+    filter: brightness(1.2) drop-shadow(var(--glow-indigo));
+  }
+}
+
+@keyframes logoShimmerSweep {
+  0% { left: -150%; }
+  100% { left: 100%; }
+}
+
+/* ======================================================
+  6. SMOOTH NAV LINKS WITH GLOW
+====================================================== */
 
 .nav-links a {
-position: relative;
-font-size: 15px;
-font-weight: 600;
-color: var(--text-secondary);
-text-decoration: none;
-transition: all 0.25s var(--ease);
+  position: relative;
+  transition: all var(--motion-duration-short) var(--ease-ultra);
 }
 
 .nav-links a::before {
-content: '';
-position: absolute;
-bottom: -4px;
-left: 50%;
-width: 0;
-height: 2px;
-background: linear-gradient(90deg, var(--accent-indigo-400), var(--accent-pink-400));
-transition: all 0.3s var(--ease);
-transform: translateX(-50%);
+  transition: all var(--motion-duration-base) var(--ease-glow);
 }
 
 .nav-links a:hover {
-color: var(--accent-indigo-400);
-transform: translateY(-1px);
+  color: var(--accent-indigo-400);
+  transform: translateY(-2px);
+  filter: drop-shadow(var(--glow-indigo));
 }
 
 .nav-links a:hover::before {
-width: 100%;
+  width: 100%;
+  box-shadow: var(--glow-indigo);
 }
 
 /* ======================================================
-  5. MAIN CONTENT
-====================================================== */
-
-main {
-padding: 120px 28px 48px;
-min-height: 100vh;
-background: transparent;
-}
-
-/* ======================================================
-  6. TYPOGRAPHY PERFECTION
+  7. ULTRA-SMOOTH SCROLL REVEAL
 ====================================================== */
 
 section {
-max-width: 1280px;
-margin: auto;
-margin-bottom: 72px;
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeInUp var(--motion-duration-long) var(--ease-ultra) forwards;
 }
 
-h1 {
-font-size: 48px;
-font-weight: 800;
-letter-spacing: -0.03em;
-background: linear-gradient(135deg, var(--text-primary), var(--accent-indigo-400));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-line-height: 1.1;
-}
+section:nth-child(odd) { animation-delay: 0.1s; }
+section:nth-child(even) { animation-delay: 0.2s; }
 
-h2 {
-font-size: 32px;
-font-weight: 700;
-padding: 4px 16px;
-background: linear-gradient(90deg, var(--accent-indigo-400), var(--accent-pink-400));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-margin-bottom: 24px;
-position: relative;
-}
-
-h2::before {
-content: '';
-position: absolute;
-left: 0;
-top: 50%;
-transform: translateY(-50%);
-width: 4px;
-height: 100%;
-background: linear-gradient(180deg, var(--accent-indigo-400), var(--accent-pink-400));
-border-radius: 2px;
-}
-
-h3 {
-font-weight: 700;
-color: var(--text-secondary);
-}
-
-p {
-color: var(--text-muted);
-max-width: 760px;
-line-height: 1.75;
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ======================================================
-  7. RESPONSIVE GRID
-====================================================== */
-
-.grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-gap: 32px;
-}
-
-/* ======================================================
-  8. PREMIUM GLASS CARDS
+  8. PREMIUM GLASS CARDS (Floating Perfection)
 ====================================================== */
 
 .card {
-position: relative;
-background: var(--glass-secondary);
-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(1.02);
--webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(1.02);
-border: 1px solid var(--border-primary);
-border-radius: var(--radius);
-padding: 32px;
-box-shadow: var(--shadow-ambient);
-transition: all 0.35s var(--ease);
-overflow: hidden;
+  transition: all var(--motion-duration-base) var(--ease-ultra);
+  animation: cardFloat 6s var(--ease-float) infinite;
+  cursor: pointer;
 }
 
-.card::before {
-content: '';
-position: absolute;
-top: 16px;
-left: 20px;
-width: 48px;
-height: 14px;
-background:
-  radial-gradient(circle at 6px 6px, #ff5f57 6px, transparent 7px) 0 0 / 12px 12px,
-  radial-gradient(circle at 22px 6px, #febc2e 6px, transparent 7px) 16px 0 / 12px 12px,
-  radial-gradient(circle at 38px 6px, #28c840 6px, transparent 7px) 32px 0 / 12px 12px;
-z-index: 1;
-}
-
-.card::after {
-content: '';
-position: absolute;
-inset: 0;
-background: linear-gradient(135deg, 
-  transparent 0%,
-  rgba(99, 102, 255, 0.03) 50%,
-  transparent 100%);
-pointer-events: none;
+@keyframes cardFloat {
+  0%, 100% { 
+    transform: translateY(0) rotateX(0deg); 
+  }
+  50% { 
+    transform: translateY(-4px) rotateX(2deg); 
+  }
 }
 
 .card:hover {
-transform: translateY(-8px) scale(1.02);
-box-shadow: 
-  0 40px 80px -20px rgba(0, 0, 0, 0.6),
-  var(--shadow-glow),
-  inset 0 1px 0 rgba(255, 255, 255, 0.25);
-background: var(--glass-primary);
+  animation-play-state: paused;
+  transform: translateY(-12px) scale(1.03) rotateX(5deg);
+  box-shadow: 
+    0 50px 100px -25px rgba(0, 0, 0, 0.7),
+    var(--glow-pink),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: var(--glass-primary);
 }
 
 .card.pressed {
-transform: scale(0.98);
+  animation-play-state: paused;
+  transform: scale(0.97) rotateX(0deg);
 }
 
 /* ======================================================
-  9. ENHANCED KPI
+  9. ENHANCED KPI ANIMATIONS
 ====================================================== */
 
-.kpi {
-text-align: center;
+.kpi-value {
+  animation: kpiPulse 2s var(--ease-glow) infinite;
 }
 
-.kpi-value {
-font-size: 42px;
-font-weight: 800;
-background: linear-gradient(135deg, var(--accent-indigo-400), var(--accent-pink-400));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
+@keyframes kpiPulse {
+  0%, 100% { 
+    filter: brightness(1) drop-shadow(var(--glow-indigo));
+    transform: scale(1);
+  }
+  50% { 
+    filter: brightness(1.3) drop-shadow(var(--glow-pink));
+    transform: scale(1.02);
+  }
 }
 
 /* ======================================================
-  10. GLASSMORPHIC BUTTONS
+  10. GLASSMORPHIC BUTTONS (Liquid Shine)
 ====================================================== */
 
 button {
-position: relative;
-margin-top: 20px;
-padding: 14px 28px;
-border-radius: var(--pill-radius);
-border: 1px solid transparent;
-cursor: pointer;
-font-weight: 700;
-color: white;
-font-size: 15px;
-text-transform: none;
-overflow: hidden;
-background: linear-gradient(135deg, var(--accent-indigo-500), var(--accent-indigo-600));
-box-shadow: 
-  var(--shadow-ambient),
-  0 0 0 1px rgba(99, 102, 255, 0.3),
-  inset 0 1px 0 rgba(255, 255, 255, 0.3);
-transition: all 0.3s var(--ease);
+  transition: all var(--motion-duration-base) var(--ease-ultra);
+  position: relative;
+  overflow: hidden;
 }
 
 button::before {
-content: '';
-position: absolute;
-top: 0;
-left: -100%;
-width: 100%;
-height: 100%;
-background: linear-gradient(90deg, 
-  transparent, 
-  rgba(255, 255, 255, 0.3), 
-  transparent);
-transition: left 0.6s;
+  transition: left 0.7s var(--ease-glow);
 }
 
 button:hover {
-transform: translateY(-3px) scale(1.05);
-box-shadow: 
-  0 25px 50px -12px rgba(79, 70, 229, 0.5),
-  0 0 0 1px rgba(99, 102, 255, 0.5),
-  inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transform: translateY(-4px) scale(1.06);
+  box-shadow: 
+    0 30px 60px -15px rgba(79, 70, 229, 0.6),
+    var(--glow-indigo),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 button:hover::before {
-left: 100%;
+  left: 100%;
 }
 
 button:active {
-transform: scale(0.97);
+  transform: scale(0.96);
+  transition: transform var(--motion-duration-short) var(--ease-ultra);
 }
 
 /* ======================================================
-  11. CODE BLOCKS (Terminal Style)
+  11. SMOOTH CODE BLOCKS
 ====================================================== */
 
 pre {
-position: relative;
-background: rgba(17, 24, 39, 0.95);
-backdrop-filter: blur(20px) saturate(150%);
-border: 1px solid rgba(148, 163, 184, 0.2);
-border-radius: 16px;
-padding: 24px;
-overflow-x: auto;
-font-size: 14px;
-margin: 24px 0;
-box-shadow: var(--shadow-ambient);
+  transition: all var(--motion-duration-base) var(--ease-ultra);
 }
 
-pre::before {
-content: '';
-position: absolute;
-top: 16px;
-left: 20px;
-width: 48px;
-height: 14px;
-background:
-  radial-gradient(circle at 6px 6px, #ff5f57 6px, transparent 7px) 0 0 / 12px 12px,
-  radial-gradient(circle at 22px 6px, #febc2e 6px, transparent 7px) 16px 0 / 12px 12px,
-  radial-gradient(circle at 38px 6px, #28c840 6px, transparent 7px) 32px 0 / 12px 12px;
-}
-
-code {
-font-family: "SF Mono", "SF Pro Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-color: #e2e8f0;
+pre:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 30px 60px -15px rgba(0, 0, 0, 0.6),
+    var(--glow-white);
 }
 
 /* ======================================================
-  12. RESPONSIVE PERFECTION
+  12. RESPONSIVE SMOOTHNESS
 ====================================================== */
 
-@media (max-width: 768px) {
-h1 { font-size: 38px; }
-h2 { font-size: 28px; }
-.grid { grid-template-columns: 1fr; gap: 24px; }
-.card { padding: 24px; }
-main { padding: 130px 20px 40px; }
-}
-
-/* Mobile Dynamic Island (Enhanced) */
-@media (max-width: 768px) {
-.dynamic-header {
-width: 100%;
-left: 50%;
-transform: translateX(-50%);
-}
-
-.dynamic-nav {
-width: calc(100% - 32px);
-max-width: 100%;
-flex-wrap: nowrap;
-justify-content: space-between;
-overflow-x: auto;
--webkit-overflow-scrolling: touch;
-border-radius: 24px;
-padding: 14px 20px;
-gap: 16px;
-scrollbar-width: none;
-}
-
-.dynamic-nav::-webkit-scrollbar { display: none; }
-
-.nav-links {
-gap: 16px;
-flex-wrap: nowrap;
-}
-
-.nav-links a {
-font-size: 14px;
-white-space: nowrap;
-padding: 4px 8px;
-}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* ======================================================
-  13. CHART PROTECTION (Enhanced)
+  13. CHART PROTECTION (Preserved)
 ====================================================== */
 
 .chart-card {
-transform: none !important;
-will-change: auto;
-transition: none !important;
-}
-
-.chart-card:hover {
-transform: none !important;
-}
-
-.chart-box {
-position: relative;
-height: 280px;
-background: var(--glass-tertiary);
-border-radius: 16px;
-padding: 20px;
+  transform: none !important;
+  will-change: auto;
+  transition: none !important;
 }
