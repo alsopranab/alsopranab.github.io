@@ -1,62 +1,94 @@
 /* ======================================================
-  macOS GLASS DESIGN SYSTEM
-  Dynamic Island · Liquid Glass · SPA Safe
+  macOS GLASS DESIGN SYSTEM v2.0
+  Dynamic Island · Liquid Glass · Enhanced Color Palette
 ====================================================== */
 
 /* ======================================================
-  1. ROOT TOKENS
+  1. ENHANCED ROOT TOKENS (Premium Palette)
 ====================================================== */
 
 :root {
-/* Background */
---bg-base: #0b0f14;
---bg-tint: rgba(56, 189, 248, 0.06);
+/* Enhanced Background System */
+--bg-base: #0a0e17;
+--bg-gradient: linear-gradient(135deg, #0a0e17 0%, #1a1f2e 50%, #16213e 100%);
+--bg-tint-1: rgba(99, 102, 255, 0.08);
+--bg-tint-2: rgba(236, 72, 153, 0.06);
+--bg-tint-3: rgba(34, 197, 94, 0.05);
 
-/* Glass */
---glass: rgba(22, 24, 30, 0.72);
---glass-soft: rgba(22, 24, 30, 0.6);
---border: rgba(255, 255, 255, 0.08);
+/* Premium Glass System */
+--glass-primary: rgba(15, 23, 42, 0.85);
+--glass-secondary: rgba(15, 23, 42, 0.75);
+--glass-tertiary: rgba(15, 23, 42, 0.65);
+--glass-overlay: rgba(15, 23, 42, 0.92);
+--border-primary: rgba(148, 163, 184, 0.12);
+--border-glow: rgba(99, 102, 255, 0.2);
 
-/* Text */
---text: #e5e7eb;
---muted: #9ca3af;
+/* Typography Hierarchy */
+--text-primary: #f8fafc;
+--text-secondary: #e2e8f0;
+--text-muted: #94a3b8;
+--text-dim: #64748b;
 
-/* Accent */
---accent: #38bdf8;
---accent-soft: rgba(56, 189, 248, 0.25);
+/* Indigo Spectrum (Primary) */
+--accent-indigo-50: rgba(99, 102, 255, 0.08);
+--accent-indigo-100: rgba(99, 102, 255, 0.15);
+--accent-indigo-200: rgba(99, 102, 255, 0.25);
+--accent-indigo-400: #6366f1;
+--accent-indigo-500: #4f46e5;
+--accent-indigo-600: #4338ca;
 
-/* Geometry */
---radius: 18px;
---pill-radius: 999px;
---blur: 22px;
+/* Pink Spectrum (Secondary) */
+--accent-pink-400: #ec4899;
+--accent-pink-500: #db2777;
+--accent-pink-600: #be185d;
 
-/* Motion */
---ease: cubic-bezier(0.2, 0.8, 0.2, 1);
---shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+/* Teal Spectrum (Success) */
+--accent-teal-400: #22d3ee;
+--accent-teal-500: #14b8a6;
+
+/* Gold Spectrum (Warning) */
+--accent-gold-400: #f59e0b;
+--accent-gold-500: #d97706;
+
+/* Geometry & Effects */
+--radius: 20px;
+--pill-radius: 9999px;
+--blur: 28px;
+--shadow-ambient: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+--shadow-glow: 0 0 0 1px rgba(99, 102, 255, 0.2);
 }
 
-/* Light mode */
+/* Premium Light Mode */
 @media (prefers-color-scheme: light) {
 :root {
---bg-base: #f4f6fb;
---bg-tint: rgba(0, 122, 255, 0.08);
+--bg-base: #f8fafc;
+--bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f1f5f9 100%);
+--bg-tint-1: rgba(99, 102, 255, 0.1);
+--bg-tint-2: rgba(236, 72, 153, 0.08);
+--bg-tint-3: rgba(34, 197, 94, 0.06);
 
---glass: rgba(255, 255, 255, 0.72);
---glass-soft: rgba(255, 255, 255, 0.6);
---border: rgba(0, 0, 0, 0.08);
+--glass-primary: rgba(255, 255, 255, 0.92);
+--glass-secondary: rgba(255, 255, 255, 0.88);
+--glass-tertiary: rgba(255, 255, 255, 0.82);
+--glass-overlay: rgba(255, 255, 255, 0.96);
+--border-primary: rgba(148, 163, 184, 0.15);
+--border-glow: rgba(99, 102, 255, 0.25);
 
---text: #0f172a;
---muted: #475569;
+--text-primary: #0f172a;
+--text-secondary: #1e293b;
+--text-muted: #475569;
+--text-dim: #64748b;
 
---accent: #007aff;
---accent-soft: rgba(0, 122, 255, 0.25);
+--accent-indigo-400: #6366f1;
+--accent-indigo-500: #4f46e5;
+--accent-indigo-600: #4338ca;
 
---shadow: 0 18px 40px rgba(0, 0, 0, 0.15);
+--shadow-ambient: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 }
 
 /* ======================================================
-  2. RESET
+  2. ENHANCED RESET & BASE
 ====================================================== */
 
 *,
@@ -69,26 +101,20 @@ html,
 body {
 margin: 0;
 min-height: 100%;
-background: var(--bg-base);
+background: var(--bg-gradient);
 }
 
 body {
-color: var(--text);
-font-family:
--apple-system,
-BlinkMacSystemFont,
-"SF Pro Text",
-"SF Pro Display",
-Inter,
-system-ui,
-sans-serif;
-
+color: var(--text-primary);
+font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Inter, system-ui, sans-serif;
 -webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
 overflow-x: hidden;
+line-height: 1.6;
 }
 
 /* ======================================================
-  3. AMBIENT BACKGROUND (SINGLE LAYER)
+  3. MULTI-LAYER AMBIENT BACKGROUND
 ====================================================== */
 
 body::before {
@@ -98,180 +124,241 @@ inset: 0;
 z-index: -1;
 
 background:
-radial-gradient(900px 600px at 18% 12%, var(--bg-tint), transparent 65%),
-radial-gradient(800px 600px at 82% 35%, rgba(34,211,238,0.05), transparent 65%),
-linear-gradient(180deg, var(--bg-base), var(--bg-base));
+radial-gradient(900px 600px at 20% 10%, var(--bg-tint-1), transparent 70%),
+radial-gradient(800px 600px at 80% 30%, var(--bg-tint-2), transparent 65%),
+radial-gradient(700px 500px at 45% 80%, var(--bg-tint-3), transparent 60%),
+var(--bg-gradient);
 
 transform: translateZ(0);
 will-change: transform;
+animation: ambientFloat 20s ease-in-out infinite;
+}
+
+@keyframes ambientFloat {
+0%, 100% { transform: translateZ(0) scale(1); }
+50% { transform: translateZ(0) scale(1.02); }
 }
 
 /* ======================================================
-  4. DYNAMIC ISLAND HEADER
+  4. PREMIUM DYNAMIC ISLAND
 ====================================================== */
 
 .dynamic-header {
 position: fixed;
-top: 14px;
+top: 16px;
 left: 50%;
 transform: translateX(-50%);
 z-index: 200;
-
 pointer-events: none;
 }
 
 .dynamic-nav {
 pointer-events: auto;
-
 display: flex;
 align-items: center;
-gap: 22px;
-
-padding: 12px 22px;
-
-background: var(--glass-soft);
-backdrop-filter: blur(var(--blur)) saturate(180%);
--webkit-backdrop-filter: blur(var(--blur)) saturate(180%);
-
-border: 1px solid var(--border);
+gap: 24px;
+padding: 14px 28px;
+background: var(--glass-overlay);
+backdrop-filter: blur(var(--blur)) saturate(200%) brightness(1.05);
+-webkit-backdrop-filter: blur(var(--blur)) saturate(200%) brightness(1.05);
+border: 1px solid var(--border-glow);
 border-radius: var(--pill-radius);
-box-shadow: var(--shadow);
+box-shadow: 
+  var(--shadow-ambient),
+  var(--shadow-glow),
+  inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
-transition:
-transform 0.35s var(--ease),
-opacity 0.35s var(--ease);
+transition: all 0.4s var(--ease);
 }
 
-/* Logo */
+.dynamic-nav:hover {
+background: var(--glass-primary);
+box-shadow: 
+  0 35px 70px -15px rgba(0, 0, 0, 0.6),
+  var(--shadow-glow),
+  inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Logo Enhancement */
 .logo {
 font-weight: 800;
-letter-spacing: 0.5px;
-white-space: nowrap;
+letter-spacing: -0.02em;
+background: linear-gradient(135deg, var(--accent-indigo-400), var(--accent-pink-400));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
 }
 
-/* Nav links */
+/* Enhanced Nav Links */
 .nav-links {
 display: flex;
 align-items: center;
-gap: 18px;
+gap: 20px;
 }
 
 .nav-links a {
-font-size: 14px;
-font-weight: 500;
-color: var(--accent);
+position: relative;
+font-size: 15px;
+font-weight: 600;
+color: var(--text-secondary);
 text-decoration: none;
-white-space: nowrap;
+transition: all 0.25s var(--ease);
+}
 
-transition: transform 0.18s var(--ease), opacity 0.18s;
+.nav-links a::before {
+content: '';
+position: absolute;
+bottom: -4px;
+left: 50%;
+width: 0;
+height: 2px;
+background: linear-gradient(90deg, var(--accent-indigo-400), var(--accent-pink-400));
+transition: all 0.3s var(--ease);
+transform: translateX(-50%);
 }
 
 .nav-links a:hover {
-transform: scale(1.12);
-opacity: 0.9;
+color: var(--accent-indigo-400);
+transform: translateY(-1px);
+}
+
+.nav-links a:hover::before {
+width: 100%;
 }
 
 /* ======================================================
-  5. MAIN SPA ROOT
+  5. MAIN CONTENT
 ====================================================== */
 
 main {
-padding: 110px 24px 42px; /* space for floating header */
+padding: 120px 28px 48px;
 min-height: 100vh;
 background: transparent;
 }
 
 /* ======================================================
-  6. TYPOGRAPHY
+  6. TYPOGRAPHY PERFECTION
 ====================================================== */
 
 section {
-max-width: 1200px;
+max-width: 1280px;
 margin: auto;
-margin-bottom: 64px;
+margin-bottom: 72px;
 }
 
 h1 {
-font-size: 42px;
-font-weight: 700;
-letter-spacing: -0.02em;
+font-size: 48px;
+font-weight: 800;
+letter-spacing: -0.03em;
+background: linear-gradient(135deg, var(--text-primary), var(--accent-indigo-400));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+line-height: 1.1;
 }
 
 h2 {
-font-size: 26px;
-padding-left: 12px;
-border-left: 3px solid var(--accent);
-margin-bottom: 18px;
+font-size: 32px;
+font-weight: 700;
+padding: 4px 16px;
+background: linear-gradient(90deg, var(--accent-indigo-400), var(--accent-pink-400));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
+margin-bottom: 24px;
+position: relative;
+}
+
+h2::before {
+content: '';
+position: absolute;
+left: 0;
+top: 50%;
+transform: translateY(-50%);
+width: 4px;
+height: 100%;
+background: linear-gradient(180deg, var(--accent-indigo-400), var(--accent-pink-400));
+border-radius: 2px;
 }
 
 h3 {
-font-weight: 600;
+font-weight: 700;
+color: var(--text-secondary);
 }
 
 p {
-color: var(--muted);
-max-width: 720px;
-line-height: 1.7;
+color: var(--text-muted);
+max-width: 760px;
+line-height: 1.75;
 }
 
 /* ======================================================
-  7. GRID SYSTEM
+  7. RESPONSIVE GRID
 ====================================================== */
 
 .grid {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-gap: 28px;
+grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+gap: 32px;
 }
 
 /* ======================================================
-  8. CARDS (macOS WINDOW)
+  8. PREMIUM GLASS CARDS
 ====================================================== */
 
 .card {
 position: relative;
-background: var(--glass);
-
-backdrop-filter: blur(var(--blur)) saturate(160%);
--webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
-
-border: 1px solid var(--border);
+background: var(--glass-secondary);
+backdrop-filter: blur(var(--blur)) saturate(180%) brightness(1.02);
+-webkit-backdrop-filter: blur(var(--blur)) saturate(180%) brightness(1.02);
+border: 1px solid var(--border-primary);
 border-radius: var(--radius);
-padding: 26px;
-
-will-change: transform;
-
-transition:
-transform 0.25s var(--ease),
-box-shadow 0.25s var(--ease);
+padding: 32px;
+box-shadow: var(--shadow-ambient);
+transition: all 0.35s var(--ease);
+overflow: hidden;
 }
 
-/* Window dots */
 .card::before {
-content: "";
+content: '';
 position: absolute;
-top: 12px;
-left: 14px;
-width: 44px;
-height: 12px;
-
+top: 16px;
+left: 20px;
+width: 48px;
+height: 14px;
 background:
-radial-gradient(circle, #ff5f57 50%, transparent 52%) 0 0 / 12px 12px,
-radial-gradient(circle, #febc2e 50%, transparent 52%) 16px 0 / 12px 12px,
-radial-gradient(circle, #28c840 50%, transparent 52%) 32px 0 / 12px 12px;
+  radial-gradient(circle at 6px 6px, #ff5f57 6px, transparent 7px) 0 0 / 12px 12px,
+  radial-gradient(circle at 22px 6px, #febc2e 6px, transparent 7px) 16px 0 / 12px 12px,
+  radial-gradient(circle at 38px 6px, #28c840 6px, transparent 7px) 32px 0 / 12px 12px;
+z-index: 1;
+}
+
+.card::after {
+content: '';
+position: absolute;
+inset: 0;
+background: linear-gradient(135deg, 
+  transparent 0%,
+  rgba(99, 102, 255, 0.03) 50%,
+  transparent 100%);
+pointer-events: none;
 }
 
 .card:hover {
-transform: translateY(-3px);
-box-shadow: var(--shadow);
+transform: translateY(-8px) scale(1.02);
+box-shadow: 
+  0 40px 80px -20px rgba(0, 0, 0, 0.6),
+  var(--shadow-glow),
+  inset 0 1px 0 rgba(255, 255, 255, 0.25);
+background: var(--glass-primary);
 }
 
 .card.pressed {
-transform: scale(0.985);
+transform: scale(0.98);
 }
 
 /* ======================================================
-  9. KPI
+  9. ENHANCED KPI
 ====================================================== */
 
 .kpi {
@@ -279,87 +366,117 @@ text-align: center;
 }
 
 .kpi-value {
-font-size: 34px;
-font-weight: 700;
-color: var(--accent);
+font-size: 42px;
+font-weight: 800;
+background: linear-gradient(135deg, var(--accent-indigo-400), var(--accent-pink-400));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
 }
 
 /* ======================================================
-  10. BUTTONS
+  10. GLASSMORPHIC BUTTONS
 ====================================================== */
 
 button {
-margin-top: 16px;
-padding: 10px 18px;
-
+position: relative;
+margin-top: 20px;
+padding: 14px 28px;
 border-radius: var(--pill-radius);
-border: none;
+border: 1px solid transparent;
 cursor: pointer;
+font-weight: 700;
+color: white;
+font-size: 15px;
+text-transform: none;
+overflow: hidden;
+background: linear-gradient(135deg, var(--accent-indigo-500), var(--accent-indigo-600));
+box-shadow: 
+  var(--shadow-ambient),
+  0 0 0 1px rgba(99, 102, 255, 0.3),
+  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+transition: all 0.3s var(--ease);
+}
 
-font-weight: 600;
-color: #fff;
-
-background: linear-gradient(180deg, var(--accent), #007aff);
-
-box-shadow:
-inset 0 1px 0 rgba(255,255,255,0.35),
-0 6px 16px rgba(0,0,0,0.25);
-
-transition: transform 0.14s ease;
+button::before {
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: linear-gradient(90deg, 
+  transparent, 
+  rgba(255, 255, 255, 0.3), 
+  transparent);
+transition: left 0.6s;
 }
 
 button:hover {
-transform: translateY(-1px);
+transform: translateY(-3px) scale(1.05);
+box-shadow: 
+  0 25px 50px -12px rgba(79, 70, 229, 0.5),
+  0 0 0 1px rgba(99, 102, 255, 0.5),
+  inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+button:hover::before {
+left: 100%;
 }
 
 button:active {
-transform: scale(0.96);
+transform: scale(0.97);
 }
 
 /* ======================================================
-  11. CODE BLOCKS
+  11. CODE BLOCKS (Terminal Style)
 ====================================================== */
 
 pre {
-background: #020617;
-padding: 18px;
-border-radius: 14px;
+position: relative;
+background: rgba(17, 24, 39, 0.95);
+backdrop-filter: blur(20px) saturate(150%);
+border: 1px solid rgba(148, 163, 184, 0.2);
+border-radius: 16px;
+padding: 24px;
 overflow-x: auto;
 font-size: 14px;
+margin: 24px 0;
+box-shadow: var(--shadow-ambient);
+}
+
+pre::before {
+content: '';
+position: absolute;
+top: 16px;
+left: 20px;
+width: 48px;
+height: 14px;
+background:
+  radial-gradient(circle at 6px 6px, #ff5f57 6px, transparent 7px) 0 0 / 12px 12px,
+  radial-gradient(circle at 22px 6px, #febc2e 6px, transparent 7px) 16px 0 / 12px 12px,
+  radial-gradient(circle at 38px 6px, #28c840 6px, transparent 7px) 32px 0 / 12px 12px;
 }
 
 code {
-font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+font-family: "SF Mono", "SF Pro Mono", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+color: #e2e8f0;
 }
 
 /* ======================================================
-  12. MOBILE
+  12. RESPONSIVE PERFECTION
 ====================================================== */
 
 @media (max-width: 768px) {
-h1 {
-font-size: 34px;
+h1 { font-size: 38px; }
+h2 { font-size: 28px; }
+.grid { grid-template-columns: 1fr; gap: 24px; }
+.card { padding: 24px; }
+main { padding: 130px 20px 40px; }
 }
 
-.dynamic-nav {
-flex-wrap: wrap;
-justify-content: center;
-}
-
-.nav-links {
-flex-wrap: wrap;
-justify-content: center;
-}
-}
-
-/* =====================================================
-   MOBILE DYNAMIC HEADER FIX
-   Prevent circle collapse
-   MOBILE DYNAMIC ISLAND FIX
-   Apple-style horizontal scroll (NO wrap, NO circle)
-===================================================== */
+/* Mobile Dynamic Island (Enhanced) */
 @media (max-width: 768px) {
-
 .dynamic-header {
 width: 100%;
 left: 50%;
@@ -367,59 +484,50 @@ transform: translateX(-50%);
 }
 
 .dynamic-nav {
-    width: calc(100% - 32px);
-    max-width: 520px;
-    width: calc(100% - 24px);
-    max-width: 100%;
-
-    /* 🔒 CRITICAL */
+width: calc(100% - 32px);
+max-width: 100%;
 flex-wrap: nowrap;
-    justify-content: space-between;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-
-    /* 🍎 Apple-like shape */
-    border-radius: 18px; /* NOT pill */
-    padding: 12px 14px;
-
-    scrollbar-width: none;
-  }
-
-    border-radius: 20px; /* NOT full pill */
-    padding: 12px 16px;
-  .dynamic-nav::-webkit-scrollbar {
-    display: none;
+justify-content: space-between;
+overflow-x: auto;
+-webkit-overflow-scrolling: touch;
+border-radius: 24px;
+padding: 14px 20px;
+gap: 16px;
+scrollbar-width: none;
 }
 
+.dynamic-nav::-webkit-scrollbar { display: none; }
+
 .nav-links {
-    gap: 14px;
+gap: 16px;
 flex-wrap: nowrap;
-    gap: 14px;
 }
 
 .nav-links a {
-    white-space: nowrap;
-font-size: 13px;
+font-size: 14px;
+white-space: nowrap;
+padding: 4px 8px;
 }
 }
 
-
-/* =====================================================
-  8.1 CHART LOCK (CRITICAL)
-  Charts must NEVER resize or animate
-===================================================== */
+/* ======================================================
+  13. CHART PROTECTION (Enhanced)
+====================================================== */
 
 .chart-card {
 transform: none !important;
 will-change: auto;
+transition: none !important;
 }
 
 .chart-card:hover {
 transform: none !important;
-box-shadow: var(--shadow);
 }
 
 .chart-box {
 position: relative;
-height: 240px;
+height: 280px;
+background: var(--glass-tertiary);
+border-radius: 16px;
+padding: 20px;
 }
