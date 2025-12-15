@@ -1,6 +1,6 @@
 /* ======================================================
-   AI GLASS DASHBOARD DESIGN SYSTEM
-   Dark · Premium · GitHub Pages Ready
+   LANDIO-STYLE AI SAAS DESIGN SYSTEM
+   Dark · Editorial · Enterprise · GitHub Pages Ready
 ====================================================== */
 
 /* ======================================================
@@ -8,38 +8,38 @@
 ====================================================== */
 
 :root {
-  /* Background */
-  --bg-base: #070a0f;
-  --bg-elevated: #0b0f16;
-  --bg-tint: rgba(99, 179, 237, 0.04);
+  /* Core Background */
+  --bg-base: #06080c;
+  --bg-layer: #0a0d13;
 
   /* Glass */
-  --glass: rgba(15, 19, 30, 0.78);
-  --glass-soft: rgba(15, 19, 30, 0.6);
-  --border: rgba(255, 255, 255, 0.06);
+  --glass: rgba(12, 15, 22, 0.88);
+  --glass-soft: rgba(12, 15, 22, 0.72);
+  --border: rgba(255, 255, 255, 0.05);
 
   /* Text */
-  --text: #e6eaf2;
-  --muted: #9aa4b2;
-  --subtle: #6b7280;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --dim: #6b7280;
 
-  /* Accent */
-  --accent: #63b3ed;
-  --accent-strong: #7dd3fc;
-  --accent-soft: rgba(99, 179, 237, 0.18);
+  /* Accent (very controlled) */
+  --accent: #8ab4f8;
+  --accent-soft: rgba(138, 180, 248, 0.14);
 
   /* Geometry */
-  --radius: 20px;
-  --pill-radius: 999px;
-  --blur: 26px;
+  --radius-lg: 26px;
+  --radius-md: 20px;
+  --radius-sm: 14px;
+  --pill: 999px;
+  --blur: 34px;
+
+  /* Shadows */
+  --shadow-soft:
+    0 40px 120px rgba(0,0,0,0.8),
+    inset 0 1px 0 rgba(255,255,255,0.03);
 
   /* Motion */
-  --ease: cubic-bezier(0.22, 0.75, 0.28, 1);
-
-  /* Shadow */
-  --shadow:
-    0 25px 70px rgba(0, 0, 0, 0.65),
-    inset 0 1px 0 rgba(255,255,255,0.04);
+  --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* ======================================================
@@ -52,30 +52,28 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   margin: 0;
   min-height: 100%;
   background: var(--bg-base);
 }
 
 body {
-  color: var(--text);
   font-family:
     -apple-system,
     BlinkMacSystemFont,
-    "SF Pro Text",
     "SF Pro Display",
     Inter,
     system-ui,
     sans-serif;
 
+  color: var(--text);
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
 /* ======================================================
-   3. AMBIENT BACKGROUND
+   3. ATMOSPHERIC BACKGROUND (KEY PART)
 ====================================================== */
 
 body::before {
@@ -85,356 +83,262 @@ body::before {
   z-index: -1;
 
   background:
-    radial-gradient(
-      900px 500px at 20% 10%,
-      rgba(99,179,237,0.08),
-      transparent 65%
-    ),
-    radial-gradient(
-      700px 500px at 85% 30%,
-      rgba(56,189,248,0.06),
-      transparent 60%
-    ),
-    linear-gradient(
-      180deg,
-      #05070c,
+    radial-gradient(1200px 600px at 50% 15%,
+      rgba(138,180,248,0.06),
+      transparent 65%),
+    radial-gradient(900px 500px at 20% 60%,
+      rgba(255,255,255,0.035),
+      transparent 70%),
+    linear-gradient(180deg,
+      #05070b,
       #070a0f 40%,
-      #05070c
-    );
+      #05070b);
 
   will-change: transform;
 }
 
 /* ======================================================
-   4. DYNAMIC ISLAND HEADER
+   4. FLOATING NAV (DYNAMIC ISLAND STYLE)
 ====================================================== */
 
 .dynamic-header {
   position: fixed;
-  top: 14px;
+  top: 16px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 200;
-  pointer-events: none;
 }
 
 .dynamic-nav {
-  pointer-events: auto;
-
   display: flex;
   align-items: center;
   gap: 22px;
 
-  padding: 12px 22px;
+  padding: 12px 24px;
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(18,22,34,0.8),
-      rgba(10,13,20,0.8)
-    );
-
-  backdrop-filter: blur(var(--blur)) saturate(160%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
-
+  background: var(--glass-soft);
+  backdrop-filter: blur(var(--blur));
   border: 1px solid var(--border);
-  border-radius: var(--pill-radius);
-  box-shadow: var(--shadow);
-
-  transition:
-    transform 0.35s var(--ease),
-    opacity 0.35s var(--ease);
+  border-radius: var(--pill);
+  box-shadow: var(--shadow-soft);
 }
 
-/* Logo */
 .logo {
-  font-weight: 800;
-  letter-spacing: 0.4px;
-  white-space: nowrap;
+  font-weight: 700;
+  letter-spacing: 0.3px;
 }
 
-/* Nav links */
 .nav-links {
   display: flex;
-  align-items: center;
   gap: 18px;
 }
 
 .nav-links a {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--accent);
+  font-size: 13px;
+  color: var(--muted);
   text-decoration: none;
-  white-space: nowrap;
-
-  transition:
-    transform 0.18s var(--ease),
-    opacity 0.18s;
 }
 
 .nav-links a:hover {
-  transform: scale(1.1);
-  opacity: 0.9;
+  color: var(--text);
 }
 
 /* ======================================================
-   5. MAIN ROOT
+   5. HERO SECTION (CRITICAL MATCH)
 ====================================================== */
 
-main {
-  padding: 110px 24px 42px;
+.hero {
   min-height: 100vh;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 160px 24px 120px;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 6vw, 72px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+
+.hero p {
+  margin-top: 18px;
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 640px;
+}
+
+.hero .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  font-size: 12px;
+  color: var(--muted);
+
+  padding: 6px 14px;
+  border-radius: var(--pill);
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  margin-bottom: 22px;
 }
 
 /* ======================================================
-   6. TYPOGRAPHY
+   6. BUTTON (LANDIO STYLE)
 ====================================================== */
 
-section {
+.button {
+  margin-top: 28px;
+  padding: 12px 26px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--pill);
+
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+}
+
+.button:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ======================================================
+   7. SECTION HEADERS
+====================================================== */
+
+.section {
   max-width: 1200px;
   margin: auto;
-  margin-bottom: 64px;
+  padding: 120px 24px;
 }
 
-h1 {
-  font-size: 42px;
-  font-weight: 700;
+.section-label {
+  font-size: 12px;
+  color: var(--dim);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.section-title {
+  font-size: 38px;
+  font-weight: 600;
   letter-spacing: -0.02em;
 }
 
-h2 {
-  font-size: 26px;
-  padding-left: 12px;
-  border-left: 3px solid var(--accent);
-  margin-bottom: 18px;
-}
-
-h3 {
-  font-weight: 600;
-}
-
-p {
+.section-sub {
+  margin-top: 12px;
   color: var(--muted);
-  max-width: 720px;
-  line-height: 1.7;
+  max-width: 520px;
 }
 
 /* ======================================================
-   7. GRID
+   8. GRID + CARDS (EMBEDDED LOOK)
 ====================================================== */
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
   gap: 28px;
+  margin-top: 48px;
 }
-
-/* ======================================================
-   8. CARDS (AI PANELS)
-====================================================== */
 
 .card {
-  position: relative;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(18,22,34,0.85),
-      rgba(10,13,20,0.85)
-    );
-
-  backdrop-filter: blur(var(--blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(140%);
-
+  background: var(--glass);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 26px;
-
-  box-shadow: var(--shadow);
-
-  transition:
-    transform 0.35s var(--ease),
-    box-shadow 0.35s var(--ease);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
 }
 
-/* macOS window dots */
-.card::before {
-  content: "";
-  position: absolute;
-  top: 12px;
-  left: 14px;
-  width: 44px;
-  height: 12px;
-
-  background:
-    radial-gradient(circle, #ff5f57 50%, transparent 52%) 0 0 / 12px 12px,
-    radial-gradient(circle, #febc2e 50%, transparent 52%) 16px 0 / 12px 12px,
-    radial-gradient(circle, #28c840 50%, transparent 52%) 32px 0 / 12px 12px;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow:
-    0 35px 90px rgba(0,0,0,0.75),
-    inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-.card.pressed {
-  transform: scale(0.985);
-}
-
-/* ======================================================
-   9. KPI
-====================================================== */
-
-.kpi {
-  text-align: center;
-}
-
-.kpi-value {
-  font-size: 36px;
-  font-weight: 700;
-  color: var(--accent-strong);
-  letter-spacing: -0.02em;
-}
-
-.kpi-label {
-  color: var(--muted);
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-/* ======================================================
-   10. BUTTONS
-====================================================== */
-
-button {
-  margin-top: 16px;
-  padding: 11px 22px;
-
-  border-radius: var(--pill-radius);
-  border: 1px solid rgba(255,255,255,0.08);
-  cursor: pointer;
-
+.card h3 {
+  font-size: 18px;
   font-weight: 600;
-  color: #eaf4ff;
-
-  background:
-    linear-gradient(
-      180deg,
-      #7dd3fc,
-      #60a5fa
-    );
-
-  box-shadow:
-    0 10px 30px rgba(56,189,248,0.25),
-    inset 0 1px 0 rgba(255,255,255,0.35);
-
-  transition:
-    transform 0.18s var(--ease),
-    box-shadow 0.18s var(--ease);
 }
 
-button:hover {
-  transform: translateY(-1px);
-  box-shadow:
-    0 18px 40px rgba(56,189,248,0.35);
-}
-
-button:active {
-  transform: scale(0.96);
-}
-
-/* ======================================================
-   11. CODE BLOCKS
-====================================================== */
-
-pre {
-  background: #020617;
-  padding: 18px;
-  border-radius: 14px;
-  overflow-x: auto;
+.card p {
+  margin-top: 10px;
   font-size: 14px;
-}
-
-code {
-  font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+  color: var(--muted);
 }
 
 /* ======================================================
-   12. CHART LOCK (NO ANIMATION)
+   9. QUOTE SECTION (EDITORIAL)
 ====================================================== */
 
-.chart-card {
-  transform: none !important;
-  will-change: auto;
+.quote {
+  text-align: center;
+  max-width: 900px;
+  margin: auto;
+  padding: 140px 24px;
 }
 
-.chart-card:hover {
-  transform: none !important;
-  box-shadow: var(--shadow);
+.quote p {
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--muted);
 }
 
-.chart-box {
-  position: relative;
-  height: 240px;
-}
-
-.chart-box::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border-radius: inherit;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.04),
-      transparent 40%
-    );
+.quote em {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  color: var(--text);
 }
 
 /* ======================================================
-   13. MOBILE
+   10. PROCESS PANEL
+====================================================== */
+
+.process {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 32px;
+  padding: 64px;
+  box-shadow: var(--shadow-soft);
+}
+
+.process-step {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.process-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* ======================================================
+   11. MOBILE
 ====================================================== */
 
 @media (max-width: 768px) {
-  h1 {
-    font-size: 34px;
+  .hero {
+    padding: 140px 20px 100px;
   }
 
-  .dynamic-header {
-    width: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+  .hero h1 {
+    font-size: 40px;
   }
 
-  .dynamic-nav {
-    width: calc(100% - 24px);
-    max-width: 100%;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    overflow-x: auto;
-
-    border-radius: 18px;
-    padding: 12px 14px;
-
-    scrollbar-width: none;
+  .section {
+    padding: 90px 20px;
   }
 
-  .dynamic-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .nav-links {
-    gap: 14px;
-    flex-wrap: nowrap;
-  }
-
-  .nav-links a {
-    font-size: 13px;
-    white-space: nowrap;
+  .process {
+    padding: 32px;
   }
 }
