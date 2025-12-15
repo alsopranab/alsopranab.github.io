@@ -1,60 +1,60 @@
+/* =====================================================
+   LEARNINGS VIEW
+   LANDIO-GRADE · MONOCHROME · EDITORIAL
+===================================================== */
+
 function renderLearnings() {
   const app = document.getElementById("app");
+  if (!app) return;
 
   app.innerHTML = `
     <section>
       <h1>Learnings</h1>
-      <p class="muted">
+      <p>
         Practical insights gathered from real-world analytics,
         automation, and decision-making work.
       </p>
     </section>
 
-    <!-- SQL -->
+    <!-- =====================
+         SQL
+    ====================== -->
     <section>
-      <h2>
-        <img src="https://cdn.simpleicons.org/postgresql/38bdf8"
-             alt="SQL"
-             style="height:28px;vertical-align:middle;margin-right:8px;" />
-        SQL & Data Modeling
-      </h2>
+      <h2>SQL & Data Modeling</h2>
 
       <div class="grid">
         ${learningCard(
           "CTEs vs Subqueries",
           "Why readability and reusability matter in production SQL",
           [
-            "CTEs improve query readability",
-            "Easier debugging and testing",
-            "Better for complex transformations"
+            "CTEs improve query readability and intent",
+            "Simpler debugging for complex transformations",
+            "Better long-term maintainability"
           ]
         )}
 
         ${learningCard(
           "Joins & Cardinality",
-          "How wrong joins silently break dashboards",
+          "How incorrect joins silently break dashboards",
           [
             "Always validate row counts",
             "Many-to-many joins inflate metrics",
-            "Pre-aggregate when possible"
+            "Pre-aggregate whenever possible"
           ]
         )}
       </div>
     </section>
 
-    <!-- PYTHON -->
+    <!-- =====================
+         PYTHON
+    ====================== -->
     <section>
-      <h2>
-        <img src="https://cdn.simpleicons.org/python/38bdf8"
-             alt="Python"
-             style="height:28px;vertical-align:middle;margin-right:8px;" />
-        Python & Automation
-      </h2>
+      <h2>Python & Automation</h2>
 
       <div class="grid">
         ${learningCard(
           "Automate Before Optimizing",
-          "Time saved beats micro-optimizations",
+          "Time saved matters more than micro-optimizations",
           [
             "Remove manual steps first",
             "Automate repeatable logic",
@@ -64,24 +64,21 @@ function renderLearnings() {
 
         ${learningCard(
           "Scripts Over Tools",
-          "Why simple scripts often outperform heavy tools",
+          "Why simple scripts often outperform heavy platforms",
           [
-            "Lower maintenance",
-            "Faster iteration",
-            "Easier debugging"
+            "Lower operational overhead",
+            "Faster iteration cycles",
+            "Easier debugging and ownership"
           ]
         )}
       </div>
     </section>
 
-    <!-- ANALYTICS -->
+    <!-- =====================
+         ANALYTICS
+    ====================== -->
     <section>
-      <h2>
-        <img src="https://cdn.simpleicons.org/googleanalytics/38bdf8"
-             alt="Analytics"
-             style="height:28px;vertical-align:middle;margin-right:8px;" />
-        Analytics & Business Thinking
-      </h2>
+      <h2>Analytics & Business Thinking</h2>
 
       <div class="grid">
         ${learningCard(
@@ -90,7 +87,7 @@ function renderLearnings() {
           [
             "Track transitions, not just outcomes",
             "Drop-offs matter more than peaks",
-            "Always segment funnels"
+            "Segment funnels aggressively"
           ]
         )}
 
@@ -100,31 +97,26 @@ function renderLearnings() {
           [
             "One dashboard = one decision",
             "Avoid vanity metrics",
-            "Design for action"
+            "Design dashboards for action"
           ]
         )}
       </div>
     </section>
   `;
-
-  app.classList.add("fade-in");
 }
 
-/* =========================
-   HELPERS
-========================= */
+/* =====================================================
+   UI HELPERS (EDITORIAL)
+===================================================== */
 
 function learningCard(title, context, points) {
   return `
-    <div class="card experience-card" onclick="this.classList.toggle('active')">
+    <div class="card">
       <h3>${title}</h3>
-      <p class="muted">${context}</p>
-
-      <div class="experience-details">
-        <ul>
-          ${points.map(p => `<li>${p}</li>`).join("")}
-        </ul>
-      </div>
+      <p>${context}</p>
+      <ul>
+        ${points.map(p => `<li>${p}</li>`).join("")}
+      </ul>
     </div>
   `;
 }
