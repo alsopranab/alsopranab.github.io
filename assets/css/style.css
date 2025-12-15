@@ -1,7 +1,7 @@
 /* ======================================================
    BLACK GLASS · WORLD-CLASS UI SYSTEM
    Inspired by Landio (Framer)
-   Zero color · Zero clutter · GPU safe
+   SPA-SAFE · GPU SAFE · ZERO COLOR
 ====================================================== */
 
 /* ======================================================
@@ -21,21 +21,17 @@
   --text-main: #f5f7fa;
   --text-muted: rgba(255, 255, 255, 0.55);
 
-  --glow-soft: 0 0 0 transparent;
-  --glow-hover: 0 0 0 transparent;
-
   --radius: 18px;
   --radius-lg: 22px;
   --pill: 999px;
 
   --blur: 22px;
-
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
 }
 
 /* ======================================================
-   2. RESET
+   2. RESET & BASE
 ====================================================== */
 
 *,
@@ -65,7 +61,7 @@ body {
 }
 
 /* ======================================================
-   3. AMBIENT BACKGROUND (SOFT ONLY)
+   3. AMBIENT BACKGROUND (SUBTLE ONLY)
 ====================================================== */
 
 body::before {
@@ -101,10 +97,9 @@ body::before {
 
 .dynamic-nav {
   pointer-events: auto;
-
   display: flex;
-  gap: 18px;
   align-items: center;
+  gap: 18px;
 
   padding: 12px 20px;
 
@@ -116,8 +111,14 @@ body::before {
   border-radius: var(--pill);
   box-shadow: var(--shadow);
 
-  transition: opacity 0.4s var(--ease),
-              transform 0.4s var(--ease);
+  transition:
+    transform 0.4s var(--ease),
+    opacity 0.4s var(--ease);
+}
+
+.nav-links {
+  display: flex;
+  gap: 16px;
 }
 
 .nav-links a {
@@ -125,6 +126,7 @@ body::before {
   text-decoration: none;
   font-size: 13px;
   font-weight: 500;
+  white-space: nowrap;
 
   transition: opacity 0.25s ease;
 }
@@ -133,39 +135,18 @@ body::before {
   opacity: 0.85;
 }
 
-/* Remove PD badge visual impact */
-.nav-links a:first-child {
+/* Remove PD badge completely */
+.logo {
   display: none;
 }
 
 /* ======================================================
-   5. SCROLL REVEAL SYSTEM (CORE)
+   5. LAYOUT / TYPOGRAPHY
 ====================================================== */
 
-/* Apply to ALL major blocks */
-section,
-.card,
-.grid > *,
-.chart-card,
-.project-card,
-.repo-card {
-  opacity: 0;
-  transform: translateY(36px);
-  transition:
-    opacity 0.9s var(--ease),
-    transform 0.9s var(--ease);
-  will-change: transform, opacity;
+main {
+  padding-top: 120px;
 }
-
-/* Reveal trigger */
-.reveal {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-/* ======================================================
-   6. TYPOGRAPHY (LANDIO-STYLE)
-====================================================== */
 
 section {
   max-width: 1200px;
@@ -185,6 +166,11 @@ h2 {
   margin-bottom: 18px;
 }
 
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
 p {
   color: var(--text-muted);
   max-width: 720px;
@@ -192,13 +178,23 @@ p {
 }
 
 /* ======================================================
-   7. CARDS / DASHBOARD BLOCKS
+   6. GRID SYSTEM
+====================================================== */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+/* ======================================================
+   7. CARDS (BLACK GLASS)
 ====================================================== */
 
 .card,
-.chart-card,
 .project-card,
-.repo-card {
+.repo-card,
+.chart-card {
   background: var(--glass);
   backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
@@ -208,72 +204,30 @@ p {
   padding: 26px;
 
   box-shadow: var(--shadow);
+
+  transition: transform 0.35s var(--ease);
 }
 
-/* Hover = subtle lift only */
 .card:hover,
 .project-card:hover {
   transform: translateY(-4px);
 }
 
 /* ======================================================
-   8. DASHBOARD / CHART LOCK (MONOCHROME)
+   8. KPI / METRICS
 ====================================================== */
 
-canvas,
-svg {
-  filter: grayscale(100%) brightness(1.05) contrast(1.1);
+.kpi {
+  text-align: center;
 }
 
-.chart-card,
-.chart-box {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.04),
-    rgba(255,255,255,0.02)
-  );
-}
-
-.chart-card * {
-  animation: none !important;
+.kpi-value {
+  font-size: 36px;
+  font-weight: 700;
 }
 
 /* ======================================================
-   9. PROJECT PAGE FIXES
-====================================================== */
-
-/* Project category headings */
-.project-section h3 {
-  font-size: 20px;
-  margin-bottom: 24px;
-}
-
-/* Repository container */
-.repo-card {
-  padding: 18px;
-}
-
-/* Code viewer FIX */
-pre {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border-soft);
-  border-radius: 14px;
-
-  padding: 16px;
-  font-size: 13px;
-
-  max-height: 320px;
-  overflow: auto;
-}
-
-/* No color syntax */
-code {
-  color: var(--text-main);
-  font-family: "SF Mono", Menlo, Consolas, monospace;
-}
-
-/* ======================================================
-   10. BUTTONS (BLACK GLASS)
+   9. BUTTONS
 ====================================================== */
 
 button,
@@ -288,8 +242,9 @@ button,
 
   cursor: pointer;
 
-  transition: opacity 0.25s ease,
-              transform 0.25s ease;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
 }
 
 button:hover {
@@ -298,7 +253,74 @@ button:hover {
 }
 
 /* ======================================================
-   11. MOBILE
+   10. CHARTS (LOCKED · MONOCHROME)
+====================================================== */
+
+canvas,
+svg {
+  filter: grayscale(100%) brightness(1.05) contrast(1.1);
+}
+
+.chart-box {
+  position: relative;
+  height: 240px;
+}
+
+.chart-card * {
+  animation: none !important;
+}
+
+/* ======================================================
+   11. CODE VIEWER (PROJECT PAGE FIX)
+====================================================== */
+
+pre {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-soft);
+  border-radius: 14px;
+
+  padding: 16px;
+  font-size: 13px;
+
+  max-height: 320px;
+  overflow: auto;
+}
+
+code {
+  color: var(--text-main);
+  font-family: "SF Mono", Menlo, Consolas, monospace;
+}
+
+/* ======================================================
+   12. SCROLL REVEAL (SPA SAFE — FINAL)
+====================================================== */
+
+/* ONLY sections are hidden initially */
+section {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
+}
+
+/* Reveal trigger */
+section.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cards inherit visibility */
+section.reveal .card,
+section.reveal .project-card,
+section.reveal .repo-card,
+section.reveal .chart-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ======================================================
+   13. MOBILE
 ====================================================== */
 
 @media (max-width: 768px) {
