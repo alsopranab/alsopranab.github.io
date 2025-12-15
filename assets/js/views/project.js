@@ -1,6 +1,6 @@
 /* =====================================================
    PROJECT DETAIL VIEW
-   LANDIO-GRADE · MONOCHROME · PRODUCT-LEVEL
+   LANDIO-GRADE · MONOCHROME · SPA SAFE
 ===================================================== */
 
 function renderProject(query) {
@@ -9,14 +9,18 @@ function renderProject(query) {
   const repoName = params.get("repo");
 
   if (!app || !repoName) {
-    app.innerHTML = `<section><p>Project not found.</p></section>`;
+    app.innerHTML = `
+      <section>
+        <p class="muted">Project not found.</p>
+      </section>
+    `;
     return;
   }
 
   app.innerHTML = `
     <section>
       <h1>${repoName}</h1>
-      <p>Loading repository details…</p>
+      <p class="muted">Loading repository details…</p>
     </section>
   `;
 
@@ -25,15 +29,23 @@ function renderProject(query) {
     fetch(`https://api.github.com/repos/alsopranab/${repoName}/contents`).then(r => r.json())
   ])
     .then(([repoData, contents]) => {
-      renderProjectLayout(repoData, contents, repoName);
+      if (!repoData || repoData.message) {
+        throw new Error("Invalid repo data");
+      }
+
+      renderProjectLayout(repoData, Array.isArray(contents) ? contents : [], repoName);
     })
     .catch(() => {
       app.innerHTML = `
         <section>
           <h1>${repoName}</h1>
-          <p>Unable to load repository data.</p>
+          <p class="muted">Unable to load repository data.</p>
         </section>
       `;
+
+      if (window.runMotionEnhancements) {
+        requestAnimationFrame(runMotionEnhancements);
+      }
     });
 }
 
@@ -47,7 +59,7 @@ function renderProjectLayout(repo, contents, repoName) {
   app.innerHTML = `
     <section>
       <h1>${repo.name}</h1>
-      <p>${repo.description || "No description provided."}</p>
+      <p class="muted">${repo.description || "No description provided."}</p>
 
       <div class="grid">
         <div class="card">
@@ -66,7 +78,7 @@ function renderProjectLayout(repo, contents, repoName) {
 
         <div class="card repo-card">
           <div id="fileViewer">
-            <p>Select a file to view its contents.</p>
+            <p class="muted">Select a file to view its contents.</p>
           </div>
         </div>
       </div>
@@ -74,18 +86,29 @@ function renderProjectLayout(repo, contents, repoName) {
   `;
 
   renderFileTree(contents, repoName);
+
+  /* 🔑 VERY IMPORTANT: re-run motion after DOM paint */
+  if (window.runMotionEnhancements) {
+    requestAnimationFrame(runMotionEnhancements);
+  }
 }
 
 /* =====================================================
-   FILE TREE (COMPACT, MONOCHROME)
+   FILE TREE
 ===================================================== */
 
 function renderFileTree(contents, repo) {
   const tree = document.getElementById("fileTree");
-  if (!tree || !Array.isArray(contents)) return;
+
+  if (!tree) return;
+
+  if (!contents.length) {
+    tree.innerHTML = `<p class="muted">No files found.</p>`;
+    return;
+  }
 
   tree.innerHTML = `
-    <ul style="list-style:none;padding:0;margin:0;">
+    <ul class="repo-tree">
       ${contents.map(item => fileItem(item, repo)).join("")}
     </ul>
   `;
@@ -94,7 +117,7 @@ function renderFileTree(contents, repo) {
 function fileItem(item, repo) {
   if (item.type === "dir") {
     return `
-      <li style="margin-bottom:6px;font-weight:600;">
+      <li class="repo-dir">
         ${item.name}/
       </li>
     `;
@@ -102,7 +125,7 @@ function fileItem(item, repo) {
 
   return `
     <li
-      style="margin-bottom:6px;cursor:pointer;"
+      class="repo-file"
       onclick="openFile('${repo}','${item.path}')"
     >
       ${item.name}
@@ -111,20 +134,20 @@ function fileItem(item, repo) {
 }
 
 /* =====================================================
-   FILE VIEWER (EMBEDDED, BALANCED)
+   FILE VIEWER
 ===================================================== */
 
 function openFile(repo, path) {
   const viewer = document.getElementById("fileViewer");
   if (!viewer) return;
 
-  viewer.innerHTML = `<p>Loading file…</p>`;
+  viewer.innerHTML = `<p class="muted">Loading file…</p>`;
 
   fetch(`https://api.github.com/repos/alsopranab/${repo}/contents/${path}`)
     .then(r => r.json())
     .then(file => {
       if (!file || !file.content) {
-        viewer.innerHTML = `<p>Unable to load file.</p>`;
+        viewer.innerHTML = `<p class="muted">Unable to load file.</p>`;
         return;
       }
 
@@ -133,11 +156,9 @@ function openFile(repo, path) {
 
       viewer.innerHTML = `
         <h3>${path}</h3>
-        <pre>
-<code class="language-${lang}">
+        <pre><code class="language-${lang}">
 ${escapeHtml(content)}
-</code>
-        </pre>
+</code></pre>
       `;
 
       if (window.Prism) {
@@ -145,7 +166,7 @@ ${escapeHtml(content)}
       }
     })
     .catch(() => {
-      viewer.innerHTML = `<p>Unable to load file.</p>`;
+      viewer.innerHTML = `<p class="muted">Unable to load file.</p>`;
     });
 }
 
