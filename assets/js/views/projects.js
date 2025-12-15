@@ -1,16 +1,18 @@
 /* =====================================================
    PROJECTS VIEW
-   Safe · Rate-limit aware · SPA stable
+   LANDIO-GRADE · MONOCHROME · SCROLL-AWARE
 ===================================================== */
 
 function renderProjects() {
   const app = document.getElementById("app");
+  if (!app) return;
 
   app.innerHTML = `
     <section>
       <h1>Projects</h1>
-      <p class="muted">
-        A curated view of my real-world work, grouped dynamically by technology.
+      <p>
+        A curated selection of real-world work, grouped by technology
+        and built with production intent.
       </p>
     </section>
 
@@ -25,7 +27,7 @@ function renderProjects() {
     </section>
 
     <section>
-      <h2>Automation / Others</h2>
+      <h2>Automation & Others</h2>
       <div id="other-projects" class="grid"></div>
     </section>
   `;
@@ -34,7 +36,7 @@ function renderProjects() {
 }
 
 /* =====================================================
-   FETCH & CLASSIFY (SAFE)
+   FETCH & CLASSIFY (RATE-LIMIT SAFE)
 ===================================================== */
 
 async function fetchAndClassifyProjects() {
@@ -49,7 +51,7 @@ async function fetchAndClassifyProjects() {
     if (!res.ok) throw new Error(res.status);
 
     const data = await res.json();
-    if (!Array.isArray(data)) throw new Error("Invalid repo response");
+    if (!Array.isArray(data)) throw new Error("Invalid response");
 
     repos = data.filter(r => !r.fork && !r.archived);
 
@@ -63,7 +65,7 @@ async function fetchAndClassifyProjects() {
 }
 
 /* =====================================================
-   CLASSIFICATION (FAST FIRST)
+   CLASSIFICATION
 ===================================================== */
 
 function classifyRepo(repo) {
@@ -73,7 +75,7 @@ function classifyRepo(repo) {
   if (language === "sql") bucket = "sql";
   else if (language === "python") bucket = "python";
 
-  const card = projectCard(repo, bucket);
+  const card = projectCard(repo);
 
   document
     .getElementById(`${bucket}-projects`)
@@ -81,7 +83,7 @@ function classifyRepo(repo) {
 }
 
 /* =====================================================
-   FALLBACK UI (RATE LIMIT SAFE)
+   FALLBACK UI
 ===================================================== */
 
 function renderProjectsFallback() {
@@ -91,9 +93,9 @@ function renderProjectsFallback() {
   other.innerHTML = `
     <div class="card">
       <h3>GitHub API limit reached</h3>
-      <p class="muted">
+      <p>
         GitHub temporarily blocked requests.
-        Please refresh later or browse projects directly on GitHub.
+        Please browse projects directly on GitHub.
       </p>
       <button onclick="window.open('https://github.com/alsopranab', '_blank')">
         Open GitHub Profile
@@ -103,58 +105,24 @@ function renderProjectsFallback() {
 }
 
 /* =====================================================
-   UI CARD
+   PROJECT CARD (EDITORIAL)
 ===================================================== */
 
-function projectCard(repo, type) {
+function projectCard(repo) {
   const div = document.createElement("div");
   div.className = "card project-card";
 
   div.innerHTML = `
-    <div style="display:flex;align-items:center;gap:10px;">
-      <img
-        src="${techIcon(type)}"
-        alt="${type}"
-        style="width:26px;height:26px;"
-      />
-      <h3 style="margin:0;">${repo.name}</h3>
-    </div>
+    <h3>${repo.name}</h3>
 
-    <p class="muted project-desc" style="display:none;margin-top:10px;">
+    <p>
       ${repo.description || "No description provided."}
     </p>
 
-    <button
-      style="margin-top:12px;"
-      onclick="location.hash='#/project?repo=${repo.name}'">
-      View Project
+    <button onclick="location.hash='#/project?repo=${repo.name}'">
+      View repository
     </button>
   `;
 
-  div.addEventListener("mouseenter", () => {
-    const d = div.querySelector(".project-desc");
-    if (d) d.style.display = "block";
-  });
-
-  div.addEventListener("mouseleave", () => {
-    const d = div.querySelector(".project-desc");
-    if (d) d.style.display = "none";
-  });
-
   return div;
-}
-
-/* =====================================================
-   ICON MAP
-===================================================== */
-
-function techIcon(type) {
-  const icons = {
-    sql: "https://cdn.simpleicons.org/postgresql/38bdf8",
-    python: "https://cdn.simpleicons.org/python/38bdf8",
-    js: "https://cdn.simpleicons.org/javascript/38bdf8",
-    other: "https://cdn.simpleicons.org/github/9ca3af"
-  };
-
-  return icons[type] || icons.other;
 }
