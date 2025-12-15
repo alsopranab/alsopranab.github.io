@@ -1,6 +1,6 @@
 /* =====================================================
    SPA ROUTER & LIFECYCLE CONTROLLER
-   macOS-STYLE · STABLE · NO FLICKER · MOTION-SAFE
+   STABLE · MOTION-SAFE · SCROLL-AWARE
 ===================================================== */
 
 /* =====================================================
@@ -31,7 +31,8 @@ function navigate() {
   const [path, query] = hash.replace("#", "").split("?");
 
   /* ---------------------
-     HARD RESET (NO GHOSTS)
+     HARD RESET
+     (NO GHOST DOM)
   --------------------- */
   app.classList.remove("fade-in");
   app.innerHTML = "";
@@ -46,36 +47,46 @@ function navigate() {
   try {
     /* ---------------------
        1️⃣ RENDER VIEW
-       (SYNC, NO MOTION)
+       (SYNC HTML INJECTION)
     --------------------- */
     view(query);
 
     /* ---------------------
        2️⃣ RENDER CHARTS
-       (AFTER DOM PAINT)
+       (AFTER DOM EXISTS)
     --------------------- */
     if (
       (path === "/dashboard" || path === "/") &&
-      typeof renderCharts === "function"
+      typeof window.renderCharts === "function"
     ) {
       requestAnimationFrame(() => {
-        renderCharts();
+        window.renderCharts();
       });
     }
 
     /* ---------------------
-       3️⃣ RUN MOTION
+       3️⃣ RUN MOTION ENHANCEMENTS
+       (NON-LAYOUT AFFECTING)
+    --------------------- */
+    if (typeof window.runMotionEnhancements === "function") {
+      requestAnimationFrame(() => {
+        window.runMotionEnhancements();
+      });
+    }
+
+    /* ---------------------
+       4️⃣ SCROLL REVEAL (CRITICAL)
        (AFTER FINAL DOM)
     --------------------- */
-    if (typeof runMotionEnhancements === "function") {
+    if (typeof window.initScrollReveal === "function") {
       requestAnimationFrame(() => {
-        runMotionEnhancements();
+        window.initScrollReveal();
       });
     }
 
     /* ---------------------
-       4️⃣ FADE-IN
-       (LAST PAINT ONLY)
+       5️⃣ APP FADE-IN
+       (LAST PAINT)
     --------------------- */
     requestAnimationFrame(() => {
       app.classList.add("fade-in");
