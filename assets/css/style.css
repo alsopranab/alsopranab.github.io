@@ -1,313 +1,275 @@
-/* ======================================================
-  macOS GLASS DESIGN SYSTEM v2.1 - SMOOTH EDITION
-  Ultra-Smooth Animations · Glowing Logos · Tech Portfolio Feel
-====================================================== */
-
-/* ======================================================
-  1. ENHANCED ROOT TOKENS (Ultra Smooth)
-====================================================== */
+/* =========================================
+   1. TOKENS – DEEP SOFT NIGHT THEME
+========================================= */
 
 :root {
---ease-ultra: cubic-bezier(0.25, 0.1, 0.25, 1.05);
---ease-glow: cubic-bezier(0.4, 0, 0.2, 1);
---ease-float: cubic-bezier(0.23, 1, 0.32, 1);
+/* Background: very dark, low contrast */
+--bg-base: #05070b;
+--bg-tint: rgba(15, 23, 42, 0.75);
 
-/* GLOW SYSTEM */
---glow-indigo: 0 0 20px rgba(99, 102, 255, 0.4), 0 0 40px rgba(99, 102, 255, 0.15);
---glow-pink: 0 0 20px rgba(236, 72, 153, 0.4), 0 0 40px rgba(236, 72, 153, 0.15);
---glow-white: 0 0 25px rgba(255, 255, 255, 0.6), 0 0 50px rgba(255, 255, 255, 0.2);
+/* Glass: almost flat, subtle glow */
+--glass: rgba(10, 14, 20, 0.95);
+--glass-soft: rgba(10, 14, 20, 0.9);
+--border: rgba(148, 163, 184, 0.18);
 
-/* Ultra Smooth Durations */
---motion-duration-short: 0.2s;
---motion-duration-base: 0.35s;
---motion-duration-long: 0.6s;
+/* Text: soft white, muted greys */
+--text: #e5e7eb;
+--muted: #6b7280;
+
+/* Accent: desaturated cool blue, not neon */
+--accent: #6b8cff;
+--accent-soft: rgba(107, 140, 255, 0.22);
+
+/* Geometry & blur */
+--radius: 22px;
+--pill-radius: 999px;
+--blur: 26px;
+
+/* Motion */
+--ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+--shadow: 0 32px 80px rgba(0, 0, 0, 0.75);
 }
 
-/* ======================================================
-  2. ULTRA SMOOTH BASE UPDATES
-====================================================== */
+/* Light mode – very soft neutral */
+@media (prefers-color-scheme: light) {
+:root {
+  --bg-base: #f4f5f8;
+  --bg-tint: rgba(15, 23, 42, 0.05);
 
-html {
-scroll-behavior: smooth;
-scroll-padding-top: 100px;
+  --glass: rgba(255, 255, 255, 0.96);
+  --glass-soft: rgba(255, 255, 255, 0.94);
+  --border: rgba(15, 23, 42, 0.08);
+
+  --text: #020617;
+  --muted: #6b7280;
+
+  --accent: #425dd9;
+  --accent-soft: rgba(66, 93, 217, 0.22);
+
+  --shadow: 0 26px 60px rgba(15, 23, 42, 0.22);
 }
+}
+
+/* =========================================
+   2. BACKGROUND – SUBTLE CENTRAL GLOW
+========================================= */
 
 body {
-transition: all var(--motion-duration-long) var(--ease-ultra);
+background: radial-gradient(
+      80% 120% at 50% 0%,
+      rgba(15, 23, 42, 0.9),
+      transparent 55%
+    ),
+    radial-gradient(
+      120% 160% at 50% 100%,
+      rgba(15, 23, 42, 0.95),
+      #020309 70%
+    );
+color: var(--text);
 }
 
-/* ======================================================
-  3. HYPER-SMOOTH AMBIENT BACKGROUND
-====================================================== */
-
+/* Remove visible “animation” heaviness */
 body::before {
-animation: 
-  ambientFloat 25s var(--ease-float) infinite,
-  ambientShift 15s var(--ease-glow) infinite alternate;
+background: radial-gradient(900px 600px at 50% 0%, var(--bg-tint), transparent 70%);
+opacity: 0.55;
 }
 
-@keyframes ambientFloat {
-  0%, 100% { 
-    transform: translateZ(0) scale(1) rotate(0deg); 
-    filter: brightness(1) saturate(1);
-  }
-  33% { 
-    transform: translateZ(0) scale(1.015) rotate(0.3deg); 
-    filter: brightness(1.05) saturate(1.1);
-  }
-  66% { 
-    transform: translateZ(0) scale(1.01) rotate(-0.2deg); 
-    filter: brightness(0.95) saturate(1.05);
-  }
-}
-
-@keyframes ambientShift {
-  0% { opacity: 0.85; }
-  100% { opacity: 0.95; }
-}
-
-/* ======================================================
-  4. GLOWING DYNAMIC ISLAND (Tech Portfolio Style)
-====================================================== */
+/* =========================================
+   3. DYNAMIC HEADER – FLAT, SOFT NAV
+========================================= */
 
 .dynamic-nav {
-  transition: all var(--motion-duration-base) var(--ease-ultra);
-  animation: islandPulse 4s var(--ease-glow) infinite;
-}
-
-@keyframes islandPulse {
-  0%, 100% { 
-    box-shadow: 
-      var(--shadow-ambient),
-      var(--shadow-glow),
-      inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  }
-  50% { 
-    box-shadow: 
-      0 35px 70px -15px rgba(0, 0, 0, 0.6),
-      0 0 0 1px rgba(99, 102, 255, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  }
+background: linear-gradient(145deg, #060810, #05060b);
+border: 1px solid rgba(148, 163, 184, 0.22);
+box-shadow:
+  0 24px 60px rgba(0, 0, 0, 0.85),
+  inset 0 1px 0 rgba(255, 255, 255, 0.03);
+transition:
+  transform 0.3s var(--ease),
+  box-shadow 0.3s var(--ease),
+  background 0.3s var(--ease),
+  border-color 0.3s var(--ease);
 }
 
 .dynamic-nav:hover {
-  animation-play-state: paused;
-  background: var(--glass-primary);
-  box-shadow: 
-    0 45px 90px -20px rgba(0, 0, 0, 0.7),
-    var(--glow-indigo),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  transform: translateY(-4px) scale(1.02);
+transform: translateY(-2px);
+background: linear-gradient(145deg, #070914, #05060b);
+box-shadow:
+  0 32px 80px rgba(0, 0, 0, 0.9),
+  inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* ======================================================
-  5. GLOWING LOGO SYSTEM (Dark/White Tech Effect)
-====================================================== */
-
+/* Transparent logo with soft dark/white glow */
 .logo {
-  position: relative;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  animation: logoShimmer 3s var(--ease-glow) infinite;
+font-weight: 700;
+letter-spacing: 0.06em;
+text-transform: uppercase;
+font-size: 13px;
+color: rgba(248, 250, 252, 0.9);
+opacity: 0.8;
+filter:
+  drop-shadow(0 0 14px rgba(15, 23, 42, 0.9))
+  drop-shadow(0 0 18px rgba(255, 255, 255, 0.12));
+transition: opacity 0.3s var(--ease), filter 0.4s var(--ease);
 }
 
-.logo::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -150%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.4), 
-    transparent);
-  transition: left 0.8s var(--ease-ultra);
-  animation: logoShimmerSweep 3s var(--ease-glow) infinite;
+.logo:hover {
+opacity: 1;
+filter:
+  drop-shadow(0 0 18px rgba(15, 23, 42, 1))
+  drop-shadow(0 0 26px rgba(255, 255, 255, 0.22));
 }
 
-.logo:hover::before {
-  animation-play-state: paused;
-  left: 100%;
-}
-
-@keyframes logoShimmer {
-  0%, 100% { 
-    filter: brightness(1) drop-shadow(var(--glow-white));
-  }
-  50% { 
-    filter: brightness(1.2) drop-shadow(var(--glow-indigo));
-  }
-}
-
-@keyframes logoShimmerSweep {
-  0% { left: -150%; }
-  100% { left: 100%; }
-}
-
-/* ======================================================
-  6. SMOOTH NAV LINKS WITH GLOW
-====================================================== */
-
+/* Nav links: low‑contrast idle, bright on hover */
 .nav-links a {
-  position: relative;
-  transition: all var(--motion-duration-short) var(--ease-ultra);
-}
-
-.nav-links a::before {
-  transition: all var(--motion-duration-base) var(--ease-glow);
+color: rgba(209, 213, 219, 0.72);
+font-size: 13px;
+letter-spacing: 0.02em;
+transition:
+  color 0.18s var(--ease),
+  transform 0.18s var(--ease),
+  opacity 0.18s var(--ease);
 }
 
 .nav-links a:hover {
-  color: var(--accent-indigo-400);
-  transform: translateY(-2px);
-  filter: drop-shadow(var(--glow-indigo));
+color: #f9fafb;
+transform: translateY(-1px);
+opacity: 1;
 }
 
-.nav-links a:hover::before {
-  width: 100%;
-  box-shadow: var(--glow-indigo);
-}
-
-/* ======================================================
-  7. ULTRA-SMOOTH SCROLL REVEAL
-====================================================== */
-
-section {
-  opacity: 0;
-  transform: translateY(40px);
-  animation: fadeInUp var(--motion-duration-long) var(--ease-ultra) forwards;
-}
-
-section:nth-child(odd) { animation-delay: 0.1s; }
-section:nth-child(even) { animation-delay: 0.2s; }
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* ======================================================
-  8. PREMIUM GLASS CARDS (Floating Perfection)
-====================================================== */
+/* =========================================
+   4. CARDS – SOFT PANELS LIKE REFERENCE
+========================================= */
 
 .card {
-  transition: all var(--motion-duration-base) var(--ease-ultra);
-  animation: cardFloat 6s var(--ease-float) infinite;
-  cursor: pointer;
-}
-
-@keyframes cardFloat {
-  0%, 100% { 
-    transform: translateY(0) rotateX(0deg); 
-  }
-  50% { 
-    transform: translateY(-4px) rotateX(2deg); 
-  }
+background: radial-gradient(
+      140% 180% at 50% 0%,
+      rgba(15, 23, 42, 0.96),
+      rgba(9, 10, 16, 0.98)
+    );
+border-radius: 26px;
+border: 1px solid rgba(15, 23, 42, 0.9);
+box-shadow:
+  0 24px 70px rgba(0, 0, 0, 0.9),
+  inset 0 1px 0 rgba(255, 255, 255, 0.02);
+transition:
+  transform 0.24s var(--ease),
+  box-shadow 0.24s var(--ease),
+  border-color 0.24s var(--ease),
+  background 0.24s var(--ease);
 }
 
 .card:hover {
-  animation-play-state: paused;
-  transform: translateY(-12px) scale(1.03) rotateX(5deg);
-  box-shadow: 
-    0 50px 100px -25px rgba(0, 0, 0, 0.7),
-    var(--glow-pink),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  background: var(--glass-primary);
+transform: translateY(-4px);
+border-color: rgba(148, 163, 184, 0.35);
+background: radial-gradient(
+      140% 200% at 50% 0%,
+      rgba(24, 35, 60, 0.98),
+      rgba(9, 10, 16, 0.98)
+    );
+box-shadow:
+  0 32px 90px rgba(0, 0, 0, 1);
 }
 
-.card.pressed {
-  animation-play-state: paused;
-  transform: scale(0.97) rotateX(0deg);
+/* Dim window dots to match subtle UI */
+.card::before {
+opacity: 0.65;
+filter: saturate(0.8);
 }
 
-/* ======================================================
-  9. ENHANCED KPI ANIMATIONS
-====================================================== */
+/* =========================================
+   5. TYPOGRAPHY – LIKE HERO IN IMAGE
+========================================= */
 
-.kpi-value {
-  animation: kpiPulse 2s var(--ease-glow) infinite;
+h1 {
+font-size: 40px;
+font-weight: 500;
+letter-spacing: 0;
+color: rgba(249, 250, 251, 0.92);
 }
 
-@keyframes kpiPulse {
-  0%, 100% { 
-    filter: brightness(1) drop-shadow(var(--glow-indigo));
-    transform: scale(1);
-  }
-  50% { 
-    filter: brightness(1.3) drop-shadow(var(--glow-pink));
-    transform: scale(1.02);
-  }
+h1 em,
+h1 span.accent {
+font-weight: 400;
+font-style: italic;
+color: rgba(249, 250, 251, 0.76);
 }
 
-/* ======================================================
-  10. GLASSMORPHIC BUTTONS (Liquid Shine)
-====================================================== */
+h2 {
+font-size: 15px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: rgba(148, 163, 184, 0.85);
+border-left: none;
+padding-left: 0;
+margin-bottom: 10px;
+}
+
+p {
+color: rgba(148, 163, 184, 0.9);
+}
+
+/* =========================================
+   6. CTA BUTTON – FLAT, GLOWING EDGE
+========================================= */
 
 button {
-  transition: all var(--motion-duration-base) var(--ease-ultra);
-  position: relative;
-  overflow: hidden;
-}
+border-radius: 999px;
+padding: 10px 22px;
+font-size: 13px;
+letter-spacing: 0.08em;
+text-transform: uppercase;
 
-button::before {
-  transition: left 0.7s var(--ease-glow);
+background: radial-gradient(
+      120% 160% at 50% 0%,
+      #8ea4ff,
+      #4b5fff
+    );
+box-shadow:
+  0 16px 40px rgba(15, 23, 42, 0.9),
+  0 0 0 1px rgba(148, 163, 184, 0.4);
+transition:
+  transform 0.18s var(--ease),
+  box-shadow 0.18s var(--ease),
+  background 0.18s var(--ease);
 }
 
 button:hover {
-  transform: translateY(-4px) scale(1.06);
-  box-shadow: 
-    0 30px 60px -15px rgba(79, 70, 229, 0.6),
-    var(--glow-indigo),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+transform: translateY(-2px);
+box-shadow:
+  0 22px 60px rgba(15, 23, 42, 1),
+  0 0 0 1px rgba(191, 219, 254, 0.7);
+background: radial-gradient(
+      120% 160% at 50% 0%,
+      #a7b8ff,
+      #5b6fff
+    );
 }
 
-button:hover::before {
-  left: 100%;
+/* =========================================
+   7. ICON / LOGO GLOWS INSIDE CARDS
+========================================= */
+
+.card-icon,
+.card-logo-circle {
+width: 72px;
+height: 72px;
+border-radius: 999px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: radial-gradient(circle at 30% 20%, #e5e7eb, #020617);
+box-shadow:
+  0 0 0 1px rgba(15, 23, 42, 1),
+  0 18px 40px rgba(0, 0, 0, 0.85),
+  0 0 32px rgba(15, 23, 42, 1);
+opacity: 0.95;
 }
 
-button:active {
-  transform: scale(0.96);
-  transition: transform var(--motion-duration-short) var(--ease-ultra);
-}
-
-/* ======================================================
-  11. SMOOTH CODE BLOCKS
-====================================================== */
-
-pre {
-  transition: all var(--motion-duration-base) var(--ease-ultra);
-}
-
-pre:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 30px 60px -15px rgba(0, 0, 0, 0.6),
-    var(--glow-white);
-}
-
-/* ======================================================
-  12. RESPONSIVE SMOOTHNESS
-====================================================== */
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ======================================================
-  13. CHART PROTECTION (Preserved)
-====================================================== */
-
-.chart-card {
-  transform: none !important;
-  will-change: auto;
-  transition: none !important;
+/* If logo SVG/PNG is transparent, this gives dark+white tech glow */
+.card-icon img,
+.card-logo-circle img {
+filter:
+  drop-shadow(0 0 8px rgba(255, 255, 255, 0.45))
+  drop-shadow(0 0 22px rgba(15, 23, 42, 0.9));
 }
