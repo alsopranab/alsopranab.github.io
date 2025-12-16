@@ -1,3 +1,7 @@
+/* =====================================================
+   KPI ROW (Black / White / Gray + Glow)
+===================================================== */
+
 #kpi-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -5,7 +9,86 @@
   margin-top: var(--space-lg);
 }
 
+/* =====================================================
+   SECTION SPACING
+===================================================== */
+
 #contribution-section,
 #project-analytics {
   margin-top: var(--space-xl);
+}
+
+/* =====================================================
+   BLACK & WHITE BASE
+===================================================== */
+
+#kpi-row .stat-card,
+#contribution-section,
+#project-analytics {
+  background: #000;                 /* pure black */
+  border: 1px solid #1f1f1f;         /* neutral gray */
+  border-radius: var(--radius-lg);
+
+  /* subtle ambient glow */
+  box-shadow:
+    0 0 0 rgba(255, 255, 255, 0),
+    0 8px 40px rgba(0, 0, 0, 0.9);
+
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+/* =====================================================
+   TYPOGRAPHY
+===================================================== */
+
+#contribution-section h2,
+#project-analytics h2 {
+  color: #fff;
+}
+
+#contribution-section p,
+#project-analytics p,
+#contribution-section small,
+#project-analytics small {
+  color: #b5b5b5;
+}
+
+/* =====================================================
+   HOVER GLOW (MONOCHROME ONLY)
+===================================================== */
+
+#kpi-row .stat-card:hover,
+#contribution-section:hover,
+#project-analytics:hover {
+  transform: translateY(-2px);
+  border-color: #2f2f2f;
+
+  /* white analytical glow */
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.08),
+    0 12px 48px rgba(0, 0, 0, 0.95);
+}
+
+/* =====================================================
+   KPI NUMBER GLOW (SUBTLE, PREMIUM)
+===================================================== */
+
+#kpi-row .stat-card .value {
+  color: #fff;
+  text-shadow:
+    0 0 12px rgba(255, 255, 255, 0.25),
+    0 0 32px rgba(255, 255, 255, 0.12);
+}
+
+/* =====================================================
+   MOBILE TUNING
+===================================================== */
+
+@media (max-width: 768px) {
+  #kpi-row {
+    gap: var(--space-sm);
+  }
 }
