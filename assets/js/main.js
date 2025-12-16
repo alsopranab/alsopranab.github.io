@@ -1,31 +1,70 @@
-import { initApp } from "./app.js";
-import { registerRoute, initRouter } from "./core/router.js";
+// --------------------------------------------------
+// SAFE BOOTSTRAP
+// --------------------------------------------------
+console.log("[MAIN] Booting application...");
 
-import { IntroView } from "./views/intro.js";
-import { DashboardView } from "./views/dashboard.js";
-import { ProjectsView } from "./views/projects.js";
-import { ProjectView } from "./views/project.js";
-import { LearningsView } from "./views/learnings.js";
-import { AnalyticsView } from "./views/analytics.js";
-import { ProfilesView } from "./views/profiles.js";
+let initAppFn;
+let registerRouteFn;
+let initRouterFn;
 
-// --------------------------------------------------
-// App bootstrap (runs once)
-// --------------------------------------------------
-initApp();
-
-// --------------------------------------------------
-// Route registration (pure configuration)
-// --------------------------------------------------
-registerRoute("intro", IntroView);
-registerRoute("dashboard", DashboardView);
-registerRoute("projects", ProjectsView);
-registerRoute("project", ProjectView);
-registerRoute("learnings", LearningsView);
-registerRoute("analytics", AnalyticsView);
-registerRoute("profiles", ProfilesView);
+try {
+  ({ initApp: initAppFn } = await import("./app.js"));
+  ({ registerRoute: registerRouteFn, initRouter: initRouterFn } =
+    await import("./core/router.js"));
+} catch (err) {
+  console.error("[MAIN] Core import failed", err);
+  document.getElementById("app").innerHTML =
+    "<h1 style='color:white;padding:40px'>Core load failed</h1>";
+  throw err;
+}
 
 // --------------------------------------------------
-// Router initialization (hash-based, GitHub Pages safe)
+// INIT APP SHELL
 // --------------------------------------------------
-initRouter("intro");
+try {
+  initAppFn();
+  console.log("[MAIN] App initialized");
+} catch (err) {
+  console.error("[MAIN] initApp failed", err);
+  throw err;
+}
+
+// --------------------------------------------------
+// REGISTER ROUTES (SAFE)
+// --------------------------------------------------
+async function safeRegister(name, path) {
+  try {
+    const mod = await import(path);
+    registerRouteFn(name, mod[Object.keys(mod)[0]]);
+    console.log(`[MAIN] Route registered: ${name}`);
+  } catch (err) {
+    console.error(`[MAIN] Failed to register route: ${name}`, err);
+  }
+}
+
+await safeRegister("intro", "./views/intro.js");
+await safeRegister("dashboard", "./views/dashboard.js");
+await safeRegister("projects", "./views/projects.js");
+await safeRegister("project", "./views/project.js");
+await safeRegister("learnings", "./views/learnings.js");
+await safeRegister("analytics", "./views/analytics.js");
+await safeRegister("profiles", "./views/profiles.js");
+
+// --------------------------------------------------
+// START ROUTER
+// --------------------------------------------------
+try {
+  initRouterFn("intro");
+  console.log("[MAIN] Router started");
+} catch (err) {
+  console.error("[MAIN] Router failed", err);
+}
+
+// --------------------------------------------------
+// PLACEHOLDERS (DO NOT ACTIVATE YET)
+// --------------------------------------------------
+// mouseGlow()
+// magneticButtons()
+// scrollReveal()
+// charts()
+// These will be added AFTER everything renders
