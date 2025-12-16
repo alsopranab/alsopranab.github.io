@@ -1,56 +1,58 @@
 import { CONFIG } from "../core/config.js";
 
 /**
- * Fetch LeetCode stats.
- * NOTE:
- * - Direct browser calls to leetcode.com are BLOCKED by CORS
- * - This function MUST NOT crash the app
- * - Proxy can be plugged in later without changing callers
+ * LeetCode is BLOCKED by browser CORS.
+ * On GitHub Pages, we MUST short-circuit.
+ * This prevents SPA crash.
  */
 export async function fetchLeetCodeStats() {
-  const query = `
-    query userProblemsSolved($username: String!) {
-      matchedUser(username: $username) {
-        submitStatsGlobal {
-          acSubmissionNum {
-            difficulty
-            count
+  // Detect browser environment
+  const isBrowser = typeof window !== "undefined";
+
+  // 🚫 Skip fetch entirely in browser
+  if (isBrowser) {
+    console.warn(
+      "[LeetCode] Browser CORS blocked. Skipping fetch."
+    );
+
+    return [
+      { difficulty: "Easy", count: 0 },
+      { difficulty: "Medium", count: 0 },
+      { difficulty: "Hard", count: 0 }
+    ];
+  }
+
+  // (This block is future-proof for server/proxy)
+  try {
+    const query = `
+      query userProblemsSolved($username: String!) {
+        matchedUser(username: $username) {
+          submitStatsGlobal {
+            acSubmissionNum {
+              difficulty
+              count
+            }
           }
         }
       }
-    }
-  `;
+    `;
 
-  try {
     const res = await fetch(CONFIG.leetcode.endpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         query,
         variables: { username: CONFIG.leetcode.username }
       })
     });
 
-    // If fetch somehow succeeds (proxy / non-browser)
     const json = await res.json();
 
     return (
       json?.data?.matchedUser?.submitStatsGlobal?.acSubmissionNum ?? []
     );
-  } catch (error) {
-    // IMPORTANT: Never crash the SPA
-    console.warn(
-      "[LeetCode] Blocked by CORS or network. Returning fallback.",
-      error
-    );
-
-    // Safe fallback shape
-    return [
-      { difficulty: "Easy", count: 0 },
-      { difficulty: "Medium", count: 0 },
-      { difficulty: "Hard", count: 0 }
-    ];
+  } catch (err) {
+    console.warn("[LeetCode] Proxy fetch failed.", err);
+    return [];
   }
 }
