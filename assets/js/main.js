@@ -4,8 +4,9 @@
 
 import { initApp } from "./app.js";
 import { registerRoute, initRouter } from "./core/router.js";
+import { initProjectStore } from "./core/projectStore.js";
 
-// Views (explicit & minimal)
+// Views
 import { IntroView } from "./views/intro.js";
 import { DashboardView } from "./views/dashboard.js";
 import { ProjectsView } from "./views/projects.js";
@@ -15,16 +16,19 @@ import { AnalyticsView } from "./views/analytics.js";
 import { ProfilesView } from "./views/profiles.js";
 
 /**
- * Safe application bootstrap
+ * Safe application bootstrap (FINAL)
  */
-function boot() {
+async function boot() {
   console.log("[MAIN] Boot sequence started");
 
   try {
-    // 1. Initialize app shell
+    // 1️⃣ Init app shell (DOM + UI)
     initApp();
 
-    // 2. Register routes (explicit, isolated)
+    // 2️⃣ Init project store (DATA MUST COME FIRST)
+    await initProjectStore();
+
+    // 3️⃣ Register routes (pure config)
     registerRoute("intro", IntroView);
     registerRoute("dashboard", DashboardView);
     registerRoute("projects", ProjectsView);
@@ -33,7 +37,7 @@ function boot() {
     registerRoute("analytics", AnalyticsView);
     registerRoute("profiles", ProfilesView);
 
-    // 3. Start router (single source of truth)
+    // 4️⃣ Start router (last)
     initRouter("intro");
 
     console.log("[MAIN] Application ready");
