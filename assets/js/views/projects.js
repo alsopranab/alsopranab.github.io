@@ -4,13 +4,27 @@ import { getAllProjects } from "../core/projectStore.js";
 /**
  * Projects View (FINAL)
  * - Uses canonical project store
- * - Category-safe
+ * - Supports category filtering
  * - ID-based navigation
  */
-export function ProjectsView(container) {
+export function ProjectsView(container, params = {}) {
   if (!container) return;
 
-  const projects = getAllProjects();
+  const { category } = params;
+
+  // ----------------------------------------
+  // Load projects (single source of truth)
+  // ----------------------------------------
+  let projects = getAllProjects();
+
+  // ----------------------------------------
+  // Apply category filter (from Analytics)
+  // ----------------------------------------
+  if (category) {
+    projects = projects.filter(
+      project => project.category === category
+    );
+  }
 
   // ----------------------------------------
   // Empty state
@@ -29,9 +43,9 @@ export function ProjectsView(container) {
   // Group by category
   // ----------------------------------------
   const grouped = projects.reduce((acc, project) => {
-    const category = project.category || "others";
-    acc[category] = acc[category] || [];
-    acc[category].push(project);
+    const key = project.category || "Other";
+    acc[key] = acc[key] || [];
+    acc[key].push(project);
     return acc;
   }, {});
 
@@ -42,15 +56,19 @@ export function ProjectsView(container) {
     <section class="projects">
       <header data-reveal>
         <h1>Projects</h1>
-        <p>Selected work & experiments</p>
+        ${
+          category
+            ? `<p>Filtered by category: <strong>${category}</strong></p>`
+            : `<p>Selected work & experiments</p>`
+        }
       </header>
 
       ${Object.entries(grouped)
         .filter(([, items]) => items.length > 0)
         .map(
-          ([category, items]) => `
+          ([group, items]) => `
             <section class="project-group" data-reveal>
-              <h2>${category.toUpperCase()}</h2>
+              <h2>${group.toUpperCase()}</h2>
 
               <div class="project-grid">
                 ${items
@@ -77,7 +95,7 @@ export function ProjectsView(container) {
   `;
 
   // ----------------------------------------
-  // Navigation (ID-based, SAFE)
+  // Navigation (ID-based)
   // ----------------------------------------
   container.querySelectorAll(".project-card").forEach(card => {
     card.addEventListener("click", () => {
