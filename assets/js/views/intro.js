@@ -1,20 +1,20 @@
 import { navigate } from "../core/router.js";
 
-let transitionTimer = null;
-
 /**
  * Intro / Landing View
- * - Safe auto-transition
- * - Cleanup protected
+ * - Router-compatible cleanup
  * - Motion-aware
+ * - Impossible to double-navigate
  */
 export function IntroView(container) {
   if (!container) return;
 
-  // Clear container safely
+  let transitionTimer = null;
+
+  // Clear container
   container.innerHTML = "";
 
-  // Build DOM (no innerHTML race issues)
+  // Build DOM safely
   const section = document.createElement("section");
   section.className = "intro";
 
@@ -28,7 +28,7 @@ export function IntroView(container) {
   section.appendChild(subtitle);
   container.appendChild(section);
 
-  // Respect reduced motion preference
+  // Motion preference
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
@@ -37,19 +37,18 @@ export function IntroView(container) {
 
   // Auto transition (guarded)
   transitionTimer = window.setTimeout(() => {
-    // Only navigate if still on intro
     if (container.contains(section)) {
       navigate("dashboard");
     }
   }, delay);
-}
 
-/**
- * Cleanup hook (router may call later if extended)
- */
-export function destroyIntroView() {
-  if (transitionTimer) {
-    clearTimeout(transitionTimer);
-    transitionTimer = null;
-  }
+  // Router cleanup hook (IMPORTANT)
+  return {
+    destroy() {
+      if (transitionTimer) {
+        clearTimeout(transitionTimer);
+        transitionTimer = null;
+      }
+    }
+  };
 }
