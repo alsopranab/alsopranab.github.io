@@ -35,33 +35,42 @@
   />
 
   <!-- --------------------------------------------------
-       CSS (ORDER MATTERS)
+       CSS (explicit relative paths, full set)
   --------------------------------------------------- -->
-  <link rel="stylesheet" href="assets/css/reset.css" />
-  <link rel="stylesheet" href="assets/css/variables.css" />
-  <link rel="stylesheet" href="assets/css/base.css" />
-  <link rel="stylesheet" href="assets/css/layout.css" />
-  <link rel="stylesheet" href="assets/css/navbar.css" />
-  <link rel="stylesheet" href="assets/css/components.css" />
-  <link rel="stylesheet" href="assets/css/animations.css" />
-  <link rel="stylesheet" href="assets/css/dashboard.css" />
-  <link rel="stylesheet" href="assets/css/code.css" />
+  <link rel="stylesheet" href="./assets/css/reset.css" />
+  <link rel="stylesheet" href="./assets/css/variables.css" />
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/layout.css" />
+  <link rel="stylesheet" href="./assets/css/navbar.css" />
+  <link rel="stylesheet" href="./assets/css/components.css" />
+  <link rel="stylesheet" href="./assets/css/animations.css" />
+  <link rel="stylesheet" href="./assets/css/dashboard.css" />
+  <link rel="stylesheet" href="./assets/css/projects.css" />
+  <link rel="stylesheet" href="./assets/css/learnings.css" />
+  <link rel="stylesheet" href="./assets/css/code.css" />
 
   <!-- --------------------------------------------------
-       Chart.js (required by charts.js)
+       Chart.js (global dependency)
   --------------------------------------------------- -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
   <!-- --------------------------------------------------
-       SPA ROOT
+       SPA ROOT (DO NOT TOUCH FROM VIEWS)
   --------------------------------------------------- -->
-  <div id="app"></div>
+  <div id="app">
+    <!-- Fallback (JS disabled / failure) -->
+    <noscript>
+      <p style="padding:20px;font-family:Inter,system-ui">
+        This site requires JavaScript to run.
+      </p>
+    </noscript>
+  </div>
 
   <!-- --------------------------------------------------
-       Main App Entry
+       Main App Entry (must be last)
   --------------------------------------------------- -->
-  <script type="module" src="assets/js/main.js"></script>
+  <script type="module" src="./assets/js/main.js"></script>
 </body>
 </html>
