@@ -1,6 +1,10 @@
 /* =====================================================
-   KPI ROW (Black / White / Gray + Glow)
+   DASHBOARD – B/W + GLOW (STABLE)
 ===================================================== */
+
+/* -------------------------------
+   KPI ROW
+-------------------------------- */
 
 #kpi-row {
   display: grid;
@@ -9,40 +13,42 @@
   margin-top: var(--space-lg);
 }
 
-/* =====================================================
-   SECTION SPACING
-===================================================== */
+/* -------------------------------
+   SECTIONS
+-------------------------------- */
 
 #contribution-section,
 #project-analytics {
   margin-top: var(--space-xl);
+  padding: var(--space-md);
 }
 
-/* =====================================================
-   BLACK & WHITE BASE
-===================================================== */
+/* -------------------------------
+   BASE SURFACE (NO SHIFT)
+-------------------------------- */
 
 #kpi-row .stat-card,
 #contribution-section,
 #project-analytics {
-  background: #000;                 /* pure black */
-  border: 1px solid #1f1f1f;         /* neutral gray */
+  background: #000;
+  border: 1px solid #1f1f1f;
   border-radius: var(--radius-lg);
 
-  /* subtle ambient glow */
+  /* IMPORTANT: no transform-based movement */
+  transform: translateZ(0);
+  will-change: box-shadow, border-color;
+
   box-shadow:
-    0 0 0 rgba(255, 255, 255, 0),
     0 8px 40px rgba(0, 0, 0, 0.9);
 
   transition:
-    transform var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard);
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
-/* =====================================================
+/* -------------------------------
    TYPOGRAPHY
-===================================================== */
+-------------------------------- */
 
 #contribution-section h2,
 #project-analytics h2 {
@@ -56,25 +62,23 @@
   color: #b5b5b5;
 }
 
-/* =====================================================
-   HOVER GLOW (MONOCHROME ONLY)
-===================================================== */
+/* -------------------------------
+   GLOW (NO LAYOUT JUMP)
+-------------------------------- */
 
 #kpi-row .stat-card:hover,
 #contribution-section:hover,
 #project-analytics:hover {
-  transform: translateY(-2px);
   border-color: #2f2f2f;
 
-  /* white analytical glow */
   box-shadow:
     0 0 18px rgba(255, 255, 255, 0.08),
     0 12px 48px rgba(0, 0, 0, 0.95);
 }
 
-/* =====================================================
-   KPI NUMBER GLOW (SUBTLE, PREMIUM)
-===================================================== */
+/* -------------------------------
+   KPI NUMBER EMPHASIS
+-------------------------------- */
 
 #kpi-row .stat-card .value {
   color: #fff;
@@ -83,9 +87,9 @@
     0 0 32px rgba(255, 255, 255, 0.12);
 }
 
-/* =====================================================
-   MOBILE TUNING
-===================================================== */
+/* -------------------------------
+   MOBILE
+-------------------------------- */
 
 @media (max-width: 768px) {
   #kpi-row {
