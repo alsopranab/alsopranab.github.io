@@ -1,40 +1,106 @@
 :root {
-  /* Colors */
+  /* =====================================================
+     CORE COLOR SYSTEM (Dark Analytics Theme)
+  ===================================================== */
+
   --bg-primary: #0b0f14;
   --bg-surface: #121826;
   --bg-elevated: #161c2c;
+  --bg-overlay: rgba(11, 15, 20, 0.85);
 
   --text-primary: #e5e7eb;
   --text-secondary: #9ca3af;
   --text-muted: #6b7280;
+  --text-inverse: #0b0f14;
 
-  --accent-primary: #6366f1;
+  /* Accent / Semantic */
+  --accent-primary: #6366f1;   /* Indigo */
+  --accent-secondary: #38bdf8; /* Cyan */
   --accent-success: #22c55e;
   --accent-warning: #f59e0b;
+  --accent-danger: #ef4444;
 
-  /* Fonts */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  /* =====================================================
+     GLOW SYSTEM (Used sparingly)
+  ===================================================== */
 
-  /* Sizing */
-  --radius-sm: 6px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
+  --glow-primary: 0 0 24px rgba(99, 102, 241, 0.45);
+  --glow-secondary: 0 0 24px rgba(56, 189, 248, 0.35);
+  --glow-success: 0 0 20px rgba(34, 197, 94, 0.35);
 
-  /* Spacing */
+  /* =====================================================
+     GLASS / SURFACE EFFECTS
+  ===================================================== */
+
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(14px);
+
+  /* =====================================================
+     TYPOGRAPHY
+  ===================================================== */
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* =====================================================
+     SPACING SCALE
+  ===================================================== */
+
+  --space-2xs: 0.25rem;
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
   --space-lg: 4rem;
   --space-xl: 6rem;
+  --space-2xl: 8rem;
 
-  /* Breakpoints */
+  /* =====================================================
+     RADIUS
+  ===================================================== */
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+
+  /* =====================================================
+     SHADOWS (Depth, not glow)
+  ===================================================== */
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 25px 60px rgba(0, 0, 0, 0.6);
+
+  /* =====================================================
+     MOTION (Consistency across UI)
+  ===================================================== */
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  --duration-fast: 150ms;
+  --duration-md: 300ms;
+  --duration-slow: 600ms;
+
+  /* =====================================================
+     BREAKPOINTS (Reference only)
+  ===================================================== */
+
   --bp-mobile: 480px;
   --bp-tablet: 768px;
   --bp-laptop: 1024px;
   --bp-desktop: 1280px;
 
-  /* Effects */
-  --glass-bg: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.08);
+  /* =====================================================
+     CHART COLORS (Chart.js safe)
+  ===================================================== */
+
+  --chart-1: #6366f1;
+  --chart-2: #38bdf8;
+  --chart-3: #22c55e;
+  --chart-4: #f59e0b;
+  --chart-5: #ef4444;
 }
