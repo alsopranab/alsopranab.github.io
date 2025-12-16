@@ -1,10 +1,19 @@
 /* =====================================================
-   GLOBAL BLACK & WHITE + GLOW SYSTEM
-   (APPLIES TO ENTIRE APP)
+   GLOBAL BLACK & WHITE + GLOW SYSTEM (STABLE)
 ===================================================== */
 
 /* -------------------------
-   BASE COLORS (LOCKED)
+   BOX MODEL (MANDATORY)
+------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* -------------------------
+   BASE COLORS
 ------------------------- */
 
 html, body {
@@ -25,13 +34,12 @@ p, span, small, li, label {
   color: #b5b5b5;
 }
 
-/* Muted utility */
 .muted {
   color: #7a7a7a;
 }
 
 /* -------------------------
-   SURFACES (ALL PANELS)
+   SURFACES (NO MOVEMENT)
 ------------------------- */
 
 section,
@@ -48,18 +56,19 @@ code {
   border: 1px solid #1f1f1f;
   border-radius: var(--radius-lg);
 
+  transform: translateZ(0);
+  will-change: box-shadow, border-color;
+
   box-shadow:
-    0 0 0 rgba(255,255,255,0),
     0 10px 40px rgba(0,0,0,0.9);
 
   transition:
-    transform var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard);
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
 /* -------------------------
-   HOVER / FOCUS GLOW
+   HOVER / FOCUS (GLOW ONLY)
 ------------------------- */
 
 section:hover,
@@ -71,11 +80,10 @@ section:hover,
 nav:hover,
 aside:hover,
 pre:hover {
-  transform: translateY(-2px);
   border-color: #2f2f2f;
 
   box-shadow:
-    0 0 20px rgba(255,255,255,0.08),
+    0 0 18px rgba(255,255,255,0.08),
     0 14px 60px rgba(0,0,0,0.95);
 }
 
@@ -115,7 +123,7 @@ li[data-route]:hover {
 }
 
 /* -------------------------
-   CODE VIEWER (TERMINAL STYLE)
+   CODE VIEWER
 ------------------------- */
 
 pre,
@@ -129,7 +137,7 @@ code {
 }
 
 /* -------------------------
-   SCROLLBAR (OPTIONAL, CLEAN)
+   SCROLLBAR
 ------------------------- */
 
 ::-webkit-scrollbar {
