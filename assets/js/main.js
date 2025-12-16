@@ -26,7 +26,10 @@ async function boot() {
     initApp();
 
     // 2️⃣ Init project store (DATA MUST COME FIRST)
+    initApp();
     await initProjectStore();
+    initRouter("intro");
+
 
     // 3️⃣ Register routes (pure config)
     registerRoute("intro", IntroView);
