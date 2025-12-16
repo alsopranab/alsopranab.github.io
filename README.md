@@ -1,5 +1,5 @@
 ```
-/
+alsopranab.github.io/
 ├── index.html                 ← SPA entry (Intro + Dashboard routing)
 │
 ├── assets/
