@@ -1,31 +1,35 @@
 import { getAppMain } from "../app.js";
 
-const routes = {};
+const routes = Object.create(null);
 let activeView = null;
+let currentRoute = null;
 let renderToken = 0;
 
 /**
  * Register a route
  */
 export function registerRoute(name, viewFn) {
-  if (typeof viewFn !== "function") {
-    throw new Error(`[Router] Route "${name}" must be a function`);
+  if (!name || typeof viewFn !== "function") {
+    throw new Error(`[Router] Invalid route registration: ${name}`);
   }
   routes[name] = viewFn;
 }
 
 /**
- * Parse hash safely
+ * Normalize and parse hash
  */
-function parseHash() {
-  const hash = window.location.hash.replace(/^#\/?/, "");
-  return hash || null;
+function getRouteFromHash() {
+  const raw = window.location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
+  return raw || null;
 }
 
 /**
- * Render a route (race-safe)
+ * Core renderer (race-safe, idempotent)
  */
-async function renderRoute(route, params = {}) {
+async function renderRoute(route) {
+  if (route === currentRoute) return;
+  currentRoute = route;
+
   const token = ++renderToken;
   const root = getAppMain();
 
@@ -33,7 +37,7 @@ async function renderRoute(route, params = {}) {
     throw new Error("[Router] App main container not found");
   }
 
-  // Cleanup previous view if it supports it
+  // Cleanup previous view
   if (activeView && typeof activeView.destroy === "function") {
     try {
       activeView.destroy();
@@ -42,6 +46,7 @@ async function renderRoute(route, params = {}) {
     }
   }
 
+  activeView = null;
   root.innerHTML = "";
 
   const View = routes[route];
@@ -53,53 +58,54 @@ async function renderRoute(route, params = {}) {
         <p>Page not found</p>
       </section>
     `;
-    activeView = null;
+    dispatchRendered(route);
     return;
   }
 
   try {
-    const result = await View(root, params);
+    const result = await View(root);
 
-    // Abort if a newer render started
+    // Abort if newer navigation occurred
     if (token !== renderToken) return;
 
-    // Track active view if it returns cleanup hooks
-    if (result && typeof result === "object") {
+    if (result && typeof result.destroy === "function") {
       activeView = result;
-    } else {
-      activeView = null;
     }
-  } catch (error) {
-    console.error(`[Router] Error rendering "${route}"`, error);
+  } catch (err) {
+    console.error(`[Router] Failed to render route "${route}"`, err);
     root.innerHTML = `
       <section>
-        <h2>Something went wrong</h2>
+        <h2>Error</h2>
         <p>Unable to load this section.</p>
       </section>
     `;
-    activeView = null;
   }
 
-  // UX: reset scroll
-  window.scrollTo({ top: 0, behavior: "instant" });
+  // UX: reset scroll (safe)
+  window.scrollTo(0, 0);
 
-  // Notify global systems
+  dispatchRendered(route);
+}
+
+/**
+ * Dispatch lifecycle event
+ */
+function dispatchRendered(route) {
   window.dispatchEvent(
     new CustomEvent("route:rendered", {
-      detail: { route, params }
+      detail: { route }
     })
   );
 }
 
 /**
- * Navigate (single source of truth = hash)
+ * Navigate to route
  */
-export function navigate(route, params = {}) {
+export function navigate(route) {
   if (!routes[route]) {
     console.warn(`[Router] Route "${route}" not registered`);
     return;
   }
-
   window.location.hash = `#/${route}`;
 }
 
@@ -108,13 +114,13 @@ export function navigate(route, params = {}) {
  */
 export function initRouter(defaultRoute = "dashboard") {
   function onChange() {
-    const route = parseHash() || defaultRoute;
+    const route = getRouteFromHash() || defaultRoute;
     renderRoute(route);
   }
 
   window.addEventListener("hashchange", onChange);
 
-  // Initial render
+  // Initial load
   if (!window.location.hash) {
     window.location.hash = `#/${defaultRoute}`;
   } else {
