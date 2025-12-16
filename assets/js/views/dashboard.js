@@ -9,6 +9,12 @@ import { animateCount } from "../ui/animations.js";
 import { isMobile } from "../ui/responsive.js";
 
 export async function DashboardView(container) {
+  if (!container) return;
+
+  /* -----------------------------
+     BASE RENDER (ALWAYS)
+  ----------------------------- */
+
   container.innerHTML = `
     <section class="dashboard">
       <header>
@@ -25,104 +31,118 @@ export async function DashboardView(container) {
 
       <section id="project-analytics" data-reveal>
         <h2>Projects by Type</h2>
-        <canvas id="projects-chart"></canvas>
+        <div id="projects-chart-wrap">
+          <canvas id="projects-chart"></canvas>
+        </div>
       </section>
     </section>
   `;
+
+  /* -----------------------------
+     DATA LOADING (ISOLATED)
+  ----------------------------- */
 
   let repos = [];
   let leetcodeStats = [];
   let contributions = [];
 
-  try {
-    const results = await Promise.allSettled([
-      fetchGitHubRepos(),
-      fetchLeetCodeStats(),
-      fetchContributions()
-    ]);
+  const results = await Promise.allSettled({
+    github: fetchGitHubRepos(),
+    leetcode: fetchLeetCodeStats(),
+    contributions: fetchContributions()
+  });
 
-    repos = Array.isArray(results[0]?.value) ? results[0].value : [];
-    leetcodeStats = Array.isArray(results[1]?.value)
-      ? results[1].value
+  if (results.github?.status === "fulfilled") {
+    repos = Array.isArray(results.github.value)
+      ? results.github.value
       : [];
-    contributions = Array.isArray(results[2]?.value)
-      ? results[2].value
+  }
+
+  if (results.leetcode?.status === "fulfilled") {
+    leetcodeStats = Array.isArray(results.leetcode.value)
+      ? results.leetcode.value
       : [];
-  } catch (error) {
-    console.warn("[Dashboard] Data loading failed", error);
+  }
+
+  if (results.contributions?.status === "fulfilled") {
+    contributions = Array.isArray(results.contributions.value)
+      ? results.contributions.value
+      : [];
   }
 
   /* -----------------------------
-     KPI METRICS (SAFE)
+     KPI METRICS
   ----------------------------- */
 
-  const totalProjects = repos.length;
+  const kpiRow = container.querySelector("#kpi-row");
+  if (!kpiRow) return;
 
-  const projectsByType = repos.reduce((acc, repo) => {
-    const type = repo?.type || "Other";
+  const projectsByType = repos.reduce((acc, r) => {
+    const type = r?.type || "Other";
     acc[type] = (acc[type] || 0) + 1;
     return acc;
   }, {});
 
-  const solvedLeetCode = leetcodeStats.reduce(
-    (sum, d) => sum + (d?.count || 0),
-    0
-  );
-
-  const kpiRow = container.querySelector("#kpi-row");
-
   const kpis = [
-    { label: "Projects", value: totalProjects },
-    { label: "LeetCode Solved", value: solvedLeetCode },
+    { label: "Projects", value: repos.length },
+    {
+      label: "LeetCode Solved",
+      value: leetcodeStats.reduce(
+        (sum, d) => sum + (d?.count || 0),
+        0
+      )
+    },
     {
       label: "Project Types",
       value: Object.keys(projectsByType).length
     }
   ];
 
-  kpis.forEach(kpi => {
-    const card = renderStatCard({
-      label: kpi.label,
-      value: 0
-    });
+  kpis.forEach(({ label, value }) => {
+    const card = renderStatCard({ label, value: 0 });
+    kpiRow.appendChild(card);
 
-    kpiRow?.appendChild(card);
-
-    const valueEl = card?.querySelector(".value");
-    if (valueEl) {
-      animateCount(valueEl, kpi.value);
-    }
+    const valueEl = card.querySelector(".value");
+    if (valueEl) animateCount(valueEl, value);
   });
 
   /* -----------------------------
-     CONTRIBUTION HEATMAP (SAFE)
+     CONTRIBUTIONS
   ----------------------------- */
 
-  const contributionContainer =
+  const contributionEl =
     container.querySelector("#contribution-map");
 
-  if (contributionContainer && contributions.length > 0) {
-    renderContributionMap(contributionContainer, contributions);
-  } else if (contributionContainer) {
-    contributionContainer.innerHTML =
-      "<small>No contribution data available.</small>";
+  if (contributionEl) {
+    if (contributions.length > 0) {
+      renderContributionMap(contributionEl, contributions);
+    } else {
+      contributionEl.innerHTML =
+        "<small>No contribution data available</small>";
+    }
   }
 
   /* -----------------------------
-     PROJECT TYPE CHART (SAFE)
+     PROJECT TYPE CHART
   ----------------------------- */
 
   const chartCanvas =
     container.querySelector("#projects-chart");
 
-  const labels = Object.keys(projectsByType);
-  const values = Object.values(projectsByType);
+  if (
+    chartCanvas &&
+    typeof Chart !== "undefined" &&
+    Object.keys(projectsByType).length > 0
+  ) {
+    renderBarChart(
+      chartCanvas,
+      Object.keys(projectsByType),
+      Object.values(projectsByType)
+    );
 
-  if (chartCanvas && labels.length > 0) {
-    renderBarChart(chartCanvas, labels, values);
-
-    if (isMobile()) {
-      chartCanvas.height = 200;
-    }
+    if (isMobile()) chartCanvas.height = 220;
+  } else if (chartCanvas) {
+    chartCanvas.parentElement.innerHTML =
+      "<small>No project data available</small>";
   }
 }
