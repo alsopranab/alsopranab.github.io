@@ -26,6 +26,6 @@ registerRoute("analytics", AnalyticsView);
 registerRoute("profiles", ProfilesView);
 
 // --------------------------------------------------
-// Router initialization (single source of truth)
+// Router initialization (hash-based, GitHub Pages safe)
 // --------------------------------------------------
 initRouter("intro");
