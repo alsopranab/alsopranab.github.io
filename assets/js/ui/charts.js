@@ -1,43 +1,28 @@
-let activeCharts = new WeakMap();
-
 /**
- * Render a bar chart safely (SPA-safe, defensive)
+ * Monochrome bar chart with stable rendering
+ * No colors. No gradients. Glow via shadow only.
  */
 export function renderBarChart(canvas, labels = [], values = []) {
-  if (!canvas || typeof Chart === "undefined") {
-    console.warn("[Chart] Chart.js not available or canvas missing");
-    return null;
+  if (!canvas || typeof Chart === "undefined") return;
+
+  // Destroy previous chart (SPA-safe)
+  if (canvas._chart) {
+    canvas._chart.destroy();
   }
 
-  // Normalize data
-  const safeLabels = Array.isArray(labels) ? labels : [];
-  const safeValues = Array.isArray(values) ? values : [];
+  const ctx = canvas.getContext("2d");
 
-  // Guard: empty dataset
-  if (safeLabels.length === 0 || safeValues.length === 0) {
-    canvas.replaceWith(
-      Object.assign(document.createElement("small"), {
-        textContent: "No chart data available."
-      })
-    );
-    return null;
-  }
-
-  // Destroy existing chart on this canvas (SPA-safe)
-  if (activeCharts.has(canvas)) {
-    activeCharts.get(canvas).destroy();
-    activeCharts.delete(canvas);
-  }
-
-  const chart = new Chart(canvas, {
+  canvas._chart = new Chart(ctx, {
     type: "bar",
     data: {
-      labels: safeLabels,
+      labels,
       datasets: [
         {
-          data: safeValues,
-          borderRadius: 6,
-          maxBarThickness: 42
+          data: values,
+          backgroundColor: "#ffffff",
+          borderColor: "#ffffff",
+          borderWidth: 1,
+          hoverBackgroundColor: "#ffffff"
         }
       ]
     },
@@ -45,30 +30,22 @@ export function renderBarChart(canvas, labels = [], values = []) {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 900,
-        easing: "easeOutQuart"
+        duration: 600
       },
       plugins: {
         legend: { display: false },
         tooltip: {
-          intersect: false,
-          mode: "index"
+          backgroundColor: "#000",
+          titleColor: "#fff",
+          bodyColor: "#b5b5b5",
+          borderColor: "#2f2f2f",
+          borderWidth: 1
         }
       },
       scales: {
         x: {
-          grid: { display: false }
+          grid: { display: false },
+          ticks: { color: "#b5b5b5" }
         },
         y: {
-          beginAtZero: true,
-          ticks: {
-            precision: 0
-          }
-        }
-      }
-    }
-  });
-
-  activeCharts.set(canvas, chart);
-  return chart;
-}
+          grid: { color: "#1f1f1f
