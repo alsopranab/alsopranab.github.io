@@ -1,0 +1,29 @@
+/* =====================================================
+   GITHUB-STYLE CONTRIBUTION HEATMAP
+===================================================== */
+
+.heatmap {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 14px;
+  grid-template-rows: repeat(7, 14px);
+  gap: 4px;
+}
+
+.heatmap-day {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  background: #161b22;
+}
+
+/* Intensity levels (GitHub-like) */
+.level-0 { background: #161b22; }
+.level-1 { background: #0e4429; }
+.level-2 { background: #006d32; }
+.level-3 { background: #26a641; }
+.level-4 { background: #39d353; }
+
+.heatmap-day:hover {
+  outline: 1px solid #7a7a7a;
+}
