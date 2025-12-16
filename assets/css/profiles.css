@@ -1,5 +1,5 @@
 /* =====================================================
-   PROFILES / SOCIALS
+   PROFILES / SOCIALS (FINAL)
 ===================================================== */
 
 .profiles {
@@ -35,7 +35,7 @@
 }
 
 /* -----------------------------------------------------
-   PROFILE ITEM (LOGO = LINK)
+   PROFILE ITEM
 ----------------------------------------------------- */
 
 .profile-item {
@@ -44,7 +44,7 @@
   gap: 1rem;
 
   padding: 1rem 1.2rem;
-  background: #000;
+  background: #000000;
   border: 1px solid #1f1f1f;
   border-radius: var(--radius-md);
 
@@ -64,7 +64,7 @@
 }
 
 /* -----------------------------------------------------
-   ICONS (PURE, NO SHAPES)
+   ICONS (FIXED & VISIBLE)
 ----------------------------------------------------- */
 
 .icon {
@@ -73,7 +73,9 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  filter: brightness(0.9);
+
+  /* CRITICAL FIX */
+  filter: invert(1) brightness(0.9);
 }
 
 /* Platform logos */
