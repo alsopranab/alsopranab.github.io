@@ -1,45 +1,42 @@
-// core/projectStore.js
-
 import { fetchGitHubRepos } from "../services/github.js";
 import { classifyProject } from "./projectClassifier.js";
 
 let projects = [];
-let groupedProjects = {};
+let initialized = false;
 
+/**
+ * Initialize project store (run once)
+ */
 export async function initProjectStore() {
+  if (initialized) return;
+  initialized = true;
+
   const repos = await fetchGitHubRepos();
 
   projects = repos.map(repo => ({
-    ...repo,
-    category: classifyProject(repo)
+    id: repo.id,
+    name: repo.name,
+    repo: repo.name, // used by githubCode.js
+    description: repo.description,
+    language: repo.language,
+    stars: repo.stars,
+    category: classifyProject(repo),
+    url: repo.htmlUrl
   }));
-
-  groupedProjects = projects.reduce((acc, project) => {
-    const key = project.category || "Other";
-    acc[key] = acc[key] || [];
-    acc[key].push(project);
-    return acc;
-  }, {});
 }
 
 /**
- * All projects (classified)
+ * Get all projects
  */
 export function getAllProjects() {
   return projects;
 }
 
 /**
- * Projects grouped by category
- * - Categories with 0 items are excluded automatically
+ * Get single project by ID (REQUIRED)
  */
-export function getProjectsByCategory() {
-  return groupedProjects;
-}
-
-/**
- * Single project lookup
- */
-export function getProjectByName(name) {
-  return projects.find(p => p.name === name);
+export function getProjectById(id) {
+  return projects.find(
+    project => project.id === Number(id)
+  );
 }
