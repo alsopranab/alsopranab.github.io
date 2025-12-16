@@ -1,24 +1,24 @@
-/**
- * Render GitHub-style contribution heatmap
- */
-export function renderHeatmap(container, data = []) {
-  if (!container || !Array.isArray(data)) return;
+/* ============================
+   GITHUB-STYLE HEATMAP
+============================ */
 
-  container.innerHTML = "";
-  container.className = "heatmap";
-
-  data.forEach(day => {
-    const cell = document.createElement("div");
-    cell.className = `heatmap-day level-${getLevel(day.count)}`;
-    cell.title = `${day.count} contributions on ${day.date}`;
-    container.appendChild(cell);
-  });
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(52, 1fr);
+  grid-auto-rows: 12px;
+  gap: 4px;
+  margin-top: var(--space-md);
 }
 
-function getLevel(count) {
-  if (count === 0) return 0;
-  if (count <= 2) return 1;
-  if (count <= 5) return 2;
-  if (count <= 9) return 3;
-  return 4;
+.heatmap-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: #161b22;
 }
+
+/* Intensity levels */
+.heatmap-cell.level-1 { background: #0e4429; }
+.heatmap-cell.level-2 { background: #006d32; }
+.heatmap-cell.level-3 { background: #26a641; }
+.heatmap-cell.level-4 { background: #39d353; }
