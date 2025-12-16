@@ -64,7 +64,7 @@
 }
 
 /* -----------------------------------------------------
-   ICONS (FIXED & VISIBLE)
+   ICONS (VISIBLE + GLOW)
 ----------------------------------------------------- */
 
 .icon {
@@ -74,8 +74,14 @@
   background-repeat: no-repeat;
   background-position: center;
 
-  /* CRITICAL FIX */
   filter: invert(1) brightness(0.9);
+  transition: filter 0.2s ease, drop-shadow 0.2s ease;
+}
+
+.profile-item:hover .icon {
+  filter: invert(1) brightness(1.1)
+          drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
+          drop-shadow(0 0 14px rgba(255, 255, 255, 0.18));
 }
 
 /* Platform logos */
