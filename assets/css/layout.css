@@ -1,13 +1,81 @@
+/* =====================================================
+   DASHBOARD CONTAINER
+   Black / White / Gray ONLY
+===================================================== */
+
 .dashboard {
   max-width: 1400px;
   margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
 }
+
+/* =====================================================
+   GRID SYSTEM
+===================================================== */
 
 .grid {
   display: grid;
   gap: var(--space-md);
 }
 
+/* KPI / Card Grid */
 .grid-4 {
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* =====================================================
+   BLACK & WHITE ENFORCEMENT
+===================================================== */
+
+/* Cards / panels inside dashboard */
+.dashboard .stat-card,
+.dashboard section,
+.dashboard .panel {
+  background: #000;                 /* pure black */
+  border: 1px solid #1f1f1f;         /* dark gray */
+  border-radius: var(--radius-lg);
+}
+
+/* Headings */
+.dashboard h1,
+.dashboard h2,
+.dashboard h3 {
+  color: #fff;                       /* pure white */
+}
+
+/* Body text */
+.dashboard p,
+.dashboard small,
+.dashboard span {
+  color: #b5b5b5;                    /* neutral gray */
+}
+
+/* Muted text */
+.dashboard .muted {
+  color: #7a7a7a;
+}
+
+/* =====================================================
+   INTERACTION (NO COLOR)
+===================================================== */
+
+.dashboard .stat-card {
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.dashboard .stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #2a2a2a;             /* lighter gray */
+}
+
+/* =====================================================
+   MOBILE TUNING
+===================================================== */
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: var(--space-md) var(--space-sm);
+  }
 }
