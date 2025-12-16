@@ -2,10 +2,11 @@ import { fetchGitHubRepos } from "../services/github.js";
 import { classifyProject } from "./projectClassifier.js";
 
 let projects = [];
+let groupedProjects = {};
 let initialized = false;
 
 /**
- * Initialize project store (run once)
+ * Initialize project store (RUN ONCE)
  */
 export async function initProjectStore() {
   if (initialized) return;
@@ -23,20 +24,33 @@ export async function initProjectStore() {
     category: classifyProject(repo),
     url: repo.htmlUrl
   }));
+
+  // Build grouped map ONCE
+  groupedProjects = projects.reduce((acc, project) => {
+    const key = project.category || "Other";
+    acc[key] = acc[key] || [];
+    acc[key].push(project);
+    return acc;
+  }, {});
 }
 
 /**
- * Get all projects
+ * Get all projects (flat list)
  */
 export function getAllProjects() {
   return projects;
 }
 
 /**
- * Get single project by ID (REQUIRED)
+ * Get projects grouped by category (REQUIRED BY ANALYTICS)
+ */
+export function getProjectsByCategory() {
+  return groupedProjects;
+}
+
+/**
+ * Get single project by ID
  */
 export function getProjectById(id) {
-  return projects.find(
-    project => project.id === Number(id)
-  );
+  return projects.find(p => p.id === Number(id));
 }
