@@ -1,35 +1,50 @@
 import { fetchRepoTree, fetchFileContent } from "../services/githubCode.js";
+import { getProjectById } from "../core/projectStore.js";
 
+/**
+ * Single Project View (FINAL)
+ * - Uses canonical project index
+ * - Validates project existence
+ * - SPA-safe
+ */
 export async function ProjectView(container, params = {}) {
-  const repo = params.repo;
+  if (!container) return;
 
-  // Guard: missing repo
-  if (!repo) {
+  const projectId = Number(params.id);
+
+  // ----------------------------------------
+  // Resolve project from central store
+  // ----------------------------------------
+  const project = getProjectById(projectId);
+
+  if (!project) {
     container.innerHTML = `
-      <section>
+      <section class="project-error">
         <h2>Project not found</h2>
-        <p>Invalid or missing project reference.</p>
+        <p>The requested project does not exist.</p>
       </section>
     `;
     return;
   }
 
-  let tree = [];
-
-  try {
-    const result = await fetchRepoTree(repo);
-    tree = Array.isArray(result) ? result : [];
-  } catch (error) {
-    console.warn("[ProjectView] Failed to load repo tree", error);
-    tree = [];
-  }
-
+  // ----------------------------------------
+  // Base layout (renders immediately)
+  // ----------------------------------------
   container.innerHTML = `
-    <section>
-      <h2>${repo}</h2>
+    <section class="project-detail">
+      <header>
+        <h1>${project.name}</h1>
+        <p class="muted">${project.description || "No description provided."}</p>
+      </header>
+
       <div class="project-layout">
-        <aside id="file-tree"></aside>
-        <pre id="code-viewer"><code>// Select a file to view its code</code></pre>
+        <aside id="file-tree">
+          <p class="muted">Loading files…</p>
+        </aside>
+
+        <pre id="code-viewer">
+<code>// Select a file to view its code</code>
+        </pre>
       </div>
     </section>
   `;
@@ -37,35 +52,57 @@ export async function ProjectView(container, params = {}) {
   const treeEl = container.querySelector("#file-tree");
   const codeEl = container.querySelector("#code-viewer code");
 
+  // ----------------------------------------
+  // Load repository tree
+  // ----------------------------------------
+  let tree = [];
+
+  try {
+    const result = await fetchRepoTree(project.repo);
+    tree = Array.isArray(result) ? result : [];
+  } catch (error) {
+    console.warn("[ProjectView] Repo tree load failed", error);
+  }
+
+  // ----------------------------------------
   // Empty state
+  // ----------------------------------------
   if (tree.length === 0) {
     treeEl.innerHTML = "<p>No files found in this repository.</p>";
     return;
   }
 
-  // Render only valid files
+  // ----------------------------------------
+  // Render file list (files only)
+  // ----------------------------------------
+  treeEl.innerHTML = "";
+
   tree
     .filter(item => item && item.type === "file")
     .forEach(file => {
-      const btn = document.createElement("div");
-      btn.textContent = file.name;
-      btn.className = "file-item";
+      const item = document.createElement("button");
+      item.className = "file-item";
+      item.textContent = file.path;
 
-      btn.addEventListener("click", async () => {
+      item.addEventListener("click", async () => {
         codeEl.textContent = "// Loading file…";
 
         try {
-          const content = await fetchFileContent(repo, file.path);
-          codeEl.textContent = content || "// Unable to load file.";
+          const content = await fetchFileContent(
+            project.repo,
+            file.path
+          );
+          codeEl.textContent =
+            content || "// Unable to load file.";
         } catch (error) {
           console.warn(
-            `[ProjectView] Failed to load file ${file.path}`,
+            `[ProjectView] Failed to load ${file.path}`,
             error
           );
           codeEl.textContent = "// Error loading file.";
         }
       });
 
-      treeEl.appendChild(btn);
+      treeEl.appendChild(item);
     });
 }
