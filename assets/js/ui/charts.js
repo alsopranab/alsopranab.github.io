@@ -1,20 +1,13 @@
-/**
- * Monochrome bar chart
- * - SPA safe
- * - Chart.js CDN safe
- * - No side effects
- */
-export function renderBarChart(canvas, labels = [], values = []) {
-  if (!canvas) return;
-  if (typeof Chart === "undefined") {
-    console.warn("[Charts] Chart.js not loaded");
-    return;
-  }
+export function renderBarChart(
+  canvas,
+  labels = [],
+  values = [],
+  options = {}
+) {
+  if (!canvas || typeof Chart === "undefined") return;
 
-  // Destroy previous instance (SPA-safe)
   if (canvas._chart) {
     canvas._chart.destroy();
-    canvas._chart = null;
   }
 
   const ctx = canvas.getContext("2d");
@@ -28,48 +21,31 @@ export function renderBarChart(canvas, labels = [], values = []) {
           data: values,
           backgroundColor: "#ffffff",
           borderColor: "#ffffff",
-          borderWidth: 1,
-          hoverBackgroundColor: "#ffffff"
+          borderWidth: 1
         }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: {
-        duration: 600,
-        easing: "easeOutQuart"
-      },
+      animation: { duration: 600 },
       plugins: {
-        legend: {
-          display: false
-        },
-        tooltip: {
-          backgroundColor: "#0b0b0f",
-          titleColor: "#ffffff",
-          bodyColor: "#b5b5b5",
-          borderColor: "#2f2f2f",
-          borderWidth: 1
-        }
+        legend: { display: false }
       },
       scales: {
         x: {
-          grid: {
-            display: false
-          },
-          ticks: {
-            color: "#b5b5b5"
-          }
+          ticks: { color: "#b5b5b5" },
+          grid: { display: false }
         },
         y: {
-          grid: {
-            color: "#1f1f1f"
-          },
-          ticks: {
-            color: "#b5b5b5",
-            beginAtZero: true
-          }
+          ticks: { color: "#b5b5b5" },
+          grid: { color: "#1f1f1f" }
         }
+      },
+      onClick: (_, elements) => {
+        if (!elements.length || !options.onClick) return;
+        const index = elements[0].index;
+        options.onClick(index);
       }
     }
   });
