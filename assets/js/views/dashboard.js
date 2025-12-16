@@ -1,14 +1,29 @@
 import { renderBarChart } from "../ui/charts.js";
+import { getAllProjects, getProjectsByCategory } from "../core/projectStore.js";
 
 /**
- * Dashboard View (FINAL)
- * - Zero external service dependency
- * - Deterministic render
- * - Reveal + Glow compatible
- * - No async fragility
+ * Dashboard View (FINAL – AUTO & STABLE)
  */
 export function DashboardView(container) {
   if (!container) return;
+
+  /* ==================================================
+     READ DATA (SYNC, SAFE)
+  ================================================== */
+
+  const projects = getAllProjects();
+  const grouped = getProjectsByCategory();
+
+  const projectCount = projects.length;
+  const categoryLabels = [];
+  const categoryValues = [];
+
+  Object.entries(grouped).forEach(([category, items]) => {
+    if (Array.isArray(items) && items.length > 0) {
+      categoryLabels.push(category.toUpperCase());
+      categoryValues.push(items.length);
+    }
+  });
 
   /* ==================================================
      BASE LAYOUT (ALWAYS RENDERS)
@@ -25,24 +40,24 @@ export function DashboardView(container) {
       <section class="dashboard-kpis" data-reveal>
         <div class="kpi-card" data-magnetic>
           <span class="label">Projects</span>
-          <span class="value">12</span>
+          <span class="value">${projectCount}</span>
+        </div>
+
+        <div class="kpi-card" data-magnetic>
+          <span class="label">Categories</span>
+          <span class="value">${categoryLabels.length}</span>
         </div>
 
         <div class="kpi-card" data-magnetic>
           <span class="label">Certifications</span>
           <span class="value">6</span>
         </div>
-
-        <div class="kpi-card" data-magnetic>
-          <span class="label">Skills</span>
-          <span class="value">10+</span>
-        </div>
       </section>
 
       <section class="dashboard-chart" data-reveal>
         <h2>Projects by Category</h2>
         <div class="chart-wrap">
-          <canvas id="projects-chart" height="260"></canvas>
+          <canvas id="projects-chart"></canvas>
         </div>
       </section>
 
@@ -50,18 +65,22 @@ export function DashboardView(container) {
   `;
 
   /* ==================================================
-     CHART (NON-BLOCKING, SAFE)
+     CHART (STABLE & AUTO)
   ================================================== */
 
   const canvas = container.querySelector("#projects-chart");
   if (!canvas) return;
 
-  const labels = ["Web", "Data", "Automation", "Other"];
-  const values = [5, 3, 2, 2];
+  // Fallback protection
+  if (categoryLabels.length === 0) {
+    canvas.parentElement.innerHTML =
+      "<small>No project data available</small>";
+    return;
+  }
 
   requestAnimationFrame(() => {
     try {
-      renderBarChart(canvas, labels, values);
+      renderBarChart(canvas, categoryLabels, categoryValues);
     } catch (err) {
       console.warn("[Dashboard] Chart render failed", err);
       canvas.parentElement.innerHTML =
