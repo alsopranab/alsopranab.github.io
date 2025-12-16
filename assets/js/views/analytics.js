@@ -1,45 +1,55 @@
+import { getProjectsByCategory } from "../core/projectStore.js";
+import { navigate } from "../core/router.js";
 import { renderBarChart } from "../ui/charts.js";
 
 export function AnalyticsView(container) {
   if (!container) return;
 
+  const grouped = getProjectsByCategory();
+
+  const labels = [];
+  const values = [];
+
+  Object.entries(grouped).forEach(([category, items]) => {
+    if (items.length > 0) {
+      labels.push(category);
+      values.push(items.length);
+    }
+  });
+
+  // Empty state
+  if (labels.length === 0) {
+    container.innerHTML = `
+      <section>
+        <h2>Analytics</h2>
+        <p>No analytics data available.</p>
+      </section>
+    `;
+    return;
+  }
+
   container.innerHTML = `
     <section class="analytics">
-
-      <header class="analytics-header" data-reveal>
+      <header>
         <h1>Analytics</h1>
-        <p>Project distribution & activity overview</p>
+        <p>Project distribution by category</p>
       </header>
 
-      <section class="analytics-panel" data-reveal>
-        <h2>Projects by Type</h2>
-        <div class="chart-wrap">
-          <canvas id="projects-type-chart" height="260"></canvas>
-        </div>
+      <section class="analytics-chart">
+        <canvas id="category-chart"></canvas>
+        <small class="muted">
+          Click a category to view projects
+        </small>
       </section>
-
-      <section class="analytics-panel muted-panel" data-reveal>
-        <h2>Contribution Activity</h2>
-        <p class="muted">2192 days tracked</p>
-      </section>
-
     </section>
   `;
 
-  // ---------- STATIC, SAFE DATA ----------
-  const projectTypes = {
-    Other: 14,
-    SQL: 2
-  };
+  const canvas = container.querySelector("#category-chart");
 
-  const canvas = container.querySelector("#projects-type-chart");
-  if (!canvas) return;
-
-  requestAnimationFrame(() => {
-    renderBarChart(
-      canvas,
-      Object.keys(projectTypes),
-      Object.values(projectTypes)
-    );
+  renderBarChart(canvas, labels, values, {
+    onClick: index => {
+      const category = labels[index];
+      navigate("projects", { category });
+    }
   });
 }
