@@ -1,70 +1,50 @@
 ```
 alsopranab.github.io/
-├── index.html                 ← SPA entry (Intro + Dashboard routing)
+│
+├── index.html
 │
 ├── assets/
 │   ├── css/
-│   │   ├── reset.css          ← CSS reset (clean slate)
-│   │   ├── variables.css      ← colors, fonts, spacing, z-index
-│   │   ├── base.css           ← typography, body rules
-│   │   ├── layout.css         ← grids, sections, containers
-│   │   ├── components.css    ← cards, badges, buttons
-│   │   ├── navbar.css        ← navbar + name/designation
-│   │   ├── animations.css    ← scroll reveal, glow, transitions
-│   │   ├── dashboard.css     ← dashboard-specific styles
-│   │   ├── projects.css      ← projects + code viewer
-│   │   ├── learnings.css     ← learnings knowledge base
-│   │   └── code.css          ← code viewer (monospace, highlight)
+│   │   ├── reset.css
+│   │   ├── variables.css
+│   │   ├── base.css
+│   │   ├── layout.css
+│   │   ├── navbar.css
+│   │   ├── components.css
+│   │   ├── animations.css
+│   │   ├── dashboard.css
+│   │   ├── certifications.css
+│   │   └── code.css
 │   │
 │   ├── js/
-│   │   ├── core/
-│   │   │   ├── router.js      ← SPA router (Intro → Dashboard → pages)
-│   │   │   ├── store.js       ← global state + caching
-│   │   │   └── config.js      ← usernames, constants
+│   │   ├── main.js              
+│   │   ├── app.js               
 │   │   │
-│   │   ├── services/
-│   │   │   ├── github.js      ← repos, stats, project types
-│   │   │   ├── githubCode.js  ← full code fetching & rendering
-│   │   │   ├── leetcode.js    ← live LeetCode stats (GraphQL)
-│   │   │   ├── hackerrank.js  ← live HackerRank stats (proxy-ready)
-│   │   │   └── contributions.js ← GitHub contribution heatmap
+│   │   ├── core/
+│   │   │   └── router.js        
 │   │   │
 │   │   ├── ui/
-│   │   │   ├── navbar.js      ← animated navbar
-│   │   │   ├── reveal.js      ← scroll-based reveal system
-│   │   │   ├── glow.js        ← icon glow + pulse
-│   │   │   ├── cards.js       ← stat cards
-│   │   │   ├── charts.js      ← Chart.js dashboards
-│   │   │   └── codeViewer.js  ← VSCode-like viewer
+│   │   │   ├── reveal.js        
+│   │   │   ├── glow.js          
+│   │   │   ├── navbar.js        
+│   │   │   └── charts.js       
 │   │   │
 │   │   └── views/
-│   │       ├── intro.js       ← cinematic intro (first load only)
-│   │       ├── dashboard.js   ← flagship live dashboard
-│   │       ├── projects.js    ← auto-updated projects list
-│   │       ├── project.js     ← single project + full code
-│   │       ├── learnings.js   ← SQL / Python / Excel / DAX / Stats
-│   │       ├── analytics.js   ← trends, charts, growth
-│   │       └── profiles.js    ← GitHub, LeetCode, HR, LinkedIn
+│   │       ├── intro.js         
+│   │       ├── dashboard.js     
+│   │       ├── projects.js
+│   │       ├── project.js
+│   │       ├── learnings.js
+│   │       ├── analytics.js
+│   │       └── profiles.js
 │   │
-│   ├── data/
-│   │   ├── knowledge/         ← your OWN GeeksForGeeks
-│   │   │   ├── sql.json
-│   │   │   ├── python.json
-│   │   │   ├── excel.json
-│   │   │   ├── dax.json
-│   │   │   ├── statistics.json
-│   │   │   └── ab_testing.json
-│   │   │
-│   │   └── project_media.json ← optional images mapping (later)
+│   ├── images/
+│   │   ├── certifications/
+│   │   │   └── *.png
+│   │   ├── icons/
+│   │   └── projects/
 │   │
-│   ├── fonts/
-│   │   ├── display/           ← hero fonts (creative)
-│   │   ├── heading/           ← section headings
-│   │   └── body/              ← readable analytics text
-│   │
-│   └── images/
-│       ├── icons/             ← glowing tech icons
-│       └── projects/          ← project screenshots (optional)
+│   └── fonts/
 │
 └── resume/
     └── Pranab_Debnath_Resume.pdf
