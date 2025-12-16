@@ -1,3 +1,4 @@
+import { initApp } from "./app.js";
 import { registerRoute, navigate } from "./core/router.js";
 
 import { IntroView } from "./views/intro.js";
@@ -7,6 +8,8 @@ import { ProjectView } from "./views/project.js";
 import { LearningsView } from "./views/learnings.js";
 import { AnalyticsView } from "./views/analytics.js";
 import { ProfilesView } from "./views/profiles.js";
+
+initApp();
 
 registerRoute("intro", IntroView);
 registerRoute("dashboard", DashboardView);
