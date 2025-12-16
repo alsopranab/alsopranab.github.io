@@ -1,0 +1,11 @@
+#kpi-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+#contribution-section,
+#project-analytics {
+  margin-top: var(--space-xl);
+}
