@@ -2,15 +2,32 @@ import { fetchGitHubRepos } from "../services/github.js";
 import { fetchContributions } from "../services/contributions.js";
 
 export async function AnalyticsView(container) {
-  const [repos, contributions] = await Promise.all([
-    fetchGitHubRepos(),
-    fetchContributions()
-  ]);
+  let repos = [];
+  let contributions = [];
 
-  const byType = repos.reduce((acc, r) => {
-    acc[r.type] = (acc[r.type] || 0) + 1;
+  try {
+    const results = await Promise.all([
+      fetchGitHubRepos(),
+      fetchContributions()
+    ]);
+
+    repos = Array.isArray(results[0]) ? results[0] : [];
+    contributions = Array.isArray(results[1]) ? results[1] : [];
+  } catch (error) {
+    console.warn("[AnalyticsView] Failed to load analytics data", error);
+    repos = [];
+    contributions = [];
+  }
+
+  // Group projects by type safely
+  const byType = repos.reduce((acc, repo) => {
+    const type = repo?.type || "Other";
+    acc[type] = (acc[type] || 0) + 1;
     return acc;
   }, {});
+
+  const hasProjectData = Object.keys(byType).length > 0;
+  const contributionDays = contributions.length;
 
   container.innerHTML = `
     <section>
@@ -18,12 +35,20 @@ export async function AnalyticsView(container) {
 
       <div>
         <h3>Projects by Type</h3>
-        <pre>${JSON.stringify(byType, null, 2)}</pre>
+        ${
+          hasProjectData
+            ? `<pre>${JSON.stringify(byType, null, 2)}</pre>`
+            : `<p>No project analytics available.</p>`
+        }
       </div>
 
       <div>
-        <h3>Contribution Data</h3>
-        <small>${contributions.length} days tracked</small>
+        <h3>Contribution Activity</h3>
+        ${
+          contributionDays > 0
+            ? `<small>${contributionDays} days tracked</small>`
+            : `<small>No contribution data available.</small>`
+        }
       </div>
     </section>
   `;
