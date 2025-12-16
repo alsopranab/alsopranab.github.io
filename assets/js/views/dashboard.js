@@ -39,34 +39,32 @@ export async function DashboardView(container) {
   `;
 
   /* -----------------------------
-     DATA LOADING (ISOLATED)
+     DATA LOADING (SAFE)
   ----------------------------- */
 
   let repos = [];
   let leetcodeStats = [];
   let contributions = [];
 
-  const results = await Promise.allSettled({
-    github: fetchGitHubRepos(),
-    leetcode: fetchLeetCodeStats(),
-    contributions: fetchContributions()
-  });
+  const results = await Promise.allSettled([
+    fetchGitHubRepos(),
+    fetchLeetCodeStats(),
+    fetchContributions()
+  ]);
 
-  if (results.github?.status === "fulfilled") {
-    repos = Array.isArray(results.github.value)
-      ? results.github.value
+  if (results[0].status === "fulfilled") {
+    repos = Array.isArray(results[0].value) ? results[0].value : [];
+  }
+
+  if (results[1].status === "fulfilled") {
+    leetcodeStats = Array.isArray(results[1].value)
+      ? results[1].value
       : [];
   }
 
-  if (results.leetcode?.status === "fulfilled") {
-    leetcodeStats = Array.isArray(results.leetcode.value)
-      ? results.leetcode.value
-      : [];
-  }
-
-  if (results.contributions?.status === "fulfilled") {
-    contributions = Array.isArray(results.contributions.value)
-      ? results.contributions.value
+  if (results[2].status === "fulfilled") {
+    contributions = Array.isArray(results[2].value)
+      ? results[2].value
       : [];
   }
 
