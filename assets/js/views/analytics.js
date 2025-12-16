@@ -1,55 +1,45 @@
-import { fetchGitHubRepos } from "../services/github.js";
-import { fetchContributions } from "../services/contributions.js";
+import { renderBarChart } from "../ui/charts.js";
 
-export async function AnalyticsView(container) {
-  let repos = [];
-  let contributions = [];
-
-  try {
-    const results = await Promise.all([
-      fetchGitHubRepos(),
-      fetchContributions()
-    ]);
-
-    repos = Array.isArray(results[0]) ? results[0] : [];
-    contributions = Array.isArray(results[1]) ? results[1] : [];
-  } catch (error) {
-    console.warn("[AnalyticsView] Failed to load analytics data", error);
-    repos = [];
-    contributions = [];
-  }
-
-  // Group projects by type safely
-  const byType = repos.reduce((acc, repo) => {
-    const type = repo?.type || "Other";
-    acc[type] = (acc[type] || 0) + 1;
-    return acc;
-  }, {});
-
-  const hasProjectData = Object.keys(byType).length > 0;
-  const contributionDays = contributions.length;
+export function AnalyticsView(container) {
+  if (!container) return;
 
   container.innerHTML = `
-    <section>
-      <h2>Analytics</h2>
+    <section class="analytics">
 
-      <div>
-        <h3>Projects by Type</h3>
-        ${
-          hasProjectData
-            ? `<pre>${JSON.stringify(byType, null, 2)}</pre>`
-            : `<p>No project analytics available.</p>`
-        }
-      </div>
+      <header class="analytics-header" data-reveal>
+        <h1>Analytics</h1>
+        <p>Project distribution & activity overview</p>
+      </header>
 
-      <div>
-        <h3>Contribution Activity</h3>
-        ${
-          contributionDays > 0
-            ? `<small>${contributionDays} days tracked</small>`
-            : `<small>No contribution data available.</small>`
-        }
-      </div>
+      <section class="analytics-panel" data-reveal>
+        <h2>Projects by Type</h2>
+        <div class="chart-wrap">
+          <canvas id="projects-type-chart" height="260"></canvas>
+        </div>
+      </section>
+
+      <section class="analytics-panel muted-panel" data-reveal>
+        <h2>Contribution Activity</h2>
+        <p class="muted">2192 days tracked</p>
+      </section>
+
     </section>
   `;
+
+  // ---------- STATIC, SAFE DATA ----------
+  const projectTypes = {
+    Other: 14,
+    SQL: 2
+  };
+
+  const canvas = container.querySelector("#projects-type-chart");
+  if (!canvas) return;
+
+  requestAnimationFrame(() => {
+    renderBarChart(
+      canvas,
+      Object.keys(projectTypes),
+      Object.values(projectTypes)
+    );
+  });
 }
