@@ -1,0 +1,71 @@
+/* =====================================================
+   ANALYTICS PAGE (FINAL)
+===================================================== */
+
+.analytics {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* -----------------------------------------------------
+   HEADER
+----------------------------------------------------- */
+
+.analytics-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.analytics-header p {
+  color: #9a9a9a;
+}
+
+/* -----------------------------------------------------
+   PANELS
+----------------------------------------------------- */
+
+.analytics-panel {
+  background: #000;
+  border: 1px solid #1f1f1f;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.analytics-panel h2 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  margin-bottom: var(--space-md);
+}
+
+.muted-panel {
+  color: #9a9a9a;
+}
+
+/* -----------------------------------------------------
+   CHART
+----------------------------------------------------- */
+
+.chart-wrap {
+  position: relative;
+  height: 280px;
+}
+
+/* -----------------------------------------------------
+   MOBILE
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .analytics {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .chart-wrap {
+    height: 220px;
+  }
+}
