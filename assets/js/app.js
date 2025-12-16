@@ -1,58 +1,66 @@
 import { renderNavbar } from "./ui/navbar.js";
-import { initReveal } from "./ui/reveal.js";
+import { initReveal, destroyReveal } from "./ui/reveal.js";
+import { initGlow } from "./ui/glow.js";
 
 let appRoot = null;
+let mainRoot = null;
 let initialized = false;
 
 /**
  * Initialize application shell (runs ONCE)
  */
 export function initApp() {
-  // Prevent double execution
   if (initialized) return;
   initialized = true;
 
-  // Ensure DOM is ready
+  // Ensure DOM ready
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initApp, { once: true });
     return;
   }
 
-  // SPA root (NOT document.body)
   appRoot = document.getElementById("app");
-
   if (!appRoot) {
     throw new Error("[App] #app root not found");
   }
 
-  // Clear root (defensive)
+  // Reset root safely
   appRoot.innerHTML = "";
 
   // --------------------------------------------------
-  // App shell
+  // App shell (LOCKED STRUCTURE)
   // --------------------------------------------------
   const shell = document.createElement("div");
   shell.id = "app-shell";
 
-  const main = document.createElement("main");
-  main.id = "app-main";
+  const header = document.createElement("header");
+  header.id = "app-header";
 
-  shell.appendChild(main);
+  mainRoot = document.createElement("main");
+  mainRoot.id = "app-main";
+
+  shell.appendChild(header);
+  shell.appendChild(mainRoot);
   appRoot.appendChild(shell);
 
   // --------------------------------------------------
-  // Static UI (render once)
+  // Static UI (render ONCE)
   // --------------------------------------------------
-  renderNavbar(shell);
+  renderNavbar(header);
 
   // --------------------------------------------------
-  // Reveal system
+  // Global effects (render ONCE)
   // --------------------------------------------------
-  initReveal();
+  initGlow();
 
-  // Re-run reveal after each route render
+  // --------------------------------------------------
+  // Reveal lifecycle (SPA-safe)
+  // --------------------------------------------------
+  initReveal(mainRoot);
+
   window.addEventListener("route:rendered", () => {
-    initReveal();
+    destroyReveal();
+    initReveal(mainRoot);
   });
 }
 
@@ -60,8 +68,8 @@ export function initApp() {
  * Router access point
  */
 export function getAppMain() {
-  if (!appRoot) {
+  if (!mainRoot) {
     throw new Error("[App] App not initialized");
   }
-  return document.getElementById("app-main");
+  return mainRoot;
 }
