@@ -1,43 +1,51 @@
-import { CONFIG } from "../core/config.js";
-
-export async function ProfilesView(container) {
-  const githubUser = CONFIG?.github?.username;
-  const leetcodeUser = CONFIG?.leetcode?.username;
-  const hackerrankUser = CONFIG?.hackerrank?.username;
+export function ProfilesView(container) {
+  if (!container) return;
 
   container.innerHTML = `
-    <section>
-      <h2>Profiles</h2>
+    <section class="profiles">
 
-      <div>
-        ${
-          githubUser
-            ? `<a href="https://github.com/${githubUser}" target="_blank" rel="noopener noreferrer">
-                GitHub
-              </a>`
-            : `<span>GitHub profile not configured</span>`
-        }
+      <header class="profiles-header" data-reveal>
+        <h1>Social Profiles</h1>
+        <p>Professional & data-focused platforms</p>
+      </header>
+
+      <div class="profiles-grid" data-reveal>
+        <a class="profile-item" href="https://linkedin.com/in/alsopranab" target="_blank" rel="noopener">
+          <span class="icon linkedin"></span>
+          <span class="handle">@alsopranab</span>
+        </a>
+
+        <a class="profile-item" href="https://github.com/alsopranab" target="_blank" rel="noopener">
+          <span class="icon github"></span>
+          <span class="handle">@alsopranab</span>
+        </a>
+
+        <a class="profile-item" href="https://leetcode.com/alsopranab" target="_blank" rel="noopener">
+          <span class="icon leetcode"></span>
+          <span class="handle">@alsopranab</span>
+        </a>
+
+        <a class="profile-item" href="https://hackerrank.com/alsopranab" target="_blank" rel="noopener">
+          <span class="icon hackerrank"></span>
+          <span class="handle">@alsopranab</span>
+        </a>
+
+        <a class="profile-item" href="https://datalemur.com/profile/alsopranab" target="_blank" rel="noopener">
+          <span class="icon datalemur"></span>
+          <span class="handle">@alsopranab</span>
+        </a>
+
+        <a class="profile-item" href="https://instagram.com/the.queryguy" target="_blank" rel="noopener">
+          <span class="icon instagram"></span>
+          <span class="handle">the.queryguy</span>
+        </a>
+
+        <a class="profile-item" href="https://kaggle.com/pranabdn" target="_blank" rel="noopener">
+          <span class="icon kaggle"></span>
+          <span class="handle">@pranabdn</span>
+        </a>
       </div>
 
-      <div>
-        ${
-          leetcodeUser
-            ? `<a href="https://leetcode.com/${leetcodeUser}" target="_blank" rel="noopener noreferrer">
-                LeetCode
-              </a>`
-            : `<span>LeetCode profile not available</span>`
-        }
-      </div>
-
-      <div>
-        ${
-          hackerrankUser
-            ? `<a href="https://www.hackerrank.com/${hackerrankUser}" target="_blank" rel="noopener noreferrer">
-                HackerRank
-              </a>`
-            : `<span>HackerRank profile not available</span>`
-        }
-      </div>
     </section>
   `;
 }
