@@ -9,12 +9,11 @@ import { animateCount } from "../ui/animations.js";
 import { isMobile } from "../ui/responsive.js";
 
 export async function DashboardView(container) {
-  // Root layout (UI will style later)
   container.innerHTML = `
     <section class="dashboard">
       <header>
         <h1 data-reveal>Dashboard</h1>
-        <p data-reveal>Live engineering & analytics metrics</p>
+        <p data-reveal>Live analytics metrics</p>
       </header>
 
       <section id="kpi-row" data-reveal></section>
@@ -31,26 +30,42 @@ export async function DashboardView(container) {
     </section>
   `;
 
-  // Fetch everything in parallel
-  const [repos, leetcodeStats, contributions] = await Promise.all([
-    fetchGitHubRepos(),
-    fetchLeetCodeStats(),
-    fetchContributions()
-  ]);
+  let repos = [];
+  let leetcodeStats = [];
+  let contributions = [];
+
+  try {
+    const results = await Promise.allSettled([
+      fetchGitHubRepos(),
+      fetchLeetCodeStats(),
+      fetchContributions()
+    ]);
+
+    repos = Array.isArray(results[0]?.value) ? results[0].value : [];
+    leetcodeStats = Array.isArray(results[1]?.value)
+      ? results[1].value
+      : [];
+    contributions = Array.isArray(results[2]?.value)
+      ? results[2].value
+      : [];
+  } catch (error) {
+    console.warn("[Dashboard] Data loading failed", error);
+  }
 
   /* -----------------------------
-     KPI METRICS
+     KPI METRICS (SAFE)
   ----------------------------- */
 
   const totalProjects = repos.length;
 
-  const projectsByType = repos.reduce((acc, r) => {
-    acc[r.type] = (acc[r.type] || 0) + 1;
+  const projectsByType = repos.reduce((acc, repo) => {
+    const type = repo?.type || "Other";
+    acc[type] = (acc[type] || 0) + 1;
     return acc;
   }, {});
 
   const solvedLeetCode = leetcodeStats.reduce(
-    (sum, d) => sum + d.count,
+    (sum, d) => sum + (d?.count || 0),
     0
   );
 
@@ -59,7 +74,10 @@ export async function DashboardView(container) {
   const kpis = [
     { label: "Projects", value: totalProjects },
     { label: "LeetCode Solved", value: solvedLeetCode },
-    { label: "Project Types", value: Object.keys(projectsByType).length }
+    {
+      label: "Project Types",
+      value: Object.keys(projectsByType).length
+    }
   ];
 
   kpis.forEach(kpi => {
@@ -68,26 +86,30 @@ export async function DashboardView(container) {
       value: 0
     });
 
-    kpiRow.appendChild(card);
+    kpiRow?.appendChild(card);
 
-    // Animate numbers
-    animateCount(
-      card.querySelector(".value"),
-      kpi.value
-    );
+    const valueEl = card?.querySelector(".value");
+    if (valueEl) {
+      animateCount(valueEl, kpi.value);
+    }
   });
 
   /* -----------------------------
-     CONTRIBUTION HEATMAP
+     CONTRIBUTION HEATMAP (SAFE)
   ----------------------------- */
 
   const contributionContainer =
     container.querySelector("#contribution-map");
 
-  renderContributionMap(contributionContainer, contributions);
+  if (contributionContainer && contributions.length > 0) {
+    renderContributionMap(contributionContainer, contributions);
+  } else if (contributionContainer) {
+    contributionContainer.innerHTML =
+      "<small>No contribution data available.</small>";
+  }
 
   /* -----------------------------
-     PROJECT TYPE CHART
+     PROJECT TYPE CHART (SAFE)
   ----------------------------- */
 
   const chartCanvas =
@@ -96,14 +118,11 @@ export async function DashboardView(container) {
   const labels = Object.keys(projectsByType);
   const values = Object.values(projectsByType);
 
-  renderBarChart(chartCanvas, labels, values);
+  if (chartCanvas && labels.length > 0) {
+    renderBarChart(chartCanvas, labels, values);
 
-  /* -----------------------------
-     RESPONSIVE AWARENESS
-  ----------------------------- */
-
-  if (isMobile()) {
-    // Future: reduce chart density / simplify heatmap
-    chartCanvas.height = 200;
+    if (isMobile()) {
+      chartCanvas.height = 200;
+    }
   }
 }
