@@ -1,5 +1,5 @@
 /* =====================================================
-   DASHBOARD ROOT
+   DASHBOARD ROOT (FINAL, ISOLATED)
 ===================================================== */
 
 .dashboard {
@@ -28,7 +28,7 @@
 }
 
 /* =====================================================
-   KPI GRID (CENTER OF ATTRACTION)
+   KPI GRID (DASHBOARD ONLY)
 ===================================================== */
 
 .dashboard-kpis {
@@ -38,7 +38,7 @@
 }
 
 .kpi-card {
-  background: #000000;
+  background: #000;
   border: 1px solid #1f1f1f;
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
@@ -46,8 +46,7 @@
   flex-direction: column;
   gap: 0.6rem;
 
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.9);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
 
   transition:
     transform 0.25s ease,
@@ -64,8 +63,8 @@
 }
 
 .kpi-card .label {
-  font-size: 0.8rem;
-  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #7a7a7a;
 }
@@ -80,29 +79,34 @@
 }
 
 /* =====================================================
-   CHART PANEL
+   CHART PANEL (USED BY DASHBOARD + ANALYTICS)
 ===================================================== */
 
 .dashboard-chart {
-  background: #000000;
+  background: #000;
   border: 1px solid #1f1f1f;
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
 }
 
 .dashboard-chart h2 {
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: #ffffff;
   margin-bottom: var(--space-md);
 }
 
+/* HARD HEIGHT LOCK — PREVENTS INFINITE GROWTH */
 .chart-wrap {
   position: relative;
   height: 280px;
 }
 
+.chart-wrap canvas {
+  max-height: 100%;
+}
+
 /* =====================================================
-   MOBILE REFINEMENT
+   MOBILE
 ===================================================== */
 
 @media (max-width: 768px) {
