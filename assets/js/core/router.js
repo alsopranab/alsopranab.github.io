@@ -1,7 +1,8 @@
 import { getAppMain } from "../app.js";
 
 const routes = {};
-let currentRoute = null;
+let activeView = null;
+let renderToken = 0;
 
 /**
  * Register a route
@@ -14,20 +15,33 @@ export function registerRoute(name, viewFn) {
 }
 
 /**
- * Internal render handler
+ * Parse hash safely
+ */
+function parseHash() {
+  const hash = window.location.hash.replace(/^#\/?/, "");
+  return hash || null;
+}
+
+/**
+ * Render a route (race-safe)
  */
 async function renderRoute(route, params = {}) {
-  // Prevent unnecessary re-render
-  if (route === currentRoute) return;
-  currentRoute = route;
-
+  const token = ++renderToken;
   const root = getAppMain();
 
   if (!root) {
-    throw new Error("[Router] #app-main not found");
+    throw new Error("[Router] App main container not found");
   }
 
-  // Clear previous view
+  // Cleanup previous view if it supports it
+  if (activeView && typeof activeView.destroy === "function") {
+    try {
+      activeView.destroy();
+    } catch (e) {
+      console.warn("[Router] View cleanup failed", e);
+    }
+  }
+
   root.innerHTML = "";
 
   const View = routes[route];
@@ -39,11 +53,22 @@ async function renderRoute(route, params = {}) {
         <p>Page not found</p>
       </section>
     `;
+    activeView = null;
     return;
   }
 
   try {
-    await View(root, params);
+    const result = await View(root, params);
+
+    // Abort if a newer render started
+    if (token !== renderToken) return;
+
+    // Track active view if it returns cleanup hooks
+    if (result && typeof result === "object") {
+      activeView = result;
+    } else {
+      activeView = null;
+    }
   } catch (error) {
     console.error(`[Router] Error rendering "${route}"`, error);
     root.innerHTML = `
@@ -52,16 +77,22 @@ async function renderRoute(route, params = {}) {
         <p>Unable to load this section.</p>
       </section>
     `;
+    activeView = null;
   }
 
-  // Notify app systems (reveal, analytics, etc.)
-  window.dispatchEvent(new CustomEvent("route:rendered", {
-    detail: { route, params }
-  }));
+  // UX: reset scroll
+  window.scrollTo({ top: 0, behavior: "instant" });
+
+  // Notify global systems
+  window.dispatchEvent(
+    new CustomEvent("route:rendered", {
+      detail: { route, params }
+    })
+  );
 }
 
 /**
- * Navigate to a route (hash-based)
+ * Navigate (single source of truth = hash)
  */
 export function navigate(route, params = {}) {
   if (!routes[route]) {
@@ -69,28 +100,24 @@ export function navigate(route, params = {}) {
     return;
   }
 
-  // Update hash ONLY (single source of truth)
   window.location.hash = `#/${route}`;
-
-  // Params can be cached later if needed
 }
 
 /**
  * Initialize router
  */
 export function initRouter(defaultRoute = "dashboard") {
-  function handleHashChange() {
-    const hash = window.location.hash.replace("#/", "");
-    const route = routes[hash] ? hash : defaultRoute;
+  function onChange() {
+    const route = parseHash() || defaultRoute;
     renderRoute(route);
   }
 
-  window.addEventListener("hashchange", handleHashChange);
+  window.addEventListener("hashchange", onChange);
 
-  // Initial load
+  // Initial render
   if (!window.location.hash) {
     window.location.hash = `#/${defaultRoute}`;
   } else {
-    handleHashChange();
+    onChange();
   }
 }
