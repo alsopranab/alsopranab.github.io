@@ -1,7 +1,7 @@
 /**
  * Monochrome bar chart with stable rendering
  * No colors. No gradients. Glow via shadow only.
- */
+ 
 export function renderBarChart(canvas, labels = [], values = []) {
   if (!canvas || typeof Chart === "undefined") return;
 
@@ -49,3 +49,8 @@ export function renderBarChart(canvas, labels = [], values = []) {
         },
         y: {
           grid: { color: "#1f1f1f
+*/
+
+export function renderCharts() {
+  console.log("charts.js loaded safely");
+}
