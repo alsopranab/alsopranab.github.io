@@ -1,39 +1,128 @@
+/* =====================================================
+   NAVBAR (Sticky, Glass, Analytics-Grade)
+===================================================== */
+
 nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  backdrop-filter: blur(12px);
-  background: var(--glass-bg);
-  border-bottom: 1px solid var(--glass-border);
-  padding: var(--space-sm) var(--space-md);
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  padding: var(--space-sm) var(--space-md);
+
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+
+  transition:
+    background var(--duration-md) var(--ease-standard),
+    box-shadow var(--duration-md) var(--ease-standard);
+}
+
+/* Subtle elevation on scroll-ready pages */
+nav.scrolled {
+  box-shadow: var(--shadow-md);
+}
+
+/* =====================================================
+   BRAND
+===================================================== */
+
+.nav-brand {
+  line-height: 1.1;
 }
 
 .nav-brand strong {
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
 }
 
 .nav-brand span {
   display: block;
-  font-size: 0.75rem;
+  margin-top: 2px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   color: var(--text-muted);
 }
 
+/* =====================================================
+   NAV LINKS
+===================================================== */
+
 .nav-links {
   display: flex;
+  align-items: center;
   gap: var(--space-md);
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .nav-links li {
+  position: relative;
   cursor: pointer;
-  font-size: 0.9rem;
+
+  font-size: 0.88rem;
+  font-weight: 500;
   color: var(--text-secondary);
+
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
+
+/* Hover: subtle, not flashy */
+.nav-links li:hover {
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+/* =====================================================
+   ACTIVE STATE (CLEAN & PROFESSIONAL)
+===================================================== */
 
 .nav-links li.active {
   color: var(--accent-primary);
+}
+
+/* Active underline indicator */
+.nav-links li.active::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+
+  width: 18px;
+  height: 2px;
+  border-radius: 2px;
+
+  background: var(--accent-primary);
+  box-shadow: var(--glow-primary);
+}
+
+/* =====================================================
+   MOBILE BEHAVIOR
+===================================================== */
+
+@media (max-width: 768px) {
+  nav {
+    padding: var(--space-sm);
+  }
+
+  .nav-links {
+    gap: var(--space-sm);
+  }
+
+  .nav-links li {
+    font-size: 0.82rem;
+  }
 }
