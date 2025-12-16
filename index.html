@@ -12,30 +12,22 @@
   <title>Pranab Debnath · Analytics · Data · Insights</title>
 
   <!-- --------------------------------------------------
-       Favicon (prevents 404)
+       Favicon
   --------------------------------------------------- -->
   <link rel="icon" href="data:," />
 
   <!-- --------------------------------------------------
-       Fonts
+       Fonts (load first, no blocking)
   --------------------------------------------------- -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-  <!-- Display / Hero -->
   <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
-
-  <!-- Body / UI -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
   <!-- --------------------------------------------------
-       CSS (explicit relative paths, full set)
+       CSS (ONLY files that MUST exist)
   --------------------------------------------------- -->
   <link rel="stylesheet" href="./assets/css/reset.css" />
   <link rel="stylesheet" href="./assets/css/variables.css" />
@@ -45,31 +37,61 @@
   <link rel="stylesheet" href="./assets/css/components.css" />
   <link rel="stylesheet" href="./assets/css/animations.css" />
   <link rel="stylesheet" href="./assets/css/dashboard.css" />
-  <link rel="stylesheet" href="./assets/css/projects.css" />
-  <link rel="stylesheet" href="./assets/css/learnings.css" />
-  <link rel="stylesheet" href="./assets/css/code.css" />
+  <link rel="stylesheet" href="./assets/css/certifications.css" />
 
   <!-- --------------------------------------------------
-       Chart.js (global dependency)
+       Glow system CSS (required)
+  --------------------------------------------------- -->
+  <style>
+    body {
+      background: #0b0b0f;
+      color: #ffffff;
+      font-family: Inter, system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    .mouse-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 320px;
+      pointer-events: none;
+      background: radial-gradient(
+        circle,
+        rgba(120, 120, 255, 0.18),
+        transparent 70%
+      );
+      transform: translate(-50%, -50%);
+      z-index: 0;
+    }
+  </style>
+
+  <!-- --------------------------------------------------
+       Chart.js (safe global dependency)
   --------------------------------------------------- -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 
 <body>
   <!-- --------------------------------------------------
-       SPA ROOT (DO NOT TOUCH FROM VIEWS)
+       SPA ROOT (LOCKED)
   --------------------------------------------------- -->
   <div id="app">
-    <!-- Fallback (JS disabled / failure) -->
+    <!-- Hard fallback (never black screen) -->
+    <div style="padding:40px">
+      <h1>Loading…</h1>
+    </div>
+
     <noscript>
-      <p style="padding:20px;font-family:Inter,system-ui">
+      <p style="padding:20px">
         This site requires JavaScript to run.
       </p>
     </noscript>
   </div>
 
   <!-- --------------------------------------------------
-       Main App Entry (must be last)
+       Application Entry (LAST, ALWAYS)
   --------------------------------------------------- -->
   <script type="module" src="./assets/js/main.js"></script>
 </body>
