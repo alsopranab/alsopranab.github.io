@@ -1,98 +1,116 @@
 /* =====================================================
-   DASHBOARD – B/W + GLOW (STABLE)
+   DASHBOARD ROOT
 ===================================================== */
 
-/* -------------------------------
-   KPI ROW
--------------------------------- */
+.dashboard {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
 
-#kpi-row {
+/* =====================================================
+   HEADER
+===================================================== */
+
+.dashboard-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.dashboard-header p {
+  color: #9a9a9a;
+  max-width: 560px;
+}
+
+/* =====================================================
+   KPI GRID (CENTER OF ATTRACTION)
+===================================================== */
+
+.dashboard-kpis {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: var(--space-md);
-  margin-top: var(--space-lg);
 }
 
-/* -------------------------------
-   SECTIONS
--------------------------------- */
-
-#contribution-section,
-#project-analytics {
-  margin-top: var(--space-xl);
-  padding: var(--space-md);
-}
-
-/* -------------------------------
-   BASE SURFACE (NO SHIFT)
--------------------------------- */
-
-#kpi-row .stat-card,
-#contribution-section,
-#project-analytics {
-  background: #000;
+.kpi-card {
+  background: #000000;
   border: 1px solid #1f1f1f;
   border-radius: var(--radius-lg);
-
-  /* IMPORTANT: no transform-based movement */
-  transform: translateZ(0);
-  will-change: box-shadow, border-color;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 
   box-shadow:
-    0 8px 40px rgba(0, 0, 0, 0.9);
+    0 10px 40px rgba(0, 0, 0, 0.9);
 
   transition:
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-/* -------------------------------
-   TYPOGRAPHY
--------------------------------- */
-
-#contribution-section h2,
-#project-analytics h2 {
-  color: #fff;
-}
-
-#contribution-section p,
-#project-analytics p,
-#contribution-section small,
-#project-analytics small {
-  color: #b5b5b5;
-}
-
-/* -------------------------------
-   GLOW (NO LAYOUT JUMP)
--------------------------------- */
-
-#kpi-row .stat-card:hover,
-#contribution-section:hover,
-#project-analytics:hover {
-  border-color: #2f2f2f;
-
+.kpi-card:hover {
+  transform: translateY(-4px);
+  border-color: #2a2a2a;
   box-shadow:
     0 0 18px rgba(255, 255, 255, 0.08),
-    0 12px 48px rgba(0, 0, 0, 0.95);
+    0 14px 48px rgba(0, 0, 0, 0.95);
 }
 
-/* -------------------------------
-   KPI NUMBER EMPHASIS
--------------------------------- */
+.kpi-card .label {
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #7a7a7a;
+}
 
-#kpi-row .stat-card .value {
-  color: #fff;
+.kpi-card .value {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 600;
+  color: #ffffff;
   text-shadow:
     0 0 12px rgba(255, 255, 255, 0.25),
     0 0 32px rgba(255, 255, 255, 0.12);
 }
 
-/* -------------------------------
-   MOBILE
--------------------------------- */
+/* =====================================================
+   CHART PANEL
+===================================================== */
+
+.dashboard-chart {
+  background: #000000;
+  border: 1px solid #1f1f1f;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.dashboard-chart h2 {
+  font-size: 1.1rem;
+  color: #ffffff;
+  margin-bottom: var(--space-md);
+}
+
+.chart-wrap {
+  position: relative;
+  height: 280px;
+}
+
+/* =====================================================
+   MOBILE REFINEMENT
+===================================================== */
 
 @media (max-width: 768px) {
-  #kpi-row {
-    gap: var(--space-sm);
+  .dashboard {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .chart-wrap {
+    height: 220px;
   }
 }
