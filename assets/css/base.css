@@ -1,11 +1,11 @@
 /* =====================================================
-   GLOBAL BLACK & WHITE + GLOW SYSTEM (STABLE)
+   BASE.CSS — GLOBAL B/W + GLOW (STABLE)
+   FULL REPLACEMENT
 ===================================================== */
 
 /* -------------------------
    BOX MODEL (MANDATORY)
 ------------------------- */
-
 *,
 *::before,
 *::after {
@@ -15,19 +15,20 @@
 /* -------------------------
    BASE COLORS
 ------------------------- */
-
-html, body {
+html,
+body {
+  margin: 0;
+  padding: 0;
   background: #000;
   color: #fff;
 }
 
 /* -------------------------
-   TEXT HIERARCHY
+   TYPOGRAPHY
 ------------------------- */
-
 h1, h2, h3, h4, h5, h6 {
   color: #fff;
-  text-shadow: 0 0 18px rgba(255, 255, 255, 0.12);
+  text-shadow: 0 0 18px rgba(255,255,255,0.12);
 }
 
 p, span, small, li, label {
@@ -41,15 +42,14 @@ p, span, small, li, label {
 /* -------------------------
    SURFACES (NO MOVEMENT)
 ------------------------- */
-
 section,
+nav,
+aside,
 .card,
 .panel,
 .stat-card,
 .project-card,
 .learning-card,
-nav,
-aside,
 pre,
 code {
   background: #000;
@@ -59,8 +59,7 @@ code {
   transform: translateZ(0);
   will-change: box-shadow, border-color;
 
-  box-shadow:
-    0 10px 40px rgba(0,0,0,0.9);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9);
 
   transition:
     box-shadow 0.25s ease,
@@ -68,20 +67,18 @@ code {
 }
 
 /* -------------------------
-   HOVER / FOCUS (GLOW ONLY)
+   HOVER (GLOW ONLY)
 ------------------------- */
-
 section:hover,
+nav:hover,
+aside:hover,
 .card:hover,
 .panel:hover,
 .stat-card:hover,
 .project-card:hover,
 .learning-card:hover,
-nav:hover,
-aside:hover,
 pre:hover {
   border-color: #2f2f2f;
-
   box-shadow:
     0 0 18px rgba(255,255,255,0.08),
     0 14px 60px rgba(0,0,0,0.95);
@@ -90,7 +87,6 @@ pre:hover {
 /* -------------------------
    INTERACTIVE ELEMENTS
 ------------------------- */
-
 a,
 button,
 li[data-route] {
@@ -108,15 +104,13 @@ li[data-route]:hover {
 }
 
 /* -------------------------
-   KPI / NUMERIC EMPHASIS
+   NUMBERS / KPI
 ------------------------- */
-
 .value,
 .metric,
 .count {
   color: #fff;
   font-weight: 600;
-
   text-shadow:
     0 0 12px rgba(255,255,255,0.35),
     0 0 36px rgba(255,255,255,0.18);
@@ -125,21 +119,17 @@ li[data-route]:hover {
 /* -------------------------
    CODE VIEWER
 ------------------------- */
-
 pre,
 code {
-  color: #eaeaea;
   font-family: var(--font-mono);
+  color: #eaeaea;
   background: #000;
-
-  text-shadow:
-    0 0 6px rgba(255,255,255,0.08);
+  text-shadow: 0 0 6px rgba(255,255,255,0.08);
 }
 
 /* -------------------------
    SCROLLBAR
 ------------------------- */
-
 ::-webkit-scrollbar {
   width: 8px;
 }
