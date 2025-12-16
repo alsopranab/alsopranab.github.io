@@ -1,39 +1,46 @@
 let revealObserver = null;
 
+/**
+ * Initialize scroll reveal system
+ * Safe for SPA, route changes, and re-initialization
+ */
 export function initReveal(root = document) {
-  // Respect reduced motion preference
+  if (!root) return;
+
+  const elements = Array.from(
+    root.querySelectorAll("[data-reveal]:not(.revealed)")
+  );
+
+  if (!elements.length) return;
+
+  // Respect reduced motion
   const prefersReducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  // If motion is reduced, reveal everything immediately
-  if (prefersReducedMotion) {
-    root.querySelectorAll("[data-reveal]").forEach(el => {
-      el.classList.add("revealed");
-    });
-    return;
-  }
+  // Cleanup previous observer
+  destroyReveal();
 
-  // Guard: IntersectionObserver support
-  if (!("IntersectionObserver" in window)) {
-    root.querySelectorAll("[data-reveal]").forEach(el => {
-      el.classList.add("revealed");
-    });
+  // Reduced motion or no support → reveal immediately
+  if (
+    prefersReducedMotion ||
+    !("IntersectionObserver" in window)
+  ) {
+    elements.forEach(el => el.classList.add("revealed"));
     return;
-  }
-
-  // Disconnect old observer (SPA-safe)
-  if (revealObserver) {
-    revealObserver.disconnect();
   }
 
   revealObserver = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("revealed");
-          revealObserver.unobserve(entry.target);
+        if (!entry.isIntersecting) return;
+
+        const el = entry.target;
+        if (!el.classList.contains("revealed")) {
+          el.classList.add("revealed");
         }
+
+        revealObserver.unobserve(el);
       });
     },
     {
@@ -42,8 +49,16 @@ export function initReveal(root = document) {
     }
   );
 
-  // Observe only unrevealed elements
-  root.querySelectorAll("[data-reveal]:not(.revealed)").forEach(el => {
-    revealObserver.observe(el);
-  });
+  elements.forEach(el => revealObserver.observe(el));
+}
+
+/**
+ * Destroy reveal observer
+ * Call on route changes or app teardown
+ */
+export function destroyReveal() {
+  if (revealObserver) {
+    revealObserver.disconnect();
+    revealObserver = null;
+  }
 }
