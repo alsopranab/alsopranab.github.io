@@ -1,0 +1,105 @@
+/* =====================================================
+   PROFILES / SOCIALS
+===================================================== */
+
+.profiles {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+}
+
+/* -----------------------------------------------------
+   HEADER
+----------------------------------------------------- */
+
+.profiles-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  color: #ffffff;
+  margin-bottom: 0.4rem;
+}
+
+.profiles-header p {
+  color: #9a9a9a;
+  margin-bottom: var(--space-lg);
+}
+
+/* -----------------------------------------------------
+   GRID
+----------------------------------------------------- */
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-md);
+}
+
+/* -----------------------------------------------------
+   PROFILE ITEM (LOGO = LINK)
+----------------------------------------------------- */
+
+.profile-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  padding: 1rem 1.2rem;
+  background: #000;
+  border: 1px solid #1f1f1f;
+  border-radius: var(--radius-md);
+
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-item:hover {
+  transform: translateY(-3px);
+  border-color: #2a2a2a;
+  box-shadow:
+    0 0 16px rgba(255, 255, 255, 0.08),
+    0 12px 40px rgba(0, 0, 0, 0.9);
+}
+
+/* -----------------------------------------------------
+   ICONS (PURE, NO SHAPES)
+----------------------------------------------------- */
+
+.icon {
+  width: 28px;
+  height: 28px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: brightness(0.9);
+}
+
+/* Platform logos */
+.icon.linkedin   { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/linkedin.svg"); }
+.icon.github     { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/github.svg"); }
+.icon.leetcode   { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/leetcode.svg"); }
+.icon.hackerrank { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/hackerrank.svg"); }
+.icon.datalemur  { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/postgresql.svg"); }
+.icon.instagram  { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/instagram.svg"); }
+.icon.kaggle     { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/kaggle.svg"); }
+
+/* -----------------------------------------------------
+   HANDLE
+----------------------------------------------------- */
+
+.profile-item .handle {
+  color: #e5e7eb;
+  font-size: 0.95rem;
+}
+
+/* -----------------------------------------------------
+   MOBILE
+----------------------------------------------------- */
+
+@media (max-width: 768px) {
+  .profiles {
+    padding: var(--space-lg) var(--space-sm);
+  }
+}
