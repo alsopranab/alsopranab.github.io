@@ -2,12 +2,10 @@ import { CONFIG } from "../core/config.js";
 import { store } from "../core/store.js";
 
 /**
- * Fetch GitHub repositories.
- * MUST be defensive:
- * - Rate limits
- * - Network errors
- * - Invalid responses
- * - Never crash the SPA
+ * Fetch GitHub repositories (RAW + NORMALIZED)
+ * - No classification
+ * - No UI logic
+ * - Safe, cached, defensive
  */
 export async function fetchGitHubRepos() {
   return store.cached(
@@ -19,28 +17,28 @@ export async function fetchGitHubRepos() {
           `${CONFIG.github.apiBase}/users/${CONFIG.github.username}/repos?per_page=100`
         );
 
-        // Handle non-200 responses
         if (!res.ok) {
           throw new Error(`GitHub API HTTP ${res.status}`);
         }
 
         const data = await res.json();
 
-        // Validate expected array
         if (!Array.isArray(data)) {
           throw new Error("GitHub API returned non-array response");
         }
 
+        // Normalize ONLY
         return data
-          .filter(r => r && !r.fork && !r.archived)
+          .filter(repo => repo && !repo.fork && !repo.archived)
           .map(repo => ({
+            id: repo.id,
             name: repo.name,
             description: repo.description || "",
-            stars: repo.stargazers_count || 0,
             language: repo.language || "",
+            topics: Array.isArray(repo.topics) ? repo.topics : [],
+            stars: repo.stargazers_count || 0,
             updatedAt: repo.updated_at,
-            url: repo.html_url,
-            type: detectProjectType(repo)
+            htmlUrl: repo.html_url
           }));
       } catch (error) {
         console.warn(
@@ -48,20 +46,8 @@ export async function fetchGitHubRepos() {
           error
         );
 
-        // SAFE fallback
         return [];
       }
     }
   );
-}
-
-function detectProjectType(repo) {
-  const name = (repo.name || "").toLowerCase();
-
-  if (name.includes("sql")) return "SQL";
-  if (name.includes("dashboard")) return "Dashboard";
-  if (name.includes("python")) return "Python";
-  if (name.includes("google")) return "Google";
-
-  return "Other";
 }
