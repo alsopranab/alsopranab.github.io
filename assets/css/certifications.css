@@ -1,0 +1,21 @@
+.certifications {
+  margin-top: 64px;
+}
+
+.cert-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.cert-grid img {
+  width: 100%;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cert-grid img:hover {
+  transform: scale(1.04);
+  box-shadow: 0 0 24px rgba(255,255,255,0.15);
+}
