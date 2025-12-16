@@ -1,3 +1,5 @@
+import { getAppMain } from "../app.js";
+
 const routes = {};
 let currentRoute = null;
 
@@ -6,39 +8,45 @@ let currentRoute = null;
  */
 export function registerRoute(name, viewFn) {
   if (typeof viewFn !== "function") {
-    throw new Error(`Route "${name}" must be a function`);
+    throw new Error(`[Router] Route "${name}" must be a function`);
   }
   routes[name] = viewFn;
 }
 
 /**
- * Navigate to a route (SPA-safe)
+ * Internal render handler
  */
-export async function navigate(route, params = {}, replace = false) {
-  // Guard: route exists
-  if (!routes[route]) {
-    console.warn(`[Router] Route "${route}" not found`);
-    return;
-  }
-
-  // Prevent re-render loop
-  if (route === currentRoute && !replace) return;
+async function renderRoute(route, params = {}) {
+  // Prevent unnecessary re-render
+  if (route === currentRoute) return;
   currentRoute = route;
 
-  const app = document.getElementById("app");
-  if (!app) {
-    console.error("[Router] #app container not found");
+  const root = getAppMain();
+
+  if (!root) {
+    throw new Error("[Router] #app-main not found");
+  }
+
+  // Clear previous view
+  root.innerHTML = "";
+
+  const View = routes[route];
+
+  if (!View) {
+    root.innerHTML = `
+      <section>
+        <h2>404</h2>
+        <p>Page not found</p>
+      </section>
+    `;
     return;
   }
 
-  // Clear view safely
-  app.innerHTML = "";
-
   try {
-    await routes[route](app, params);
+    await View(root, params);
   } catch (error) {
-    console.error(`[Router] Error rendering route "${route}"`, error);
-    app.innerHTML = `
+    console.error(`[Router] Error rendering "${route}"`, error);
+    root.innerHTML = `
       <section>
         <h2>Something went wrong</h2>
         <p>Unable to load this section.</p>
@@ -46,38 +54,43 @@ export async function navigate(route, params = {}, replace = false) {
     `;
   }
 
-  // Update URL (prevent infinite popstate loop)
-  const state = { route, params };
-  const url = `#${route}`;
-
-  if (replace) {
-    window.history.replaceState(state, "", url);
-  } else {
-    window.history.pushState(state, "", url);
-  }
+  // Notify app systems (reveal, analytics, etc.)
+  window.dispatchEvent(new CustomEvent("route:rendered", {
+    detail: { route, params }
+  }));
 }
 
 /**
- * Initialize router on page load
+ * Navigate to a route (hash-based)
+ */
+export function navigate(route, params = {}) {
+  if (!routes[route]) {
+    console.warn(`[Router] Route "${route}" not registered`);
+    return;
+  }
+
+  // Update hash ONLY (single source of truth)
+  window.location.hash = `#/${route}`;
+
+  // Params can be cached later if needed
+}
+
+/**
+ * Initialize router
  */
 export function initRouter(defaultRoute = "dashboard") {
-  const hash = window.location.hash.replace("#", "");
-
-  const initialRoute = routes[hash]
-    ? hash
-    : defaultRoute;
-
-  navigate(initialRoute, {}, true);
-}
-
-/**
- * Handle browser back / forward
- */
-window.addEventListener("popstate", event => {
-  const state = event.state;
-
-  if (state && state.route) {
-    currentRoute = null; // allow re-render
-    navigate(state.route, state.params || {}, true);
+  function handleHashChange() {
+    const hash = window.location.hash.replace("#/", "");
+    const route = routes[hash] ? hash : defaultRoute;
+    renderRoute(route);
   }
-});
+
+  window.addEventListener("hashchange", handleHashChange);
+
+  // Initial load
+  if (!window.location.hash) {
+    window.location.hash = `#/${defaultRoute}`;
+  } else {
+    handleHashChange();
+  }
+}
