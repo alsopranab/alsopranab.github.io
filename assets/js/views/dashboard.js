@@ -1,146 +1,69 @@
-import { fetchGitHubRepos } from "../services/github.js";
-import { fetchLeetCodeStats } from "../services/leetcode.js";
-import { fetchContributions } from "../services/contributions.js";
-
-import { renderStatCard } from "../ui/cards.js";
-import { renderContributionMap } from "../ui/contributionMap.js";
 import { renderBarChart } from "../ui/charts.js";
-import { animateCount } from "../ui/animations.js";
-import { isMobile } from "../ui/responsive.js";
 
-export async function DashboardView(container) {
+/**
+ * Dashboard View
+ * - Always renders UI first
+ * - Zero external service dependency
+ * - Charts are optional, never blocking
+ * - SPA safe
+ */
+export function DashboardView(container) {
   if (!container) return;
 
-  /* -----------------------------
-     BASE RENDER (ALWAYS)
-  ----------------------------- */
+  /* --------------------------------------------------
+     BASE LAYOUT (NEVER FAILS)
+  -------------------------------------------------- */
 
   container.innerHTML = `
     <section class="dashboard">
-      <header>
+      <header class="dashboard-header">
         <h1 data-reveal>Dashboard</h1>
-        <p data-reveal>Live analytics metrics</p>
+        <p data-reveal>Analytics overview</p>
       </header>
 
-      <section id="kpi-row" data-reveal></section>
-
-      <section id="contribution-section" data-reveal>
-        <h2>Contributions</h2>
-        <div id="contribution-map"></div>
+      <section class="dashboard-kpis" data-reveal>
+        <div class="kpi-card">
+          <span class="label">Projects</span>
+          <span class="value">12</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Certifications</span>
+          <span class="value">6</span>
+        </div>
+        <div class="kpi-card">
+          <span class="label">Skills</span>
+          <span class="value">10+</span>
+        </div>
       </section>
 
-      <section id="project-analytics" data-reveal>
+      <section class="dashboard-chart" data-reveal>
         <h2>Projects by Type</h2>
-        <div id="projects-chart-wrap">
-          <canvas id="projects-chart"></canvas>
+        <div class="chart-wrap">
+          <canvas id="projects-chart" height="260"></canvas>
         </div>
       </section>
     </section>
   `;
 
-  /* -----------------------------
-     DATA LOADING (SAFE)
-  ----------------------------- */
+  /* --------------------------------------------------
+     CHART (SAFE, NON-BLOCKING)
+  -------------------------------------------------- */
 
-  let repos = [];
-  let leetcodeStats = [];
-  let contributions = [];
+  const canvas = container.querySelector("#projects-chart");
+  if (!canvas) return;
 
-  const results = await Promise.allSettled([
-    fetchGitHubRepos(),
-    fetchLeetCodeStats(),
-    fetchContributions()
-  ]);
+  // Static data (stable base)
+  const labels = ["Web", "Data", "Automation", "Other"];
+  const values = [5, 3, 2, 2];
 
-  if (results[0].status === "fulfilled") {
-    repos = Array.isArray(results[0].value) ? results[0].value : [];
-  }
-
-  if (results[1].status === "fulfilled") {
-    leetcodeStats = Array.isArray(results[1].value)
-      ? results[1].value
-      : [];
-  }
-
-  if (results[2].status === "fulfilled") {
-    contributions = Array.isArray(results[2].value)
-      ? results[2].value
-      : [];
-  }
-
-  /* -----------------------------
-     KPI METRICS
-  ----------------------------- */
-
-  const kpiRow = container.querySelector("#kpi-row");
-  if (!kpiRow) return;
-
-  const projectsByType = repos.reduce((acc, r) => {
-    const type = r?.type || "Other";
-    acc[type] = (acc[type] || 0) + 1;
-    return acc;
-  }, {});
-
-  const kpis = [
-    { label: "Projects", value: repos.length },
-    {
-      label: "LeetCode Solved",
-      value: leetcodeStats.reduce(
-        (sum, d) => sum + (d?.count || 0),
-        0
-      )
-    },
-    {
-      label: "Project Types",
-      value: Object.keys(projectsByType).length
+  // Render chart safely
+  requestAnimationFrame(() => {
+    try {
+      renderBarChart(canvas, labels, values);
+    } catch (e) {
+      console.warn("[Dashboard] Chart failed", e);
+      canvas.parentElement.innerHTML =
+        "<small>Chart unavailable</small>";
     }
-  ];
-
-  kpis.forEach(({ label, value }) => {
-    const card = renderStatCard({ label, value: 0 });
-    kpiRow.appendChild(card);
-
-    const valueEl = card.querySelector(".value");
-    if (valueEl) animateCount(valueEl, value);
   });
-
-  /* -----------------------------
-     CONTRIBUTIONS
-  ----------------------------- */
-
-  const contributionEl =
-    container.querySelector("#contribution-map");
-
-  if (contributionEl) {
-    if (contributions.length > 0) {
-      renderContributionMap(contributionEl, contributions);
-    } else {
-      contributionEl.innerHTML =
-        "<small>No contribution data available</small>";
-    }
-  }
-
-  /* -----------------------------
-     PROJECT TYPE CHART
-  ----------------------------- */
-
-  const chartCanvas =
-    container.querySelector("#projects-chart");
-
-  if (
-    chartCanvas &&
-    typeof Chart !== "undefined" &&
-    Object.keys(projectsByType).length > 0
-  ) {
-    renderBarChart(
-      chartCanvas,
-      Object.keys(projectsByType),
-      Object.values(projectsByType)
-    );
-
-    if (isMobile()) chartCanvas.height = 220;
-  } else if (chartCanvas) {
-    chartCanvas.parentElement.innerHTML =
-      "<small>No project data available</small>";
-  }
 }
