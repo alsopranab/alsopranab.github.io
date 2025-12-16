@@ -1,0 +1,12 @@
+pre {
+  background: #0e1320;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  overflow: auto;
+  font-size: 0.85rem;
+}
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  color: #e5e7eb;
+}
