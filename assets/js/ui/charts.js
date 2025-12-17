@@ -1,4 +1,4 @@
-export function renderBarChart(
+export function renderLineChart(
   canvas,
   labels = [],
   values = [],
@@ -13,7 +13,7 @@ export function renderBarChart(
   const ctx = canvas.getContext("2d");
 
   /* -----------------------------------------------------
-     THEME TOKENS (FROM CSS VARIABLES)
+     THEME TOKENS
   ----------------------------------------------------- */
   const css = getComputedStyle(document.documentElement);
 
@@ -23,29 +23,39 @@ export function renderBarChart(
   const textMuted = css.getPropertyValue("--text-muted").trim();
 
   /* -----------------------------------------------------
-     GRADIENT (PREMIUM LOOK)
+     GRADIENT STROKE
   ----------------------------------------------------- */
-  const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  gradient.addColorStop(0, colorPrimary);
-  gradient.addColorStop(1, colorSecondary);
+  const strokeGradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+  strokeGradient.addColorStop(0, colorPrimary);
+  strokeGradient.addColorStop(1, colorSecondary);
+
+  /* -----------------------------------------------------
+     AREA FILL (VERY SUBTLE)
+  ----------------------------------------------------- */
+  const fillGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+  fillGradient.addColorStop(0, `${colorPrimary}33`); // ~20%
+  fillGradient.addColorStop(1, "rgba(0,0,0,0)");
 
   /* -----------------------------------------------------
      CHART INSTANCE
   ----------------------------------------------------- */
   canvas._chart = new Chart(ctx, {
-    type: "bar",
+    type: "line",
     data: {
       labels,
       datasets: [
         {
           data: values,
+          borderColor: strokeGradient,
+          backgroundColor: fillGradient,
 
-          backgroundColor: gradient,
-          borderRadius: 6,
-          borderSkipped: false,
+          fill: true,
+          tension: 0.35,
 
-          /* subtle glow */
-          hoverBackgroundColor: gradient,
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 4,
+          pointBackgroundColor: colorSecondary,
         }
       ]
     },
@@ -54,7 +64,7 @@ export function renderBarChart(
       maintainAspectRatio: false,
 
       animation: {
-        duration: 800,
+        duration: 900,
         easing: "easeOutQuart"
       },
 
