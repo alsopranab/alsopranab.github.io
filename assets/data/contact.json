@@ -1,22 +1,53 @@
 {
-  "title": "Contact",
-  "message": "I'm currently looking to join a cross-functional team that values improving people's lives through accessible design, or have a project in mind? Let's connect.",
-  "email": "ibrahimmemon930@gmail.com",
+  "section": {
+    "id": "contact",
+    "title": "Contact",
+    "subtitle": "Let’s build something meaningful together",
+    "description": "I'm currently looking to join a cross-functional team that values improving people's lives through accessible design, or have a project in mind? Let's connect."
+  },
+
+  "primary": {
+    "email": {
+      "label": "Email",
+      "value": "career.pranab@gmail.com",
+      "mailto": true
+    }
+  },
+
   "socials": [
     {
-      "name": "Instagram",
-      "icon": "instagram",
-      "url": "https://instagram.com/"
-    },
-    {
-      "name": "Dribbble",
-      "icon": "dribbble",
-      "url": "https://dribbble.com/"
-    },
-    {
+      "id": "github",
       "name": "GitHub",
       "icon": "github",
-      "url": "https://github.com/alsopranab"
+      "url": "https://github.com/alsopranab",
+      "priority": 1,
+      "enabled": true
+    },
+    {
+      "id": "instagram",
+      "name": "Instagram",
+      "icon": "instagram",
+      "url": "https://instagram.com/",
+      "priority": 2,
+      "enabled": true
+    },
+    {
+      "id": "dribbble",
+      "name": "Dribbble",
+      "icon": "dribbble",
+      "url": "https://dribbble.com/",
+      "priority": 3,
+      "enabled": true
     }
-  ]
+  ],
+
+  "cta": {
+    "text": "Start a conversation",
+    "action": "email"
+  },
+
+  "meta": {
+    "lastUpdated": "2025-01-01",
+    "visibility": "public"
+  }
 }
