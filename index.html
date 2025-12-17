@@ -27,7 +27,7 @@
   />
 
   <!-- ==================================================
-       BASE CSS (ONLY GUARANTEED FILES)
+       BASE + SYSTEM CSS
   ================================================== -->
   <link rel="stylesheet" href="assets/css/reset.css" />
   <link rel="stylesheet" href="assets/css/variables.css" />
@@ -36,7 +36,15 @@
   <link rel="stylesheet" href="assets/css/navbar.css" />
   <link rel="stylesheet" href="assets/css/components.css" />
   <link rel="stylesheet" href="assets/css/animations.css" />
+
+  <!-- ==================================================
+       PAGE / FEATURE CSS
+  ================================================== -->
   <link rel="stylesheet" href="assets/css/dashboard.css" />
+  <link rel="stylesheet" href="assets/css/analytics.css" />
+  <link rel="stylesheet" href="assets/css/profiles.css" />
+  <link rel="stylesheet" href="assets/css/heatmap.css" />
+  <link rel="stylesheet" href="assets/css/badges.css" />
 
   <!-- ==================================================
        CRITICAL BASE STYLES (ANTI-BLACK-SCREEN)
@@ -56,19 +64,8 @@
 
     #app {
       min-height: 100vh;
-    }
-
-    .mouse-glow {
-      position: fixed;
-      width: 320px;
-      height: 320px;
-      pointer-events: none;
-      z-index: 0;
-      background: radial-gradient(
-        circle,
-        rgba(120,120,255,0.18),
-        transparent 70%
-      );
+      position: relative;
+      z-index: 1;
     }
   </style>
 
@@ -80,10 +77,16 @@
 
 <body>
   <!-- ==================================================
-       SPA ROOT (DO NOT TOUCH IN JS)
+       GALAXY BACKGROUND LAYER
+  ================================================== -->
+  <div id="galaxy-bg">
+    <canvas id="galaxy-canvas"></canvas>
+  </div>
+
+  <!-- ==================================================
+       SPA ROOT
   ================================================== -->
   <div id="app">
-    <!-- Visible fallback if JS fails -->
     <div style="padding:40px">
       <h1>Loading application…</h1>
     </div>
@@ -96,14 +99,8 @@
   </div>
 
   <!-- ==================================================
-       APPLICATION ENTRY (LAST)
+       APPLICATION ENTRY (FINAL)
   ================================================== -->
-  <script type="module" src="assets/js/main.js"></script>
+  <script type="module" src="assets/js/app.js"></script>
 </body>
 </html>
-
-<link rel="stylesheet" href="./assets/css/profiles.css" />
-<link rel="stylesheet" href="./assets/css/analytics.css" />
-<link rel="stylesheet" href="./assets/css/heatmap.css" />
-<link rel="stylesheet" href="./assets/css/badges.css" />
-<link rel="stylesheet" href="./assets/css/badges.css" />
