@@ -1,23 +1,30 @@
 /**
- * Resume Redirect Controller (ADVANCED & FINAL)
- * =============================================
+ * Resume Redirect Controller (FINAL — USER INITIATED)
+ * ===================================================
  * Responsibilities:
- * - Waits for application readiness
+ * - Runs ONLY on explicit user action
  * - Loads profile data safely
- * - Validates resume destination
+ * - Resolves resume destination (LinkedIn-first)
  * - Prevents redirect loops
- * - Supports future resume providers
- * - Emits lifecycle events
+ * - Emits lifecycle events for analytics
  *
- * Resume PDF generation is delegated
- * entirely to the external provider (LinkedIn).
+ * This controller MUST NOT auto-run on app lifecycle.
  */
 
-window.addEventListener("app:ready", () => {
-  ResumeController().catch((err) => {
-    console.error("[Resume] Fatal error", err);
+(function initResumeController() {
+  document.addEventListener("click", async (e) => {
+    const trigger = e.target.closest("[data-action='resume']");
+    if (!trigger) return;
+
+    e.preventDefault();
+
+    try {
+      await ResumeController();
+    } catch (err) {
+      console.error("[Resume] Fatal error", err);
+    }
   });
-});
+})();
 
 async function ResumeController() {
   console.group("[Resume] Initialization");
@@ -33,7 +40,7 @@ async function ResumeController() {
   }
 
   /* =========================
-     RESUME PROVIDER RESOLUTION
+     RESOLVE DESTINATION
   ========================= */
   const resumeTarget = resolveResumeTarget(profile);
 
@@ -45,13 +52,13 @@ async function ResumeController() {
   /* =========================
      LOOP PREVENTION
   ========================= */
-  if (isRedirectLoop(resumeTarget)) {
+  if (isRedirectLoop(resumeTarget.url)) {
     fail("Redirect loop detected");
     return;
   }
 
   /* =========================
-     EMIT ANALYTICS EVENT
+     ANALYTICS EVENT
   ========================= */
   window.dispatchEvent(
     new CustomEvent("resume:redirect", {
@@ -67,34 +74,31 @@ async function ResumeController() {
   console.groupEnd();
 
   /* =========================
-     REDIRECT (FINAL STEP)
+     REDIRECT
   ========================= */
   performRedirect(resumeTarget.url);
 }
 
-/* =========================
-   PROVIDER RESOLUTION
-========================= */
-
+/* ============================================================
+   PROVIDER RESOLUTION (SCHEMA-ALIGNED)
+============================================================ */
 function resolveResumeTarget(profile) {
-  // Priority order (future-proof)
-  if (isValidUrl(profile.linkedinProfile)) {
+  const linkedin =
+    profile?.identity?.links?.linkedin;
+
+  if (isValidUrl(linkedin)) {
     return {
       provider: "linkedin",
-      url: profile.linkedinProfile
+      url: linkedin
     };
   }
-
-  // Future expansion example:
-  // if (isValidUrl(profile.resumeUrl)) { ... }
 
   return null;
 }
 
-/* =========================
+/* ============================================================
    SAFETY UTILITIES
-========================= */
-
+============================================================ */
 function isValidUrl(url) {
   try {
     new URL(url);
@@ -104,16 +108,11 @@ function isValidUrl(url) {
   }
 }
 
-function isRedirectLoop(target) {
-  try {
-    return window.location.href === target.url;
-  } catch {
-    return false;
-  }
+function isRedirectLoop(targetUrl) {
+  return window.location.href === targetUrl;
 }
 
 function performRedirect(url) {
-  // Use replace to avoid polluting history
   window.location.replace(url);
 }
 
