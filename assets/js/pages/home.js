@@ -1,17 +1,20 @@
 /**
- * Home Page Controller (ADVANCED & FINAL)
- * ======================================
+ * Home Page Controller (FINAL — RACE SAFE)
+ * =======================================
  * Responsibilities:
- * - Waits for app bootstrap
+ * - Runs deterministically after DOM is ready
  * - Loads all required data (bottom → top)
- * - Normalizes and validates payloads
  * - Attaches data safely to DOM
- * - Emits lifecycle events for observability
+ * - Emits lifecycle events for renderers
  *
  * No rendering logic lives here.
  */
 
-window.addEventListener("app:ready", () => {
+/* ============================================================
+   ENTRY POINT (FIXED)
+   DOMContentLoaded cannot be missed
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
   HomePageController().catch((err) => {
     console.error("[HomePage] Fatal initialization error", err);
   });
@@ -79,17 +82,14 @@ async function HomePageController() {
   ========================= */
   window.dispatchEvent(
     new CustomEvent("home:ready", {
-      detail: {
-        timestamp: Date.now()
-      }
+      detail: { timestamp: Date.now() }
     })
   );
 }
 
-/* =========================
-   HELPERS (INTERNAL)
-========================= */
-
+/* ============================================================
+   HELPERS
+============================================================ */
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
     if (!el) {
@@ -103,7 +103,6 @@ function normalizeResults(results) {
     if (res.status === "fulfilled" && res.value) {
       return res.value;
     }
-
     console.warn(`[HomePage] Data source failed at index ${idx}`);
     return null;
   });
@@ -111,7 +110,6 @@ function normalizeResults(results) {
 
 function attach(section, data) {
   if (!section || !data) return;
-
   try {
     section.dataset.source = JSON.stringify(data);
   } catch (err) {
