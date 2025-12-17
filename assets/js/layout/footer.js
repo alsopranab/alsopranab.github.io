@@ -1,100 +1,73 @@
 /**
- * Footer Layout Controller (FINAL — SCHEMA SAFE)
- * =============================================
- * - Runs after app:ready
- * - Uses contact.json + social.json
- * - Clean, minimal, deterministic
+ * Footer Layout Controller (FINAL — FAIL SAFE + CONTENT COMPLETE)
+ * ==============================================================
+ * - Always renders footer
+ * - Never depends on JSON to exist
+ * - Enhances with email + socials when available
  */
 
-window.addEventListener("app:ready", () => {
-  FooterController().catch((err) => {
-    console.error("[Footer] Fatal initialization error", err);
-  });
-});
+window.addEventListener("app:ready", async () => {
+  const footer = document.getElementById("site-footer");
+  if (!footer) return;
 
-async function FooterController() {
-  const footerEl = document.getElementById("site-footer");
-  if (!footerEl) return;
+  let email = "career.pranab@gmail.com";
+  let socials = [];
 
-  const results = await Promise.allSettled([
-    DataService.getContact(),
-    DataService.getSocials()
-  ]);
+  try {
+    const [contact, socialData] = await Promise.all([
+      DataService.getContact(),
+      DataService.getSocials()
+    ]);
 
-  const [contact, socials] = normalizeResults(results);
-  if (!contact?.section) return;
+    email = contact?.primary?.email?.value || email;
 
-  const payload = normalizeFooterPayload(contact, socials);
-  footerEl.innerHTML = renderFooterHTML(payload);
+    socials = Array.isArray(socialData?.socials)
+      ? socialData.socials.filter(s => s.enabled)
+      : [];
+  } catch {
+    /* silent fallback */
+  }
 
-  window.dispatchEvent(new CustomEvent("footer:ready"));
-}
-
-/* =========================
-   NORMALIZATION
-========================= */
-
-function normalizeFooterPayload(contact, socials) {
-  return {
-    title: contact.section.title || "Contact",
-    email: contact.primary?.email?.value || "",
-    socials: Array.isArray(socials?.socials)
-      ? socials.socials.filter(s => s.enabled)
-      : [],
-    year: new Date().getFullYear()
-  };
-}
-
-function normalizeResults(results) {
-  return results.map(r =>
-    r.status === "fulfilled" ? r.value : null
-  );
-}
-
-/* =========================
-   RENDER
-========================= */
-
-function renderFooterHTML(p) {
-  return `
+  footer.innerHTML = `
     <div class="footer-container">
 
-      ${
-        p.email
-          ? `<a class="footer-email" href="mailto:${p.email}">
-               ${p.email}
-             </a>`
-          : ""
-      }
+      <div class="footer-email">
+        <a href="mailto:${email}">
+          ${email}
+        </a>
+      </div>
 
       ${
-        p.socials.length
+        socials.length
           ? `
             <div class="footer-socials">
-              ${p.socials
+              ${socials
                 .map(
-                  s => `<a href="${s.url}" target="_blank" rel="noopener">
-                         ${escapeHTML(s.name)}
-                       </a>`
+                  s => `
+                    <a href="${s.url}" target="_blank" rel="noopener">
+                      ${escapeHTML(s.name)}
+                    </a>
+                  `
                 )
                 .join("")}
             </div>
           `
-          : ""
+          : `<div class="footer-socials muted">
+               Social links coming soon
+             </div>`
       }
 
       <div class="footer-meta">
-        © ${p.year} Pranab Debnath
+        © ${new Date().getFullYear()} Pranab Debnath
       </div>
 
     </div>
   `;
-}
+});
 
 /* =========================
    UTIL
 ========================= */
-
 function escapeHTML(str) {
   return typeof str === "string"
     ? str.replace(/[&<>"']/g, m =>
