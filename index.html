@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <title>Pranab Debnath | Portfolio</title>
 
@@ -14,7 +14,274 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://lsopranab.github.io/">
 
-<link rel="stylesheet" href="style.css">
+<!-- FONT -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ===============================
+   COLOR SYSTEM
+================================ */
+:root {
+  --bg: #050816;
+  --bg-soft: #070b1f;
+
+  --card: rgba(255,255,255,0.05);
+  --card-strong: rgba(255,255,255,0.08);
+
+  --border: rgba(255,255,255,0.12);
+
+  --text: #eef2ff;
+  --muted: #a5b0d8;
+
+  --accent: #3b82f6;
+  --accent-soft: rgba(59,130,246,0.25);
+  --accent-glow: rgba(59,130,246,0.45);
+
+  --ease: cubic-bezier(.22,1,.36,1);
+}
+
+/* ===============================
+   BASE
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Inter, sans-serif;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(59,130,246,.15), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(99,102,241,.12), transparent 45%),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+}
+
+/* ===============================
+   LAYOUT
+================================ */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 100px 24px 120px;
+}
+
+/* ===============================
+   NAV
+================================ */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 70px;
+  background: rgba(5,8,22,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  z-index: 100;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  height: 100%;
+  margin: auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav-links a {
+  margin-left: 22px;
+  color: var(--muted);
+  cursor: pointer;
+  position: relative;
+  transition: color .25s var(--ease);
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), #6366f1);
+  transition: width .35s var(--ease);
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: white;
+}
+
+.nav-links a.active::after {
+  width: 100%;
+}
+
+/* ===============================
+   MOBILE NAV
+================================ */
+.mobile-nav {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  nav { display: none; }
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 65px;
+    background: rgba(5,8,22,.95);
+    border-top: 1px solid var(--border);
+    justify-content: space-around;
+    align-items: center;
+    z-index: 100;
+  }
+
+  .mobile-nav a {
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .mobile-nav a.active {
+    color: var(--accent);
+  }
+}
+
+/* ===============================
+   SECTIONS
+================================ */
+section {
+  display: none;
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+section.active {
+  display: block;
+  animation: fadeUp .6s var(--ease) forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===============================
+   CARDS
+================================ */
+.card {
+  background: linear-gradient(180deg, var(--card), rgba(255,255,255,0.02));
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 28px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02),
+    0 30px 80px rgba(0,0,0,.65);
+  transition: transform .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 0 0 1px var(--accent-soft),
+    0 35px 90px rgba(59,130,246,.25);
+}
+
+/* ===============================
+   HERO
+================================ */
+.hero {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.hero img {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  box-shadow:
+    0 0 0 6px var(--accent-soft),
+    0 0 40px var(--accent-glow);
+}
+
+/* ===============================
+   TEXT
+================================ */
+h1 {
+  font-size: clamp(30px, 5vw, 44px);
+  background: linear-gradient(90deg, #ffffff, #c7d2fe);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 {
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #e0e7ff;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ===============================
+   STATS
+================================ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  background: linear-gradient(180deg, var(--card-strong), rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+}
+
+.stat-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+  color: var(--accent);
+}
+
+/* ===============================
+   PROJECTS
+================================ */
+details.project summary {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+details.project[open] summary {
+  color: var(--accent);
+}
+
+/* ===============================
+   RESPONSIVE HERO
+================================ */
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -53,7 +320,7 @@
       <p class="muted">Account Manager · Business Growth</p>
       <p>
         I focus on execution, revenue growth, and long-term discipline.
-        My work is centered on turning conversations into results.
+        Turning conversations into measurable results.
       </p>
     </div>
   </div>
@@ -61,7 +328,7 @@
   <div class="card">
     <h2>Featured</h2>
     <p class="muted">
-      This space is reserved for achievements, announcements, or major updates.
+      Use this space to highlight achievements, announcements, or important updates.
     </p>
   </div>
 
@@ -71,7 +338,7 @@
     <ul>
       <li>Client acquisition and revenue generation</li>
       <li>Sales funnel optimization</li>
-      <li>Relationship and account management</li>
+      <li>Account relationship management</li>
     </ul>
   </div>
 </section>
@@ -81,10 +348,10 @@
   <div class="card">
     <h2>Career Stats</h2>
     <div class="grid">
-      <div class="stat-card">Experience<br><strong>2+ Years</strong></div>
-      <div class="stat-card">Clients Managed<br><strong>100+</strong></div>
-      <div class="stat-card">Revenue Closed<br><strong>₹XX L+</strong></div>
-      <div class="stat-card">Projects Delivered<br><strong>10+</strong></div>
+      <div class="stat-card">Experience<strong>2+ Years</strong></div>
+      <div class="stat-card">Clients<strong>100+</strong></div>
+      <div class="stat-card">Revenue<strong>₹XX L+</strong></div>
+      <div class="stat-card">Projects<strong>10+</strong></div>
     </div>
   </div>
 </section>
@@ -96,17 +363,17 @@
 
     <details class="project">
       <summary>Portfolio Website</summary>
-      <p>Single-page responsive portfolio built with pure HTML & CSS.</p>
+      <p>Single-page responsive portfolio built with pure HTML, CSS, and JS.</p>
     </details>
 
     <details class="project">
-      <summary>Sales Tracker System</summary>
-      <p>Internal KPI tracking for sales performance and productivity.</p>
+      <summary>Sales Tracker</summary>
+      <p>Internal KPI and productivity tracking system.</p>
     </details>
 
     <details class="project">
-      <summary>Brand Website (Clothing)</summary>
-      <p>Early-stage branding and e-commerce planning.</p>
+      <summary>Clothing Brand Website</summary>
+      <p>Brand planning and early-stage web presence.</p>
     </details>
   </div>
 </section>
@@ -130,8 +397,8 @@
     <h2>About Me</h2>
     <p>
       I value discipline over motivation and consistency over intensity.
-      My goal is to build sustainable income streams, grow professionally,
-      and create long-term independence through execution.
+      My long-term goal is independence through execution, ownership,
+      and sustainable growth.
     </p>
   </div>
 </section>
