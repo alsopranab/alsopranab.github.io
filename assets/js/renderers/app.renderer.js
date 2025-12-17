@@ -8,8 +8,8 @@
  * - Clears sections before render
  */
 
-window.addEventListener("app:ready", () => {
-  console.log("[Renderer] app:ready received");
+window.addEventListener("home:ready", () => {
+  console.log("[Renderer] home:ready received");
   renderHero();
   renderExperience();
   renderFeatured();
@@ -17,6 +17,7 @@ window.addEventListener("app:ready", () => {
   renderEducation();
   renderContact();
 });
+
 
 /* ============================================================
    HERO (profile.json)
