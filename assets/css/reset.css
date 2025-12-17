@@ -1,29 +1,70 @@
 /* =====================================================
-   MINIMAL RESET (SAFE)
+   MINIMAL RESET (PRODUCTION SAFE)
 ===================================================== */
 
+/* Box sizing */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-html, body {
+/* Document */
+html,
+body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
-ul, ol {
+/* Lists */
+ul,
+ol {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-img, svg {
+/* Media */
+img,
+svg,
+video,
+canvas {
   display: block;
   max-width: 100%;
 }
 
-button, input, textarea {
+/* Forms */
+button,
+input,
+textarea,
+select {
   font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+}
+
+/* Anchors */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Hidden */
+[hidden] {
+  display: none !important;
 }
