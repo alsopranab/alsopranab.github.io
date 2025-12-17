@@ -1,0 +1,20 @@
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: var(--space-md);
+}
+
+.badges-grid img {
+  height: 28px;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.badges-grid a:hover img {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+}
