@@ -5,17 +5,19 @@ import { fetchGitHubContributions } from "../services/githubContributions.js";
 import { getProjectsByCategory } from "../core/projectStore.js";
 
 /**
- * Analytics View (FINAL)
- * - Stable & deterministic
- * - Project distribution (auto)
- * - GitHub-style heatmap (async)
+ * Analytics View (FINAL – LOCKED)
+ * --------------------------------
+ * - Auto project distribution
+ * - GitHub-style contribution heatmap
  * - Profile / platform badges
+ * - Async + SPA safe
+ * - Never crashes the app
  */
 export async function AnalyticsView(container) {
   if (!container) return;
 
   /* --------------------------------------------------
-     DATA: Projects by category
+     PROJECT DATA (SYNC, SAFE)
   -------------------------------------------------- */
   const grouped = getProjectsByCategory() || {};
 
@@ -61,7 +63,7 @@ export async function AnalyticsView(container) {
   `;
 
   /* --------------------------------------------------
-     BAR CHART (SYNC, SAFE)
+     BAR CHART (SYNC, ISOLATED)
   -------------------------------------------------- */
   const chartCanvas = container.querySelector("#category-chart");
 
@@ -79,7 +81,7 @@ export async function AnalyticsView(container) {
   }
 
   /* --------------------------------------------------
-     HEATMAP (ASYNC, ISOLATED)
+     HEATMAP (ASYNC, NON-BLOCKING)
   -------------------------------------------------- */
   const heatmapEl = container.querySelector("#heatmap");
 
@@ -95,7 +97,7 @@ export async function AnalyticsView(container) {
   }
 
   /* --------------------------------------------------
-     BADGES (SYNC, ISOLATED)
+     BADGES (SYNC, SAFE)
   -------------------------------------------------- */
   const badgesEl = container.querySelector("#badges");
 
