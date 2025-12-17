@@ -1,0 +1,21 @@
+{
+  "sectionTitle": "Education",
+  "education": [
+    {
+      "id": "edu-01",
+      "institution": "Your Board / University Name",
+      "degree": "Bachelor’s Degree / Diploma / Certification",
+      "fieldOfStudy": "Field of Study",
+      "startDate": "2019",
+      "endDate": "2023",
+      "location": "City, State, Country",
+      "description": "Brief description of coursework, focus areas, or academic achievements.",
+      "subjects": [
+        "Statistics",
+        "Data Analysis",
+        "Database Management",
+        "Programming Fundamentals"
+      ]
+    }
+  ]
+}
