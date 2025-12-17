@@ -1,0 +1,80 @@
+{
+  "sectionTitle": "Projects",
+  "categories": [
+    {
+      "key": "sql",
+      "label": "SQL",
+      "description": "Data analysis, querying, optimization, and reporting using SQL.",
+      "projects": [
+        {
+          "id": "sql-01",
+          "title": "Sales Analysis Using SQL",
+          "description": "Analyzed sales data to identify revenue trends, top-performing products, and regional performance using advanced SQL queries.",
+          "githubRepo": "https://github.com/alsopranab/sql-sales-analysis",
+          "topics": ["sql", "data-analysis"],
+          "tools": ["MySQL", "PostgreSQL"]
+        }
+      ]
+    },
+    {
+      "key": "python",
+      "label": "Python",
+      "description": "Data analysis, automation, and scripting projects built with Python.",
+      "projects": [
+        {
+          "id": "python-01",
+          "title": "Data Cleaning Automation",
+          "description": "Automated data cleaning and preprocessing pipeline using Pandas and NumPy.",
+          "githubRepo": "https://github.com/alsopranab/python-data-cleaning",
+          "topics": ["python", "automation"],
+          "tools": ["Python", "Pandas", "NumPy"]
+        }
+      ]
+    },
+    {
+      "key": "excel",
+      "label": "Excel",
+      "description": "Advanced Excel dashboards, formulas, and reporting solutions.",
+      "projects": [
+        {
+          "id": "excel-01",
+          "title": "Sales Dashboard in Excel",
+          "description": "Interactive sales dashboard using Pivot Tables, Power Query, and advanced formulas.",
+          "githubRepo": null,
+          "topics": ["excel", "dashboard"],
+          "tools": ["Excel", "Power Query"]
+        }
+      ]
+    },
+    {
+      "key": "dashboard",
+      "label": "Dashboards",
+      "description": "BI dashboards and data visualization projects.",
+      "projects": [
+        {
+          "id": "dashboard-01",
+          "title": "Business Performance Dashboard",
+          "description": "End-to-end dashboard visualizing KPIs for business stakeholders.",
+          "githubRepo": "https://github.com/alsopranab/business-dashboard",
+          "topics": ["dashboard", "bi"],
+          "tools": ["Power BI", "SQL"]
+        }
+      ]
+    },
+    {
+      "key": "others",
+      "label": "Others",
+      "description": "Miscellaneous projects and experiments.",
+      "projects": [
+        {
+          "id": "other-01",
+          "title": "Portfolio Website",
+          "description": "Personal portfolio built using HTML, CSS, and JavaScript, hosted on GitHub Pages.",
+          "githubRepo": "https://github.com/alsopranab/alsopranab.github.io",
+          "topics": ["web", "portfolio"],
+          "tools": ["HTML", "CSS", "JavaScript"]
+        }
+      ]
+    }
+  ]
+}
