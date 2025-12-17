@@ -16,35 +16,46 @@
 
       "projects": [
         {
-          "id": "proj-sql-practice",
-
+          "id": "sql-problems-solutions",
           "project": {
-            "name": "SQL Practice & Problem Solving",
-            "summary": "Comprehensive SQL problem-solving repository covering beginner to advanced queries, joins, subqueries, and optimizations.",
+            "name": "SQL Problems & Solutions",
+            "summary": "Complete SQL practice repository covering beginner to advanced problems from sql-practice.com with optimized queries and explanations.",
             "type": "Data Analysis",
             "status": "ongoing"
           },
-
-          "problem": "Need for structured SQL practice for interviews and real-world analytics.",
-          "solution": "Solved and documented problems using clean, optimized SQL queries.",
-          "impact": "Improved query performance understanding and analytical thinking.",
-
-          "technology": {
-            "languages": ["SQL"],
-            "databases": ["MySQL"]
-          },
-
           "repository": {
             "platform": "GitHub",
             "url": "https://github.com/alsopranab/SQL-Problems-Solutions",
             "visibility": "public"
           },
-
-          "topics": ["sql", "queries", "analytics"],
-
-          "meta": {
-            "featured": true,
-            "lastUpdated": "2025-01-01"
+          "meta": { "featured": true }
+        },
+        {
+          "id": "sql-15-day-learning",
+          "project": {
+            "name": "15-Day SQL Learning Program",
+            "summary": "Structured 15-day SQL practice using a custom database, ER diagrams, and real-world query patterns.",
+            "type": "Data Analysis",
+            "status": "completed"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/pranab-sql-learning-15days",
+            "visibility": "public"
+          }
+        },
+        {
+          "id": "leetcode-solutions",
+          "project": {
+            "name": "LeetCode SQL & DSA Solutions",
+            "summary": "Automatically synced LeetCode solutions using LeetHub, focused on SQL, algorithms, and interview preparation.",
+            "type": "Problem Solving",
+            "status": "ongoing"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/leetcode-solutions",
+            "visibility": "public"
           }
         }
       ]
@@ -52,41 +63,38 @@
 
     {
       "id": "python",
-      "label": "Python",
-      "description": "Data analysis and machine learning projects using Python.",
+      "label": "Python & Data Analysis",
+      "description": "Data analysis, visualization, and machine learning using Python.",
       "priority": 2,
 
       "projects": [
         {
-          "id": "proj-titanic-ml",
-
+          "id": "titanic-ml",
           "project": {
             "name": "Titanic Survival Prediction",
-            "summary": "End-to-end ML project with EDA, feature engineering, and Random Forest model.",
+            "summary": "End-to-end ML project with EDA, feature engineering, Random Forest model, and Excel dashboard.",
             "type": "Machine Learning",
             "status": "completed"
           },
-
-          "problem": "Predict passenger survival using structured data.",
-          "solution": "Performed data cleaning, EDA, and model training using Python.",
-          "impact": "Built strong foundation in applied machine learning workflows.",
-
-          "technology": {
-            "languages": ["Python"],
-            "libraries": ["Pandas", "NumPy", "Scikit-learn"]
-          },
-
           "repository": {
             "platform": "GitHub",
             "url": "https://github.com/alsopranab/Titanic-Survival-Prediction",
             "visibility": "public"
           },
-
-          "topics": ["python", "machine-learning", "eda"],
-
-          "meta": {
-            "featured": true,
-            "lastUpdated": "2025-01-01"
+          "meta": { "featured": true }
+        },
+        {
+          "id": "uber-data-analysis",
+          "project": {
+            "name": "Uber Data Analysis",
+            "summary": "Exploratory analysis of Uber trip data to identify patterns in ride duration, distance, fare, and time-of-day trends.",
+            "type": "Data Analysis",
+            "status": "completed"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/Uber-Data-Analysis",
+            "visibility": "public"
           }
         }
       ]
@@ -94,41 +102,66 @@
 
     {
       "id": "automation",
-      "label": "Automation",
-      "description": "Workflow automation and ETL pipelines using JavaScript.",
+      "label": "Automation & ETL",
+      "description": "Workflow automation, ETL pipelines, and operational tooling using JavaScript.",
       "priority": 3,
 
       "projects": [
         {
-          "id": "proj-email-automation",
-
+          "id": "fresh-lead-automation",
           "project": {
-            "name": "Email & CSV Automation Pipelines",
-            "summary": "Automated ingestion, filtering, and transformation of CSV data received via email.",
+            "name": "Fresh Lead Automation",
+            "summary": "Real-world automation converting emailed CSV files into clean Google Sheets without manual intervention.",
             "type": "Automation",
             "status": "completed"
           },
-
-          "problem": "Manual handling of recurring CSV reports was inefficient.",
-          "solution": "Built JavaScript automations to extract, clean, and load data automatically.",
-          "impact": "Saved hours of manual effort and reduced errors.",
-
-          "technology": {
-            "languages": ["JavaScript"],
-            "tools": ["Google Sheets", "Apps Script"]
-          },
-
           "repository": {
             "platform": "GitHub",
             "url": "https://github.com/alsopranab/fresh-lead-automation",
             "visibility": "public"
           },
-
-          "topics": ["automation", "etl", "javascript"],
-
-          "meta": {
-            "featured": false,
-            "lastUpdated": "2025-01-01"
+          "meta": { "featured": true }
+        },
+        {
+          "id": "weekly-intent-lead-processor",
+          "project": {
+            "name": "Weekly Intent Lead Processor",
+            "summary": "Automates extraction, filtering, and transformation of weekly lead data received via email.",
+            "type": "Automation",
+            "status": "completed"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/weekly-intent-lead-processor",
+            "visibility": "public"
+          }
+        },
+        {
+          "id": "dynamic-report-etl",
+          "project": {
+            "name": "DynamicReport ETL",
+            "summary": "Explains a complete XLSB → Power Query → Power Automate → Apps Script ETL loop.",
+            "type": "ETL",
+            "status": "completed"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/DynamicReport-ETL",
+            "visibility": "public"
+          }
+        },
+        {
+          "id": "csv-extraction-automation",
+          "project": {
+            "name": "Automated CSV Extraction",
+            "summary": "Automates extraction, deduplication, and transformation of CSV files from emails into Google Sheets.",
+            "type": "Automation",
+            "status": "completed"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/Automated-CSV-Extraction",
+            "visibility": "public"
           }
         }
       ]
@@ -137,39 +170,37 @@
     {
       "id": "web",
       "label": "Web & Portfolio",
-      "description": "Web development and personal projects.",
+      "description": "Web development and personal engineering projects.",
       "priority": 4,
 
       "projects": [
         {
-          "id": "proj-portfolio",
-
+          "id": "portfolio-site",
           "project": {
             "name": "Data-Driven Portfolio Website",
-            "summary": "Personal portfolio built with modular JSON-driven architecture.",
+            "summary": "Personal portfolio built with modular JSON-driven architecture using HTML, CSS, and JavaScript.",
             "type": "Web Development",
             "status": "live"
           },
-
-          "problem": "Needed a scalable, professional portfolio.",
-          "solution": "Designed a clean HTML/CSS/JS site powered by structured JSON data.",
-          "impact": "Created a maintainable platform to showcase work.",
-
-          "technology": {
-            "languages": ["HTML", "CSS", "JavaScript"]
-          },
-
           "repository": {
             "platform": "GitHub",
             "url": "https://github.com/alsopranab/alsopranab.github.io",
             "visibility": "public"
           },
-
-          "topics": ["portfolio", "web", "github-pages"],
-
-          "meta": {
-            "featured": true,
-            "lastUpdated": "2025-01-01"
+          "meta": { "featured": true }
+        },
+        {
+          "id": "instant-analytics",
+          "project": {
+            "name": "Instant Analytics",
+            "summary": "Lightweight JavaScript-based analytics tooling for quick insights and automation experiments.",
+            "type": "Web Tooling",
+            "status": "ongoing"
+          },
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/Instant-Analytics",
+            "visibility": "public"
           }
         }
       ]
@@ -177,7 +208,7 @@
   ],
 
   "meta": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "schema": "projects.catalog.v1",
     "maintainedBy": "self"
   }
