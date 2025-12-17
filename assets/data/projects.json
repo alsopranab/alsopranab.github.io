@@ -11,169 +11,36 @@
     {
       "id": "sql",
       "label": "SQL",
-      "description": "Data analysis, querying, optimization, and reporting using relational databases.",
+      "description": "SQL querying, optimization, and analytical problem solving.",
       "priority": 1,
 
       "projects": [
         {
-          "id": "proj-sql-sales-analysis",
+          "id": "proj-sql-practice",
 
           "project": {
-            "name": "Sales Analysis Using SQL",
-            "summary": "Analyzed sales data to identify revenue trends, top-performing products, and regional performance using advanced SQL queries.",
+            "name": "SQL Practice & Problem Solving",
+            "summary": "Comprehensive SQL problem-solving repository covering beginner to advanced queries, joins, subqueries, and optimizations.",
             "type": "Data Analysis",
-            "status": "completed"
+            "status": "ongoing"
           },
 
-          "problem": "Business stakeholders lacked clarity on revenue drivers and regional performance.",
-          "solution": "Designed complex SQL queries with joins, aggregations, and window functions to extract insights.",
-          "impact": "Enabled data-driven decisions by highlighting top products and underperforming regions.",
+          "problem": "Need for structured SQL practice for interviews and real-world analytics.",
+          "solution": "Solved and documented problems using clean, optimized SQL queries.",
+          "impact": "Improved query performance understanding and analytical thinking.",
 
           "technology": {
             "languages": ["SQL"],
-            "databases": ["MySQL", "PostgreSQL"],
-            "tools": []
+            "databases": ["MySQL"]
           },
 
           "repository": {
             "platform": "GitHub",
-            "url": "https://github.com/alsopranab/sql-sales-analysis",
+            "url": "https://github.com/alsopranab/SQL-Problems-Solutions",
             "visibility": "public"
           },
 
-          "topics": ["sql", "data-analysis", "business-insights"],
-
-          "metrics": [
-            {
-              "label": "Query Performance Optimization",
-              "value": "Improved"
-            }
-          ],
-
-          "meta": {
-            "featured": false,
-            "lastUpdated": "2025-01-01"
-          }
-        }
-      ]
-    },
-
-    {
-      "id": "python",
-      "label": "Python",
-      "description": "Data analysis, automation, and scripting projects built with Python.",
-      "priority": 2,
-
-      "projects": [
-        {
-          "id": "proj-python-data-cleaning",
-
-          "project": {
-            "name": "Data Cleaning Automation",
-            "summary": "Automated data cleaning and preprocessing pipeline using Pandas and NumPy.",
-            "type": "Automation",
-            "status": "completed"
-          },
-
-          "problem": "Manual data cleaning was time-consuming and error-prone.",
-          "solution": "Built reusable Python scripts to standardize and preprocess datasets.",
-          "impact": "Reduced data preparation time and improved data consistency.",
-
-          "technology": {
-            "languages": ["Python"],
-            "libraries": ["Pandas", "NumPy"],
-            "tools": []
-          },
-
-          "repository": {
-            "platform": "GitHub",
-            "url": "https://github.com/alsopranab/python-data-cleaning",
-            "visibility": "public"
-          },
-
-          "topics": ["python", "automation", "data-cleaning"],
-
-          "meta": {
-            "featured": false,
-            "lastUpdated": "2025-01-01"
-          }
-        }
-      ]
-    },
-
-    {
-      "id": "excel",
-      "label": "Excel",
-      "description": "Advanced Excel dashboards, formulas, and reporting solutions.",
-      "priority": 3,
-
-      "projects": [
-        {
-          "id": "proj-excel-sales-dashboard",
-
-          "project": {
-            "name": "Sales Dashboard in Excel",
-            "summary": "Interactive sales dashboard using Pivot Tables, Power Query, and advanced formulas.",
-            "type": "Dashboard",
-            "status": "completed"
-          },
-
-          "problem": "Stakeholders needed quick insights without relying on BI tools.",
-          "solution": "Built a self-contained Excel dashboard with automated refresh.",
-          "impact": "Improved accessibility of sales insights for non-technical users.",
-
-          "technology": {
-            "tools": ["Excel", "Power Query"]
-          },
-
-          "repository": {
-            "platform": "Local",
-            "url": null,
-            "visibility": "private"
-          },
-
-          "topics": ["excel", "dashboard", "reporting"],
-
-          "meta": {
-            "featured": false,
-            "lastUpdated": "2025-01-01"
-          }
-        }
-      ]
-    },
-
-    {
-      "id": "dashboard",
-      "label": "Dashboards",
-      "description": "Business intelligence dashboards and data visualization projects.",
-      "priority": 4,
-
-      "projects": [
-        {
-          "id": "proj-bi-performance-dashboard",
-
-          "project": {
-            "name": "Business Performance Dashboard",
-            "summary": "End-to-end dashboard visualizing KPIs for business stakeholders.",
-            "type": "Business Intelligence",
-            "status": "completed"
-          },
-
-          "problem": "KPIs were scattered across multiple reports.",
-          "solution": "Designed a centralized BI dashboard with drill-down capabilities.",
-          "impact": "Improved executive visibility into business performance.",
-
-          "technology": {
-            "tools": ["Power BI", "SQL"]
-          },
-
-          "repository": {
-            "platform": "GitHub",
-            "url": "https://github.com/alsopranab/business-dashboard",
-            "visibility": "public"
-          },
-
-          "topics": ["dashboard", "bi", "kpi"],
+          "topics": ["sql", "queries", "analytics"],
 
           "meta": {
             "featured": true,
@@ -184,25 +51,109 @@
     },
 
     {
-      "id": "others",
-      "label": "Others",
-      "description": "Miscellaneous projects and experiments.",
-      "priority": 5,
+      "id": "python",
+      "label": "Python",
+      "description": "Data analysis and machine learning projects using Python.",
+      "priority": 2,
 
       "projects": [
         {
-          "id": "proj-portfolio-website",
+          "id": "proj-titanic-ml",
 
           "project": {
-            "name": "Portfolio Website",
-            "summary": "Personal portfolio built using HTML, CSS, and JavaScript, hosted on GitHub Pages.",
+            "name": "Titanic Survival Prediction",
+            "summary": "End-to-end ML project with EDA, feature engineering, and Random Forest model.",
+            "type": "Machine Learning",
+            "status": "completed"
+          },
+
+          "problem": "Predict passenger survival using structured data.",
+          "solution": "Performed data cleaning, EDA, and model training using Python.",
+          "impact": "Built strong foundation in applied machine learning workflows.",
+
+          "technology": {
+            "languages": ["Python"],
+            "libraries": ["Pandas", "NumPy", "Scikit-learn"]
+          },
+
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/Titanic-Survival-Prediction",
+            "visibility": "public"
+          },
+
+          "topics": ["python", "machine-learning", "eda"],
+
+          "meta": {
+            "featured": true,
+            "lastUpdated": "2025-01-01"
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "automation",
+      "label": "Automation",
+      "description": "Workflow automation and ETL pipelines using JavaScript.",
+      "priority": 3,
+
+      "projects": [
+        {
+          "id": "proj-email-automation",
+
+          "project": {
+            "name": "Email & CSV Automation Pipelines",
+            "summary": "Automated ingestion, filtering, and transformation of CSV data received via email.",
+            "type": "Automation",
+            "status": "completed"
+          },
+
+          "problem": "Manual handling of recurring CSV reports was inefficient.",
+          "solution": "Built JavaScript automations to extract, clean, and load data automatically.",
+          "impact": "Saved hours of manual effort and reduced errors.",
+
+          "technology": {
+            "languages": ["JavaScript"],
+            "tools": ["Google Sheets", "Apps Script"]
+          },
+
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/fresh-lead-automation",
+            "visibility": "public"
+          },
+
+          "topics": ["automation", "etl", "javascript"],
+
+          "meta": {
+            "featured": false,
+            "lastUpdated": "2025-01-01"
+          }
+        }
+      ]
+    },
+
+    {
+      "id": "web",
+      "label": "Web & Portfolio",
+      "description": "Web development and personal projects.",
+      "priority": 4,
+
+      "projects": [
+        {
+          "id": "proj-portfolio",
+
+          "project": {
+            "name": "Data-Driven Portfolio Website",
+            "summary": "Personal portfolio built with modular JSON-driven architecture.",
             "type": "Web Development",
             "status": "live"
           },
 
-          "problem": "Needed a professional, data-driven portfolio to showcase work.",
-          "solution": "Built a modular, JSON-driven website architecture.",
-          "impact": "Created a scalable platform to present projects and experience.",
+          "problem": "Needed a scalable, professional portfolio.",
+          "solution": "Designed a clean HTML/CSS/JS site powered by structured JSON data.",
+          "impact": "Created a maintainable platform to showcase work.",
 
           "technology": {
             "languages": ["HTML", "CSS", "JavaScript"]
@@ -214,7 +165,7 @@
             "visibility": "public"
           },
 
-          "topics": ["web", "portfolio", "github-pages"],
+          "topics": ["portfolio", "web", "github-pages"],
 
           "meta": {
             "featured": true,
