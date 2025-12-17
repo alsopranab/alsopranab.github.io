@@ -1,27 +1,27 @@
 {
   "section": {
     "id": "featured-projects",
-    "title": "Featured Projects",
-    "subtitle": "Selected work showcasing depth, impact, and problem-solving",
+    "title": "Featured Achievement",
+    "subtitle": "Verified proof of analytical and SQL expertise",
     "displayOrder": 3,
     "visibility": "public"
   },
 
   "items": [
     {
-      "id": "featured-spotify-analytics",
+      "id": "hackerrank-sql-global-rank-1",
 
       "project": {
-        "name": "Spotify Analytics Dashboard",
-        "tagline": "Personalized music insights and playlist intelligence",
-        "description": "A web application for visualizing personalized Spotify data. Users can explore top artists, top tracks, recently played songs, and detailed audio features. The platform also generates and saves recommended playlists based on listening behavior.",
-        "category": "Web Application",
-        "status": "completed"
+        "name": "HackerRank SQL — Global Rank #1",
+        "tagline": "World’s top-ranked SQL performance",
+        "description": "Achieved Global Rank #1 on HackerRank SQL leaderboard by solving advanced SQL challenges involving complex joins, subqueries, window functions, and query optimization under competitive conditions.",
+        "category": "Competitive Programming / SQL",
+        "status": "achievement"
       },
 
       "media": {
-        "coverImage": "assets/images/featured/featured-01.png",
-        "alt": "Spotify analytics dashboard showing top artists and tracks"
+        "coverImage": "assets/images/featured/hackerrank-sql-1.png",
+        "alt": "HackerRank SQL leaderboard showing global rank #1"
       },
 
       "layout": {
@@ -30,83 +30,31 @@
       },
 
       "highlights": [
-        "OAuth-based Spotify API integration",
-        "Dynamic data visualization of listening patterns",
-        "Automated playlist recommendations"
+        "Ranked #1 globally in SQL practice leaderboard",
+        "Solved advanced SQL problems under time constraints",
+        "Demonstrated strong analytical thinking and query optimization skills"
       ],
 
       "technology": {
-        "languages": ["JavaScript"],
-        "frameworks": ["React"],
-        "tools": ["Spotify Web API", "Chart.js"]
+        "languages": ["SQL"],
+        "tools": ["HackerRank"]
       },
 
       "impact": {
-        "problem": "Users lack meaningful insights into their music consumption patterns.",
-        "solution": "Built an interactive dashboard that transforms raw Spotify data into actionable insights.",
-        "outcome": "Enabled users to understand preferences and discover new music effortlessly."
+        "problem": "Real-world analytics requires precise, efficient, and scalable SQL queries.",
+        "solution": "Applied advanced SQL concepts to solve complex data problems accurately and efficiently.",
+        "outcome": "Recognized globally as the top SQL performer, validating strong data analysis capabilities."
       },
 
       "links": {
-        "live": null,
-        "github": null,
-        "caseStudy": null
+        "live": "https://www.hackerrank.com/profile/alsopranab"
       },
 
       "meta": {
         "featured": true,
-        "lastUpdated": "2025-01-01"
-      }
-    },
-
-    {
-      "id": "featured-spotify-playlists",
-
-      "project": {
-        "name": "Smart Playlist Generator",
-        "tagline": "Data-driven playlist creation",
-        "description": "An intelligent playlist generator that analyzes existing Spotify playlists and recommends new tracks using audio features and user preferences.",
-        "category": "Data-Driven Application",
-        "status": "completed"
-      },
-
-      "media": {
-        "coverImage": "assets/images/featured/featured-02.png",
-        "alt": "Playlist generation interface with recommended tracks"
-      },
-
-      "layout": {
-        "alignment": "right",
-        "priority": 2
-      },
-
-      "highlights": [
-        "Audio feature-based recommendation logic",
-        "Playlist similarity analysis",
-        "User-controlled playlist saving"
-      ],
-
-      "technology": {
-        "languages": ["JavaScript", "Python"],
-        "frameworks": ["React"],
-        "tools": ["Spotify API", "Data Processing Pipelines"]
-      },
-
-      "impact": {
-        "problem": "Creating high-quality playlists manually is time-consuming.",
-        "solution": "Automated playlist generation using listening behavior and audio metadata.",
-        "outcome": "Reduced playlist creation time while improving relevance of recommendations."
-      },
-
-      "links": {
-        "live": null,
-        "github": null,
-        "caseStudy": null
-      },
-
-      "meta": {
-        "featured": true,
-        "lastUpdated": "2025-01-01"
+        "achievementDate": "2025-12-03",
+        "verified": true,
+        "lastUpdated": "2025-12-03"
       }
     }
   ],
