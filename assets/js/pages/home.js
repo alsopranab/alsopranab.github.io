@@ -1,17 +1,14 @@
 /**
- * Home Page Controller (FINAL — SCHEMA & RENDER SAFE)
- * ==================================================
- * Responsibilities:
- * - Runs after DOM is ready
- * - Loads required JSONs
- * - Attaches data ONLY if valid
- * - Fires home:ready deterministically
- *
- * NO rendering logic here.
+ * Home Page Controller (FINAL — LIFECYCLE SAFE)
+ * ============================================
+ * - Runs ONLY after app:ready
+ * - Loads all required JSON
+ * - Attaches data to DOM
+ * - Emits home:ready exactly once
  */
 
-document.addEventListener("DOMContentLoaded", () => {
-  HomePageController().catch((err) => {
+window.addEventListener("app:ready", () => {
+  HomePageController().catch(err => {
     console.error("[HomePage] Fatal initialization error", err);
   });
 });
@@ -19,9 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 async function HomePageController() {
   console.group("[HomePage] Initialization");
 
-  /* =========================
-     SECTION REGISTRY
-  ========================= */
   const sections = {
     hero: document.getElementById("hero-section"),
     experience: document.getElementById("experience-section"),
@@ -34,13 +28,10 @@ async function HomePageController() {
 
   validateSections(sections);
 
-  /* =========================
-     DATA LOADING
-  ========================= */
   console.info("[HomePage] Loading data…");
 
   const results = await Promise.allSettled([
-    DataService.getProfile(),     // REQUIRED
+    DataService.getProfile(),
     DataService.getExperience(),
     DataService.getFeatured(),
     DataService.getProjects(),
@@ -59,18 +50,12 @@ async function HomePageController() {
     contactData
   ] = normalizeResults(results);
 
-  /* =========================
-     HARD REQUIREMENT CHECK
-  ========================= */
   if (!profileData?.identity) {
-    console.error("[HomePage] profile.json missing or invalid — aborting render");
+    console.error("[HomePage] profile.json missing — aborting");
     console.groupEnd();
     return;
   }
 
-  /* =========================
-     DATA ATTACHMENT (SAFE)
-  ========================= */
   attach(sections.hero, profileData);
   attach(sections.experience, experienceData);
   attach(sections.featured, featuredData);
@@ -82,24 +67,15 @@ async function HomePageController() {
   console.info("[HomePage] Data attached successfully");
   console.groupEnd();
 
-  /* =========================
-     LIFECYCLE EVENT
-  ========================= */
-  window.dispatchEvent(
-    new CustomEvent("home:ready", {
-      detail: { timestamp: Date.now() }
-    })
-  );
+  window.dispatchEvent(new CustomEvent("home:ready"));
 }
 
-/* ============================================================
-   HELPERS
-============================================================ */
+/* ================= HELPERS ================= */
 
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
     if (!el) {
-      console.warn(`[HomePage] Missing section in DOM: ${key}`);
+      console.warn(`[HomePage] Missing section: ${key}`);
     }
   });
 }
