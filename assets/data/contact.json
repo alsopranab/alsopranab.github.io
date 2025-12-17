@@ -2,8 +2,8 @@
   "section": {
     "id": "contact",
     "title": "Contact",
-    "subtitle": "Let’s build something meaningful together",
-    "description": "I'm currently looking to join a cross-functional team that values improving people's lives through accessible design, or have a project in mind? Let's connect."
+    "subtitle": "Let’s build data-driven solutions together",
+    "description": "I’m currently seeking opportunities as a Data Analyst where I can turn complex data into clear insights using SQL, Python, and business intelligence tools. If you’re building something impactful or need analytical support, let’s connect."
   },
 
   "primary": {
@@ -32,10 +32,37 @@
       "enabled": true
     },
     {
-      "id": "dribbble",
-      "name": "Dribbble",
-      "icon": "dribbble",
-      "url": "https://dribbble.com/",
+      "id": "hackerrank",
+      "name": "HackerRank",
+      "icon": "hackerrank",
+      "url": "https://www.hackerrank.com/profile/alsopranab/",
+      "priority": 3,
+      "enabled": true
+    }
+  ],
+      {
+      "id": "leetcode",
+      "name": "LeetCode",
+      "icon": "leetcode",
+      "url": "https://leetcode.com/u/alsopranab/",
+      "priority": 3,
+      "enabled": true
+    }
+  ],
+      {
+      "id": "datalemur",
+      "name": "DataLemur",
+      "icon": "datalemur",
+      "url": "https://datalemur.com/alsopranab",
+      "priority": 3,
+      "enabled": true
+    }
+  ],
+      {
+      "id": "linkedin",
+      "name": "LinkedIn",
+      "icon": "linkedin",
+      "url": "https://www.linkedin.com/in/alsopranab/",
       "priority": 3,
       "enabled": true
     }
