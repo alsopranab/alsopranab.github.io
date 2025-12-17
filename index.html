@@ -11,7 +11,7 @@
   <title>Pranab Debnath — Data Analyst</title>
 
   <meta name="description"
-        content="Creative technologist & data analyst crafting interactive, generative, and experimental web experiences." />
+        content="Data Analyst crafting structured, data-driven, and insight-focused solutions." />
   <meta name="author" content="Pranab Debnath" />
   <meta name="theme-color" content="#0a0618" />
   <meta name="color-scheme" content="dark light" />
@@ -19,9 +19,9 @@
   <!-- =====================================================
        SOCIAL / SHARING
   ====================================================== -->
-  <meta property="og:title" content="Pranab Debnath — Creative Technologist" />
+  <meta property="og:title" content="Pranab Debnath — Data Analyst" />
   <meta property="og:description"
-        content="An experimental, generative, and interactive portfolio experience." />
+        content="Portfolio showcasing analytics, problem solving, and competitive achievements." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
@@ -36,7 +36,6 @@
   <!-- =====================================================
        STYLES
   ====================================================== -->
-  <link rel="preload" href="assets/css/style.css" as="style" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
@@ -52,19 +51,29 @@
   ====================================================== -->
   <main id="page-content" role="main">
 
-    <section id="hero-section" class="omniverse-section" aria-labelledby="hero-title"></section>
+    <!-- ================= HOME ================= -->
+    <section id="hero-section" class="omniverse-section"></section>
 
-    <section id="experience-section" class="omniverse-section" aria-labelledby="experience-title"></section>
+    <section id="experience-section" class="omniverse-section"></section>
 
-    <section id="featured-section" class="omniverse-section" aria-labelledby="featured-title"></section>
+    <section id="featured-section" class="omniverse-section"></section>
 
-    <section id="projects-section" class="omniverse-section" aria-labelledby="projects-title"></section>
+    <section id="projects-section" class="omniverse-section"></section>
 
-    <section id="education-section" class="omniverse-section" aria-labelledby="education-title"></section>
+    <section id="education-section" class="omniverse-section"></section>
 
-    <section id="licenses-section" class="omniverse-section" aria-labelledby="licenses-title"></section>
+    <section id="licenses-section" class="omniverse-section"></section>
 
-    <section id="contact-section" class="omniverse-section" aria-labelledby="contact-title"></section>
+    <section id="contact-section" class="omniverse-section"></section>
+
+    <!-- ================= STATS ================= -->
+    <section id="stats-overview-section" class="omniverse-section"></section>
+
+    <section id="competitive-section" class="omniverse-section"></section>
+
+    <section id="repositories-section" class="omniverse-section"></section>
+
+    <section id="contributions-section" class="omniverse-section"></section>
 
   </main>
 
@@ -74,18 +83,22 @@
   <footer id="site-footer" aria-label="Footer"></footer>
 
   <!-- =====================================================
-       CORE JS (ORDER MATTERS)
+       CORE JS (ORDER IS CORRECT)
   ====================================================== -->
   <script src="assets/js/core/bootstrap.js" defer></script>
   <script src="assets/js/services/data.service.js" defer></script>
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
+
+  <!-- Page Controllers -->
   <script src="assets/js/pages/home.js" defer></script>
+  <script src="assets/js/pages/stats.js" defer></script>
+  <script src="assets/js/pages/resume.js" defer></script>
+
+  <!-- Renderer -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
-  <!-- =====================================================
-       OMNIVERSE GODMODE (MUST BE LAST)
-  ====================================================== -->
+  <!-- Omniverse Engine -->
   <script src="assets/js/omniverse.godmode.js" defer></script>
 
 </body>
