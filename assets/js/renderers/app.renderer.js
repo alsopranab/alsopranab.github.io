@@ -1,9 +1,10 @@
 /**
- * Unified App Renderer (FINAL — DEFENSIVE & SCHEMA SAFE)
- * =====================================================
+ * Unified App Renderer (FINAL — HARDENED & SCHEMA SAFE)
+ * ====================================================
  * - Runs ONLY after home:ready
  * - Reads ONLY dataset.source
- * - Never crashes on partial data
+ * - Clears sections before render
+ * - Never renders demo or stale data
  */
 
 window.addEventListener("home:ready", () => {
@@ -20,6 +21,7 @@ window.addEventListener("home:ready", () => {
 function renderHero() {
   const section = document.getElementById("hero-section");
   const d = getData(section);
+  clear(section);
   if (!d?.identity) return;
 
   section.innerHTML = `
@@ -39,6 +41,7 @@ function renderHero() {
 function renderExperience() {
   const section = document.getElementById("experience-section");
   const d = getData(section);
+  clear(section);
   if (!Array.isArray(d?.timeline)) return;
 
   section.innerHTML = `
@@ -59,7 +62,7 @@ function renderOrganization(item) {
 }
 
 function renderRole(role) {
-  const startYear = role.duration?.start?.year || "";
+  const start = role.duration?.start?.year || "";
   const end =
     role.duration?.end?.status === "present"
       ? "Present"
@@ -68,11 +71,13 @@ function renderRole(role) {
   return `
     <div class="experience-role">
       <strong>${escape(role.title || "")}</strong>
-      <span>${startYear}${end ? " – " + end : ""}</span>
+      <span>${start}${end ? " – " + end : ""}</span>
       ${
         Array.isArray(role.responsibilities)
           ? `<ul>
-              ${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}
+              ${role.responsibilities
+                .map(r => `<li>${escape(r)}</li>`)
+                .join("")}
             </ul>`
           : ""
       }
@@ -85,6 +90,7 @@ function renderRole(role) {
 function renderFeatured() {
   const section = document.getElementById("featured-section");
   const d = getData(section);
+  clear(section);
   if (!Array.isArray(d?.items)) return;
 
   section.innerHTML = `
@@ -116,6 +122,7 @@ function renderFeaturedItem(item) {
 function renderProjects() {
   const section = document.getElementById("projects-section");
   const d = getData(section);
+  clear(section);
   if (!Array.isArray(d?.categories)) return;
 
   section.innerHTML = `
@@ -147,6 +154,7 @@ function renderProjectCard(p) {
 function renderEducation() {
   const section = document.getElementById("education-section");
   const d = getData(section);
+  clear(section);
   if (!Array.isArray(d?.records)) return;
 
   section.innerHTML = `
@@ -165,6 +173,7 @@ function renderEducation() {
 function renderContact() {
   const section = document.getElementById("contact-section");
   const d = getData(section);
+  clear(section);
   if (!d?.section) return;
 
   section.innerHTML = `
@@ -183,11 +192,16 @@ function renderContact() {
 /* ================= HELPERS ================= */
 
 function getData(section) {
+  if (!section || !section.dataset?.source) return null;
   try {
-    return JSON.parse(section?.dataset?.source || "");
+    return JSON.parse(section.dataset.source);
   } catch {
     return null;
   }
+}
+
+function clear(section) {
+  if (section) section.innerHTML = "";
 }
 
 function escape(str) {
