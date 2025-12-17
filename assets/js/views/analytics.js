@@ -1,13 +1,14 @@
+import { renderBadges } from "../ui/badges.js";
 import { renderBarChart } from "../ui/charts.js";
 import { renderHeatmap } from "../ui/heatmap.js";
 import { fetchGitHubContributions } from "../services/githubContributions.js";
 import { getProjectsByCategory } from "../core/projectStore.js";
 
 /**
- * Analytics View (FINAL, FIXED)
- * - Single source of truth
+ * Analytics View (FINAL, STABLE)
  * - Auto project distribution
  * - GitHub-style heatmap
+ * - Social / profile badges
  * - Async-safe
  */
 export async function AnalyticsView(container) {
@@ -51,20 +52,22 @@ export async function AnalyticsView(container) {
         <div id="heatmap"></div>
       </section>
 
+      <section class="panel" data-reveal>
+        <h2>Profiles & Badges</h2>
+        <div id="badges"></div>
+      </section>
+
     </section>
   `;
 
   /* ----------------------------------------
      BAR CHART (SYNC, SAFE)
   ---------------------------------------- */
-  if (labels.length > 0) {
-    renderBarChart(
-      container.querySelector("#category-chart"),
-      labels,
-      values
-    );
-  } else {
-    container.querySelector(".dashboard-chart").innerHTML =
+  const chartCanvas = container.querySelector("#category-chart");
+  if (chartCanvas && labels.length > 0) {
+    renderBarChart(chartCanvas, labels, values);
+  } else if (chartCanvas) {
+    chartCanvas.parentElement.innerHTML =
       "<p class='muted'>No project data available.</p>";
   }
 
@@ -82,4 +85,9 @@ export async function AnalyticsView(container) {
     container.querySelector("#heatmap").innerHTML =
       "<p class='muted'>Contribution data unavailable.</p>";
   }
+
+  /* ----------------------------------------
+     BADGES (SYNC, SAFE)
+  ---------------------------------------- */
+  renderBadges(container.querySelector("#badges"));
 }
