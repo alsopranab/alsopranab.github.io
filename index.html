@@ -1,194 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pranab Debnath | Portfolio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pranab Debnath | Data Analyst</title>
 
-<!-- SEO -->
-<meta name="description" content="Pranab Debnath – Account Manager focused on business growth, sales strategy, and disciplined execution.">
-<meta name="author" content="Pranab Debnath">
+  <!-- SEO -->
+  <meta name="description" content="Pranab Debnath – Account Manager focused on business growth, sales strategy, and disciplined execution.">
+  <meta name="author" content="Pranab Debnath">
 
-<meta property="og:title" content="Pranab Debnath | Portfolio">
-<meta property="og:description" content="Business growth, sales execution, and long-term building.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://lsopranab.github.io/">
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- FONT -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root {
-  --bg: #050816;
-  --card: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
-  --text: #e6ebff;
-  --muted: #9aa4c7;
-  --blue: #2563eb;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: Inter, sans-serif;
-  background: radial-gradient(circle at top left, #0b1b4d, var(--bg));
-  color: var(--text);
-  line-height: 1.6;
-}
-
-/* NAVBAR */
-nav {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  height: 70px;
-  background: rgba(5,8,22,0.75);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--border);
-  z-index: 100;
-}
-
-.nav-inner {
-  max-width: 1200px;
-  margin: auto;
-  height: 100%;
-  padding: 0 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.nav-links a {
-  margin-left: 22px;
-  color: var(--muted);
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.nav-links a.active {
-  color: #ffffff;
-}
-
-/* MOBILE NAV */
-.mobile-nav {
-  display: none;
-}
-
-@media (max-width: 768px) {
-  nav { display: none; }
-
-  .mobile-nav {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: 65px;
-    background: rgba(5,8,22,0.9);
-    border-top: 1px solid var(--border);
-    justify-content: space-around;
-    align-items: center;
-    z-index: 100;
-  }
-
-  .mobile-nav a {
-    font-size: 14px;
-    color: var(--muted);
-  }
-
-  .mobile-nav a.active {
-    color: #ffffff;
-  }
-}
-
-/* LAYOUT */
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 100px 24px 120px;
-}
-
-/* SECTIONS */
-section {
-  display: none;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-section.active {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* CARDS */
-.card {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.02)
-  );
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 24px;
-  margin-bottom: 24px;
-}
-
-/* HERO */
-.hero {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 32px;
-  align-items: center;
-}
-
-.hero img {
-  width: 160px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-}
-
-@media (max-width: 768px) {
-  .hero {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-}
-
-/* TEXT */
-h1 {
-  font-size: clamp(28px, 5vw, 42px);
-}
-
-h2 {
-  margin-bottom: 12px;
-}
-
-.muted {
-  color: var(--muted);
-}
-
-/* TAGS */
-.tags span {
-  display: inline-block;
-  padding: 6px 12px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 12px;
-  margin: 6px 6px 0 0;
-  font-size: 14px;
-}
-
-/* GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-</style>
+  <!-- SINGLE CSS FILE -->
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -218,92 +43,90 @@ h2 {
 
 <main class="container">
 
-<!-- HOME -->
-<section id="home" class="active">
-  <div class="card hero">
-    <img src="assets/images/profile.jpg" alt="Profile Image">
-    <div>
-      <h1>Pranab Debnath</h1>
-      <p class="muted">Account Manager | Business Growth</p>
-      <p>Turning conversations into conversions and ideas into revenue.</p>
+  <!-- HOME -->
+  <section id="home" class="active">
+    <div class="card hero">
+      <img src="assets/images/profile.jpg" alt="Profile">
+      <div>
+        <h1>Pranab Debnath</h1>
+        <p class="muted">Account Manager | Business Growth</p>
+        <p>Turning conversations into conversions and ideas into revenue.</p>
+      </div>
     </div>
-  </div>
 
-  <div class="card">
-    <h2>Featured</h2>
-    <img src="assets/images/featured.jpg" style="width:100%;border-radius:12px;margin-top:12px;">
-    <p class="muted">Use this section to highlight something important.</p>
-  </div>
-
-  <div class="card">
-    <h2>Experience</h2>
-    <p><strong>MagicBricks</strong> — Account Manager (2024–Present)</p>
-    <ul>
-      <li>Revenue growth & client acquisition</li>
-      <li>Sales funnel optimization</li>
-    </ul>
-  </div>
-</section>
-
-<!-- STATS -->
-<section id="stats">
-  <div class="card">
-    <h2>Career Stats</h2>
-    <div class="grid">
-      <div class="card">Years of Experience: 2+</div>
-      <div class="card">Clients Managed: 100+</div>
-      <div class="card">Revenue Closed: ₹XX Lakh+</div>
+    <div class="card">
+      <h2>Featured</h2>
+      <img src="assets/images/featured.jpg" style="width:100%;border-radius:12px;margin-top:12px;">
+      <p class="muted">Highlight an achievement, article, or announcement here.</p>
     </div>
-  </div>
-</section>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="card">
-    <h2>Projects</h2>
-    <div class="grid">
-      <div class="card">Project One</div>
-      <div class="card">Project Two</div>
-      <div class="card">Project Three</div>
+    <div class="card">
+      <h2>Experience</h2>
+      <p><strong>MagicBricks</strong> — Account Manager (2024–Present)</p>
+      <ul>
+        <li>Revenue growth & client acquisition</li>
+        <li>Sales funnel optimization</li>
+      </ul>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- LEARNING -->
-<section id="learning">
-  <div class="card">
-    <h2>Learning</h2>
-    <p>Currently learning business systems, branding, and web development.</p>
-  </div>
-</section>
+  <!-- STATS -->
+  <section id="stats">
+    <div class="card">
+      <h2>Career Stats</h2>
+      <div class="grid">
+        <div class="card">Experience: 2+ Years</div>
+        <div class="card">Clients Managed: 100+</div>
+        <div class="card">Revenue Closed: ₹XX Lakh+</div>
+      </div>
+    </div>
+  </section>
 
-<!-- ABOUT -->
-<section id="about">
-  <div class="card">
-    <h2>About Me</h2>
-    <p>
-      I believe in discipline, long-term thinking, and building sustainable income streams.
-      My focus is growth — personal, professional, and financial.
-    </p>
-  </div>
-</section>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="card">
+      <h2>Projects</h2>
+      <div class="grid">
+        <div class="card">Project One</div>
+        <div class="card">Project Two</div>
+        <div class="card">Project Three</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEARNING -->
+  <section id="learning">
+    <div class="card">
+      <h2>Learning</h2>
+      <p>Currently learning branding, systems thinking, and web fundamentals.</p>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="card">
+      <h2>About Me</h2>
+      <p>
+        I focus on discipline, long-term execution, and building sustainable income streams.
+        My work philosophy is simple: consistency over intensity.
+      </p>
+    </div>
+  </section>
 
 </main>
 
+<!-- SPA NAVIGATION SCRIPT -->
 <script>
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
 
 function showSection(id, push = true) {
   sections.forEach(s => s.classList.remove('active'));
-  const target = document.getElementById(id);
-  if (target) target.classList.add('active');
+  document.getElementById(id).classList.add('active');
 
-  navLinks.forEach(link => link.classList.remove('active'));
-  navLinks.forEach(link => {
-    if (link.textContent.toLowerCase() === id) {
-      link.classList.add('active');
-    }
+  navLinks.forEach(l => l.classList.remove('active'));
+  navLinks.forEach(l => {
+    if (l.textContent.toLowerCase() === id) l.classList.add('active');
   });
 
   if (push) history.pushState(null, '', `#${id}`);
