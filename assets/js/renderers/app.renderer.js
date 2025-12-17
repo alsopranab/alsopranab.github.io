@@ -1,10 +1,11 @@
 /**
- * Unified App Renderer (FINAL — HARDENED & SCHEMA SAFE)
- * ====================================================
+ * Unified App Renderer (FINAL — SCHEMA TRUE)
+ * =========================================
  * - Runs ONLY after home:ready
  * - Reads ONLY dataset.source
+ * - Matches your real JSON (projects / featured / profile)
+ * - Never renders fake or undefined data
  * - Clears sections before render
- * - Never renders demo or stale data
  */
 
 window.addEventListener("home:ready", () => {
@@ -16,12 +17,15 @@ window.addEventListener("home:ready", () => {
   renderContact();
 });
 
-/* ================= HERO ================= */
+/* ============================================================
+   HERO (profile.json)
+============================================================ */
 
 function renderHero() {
   const section = document.getElementById("hero-section");
   const d = getData(section);
   clear(section);
+
   if (!d?.identity) return;
 
   section.innerHTML = `
@@ -36,27 +40,26 @@ function renderHero() {
   `;
 }
 
-/* ================= EXPERIENCE ================= */
+/* ============================================================
+   EXPERIENCE (experience.json)
+============================================================ */
 
 function renderExperience() {
   const section = document.getElementById("experience-section");
   const d = getData(section);
   clear(section);
+
   if (!Array.isArray(d?.timeline)) return;
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Experience")}</h2>
     <div class="experience-list">
-      ${d.timeline.map(renderOrganization).join("")}
-    </div>
-  `;
-}
-
-function renderOrganization(item) {
-  return `
-    <div class="experience-company">
-      <h3>${escape(item.organization?.name || "")}</h3>
-      ${(item.roles || []).map(renderRole).join("")}
+      ${d.timeline.map(org => `
+        <div class="experience-company">
+          <h3>${escape(org.organization?.name || "")}</h3>
+          ${(org.roles || []).map(role => renderRole(role)).join("")}
+        </div>
+      `).join("")}
     </div>
   `;
 }
@@ -75,9 +78,7 @@ function renderRole(role) {
       ${
         Array.isArray(role.responsibilities)
           ? `<ul>
-              ${role.responsibilities
-                .map(r => `<li>${escape(r)}</li>`)
-                .join("")}
+              ${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}
             </ul>`
           : ""
       }
@@ -85,76 +86,84 @@ function renderRole(role) {
   `;
 }
 
-/* ================= FEATURED ================= */
+/* ============================================================
+   FEATURED (featured.json)
+============================================================ */
 
 function renderFeatured() {
   const section = document.getElementById("featured-section");
   const d = getData(section);
   clear(section);
+
   if (!Array.isArray(d?.items)) return;
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Featured")}</h2>
     <div class="featured-list">
-      ${d.items.map(renderFeaturedItem).join("")}
+      ${d.items.map(item => `
+        <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
+          ${
+            item.media?.coverImage
+              ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}" />`
+              : ""
+          }
+          <div>
+            <h3>${escape(item.project?.name || "")}</h3>
+            <p>${escape(item.project?.description || "")}</p>
+          </div>
+        </div>
+      `).join("")}
     </div>
   `;
 }
 
-function renderFeaturedItem(item) {
-  return `
-    <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
-      ${
-        item.media?.coverImage
-          ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}" />`
-          : ""
-      }
-      <div>
-        <h3>${escape(item.project?.name || "")}</h3>
-        <p>${escape(item.project?.description || "")}</p>
-      </div>
-    </div>
-  `;
-}
-
-/* ================= PROJECTS ================= */
+/* ============================================================
+   PROJECTS (projects.json — YOUR REAL SCHEMA)
+============================================================ */
 
 function renderProjects() {
   const section = document.getElementById("projects-section");
   const d = getData(section);
   clear(section);
+
   if (!Array.isArray(d?.categories)) return;
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Projects")}</h2>
-    ${d.categories.map(renderProjectCategory).join("")}
+    ${d.categories
+      .sort((a, b) => (a.priority || 99) - (b.priority || 99))
+      .map(cat => `
+        <div class="project-category">
+          <h3>${escape(cat.label)}</h3>
+
+          ${(cat.projects || []).map(p => `
+            <div class="project-card">
+              <h4>${escape(p.project?.name || "")}</h4>
+              <p>${escape(p.project?.summary || "")}</p>
+
+              ${
+                p.repository?.url
+                  ? `<a href="${p.repository.url}" target="_blank" rel="noopener">
+                       View on GitHub →
+                     </a>`
+                  : ""
+              }
+            </div>
+          `).join("")}
+        </div>
+      `).join("")}
   `;
 }
 
-function renderProjectCategory(cat) {
-  return `
-    <div class="project-category">
-      <h3>${escape(cat.label || "")}</h3>
-      ${(cat.projects || []).map(renderProjectCard).join("")}
-    </div>
-  `;
-}
-
-function renderProjectCard(p) {
-  return `
-    <div class="project-card">
-      <h4>${escape(p.title || "")}</h4>
-      <p>${escape(p.description || "")}</p>
-    </div>
-  `;
-}
-
-/* ================= EDUCATION ================= */
+/* ============================================================
+   EDUCATION (education.json)
+============================================================ */
 
 function renderEducation() {
   const section = document.getElementById("education-section");
   const d = getData(section);
   clear(section);
+
   if (!Array.isArray(d?.records)) return;
 
   section.innerHTML = `
@@ -168,17 +177,21 @@ function renderEducation() {
   `;
 }
 
-/* ================= CONTACT ================= */
+/* ============================================================
+   CONTACT (contact.json)
+============================================================ */
 
 function renderContact() {
   const section = document.getElementById("contact-section");
   const d = getData(section);
   clear(section);
+
   if (!d?.section) return;
 
   section.innerHTML = `
     <h2>${escape(d.section.title)}</h2>
     <p>${escape(d.section.description || "")}</p>
+
     ${
       d.primary?.email?.value
         ? `<a href="mailto:${d.primary.email.value}" class="contact-email">
@@ -189,10 +202,12 @@ function renderContact() {
   `;
 }
 
-/* ================= HELPERS ================= */
+/* ============================================================
+   HELPERS
+============================================================ */
 
 function getData(section) {
-  if (!section || !section.dataset?.source) return null;
+  if (!section?.dataset?.source) return null;
   try {
     return JSON.parse(section.dataset.source);
   } catch {
