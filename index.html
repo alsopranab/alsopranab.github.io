@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Pranab Debnath | Portfolio</title>
 
@@ -23,11 +23,8 @@
 ================================ */
 :root {
   --bg: #050816;
-  --bg-soft: #070b1f;
-
   --card: rgba(255,255,255,0.05);
   --card-strong: rgba(255,255,255,0.08);
-
   --border: rgba(255,255,255,0.12);
 
   --text: #eef2ff;
@@ -69,7 +66,7 @@ body {
 }
 
 /* ===============================
-   NAV
+   NAVBAR
 ================================ */
 nav {
   position: fixed;
@@ -261,18 +258,6 @@ h2 {
 }
 
 /* ===============================
-   PROJECTS
-================================ */
-details.project summary {
-  cursor: pointer;
-  font-weight: 500;
-}
-
-details.project[open] summary {
-  color: var(--accent);
-}
-
-/* ===============================
    RESPONSIVE HERO
 ================================ */
 @media (max-width: 768px) {
@@ -286,32 +271,31 @@ details.project[open] summary {
 
 <body>
 
-<!-- NAV -->
+<!-- DESKTOP NAV -->
 <nav>
   <div class="nav-inner">
     <strong>Pranab</strong>
     <div class="nav-links">
-      <a onclick="go('home')" class="active">Home</a>
-      <a onclick="go('stats')">Stats</a>
-      <a onclick="go('projects')">Projects</a>
-      <a onclick="go('learning')">Learning</a>
-      <a onclick="go('about')">About</a>
+      <a onclick="setActive('home')" class="active">Home</a>
+      <a onclick="setActive('stats')">Stats</a>
+      <a onclick="setActive('projects')">Projects</a>
+      <a onclick="setActive('learning')">Learning</a>
+      <a onclick="setActive('about')">About</a>
     </div>
   </div>
 </nav>
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav">
-  <a onclick="go('home')" class="active">Home</a>
-  <a onclick="go('stats')">Stats</a>
-  <a onclick="go('projects')">Projects</a>
-  <a onclick="go('learning')">Learning</a>
-  <a onclick="go('about')">About</a>
+  <a onclick="setActive('home')" class="active">Home</a>
+  <a onclick="setActive('stats')">Stats</a>
+  <a onclick="setActive('projects')">Projects</a>
+  <a onclick="setActive('learning')">Learning</a>
+  <a onclick="setActive('about')">About</a>
 </div>
 
 <main class="container">
 
-<!-- HOME -->
 <section id="home" class="active">
   <div class="card hero">
     <img src="assets/images/profile.jpg" alt="Profile">
@@ -326,13 +310,6 @@ details.project[open] summary {
   </div>
 
   <div class="card">
-    <h2>Featured</h2>
-    <p class="muted">
-      Use this space to highlight achievements, announcements, or important updates.
-    </p>
-  </div>
-
-  <div class="card">
     <h2>Experience</h2>
     <p><strong>MagicBricks</strong> — Account Manager (2024–Present)</p>
     <ul>
@@ -343,7 +320,6 @@ details.project[open] summary {
   </div>
 </section>
 
-<!-- STATS -->
 <section id="stats">
   <div class="card">
     <h2>Career Stats</h2>
@@ -356,49 +332,30 @@ details.project[open] summary {
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section id="projects">
   <div class="card">
     <h2>Projects</h2>
-
-    <details class="project">
-      <summary>Portfolio Website</summary>
-      <p>Single-page responsive portfolio built with pure HTML, CSS, and JS.</p>
-    </details>
-
-    <details class="project">
-      <summary>Sales Tracker</summary>
-      <p>Internal KPI and productivity tracking system.</p>
-    </details>
-
-    <details class="project">
-      <summary>Clothing Brand Website</summary>
-      <p>Brand planning and early-stage web presence.</p>
-    </details>
+    <p>Portfolio Website, Sales Tracker, Clothing Brand Website</p>
   </div>
 </section>
 
-<!-- LEARNING -->
 <section id="learning">
   <div class="card">
     <h2>Learning Focus</h2>
     <ul>
-      <li>Business systems & operations</li>
+      <li>Business systems</li>
       <li>Brand building</li>
       <li>Web fundamentals</li>
-      <li>Long-term financial discipline</li>
     </ul>
   </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about">
   <div class="card">
     <h2>About Me</h2>
     <p>
-      I value discipline over motivation and consistency over intensity.
-      My long-term goal is independence through execution, ownership,
-      and sustainable growth.
+      Discipline over motivation. Consistency over intensity.
+      Building independence through execution and ownership.
     </p>
   </div>
 </section>
@@ -409,22 +366,30 @@ details.project[open] summary {
 const sections = document.querySelectorAll('section');
 const links = document.querySelectorAll('.nav-links a, .mobile-nav a');
 
-function go(id) {
+function setActive(id, push = true) {
   sections.forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const target = document.getElementById(id);
+  if (target) target.classList.add('active');
 
   links.forEach(l => l.classList.remove('active'));
   links.forEach(l => {
     if (l.textContent.toLowerCase() === id) l.classList.add('active');
   });
 
-  history.pushState(null, '', `#${id}`);
+  if (push) history.pushState(null, '', `#${id}`);
 }
 
-window.addEventListener('load', () => {
+function handleRoute() {
   const hash = location.hash.replace('#','');
-  if (hash) go(hash);
-});
+  if (hash && document.getElementById(hash)) {
+    setActive(hash, false);
+  } else {
+    setActive('home', false);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', handleRoute);
+window.addEventListener('popstate', handleRoute);
 </script>
 
 </body>
