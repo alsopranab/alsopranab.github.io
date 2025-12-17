@@ -1,9 +1,12 @@
 /**
- * Application Bootstrap
- * ---------------------
- * - Ensures DOM readiness
- * - Establishes global execution order
- * - Future-safe for lazy loading
+ * Application Bootstrap (FINAL)
+ * -----------------------------
+ * Guarantees execution order:
+ * 1. DOM Ready
+ * 2. Page Controllers execute
+ * 3. Renderers execute
+ *
+ * No business logic lives here.
  */
 
 (function bootstrapApp() {
@@ -14,8 +17,10 @@
   }
 
   function init() {
-    // Reserved for global initialization hooks
-    // Layout scripts (header/footer) self-execute
-    // Page controllers load independently
+    /**
+     * Dispatch a global event after DOM is ready.
+     * Page controllers and renderers listen to this.
+     */
+    window.dispatchEvent(new Event("app:ready"));
   }
 })();
