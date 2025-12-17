@@ -1,46 +1,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ===============================
+   COLOR SYSTEM
+================================ */
 :root {
   --bg: #050816;
-  --card: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
-  --text: #e6ebff;
-  --muted: #9aa4c7;
-  --blue: #2563eb;
+  --bg-soft: #070b1f;
+
+  --card: rgba(255,255,255,0.05);
+  --card-strong: rgba(255,255,255,0.08);
+
+  --border: rgba(255,255,255,0.12);
+
+  --text: #eef2ff;
+  --muted: #a5b0d8;
+
+  --accent: #3b82f6;
+  --accent-soft: rgba(59,130,246,0.25);
+  --accent-glow: rgba(59,130,246,0.45);
+
   --ease: cubic-bezier(.22,1,.36,1);
 }
 
+/* ===============================
+   BASE
+================================ */
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
   font-family: Inter, sans-serif;
-  background: radial-gradient(circle at top left,#0b1b4d,var(--bg));
+  background:
+    radial-gradient(circle at 20% 0%, rgba(59,130,246,.15), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(99,102,241,.12), transparent 45%),
+    var(--bg);
   color: var(--text);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
+/* ===============================
+   LAYOUT
+================================ */
 .container {
   max-width: 1200px;
   margin: auto;
   padding: 100px 24px 120px;
 }
 
-/* NAV */
+/* ===============================
+   NAV
+================================ */
 nav {
   position: fixed;
   top:0;
   width:100%;
   height:70px;
-  background: rgba(5,8,22,.75);
-  backdrop-filter: blur(14px);
-  border-bottom:1px solid var(--border);
+  background: rgba(5,8,22,.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
   z-index:100;
 }
 
 .nav-inner {
   max-width:1200px;
-  margin:auto;
   height:100%;
+  margin:auto;
   padding:0 24px;
   display:flex;
   align-items:center;
@@ -50,33 +73,65 @@ nav {
 .nav-links a {
   margin-left:22px;
   color:var(--muted);
-  cursor:pointer;
+  position:relative;
+  transition:color .25s var(--ease);
 }
 
-.nav-links a.active { color:white; }
+.nav-links a::after {
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:-6px;
+  width:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--accent),#6366f1);
+  transition:width .35s var(--ease);
+}
 
-/* MOBILE NAV */
+.nav-links a.active,
+.nav-links a:hover {
+  color:white;
+}
+
+.nav-links a.active::after {
+  width:100%;
+}
+
+/* ===============================
+   MOBILE NAV
+================================ */
 .mobile-nav {
   display:none;
 }
 
 @media(max-width:768px){
   nav{display:none}
+
   .mobile-nav{
     display:flex;
     position:fixed;
     bottom:0;
     width:100%;
     height:65px;
-    background:rgba(5,8,22,.9);
+    background: rgba(5,8,22,.95);
     border-top:1px solid var(--border);
     justify-content:space-around;
     align-items:center;
     z-index:100;
   }
+
+  .mobile-nav a {
+    color:var(--muted);
+  }
+
+  .mobile-nav a.active {
+    color:var(--accent);
+  }
 }
 
-/* SECTIONS */
+/* ===============================
+   SECTIONS
+================================ */
 section {
   display:none;
   opacity:0;
@@ -85,28 +140,41 @@ section {
 
 section.active {
   display:block;
-  animation: enter .5s var(--ease) forwards;
+  animation:fadeUp .6s var(--ease) forwards;
 }
 
-@keyframes enter {
+@keyframes fadeUp {
   to { opacity:1; transform:none; }
 }
 
-/* CARDS */
+/* ===============================
+   CARDS (VISUAL DEPTH)
+================================ */
 .card {
-  background: linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  background:
+    linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));
   border:1px solid var(--border);
   border-radius:18px;
   padding:24px;
-  margin-bottom:24px;
-  transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+  margin-bottom:28px;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.02),
+    0 30px 80px rgba(0,0,0,.65);
+  transition:
+    transform .35s var(--ease),
+    box-shadow .35s var(--ease);
 }
 
 .card:hover {
   transform:translateY(-6px);
+  box-shadow:
+    0 0 0 1px var(--accent-soft),
+    0 35px 90px rgba(59,130,246,.25);
 }
 
-/* HERO */
+/* ===============================
+   HERO
+================================ */
 .hero {
   display:grid;
   grid-template-columns:160px 1fr;
@@ -118,39 +186,69 @@ section.active {
   width:160px;
   height:160px;
   border-radius:50%;
-  border:2px solid var(--border);
+  border:3px solid var(--accent);
+  box-shadow:
+    0 0 0 6px var(--accent-soft),
+    0 0 40px var(--accent-glow);
 }
 
-@media(max-width:768px){
-  .hero{grid-template-columns:1fr;text-align:center}
+/* ===============================
+   TEXT HIERARCHY
+================================ */
+h1 {
+  font-size:clamp(30px,5vw,44px);
+  background:linear-gradient(90deg,#ffffff,#c7d2fe);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
 }
 
-/* TEXT */
-h1{font-size:clamp(28px,5vw,42px)}
-h2{margin-bottom:12px}
-.muted{color:var(--muted)}
-
-/* GRID */
-.grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:16px;
+h2 {
+  margin-bottom:12px;
+  font-weight:600;
+  color:#e0e7ff;
 }
 
+.muted {
+  color:var(--muted);
+}
+
+/* ===============================
+   STATS
+================================ */
 .stat-card {
-  background:var(--card);
+  background: linear-gradient(180deg,var(--card-strong),rgba(255,255,255,0.04));
   border:1px solid var(--border);
-  border-radius:14px;
-  padding:20px;
+  border-radius:16px;
+  padding:22px;
   text-align:center;
 }
 
-/* PROJECTS */
-details.project {
-  margin-top:12px;
-  cursor:pointer;
+.stat-card strong {
+  display:block;
+  margin-top:6px;
+  font-size:22px;
+  color:var(--accent);
 }
 
-details summary {
+/* ===============================
+   PROJECTS
+================================ */
+details.project summary {
   font-weight:500;
+  cursor:pointer;
+  color:#e0e7ff;
+}
+
+details.project[open] summary {
+  color:var(--accent);
+}
+
+/* ===============================
+   RESPONSIVE HERO
+================================ */
+@media(max-width:768px){
+  .hero {
+    grid-template-columns:1fr;
+    text-align:center;
+  }
 }
