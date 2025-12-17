@@ -188,26 +188,37 @@ function renderLicenses() {
 ============================================================ */
 function renderContact() {
   const section = document.getElementById("contact-section");
-  const d = getData(section);
+  if (!section || !section.dataset.source) return;
+
+  const d = safeParse(section.dataset.source);
   if (!d) return;
 
+  const email =
+    d.primary?.email?.value ||
+    d.contact?.email?.value ||
+    "";
+
   section.innerHTML = `
-    <div class="contact-wrapper">
-      <h2>${escape(d.title || "Contact")}</h2>
-      <p>${escape(d.message)}</p>
-      <a class="contact-email" href="mailto:${d.email}">
-        ${escape(d.email)}
-      </a>
-      <div class="contact-socials">
-        ${(d.socials || []).map(s => `
-          <a href="${s.url}" target="_blank" rel="noopener">
-            ${escape(s.name)}
-          </a>
-        `).join("")}
-      </div>
+    <h2>${d.title || "Contact"}</h2>
+    <p>${d.message || ""}</p>
+
+    ${
+      email
+        ? `<a href="mailto:${email}">${email}</a>`
+        : ""
+    }
+
+    <div>
+      ${(d.socials || [])
+        .map(
+          (s) =>
+            `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>`
+        )
+        .join("")}
     </div>
   `;
 }
+
 
 /* ============================================================
    INTERNAL HELPERS
