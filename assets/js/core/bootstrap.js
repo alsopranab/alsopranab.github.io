@@ -1,26 +1,19 @@
 /**
- * Application Bootstrap (FINAL)
- * -----------------------------
- * Guarantees execution order:
- * 1. DOM Ready
- * 2. Page Controllers execute
- * 3. Renderers execute
- *
- * No business logic lives here.
+ * Bootstrap Controller (FINAL — SINGLE SOURCE OF TRUTH)
+ * =====================================================
+ * - Runs once DOM is ready
+ * - Emits app:ready exactly once
+ * - Nothing else should use DOMContentLoaded
  */
 
-(function bootstrapApp() {
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("[Bootstrap] DOM ready");
 
-  function init() {
-    /**
-     * Dispatch a global event after DOM is ready.
-     * Page controllers and renderers listen to this.
-     */
-    window.dispatchEvent(new Event("app:ready"));
-  }
-})();
+  window.dispatchEvent(
+    new CustomEvent("app:ready", {
+      detail: { timestamp: Date.now() }
+    })
+  );
+
+  console.log("[Bootstrap] app:ready dispatched");
+});
