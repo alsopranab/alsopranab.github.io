@@ -1,14 +1,13 @@
 /**
- * Unified App Renderer (FINAL)
- * ===========================
- * - Single file
- * - Top → Bottom rendering
+ * Unified App Renderer (FINAL & STABLE)
+ * ====================================
  * - Executes ONLY after app:ready
- * - No fetch
- * - No CSS
- * - No page awareness
+ * - Deterministic top → bottom
+ * - Zero fetch
+ * - Zero side effects
  * - Reads ONLY dataset.source
- * - Deterministic
+ * - CSS-aligned markup
+ * - Defensive against partial / broken data
  */
 
 window.addEventListener("app:ready", () => {
@@ -21,208 +20,215 @@ window.addEventListener("app:ready", () => {
   renderContact();
 });
 
-/* =========================
-   HERO / INTRO (TOP)
-========================= */
+/* ============================================================
+   HERO / INTRO
+============================================================ */
 function renderHero() {
   const section = document.getElementById("hero-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
+  const d = getData(section);
   if (!d) return;
 
   section.innerHTML = `
     <div class="hero-wrapper">
-      <h1>${d.name}</h1>
-      <p>${d.tagline || ""}</p>
+      <h1>${escape(d.name)}</h1>
+      ${d.tagline ? `<p class="hero-tagline">${escape(d.tagline)}</p>` : ""}
       ${
         d.currentRole?.companyLogo
-          ? `<img src="${d.currentRole.companyLogo}" alt="${d.currentRole.company}" />`
+          ? `<img class="hero-company-logo"
+                  src="${d.currentRole.companyLogo}"
+                  alt="${escape(d.currentRole.company || "Company logo")}" />`
           : ""
       }
     </div>
   `;
 }
 
-/* =========================
+/* ============================================================
    EXPERIENCE
-========================= */
+============================================================ */
 function renderExperience() {
   const section = document.getElementById("experience-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
+  const d = getData(section);
   if (!d) return;
 
   section.innerHTML = `
-    <h2>${d.sectionTitle}</h2>
-    ${(d.experience || [])
-      .map(
-        (c) => `
-          <div>
-            <h3>${c.company}</h3>
-            ${(c.roles || [])
-              .map(
-                (r) => `
-                  <div>
-                    <strong>${r.designation}</strong>
-                    <span>${r.startDate} – ${r.endDate}</span>
-                    ${
-                      r.work?.length
-                        ? `<ul>${r.work.map((w) => `<li>${w}</li>`).join("")}</ul>`
-                        : ""
-                    }
-                  </div>
-                `
-              )
-              .join("")}
-          </div>
-        `
-      )
-      .join("")}
-  `;
-}
-
-/* =========================
-   FEATURED PROJECTS
-========================= */
-function renderFeatured() {
-  const section = document.getElementById("featured-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
-  if (!d) return;
-
-  section.innerHTML = `
-    <h2>${d.sectionTitle}</h2>
-    ${(d.projects || [])
-      .map(
-        (p) => `
-          <div data-align="${p.alignment}">
-            <img src="${p.image}" alt="${p.title}" />
-            <h3>${p.title}</h3>
-            <p>${p.description}</p>
-          </div>
-        `
-      )
-      .join("")}
-  `;
-}
-
-/* =========================
-   PROJECTS (SQL | PYTHON | ETC)
-========================= */
-function renderProjects() {
-  const section = document.getElementById("projects-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
-  if (!d) return;
-
-  section.innerHTML = `
-    <h2>${d.sectionTitle}</h2>
-    ${(d.categories || [])
-      .map(
-        (c) => `
-          <div>
-            <h3>${c.label}</h3>
-            ${(c.projects || [])
-              .map(
-                (p) => `
-                  <div>
-                    <h4>${p.title}</h4>
-                    <p>${p.description}</p>
-                  </div>
-                `
-              )
-              .join("")}
-          </div>
-        `
-      )
-      .join("")}
-  `;
-}
-
-/* =========================
-   EDUCATION
-========================= */
-function renderEducation() {
-  const section = document.getElementById("education-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
-  if (!d) return;
-
-  section.innerHTML = `
-    <h2>${d.sectionTitle}</h2>
-    ${(d.education || [])
-      .map(
-        (e) => `
-          <div>
-            <strong>${e.institution}</strong>
-            <span>${e.startDate} – ${e.endDate}</span>
-          </div>
-        `
-      )
-      .join("")}
-  `;
-}
-
-/* =========================
-   LICENSES / CERTIFICATIONS
-========================= */
-function renderLicenses() {
-  const section = document.getElementById("licenses-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
-  if (!d) return;
-
-  section.innerHTML = `
-    <h2>${d.sectionTitle}</h2>
-    ${(d.licenses || [])
-      .map(
-        (l) => `
-          <img src="${l.image}" alt="${l.title}" />
-        `
-      )
-      .join("")}
-  `;
-}
-
-/* =========================
-   CONTACT (BOTTOM)
-========================= */
-function renderContact() {
-  const section = document.getElementById("contact-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
-  if (!d) return;
-
-  section.innerHTML = `
-    <h2>${d.title}</h2>
-    <p>${d.message}</p>
-    <a href="mailto:${d.email}">${d.email}</a>
-    <div>
-      ${(d.socials || [])
-        .map(
-          (s) =>
-            `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>`
-        )
-        .join("")}
+    <h2>${escape(d.sectionTitle || "Experience")}</h2>
+    <div class="experience-list">
+      ${(d.experience || []).map(renderCompany).join("")}
     </div>
   `;
 }
 
-/* =========================
-   SAFE JSON PARSER (INTERNAL)
-========================= */
-function safeParse(json) {
+function renderCompany(c) {
+  return `
+    <div class="experience-company">
+      <h3>${escape(c.company)}</h3>
+      ${(c.roles || []).map(renderRole).join("")}
+    </div>
+  `;
+}
+
+function renderRole(r) {
+  return `
+    <div class="experience-role">
+      <strong>${escape(r.designation)}</strong>
+      <span>${escape(r.startDate)} – ${escape(r.endDate)}</span>
+      ${
+        r.work?.length
+          ? `<ul class="experience-work">
+              ${r.work.map(w => `<li>${escape(w)}</li>`).join("")}
+            </ul>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+/* ============================================================
+   FEATURED PROJECTS
+============================================================ */
+function renderFeatured() {
+  const section = document.getElementById("featured-section");
+  const d = getData(section);
+  if (!d) return;
+
+  section.innerHTML = `
+    <h2>${escape(d.sectionTitle || "Featured Projects")}</h2>
+    <div class="featured-list">
+      ${(d.projects || []).map(renderFeaturedItem).join("")}
+    </div>
+  `;
+}
+
+function renderFeaturedItem(p) {
+  return `
+    <div class="featured-item" data-alignment="${p.alignment || "left"}">
+      <img src="${p.image}" alt="${escape(p.title)}" />
+      <div>
+        <h3>${escape(p.title)}</h3>
+        <p>${escape(p.description)}</p>
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   PROJECTS (CATEGORIES)
+============================================================ */
+function renderProjects() {
+  const section = document.getElementById("projects-section");
+  const d = getData(section);
+  if (!d) return;
+
+  section.innerHTML = `
+    <h2>${escape(d.sectionTitle || "Projects")}</h2>
+    ${(d.categories || []).map(renderCategory).join("")}
+  `;
+}
+
+function renderCategory(c) {
+  return `
+    <div class="project-category">
+      <h3>${escape(c.label)}</h3>
+      ${(c.projects || []).map(renderProjectCard).join("")}
+    </div>
+  `;
+}
+
+function renderProjectCard(p) {
+  return `
+    <div class="project-card">
+      <h4>${escape(p.title)}</h4>
+      <p>${escape(p.description)}</p>
+    </div>
+  `;
+}
+
+/* ============================================================
+   EDUCATION
+============================================================ */
+function renderEducation() {
+  const section = document.getElementById("education-section");
+  const d = getData(section);
+  if (!d) return;
+
+  section.innerHTML = `
+    <h2>${escape(d.sectionTitle || "Education")}</h2>
+    ${(d.education || []).map(e => `
+      <div class="education-item">
+        <strong>${escape(e.institution)}</strong>
+        <span>${escape(e.startDate)} – ${escape(e.endDate)}</span>
+      </div>
+    `).join("")}
+  `;
+}
+
+/* ============================================================
+   LICENSES
+============================================================ */
+function renderLicenses() {
+  const section = document.getElementById("licenses-section");
+  const d = getData(section);
+  if (!d) return;
+
+  section.innerHTML = `
+    <h2>${escape(d.sectionTitle || "Licenses & Certifications")}</h2>
+    <div class="licenses-grid">
+      ${(d.licenses || []).map(l => `
+        <img class="license-image"
+             src="${l.image}"
+             alt="${escape(l.title)}" />
+      `).join("")}
+    </div>
+  `;
+}
+
+/* ============================================================
+   CONTACT
+============================================================ */
+function renderContact() {
+  const section = document.getElementById("contact-section");
+  const d = getData(section);
+  if (!d) return;
+
+  section.innerHTML = `
+    <div class="contact-wrapper">
+      <h2>${escape(d.title || "Contact")}</h2>
+      <p>${escape(d.message)}</p>
+      <a class="contact-email" href="mailto:${d.email}">
+        ${escape(d.email)}
+      </a>
+      <div class="contact-socials">
+        ${(d.socials || []).map(s => `
+          <a href="${s.url}" target="_blank" rel="noopener">
+            ${escape(s.name)}
+          </a>
+        `).join("")}
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   INTERNAL HELPERS
+============================================================ */
+function getData(section) {
+  if (!section || !section.dataset?.source) return null;
   try {
-    return JSON.parse(json);
+    return JSON.parse(section.dataset.source);
   } catch (e) {
-    console.error("[Renderer] Invalid JSON source", e);
+    console.error("[Renderer] Invalid dataset.source", e);
     return null;
   }
+}
+
+function escape(str) {
+  if (typeof str !== "string") return "";
+  return str.replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[m]);
 }
