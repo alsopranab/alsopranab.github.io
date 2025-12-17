@@ -1,46 +1,70 @@
 /* =====================================================
-   CODE VIEWER — BLACK / WHITE + GLOW ONLY
+   CODE VIEWER — PREMIUM TERMINAL (MONOCHROME)
 ===================================================== */
 
 pre {
-  background: #000;                  /* pure black */
-  border: 1px solid #1f1f1f;          /* neutral gray */
+  position: relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(0, 0, 0, 0.45)
+    ),
+    #000;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-md);
 
   padding: var(--space-md);
   overflow: auto;
 
   font-size: 0.85rem;
-  line-height: 1.6;
+  line-height: 1.65;
 
   box-shadow:
-    0 0 0 rgba(255,255,255,0),
-    0 12px 48px rgba(0,0,0,0.9);
+    0 12px 48px rgba(0, 0, 0, 0.9);
 
   transition:
     box-shadow var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard);
 }
 
-/* Subtle hover focus (terminal glow) */
+/* subtle top sheen */
+pre::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    transparent 35%
+  );
+  pointer-events: none;
+}
+
+/* Hover focus (terminal glow) */
 pre:hover {
-  border-color: #2f2f2f;
+  border-color: rgba(255, 255, 255, 0.18);
 
   box-shadow:
-    0 0 18px rgba(255,255,255,0.08),
-    0 14px 60px rgba(0,0,0,0.95);
+    0 0 18px rgba(255, 255, 255, 0.08),
+    0 16px 60px rgba(0, 0, 0, 0.95);
 }
 
 /* =====================================================
    CODE TEXT
 ===================================================== */
 
-code {
+pre code {
   font-family: var(--font-mono);
-  color: #eaeaea;                    /* soft white */
+  color: rgba(255, 255, 255, 0.92);
 
   text-shadow:
-    0 0 6px rgba(255,255,255,0.08);
+    0 0 6px rgba(255, 255, 255, 0.08);
+
+  white-space: pre;
 }
 
 /* =====================================================
@@ -52,11 +76,15 @@ pre::-webkit-scrollbar {
   width: 6px;
 }
 
+pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 pre::-webkit-scrollbar-thumb {
-  background: #1f1f1f;
+  background: rgba(255, 255, 255, 0.18);
   border-radius: 6px;
 }
 
 pre::-webkit-scrollbar-thumb:hover {
-  background: #2f2f2f;
+  background: rgba(255, 255, 255, 0.3);
 }
