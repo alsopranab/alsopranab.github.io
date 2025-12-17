@@ -1,48 +1,55 @@
-/* ===============================
-   CONTRIBUTION HEATMAP (B/W + GLOW)
-================================ */
+/* =====================================================
+   HEATMAP LEGEND (SUBTLE, PREMIUM)
+===================================================== */
 
-.contribution-grid {
-  display: grid;
-  grid-template-columns: repeat(53, 1fr);
+.heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: var(--space-sm);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.heatmap-legend .legend-label {
+  white-space: nowrap;
+}
+
+.heatmap-legend .legend-scale {
+  display: flex;
   gap: 4px;
 }
 
-/* Base cell */
-.contribution-grid .day {
+.heatmap-legend .legend-scale i {
   width: 10px;
   height: 10px;
+  border-radius: 3px;
 
-  background: #0a0a0a;
-  border: 1px solid #1f1f1f;
-  border-radius: 2px;
-
-  box-shadow: none;
-  transition: box-shadow 0.2s ease, background 0.2s ease;
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Intensity levels (monochrome only) */
-.contribution-grid .day[data-level="0"] {
-  background: #050505;
+/* intensity mapping */
+.heatmap-legend i[data-level="0"] {
+  background: rgba(255, 255, 255, 0.02);
 }
 
-.contribution-grid .day[data-level="1"] {
-  background: #111;
+.heatmap-legend i[data-level="1"] {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.contribution-grid .day[data-level="2"] {
-  background: #1a1a1a;
+.heatmap-legend i[data-level="2"] {
+  background: rgba(255, 255, 255, 0.12);
 }
 
-.contribution-grid .day[data-level="3"] {
-  background: #242424;
+.heatmap-legend i[data-level="3"] {
+  background: rgba(255, 255, 255, 0.18);
 }
 
-.contribution-grid .day[data-level="4"] {
-  background: #2e2e2e;
-}
-
-/* Hover glow (white only) */
-.contribution-grid .day:hover {
-  box-shadow: 0 0 6px rgba(255,255,255,0.35);
+.heatmap-legend i[data-level="4"] {
+  background: rgba(255, 255, 255, 0.26);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 6px rgba(255, 255, 255, 0.25);
 }
