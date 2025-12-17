@@ -1,0 +1,61 @@
+{
+  "sectionTitle": "Experience",
+  "experience": [
+    {
+      "id": "exp-01",
+      "company": "Magicbricks",
+      "companyLogo": "assets/images/experience/magicbricks.png",
+      "location": "Bangalore, India",
+      "roles": [
+        {
+          "designation": "Account Manager",
+          "startDate": "2024-01",
+          "endDate": "Present",
+          "work": [
+            "Managed NRI accounts and handled high-value property listings.",
+            "Improved monthly conversion rates by approximately 15% through call analysis and process optimization.",
+            "Collaborated with cross-functional teams to improve lead quality and customer experience."
+          ],
+          "projects": [
+            "Revenue optimization for NRI department",
+            "Sales funnel analysis"
+          ],
+          "skills": [
+            "Sales Analytics",
+            "CRM",
+            "Customer Handling",
+            "Revenue Management"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "exp-02",
+      "company": "NoBroker",
+      "companyLogo": "assets/images/experience/nobroker.png",
+      "location": "Bangalore, India",
+      "roles": [
+        {
+          "designation": "Senior Account Manager – NRI Department",
+          "startDate": "2023-06",
+          "endDate": "2023-12",
+          "work": [
+            "Led a team to increase monthly revenue by 15% through performance tracking and coaching.",
+            "Analyzed sales calls and implemented feedback-driven improvements.",
+            "Worked directly with real estate builders to sell premium online listing space."
+          ],
+          "projects": [
+            "Team performance optimization",
+            "Revenue growth strategy"
+          ],
+          "skills": [
+            "Leadership",
+            "Sales Strategy",
+            "Call Analysis",
+            "Revenue Forecasting"
+          ]
+        }
+      ]
+    }
+  ]
+}
