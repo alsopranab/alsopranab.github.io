@@ -1,15 +1,10 @@
 /**
- * Header Layout Controller (PREMIUM & FINAL)
- * =========================================
- * Responsibilities:
- * - Waits for application readiness
- * - Loads and validates profile & social data
- * - Renders identity, navigation, and socials
- * - Handles partial failures gracefully
- * - Accessibility-first markup
- * - Emits lifecycle events
- *
- * No styling logic. No page awareness.
+ * Header Layout Controller (FINAL — SCHEMA SAFE)
+ * =============================================
+ * - Runs after app:ready
+ * - Uses ONLY profile.json + social.json
+ * - Schema-aligned with identity/currentPosition
+ * - Deterministic, accessible, silent on failure
  */
 
 window.addEventListener("app:ready", () => {
@@ -19,144 +14,92 @@ window.addEventListener("app:ready", () => {
 });
 
 async function HeaderController() {
-  console.group("[Header] Initialization");
-
   const headerEl = document.getElementById("site-header");
-  if (!headerEl) {
-    console.warn("[Header] Header container not found");
-    console.groupEnd();
-    return;
-  }
+  if (!headerEl) return;
 
-  /* =========================
-     DATA LOADING
-  ========================= */
   const results = await Promise.allSettled([
     DataService.getProfile(),
     DataService.getSocials()
   ]);
 
-  const [profileData, socialData] = normalizeResults(results);
+  const [profile, socials] = normalizeResults(results);
+  if (!profile?.identity) return;
 
-  if (!profileData) {
-    console.warn("[Header] Profile data unavailable");
-    console.groupEnd();
-    return;
-  }
+  const payload = normalizeHeaderPayload(profile, socials);
+  headerEl.innerHTML = renderHeaderHTML(payload);
 
-  /* =========================
-     DATA NORMALIZATION
-  ========================= */
-  const headerPayload = normalizeHeaderPayload(profileData, socialData);
-
-  /* =========================
-     RENDER
-  ========================= */
-  headerEl.innerHTML = renderHeaderHTML(headerPayload);
-
-  console.info("[Header] Render complete");
-  console.groupEnd();
-
-  /* =========================
-     LIFECYCLE EVENT
-  ========================= */
-  window.dispatchEvent(
-    new CustomEvent("header:ready", {
-      detail: {
-        timestamp: Date.now()
-      }
-    })
-  );
+  window.dispatchEvent(new CustomEvent("header:ready"));
 }
 
 /* =========================
-   NORMALIZERS
+   NORMALIZATION
 ========================= */
 
 function normalizeHeaderPayload(profile, socials) {
   return {
-    name: profile.name || "",
-    designation: profile.currentRole?.designation || "",
-    company: profile.currentRole?.company || "",
-    socials: Array.isArray(socials?.socials) ? socials.socials : [],
+    name:
+      profile.identity.preferredName ||
+      profile.identity.fullName ||
+      "Pranab Debnath",
+
+    role: profile.identity.headline || "",
+
+    socials: Array.isArray(socials?.socials)
+      ? socials.socials.filter(s => s.enabled)
+      : [],
+
     nav: [
       { label: "Home", href: "index.html" },
       { label: "Stats", href: "stats.html" },
-      { label: "Resume", href: "resume.html" },
-      { label: "About", href: "about.html" }
+      { label: "Resume", href: "resume.html" }
     ]
   };
 }
 
 function normalizeResults(results) {
-  return results.map((res, idx) => {
-    if (res.status === "fulfilled" && res.value) {
-      return res.value;
-    }
-    console.warn(`[Header] Data source failed at index ${idx}`);
-    return null;
-  });
+  return results.map(r =>
+    r.status === "fulfilled" ? r.value : null
+  );
 }
 
 /* =========================
-   RENDERER (PURE)
+   RENDER
 ========================= */
 
-function renderHeaderHTML(payload) {
-  const socialsHTML = payload.socials
-    .map(
-      (s) => `
-        <a
-          href="${s.url}"
-          target="_blank"
-          rel="noopener"
-          aria-label="${s.label}"
-        >
-          <span class="icon icon-${s.icon}" aria-hidden="true"></span>
-        </a>
-      `
-    )
-    .join("");
-
-  const navHTML = payload.nav
-    .map(
-      (item) => `
-        <a
-          href="${item.href}"
-          class="header-nav-link"
-          role="menuitem"
-        >
-          ${item.label}
-        </a>
-      `
-    )
-    .join("");
-
+function renderHeaderHTML(p) {
   return `
     <div class="header-container">
 
       <div class="header-identity">
-        <span class="header-name">${payload.name}</span>
+        <span class="header-name">${escapeHTML(p.name)}</span>
         ${
-          payload.designation && payload.company
-            ? `
-              <span class="header-role">
-                ${payload.designation} @ ${payload.company}
-              </span>
-            `
+          p.role
+            ? `<span class="header-role">${escapeHTML(p.role)}</span>`
             : ""
         }
       </div>
 
-      <nav class="header-nav" role="menubar" aria-label="Primary Navigation">
-        ${navHTML}
+      <nav class="header-nav" aria-label="Primary Navigation">
+        ${p.nav
+          .map(
+            n => `<a href="${n.href}">${n.label}</a>`
+          )
+          .join("")}
       </nav>
 
       ${
-        socialsHTML
+        p.socials.length
           ? `
-            <div class="header-socials" aria-label="Social links">
-              ${socialsHTML}
+            <div class="header-socials">
+              ${p.socials
+                .map(
+                  s => `
+                    <a href="${s.url}" target="_blank" rel="noopener">
+                      ${escapeHTML(s.name)}
+                    </a>
+                  `
+                )
+                .join("")}
             </div>
           `
           : ""
@@ -164,4 +107,16 @@ function renderHeaderHTML(payload) {
 
     </div>
   `;
+}
+
+/* =========================
+   UTIL
+========================= */
+
+function escapeHTML(str) {
+  return typeof str === "string"
+    ? str.replace(/[&<>"']/g, m =>
+        ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m])
+      )
+    : "";
 }
