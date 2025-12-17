@@ -1,144 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pranab Debnath | Data Analyst</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- SEO -->
-  <meta name="description" content="Pranab Debnath – Account Manager focused on business growth, sales strategy, and disciplined execution.">
-  <meta name="author" content="Pranab Debnath">
+<title>Pranab Debnath | Portfolio</title>
 
-  <!-- FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- SEO -->
+<meta name="description" content="Pranab Debnath – Business growth focused Account Manager. Sales, execution, and long-term discipline.">
+<meta name="author" content="Pranab Debnath">
+<meta property="og:title" content="Pranab Debnath | Portfolio">
+<meta property="og:description" content="Sales, execution, and long-term discipline.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://lsopranab.github.io/">
 
-  <!-- SINGLE CSS FILE -->
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- DESKTOP NAV -->
+<!-- NAV -->
 <nav>
   <div class="nav-inner">
     <strong>Pranab</strong>
     <div class="nav-links">
-      <a onclick="showSection('home')" class="active">Home</a>
-      <a onclick="showSection('stats')">Stats</a>
-      <a onclick="showSection('projects')">Projects</a>
-      <a onclick="showSection('learning')">Learning</a>
-      <a onclick="showSection('about')">About</a>
+      <a onclick="go('home')" class="active">Home</a>
+      <a onclick="go('stats')">Stats</a>
+      <a onclick="go('projects')">Projects</a>
+      <a onclick="go('learning')">Learning</a>
+      <a onclick="go('about')">About</a>
     </div>
   </div>
 </nav>
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav">
-  <a onclick="showSection('home')" class="active">Home</a>
-  <a onclick="showSection('stats')">Stats</a>
-  <a onclick="showSection('projects')">Projects</a>
-  <a onclick="showSection('learning')">Learning</a>
-  <a onclick="showSection('about')">About</a>
+  <a onclick="go('home')" class="active">Home</a>
+  <a onclick="go('stats')">Stats</a>
+  <a onclick="go('projects')">Projects</a>
+  <a onclick="go('learning')">Learning</a>
+  <a onclick="go('about')">About</a>
 </div>
 
 <main class="container">
 
-  <!-- HOME -->
-  <section id="home" class="active">
-    <div class="card hero">
-      <img src="assets/images/profile.jpg" alt="Profile">
-      <div>
-        <h1>Pranab Debnath</h1>
-        <p class="muted">Account Manager | Business Growth</p>
-        <p>Turning conversations into conversions and ideas into revenue.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Featured</h2>
-      <img src="assets/images/featured.jpg" style="width:100%;border-radius:12px;margin-top:12px;">
-      <p class="muted">Highlight an achievement, article, or announcement here.</p>
-    </div>
-
-    <div class="card">
-      <h2>Experience</h2>
-      <p><strong>MagicBricks</strong> — Account Manager (2024–Present)</p>
-      <ul>
-        <li>Revenue growth & client acquisition</li>
-        <li>Sales funnel optimization</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <section id="stats">
-    <div class="card">
-      <h2>Career Stats</h2>
-      <div class="grid">
-        <div class="card">Experience: 2+ Years</div>
-        <div class="card">Clients Managed: 100+</div>
-        <div class="card">Revenue Closed: ₹XX Lakh+</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="card">
-      <h2>Projects</h2>
-      <div class="grid">
-        <div class="card">Project One</div>
-        <div class="card">Project Two</div>
-        <div class="card">Project Three</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LEARNING -->
-  <section id="learning">
-    <div class="card">
-      <h2>Learning</h2>
-      <p>Currently learning branding, systems thinking, and web fundamentals.</p>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="card">
-      <h2>About Me</h2>
+<!-- HOME -->
+<section id="home" class="active">
+  <div class="card hero">
+    <img src="assets/images/profile.jpg" alt="Profile">
+    <div>
+      <h1>Pranab Debnath</h1>
+      <p class="muted">Account Manager · Business Growth</p>
       <p>
-        I focus on discipline, long-term execution, and building sustainable income streams.
-        My work philosophy is simple: consistency over intensity.
+        I focus on execution, revenue growth, and long-term discipline.
+        My work is centered on turning conversations into results.
       </p>
     </div>
-  </section>
+  </div>
+
+  <div class="card">
+    <h2>Featured</h2>
+    <p class="muted">
+      This space is reserved for achievements, announcements, or major updates.
+    </p>
+  </div>
+
+  <div class="card">
+    <h2>Experience</h2>
+    <p><strong>MagicBricks</strong> — Account Manager (2024–Present)</p>
+    <ul>
+      <li>Client acquisition and revenue generation</li>
+      <li>Sales funnel optimization</li>
+      <li>Relationship and account management</li>
+    </ul>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="card">
+    <h2>Career Stats</h2>
+    <div class="grid">
+      <div class="stat-card">Experience<br><strong>2+ Years</strong></div>
+      <div class="stat-card">Clients Managed<br><strong>100+</strong></div>
+      <div class="stat-card">Revenue Closed<br><strong>₹XX L+</strong></div>
+      <div class="stat-card">Projects Delivered<br><strong>10+</strong></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="card">
+    <h2>Projects</h2>
+
+    <details class="project">
+      <summary>Portfolio Website</summary>
+      <p>Single-page responsive portfolio built with pure HTML & CSS.</p>
+    </details>
+
+    <details class="project">
+      <summary>Sales Tracker System</summary>
+      <p>Internal KPI tracking for sales performance and productivity.</p>
+    </details>
+
+    <details class="project">
+      <summary>Brand Website (Clothing)</summary>
+      <p>Early-stage branding and e-commerce planning.</p>
+    </details>
+  </div>
+</section>
+
+<!-- LEARNING -->
+<section id="learning">
+  <div class="card">
+    <h2>Learning Focus</h2>
+    <ul>
+      <li>Business systems & operations</li>
+      <li>Brand building</li>
+      <li>Web fundamentals</li>
+      <li>Long-term financial discipline</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="card">
+    <h2>About Me</h2>
+    <p>
+      I value discipline over motivation and consistency over intensity.
+      My goal is to build sustainable income streams, grow professionally,
+      and create long-term independence through execution.
+    </p>
+  </div>
+</section>
 
 </main>
 
-<!-- SPA NAVIGATION SCRIPT -->
 <script>
 const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.nav-links a, .mobile-nav a');
+const links = document.querySelectorAll('.nav-links a, .mobile-nav a');
 
-function showSection(id, push = true) {
+function go(id) {
   sections.forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 
-  navLinks.forEach(l => l.classList.remove('active'));
-  navLinks.forEach(l => {
+  links.forEach(l => l.classList.remove('active'));
+  links.forEach(l => {
     if (l.textContent.toLowerCase() === id) l.classList.add('active');
   });
 
-  if (push) history.pushState(null, '', `#${id}`);
+  history.pushState(null, '', `#${id}`);
 }
 
-function handleHash() {
-  const hash = location.hash.replace('#', '');
-  if (hash) showSection(hash, false);
-}
-
-window.addEventListener('load', handleHash);
-window.addEventListener('popstate', handleHash);
+window.addEventListener('load', () => {
+  const hash = location.hash.replace('#','');
+  if (hash) go(hash);
+});
 </script>
 
 </body>
