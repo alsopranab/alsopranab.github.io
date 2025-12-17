@@ -1,0 +1,41 @@
+{
+  "title": "A/B Testing",
+  "level_path": ["Beginner", "Intermediate", "Advanced"],
+  "topics": [
+    {
+      "level": "Beginner",
+      "items": [
+        "What is A/B testing",
+        "Use cases in business",
+        "Control vs Variant",
+        "Metrics and KPIs",
+        "Basic experiment setup",
+        "Common mistakes"
+      ]
+    },
+    {
+      "level": "Intermediate",
+      "items": [
+        "Hypothesis formulation",
+        "Sample size calculation",
+        "Statistical significance",
+        "p-value interpretation",
+        "Confidence intervals",
+        "Conversion rate optimization",
+        "Test duration planning"
+      ]
+    },
+    {
+      "level": "Advanced",
+      "items": [
+        "Multivariate testing",
+        "Sequential testing",
+        "Bayesian A/B testing",
+        "Experiment bias detection",
+        "Advanced metrics analysis",
+        "Real-world A/B test case studies",
+        "Product experimentation frameworks"
+      ]
+    }
+  ]
+}
