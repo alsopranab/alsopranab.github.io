@@ -1,0 +1,34 @@
+{
+  "socials": [
+    {
+      "id": "github",
+      "label": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/alsopranab"
+    },
+    {
+      "id": "linkedin",
+      "label": "LinkedIn",
+      "icon": "linkedin",
+      "url": "https://linkedin.com/in/alsopranab"
+    },
+    {
+      "id": "leetcode",
+      "label": "LeetCode",
+      "icon": "leetcode",
+      "url": "https://leetcode.com/alsopranab"
+    },
+    {
+      "id": "hackerrank",
+      "label": "HackerRank",
+      "icon": "hackerrank",
+      "url": "https://www.hackerrank.com/alsopranab"
+    },
+    {
+      "id": "instagram",
+      "label": "Instagram",
+      "icon": "instagram",
+      "url": "https://instagram.com/"
+    }
+  ]
+}
