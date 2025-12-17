@@ -1,109 +1,46 @@
 /**
- * Header Layout Controller (FINAL — SCHEMA SAFE)
- * =============================================
- * - Runs after app:ready
- * - Uses ONLY profile.json + social.json
- * - Schema-aligned with identity/currentPosition
- * - Deterministic, accessible, silent on failure
+ * Header Layout Controller (FINAL — MINIMAL & STABLE)
+ * ==================================================
+ * Purpose:
+ * - Always render a visible navbar
+ * - Depend ONLY on profile.json
+ * - Never block page rendering
+ * - Resume handled via data-action
  */
 
 window.addEventListener("app:ready", () => {
-  HeaderController().catch((err) => {
-    console.error("[Header] Fatal initialization error", err);
+  renderHeader().catch(err => {
+    console.error("[Header] Failed to render", err);
   });
 });
 
-async function HeaderController() {
-  const headerEl = document.getElementById("site-header");
-  if (!headerEl) return;
+async function renderHeader() {
+  const header = document.getElementById("site-header");
+  if (!header) return;
 
-  const results = await Promise.allSettled([
-    DataService.getProfile(),
-    DataService.getSocials()
-  ]);
+  let name = "Pranab Debnath";
 
-  const [profile, socials] = normalizeResults(results);
-  if (!profile?.identity) return;
+  try {
+    const profile = await DataService.getProfile();
+    if (profile?.identity?.fullName) {
+      name = profile.identity.fullName;
+    }
+  } catch {
+    /* silent fallback */
+  }
 
-  const payload = normalizeHeaderPayload(profile, socials);
-  headerEl.innerHTML = renderHeaderHTML(payload);
-
-  window.dispatchEvent(new CustomEvent("header:ready"));
-}
-
-/* =========================
-   NORMALIZATION
-========================= */
-
-function normalizeHeaderPayload(profile, socials) {
-  return {
-    name:
-      profile.identity.preferredName ||
-      profile.identity.fullName ||
-      "Pranab Debnath",
-
-    role: profile.identity.headline || "",
-
-    socials: Array.isArray(socials?.socials)
-      ? socials.socials.filter(s => s.enabled)
-      : [],
-
-    nav: [
-      { label: "Home", href: "index.html" },
-      { label: "Stats", href: "stats.html" },
-      { label: "Resume", href: "resume.html" }
-    ]
-  };
-}
-
-function normalizeResults(results) {
-  return results.map(r =>
-    r.status === "fulfilled" ? r.value : null
-  );
-}
-
-/* =========================
-   RENDER
-========================= */
-
-function renderHeaderHTML(p) {
-  return `
+  header.innerHTML = `
     <div class="header-container">
 
-      <div class="header-identity">
-        <span class="header-name">${escapeHTML(p.name)}</span>
-        ${
-          p.role
-            ? `<span class="header-role">${escapeHTML(p.role)}</span>`
-            : ""
-        }
+      <div class="header-name">
+        ${escapeHTML(name)}
       </div>
 
       <nav class="header-nav" aria-label="Primary Navigation">
-        ${p.nav
-          .map(
-            n => `<a href="${n.href}">${n.label}</a>`
-          )
-          .join("")}
+        <a href="index.html">Home</a>
+        <a href="stats.html">Stats</a>
+        <a href="#" data-action="resume">Resume</a>
       </nav>
-
-      ${
-        p.socials.length
-          ? `
-            <div class="header-socials">
-              ${p.socials
-                .map(
-                  s => `
-                    <a href="${s.url}" target="_blank" rel="noopener">
-                      ${escapeHTML(s.name)}
-                    </a>
-                  `
-                )
-                .join("")}
-            </div>
-          `
-          : ""
-      }
 
     </div>
   `;
@@ -112,11 +49,14 @@ function renderHeaderHTML(p) {
 /* =========================
    UTIL
 ========================= */
-
 function escapeHTML(str) {
   return typeof str === "string"
-    ? str.replace(/[&<>"']/g, m =>
-        ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m])
-      )
+    ? str.replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      }[c]))
     : "";
 }
