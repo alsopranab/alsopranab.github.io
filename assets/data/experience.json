@@ -1,61 +1,192 @@
 {
-  "sectionTitle": "Experience",
-  "experience": [
+  "section": {
+    "id": "experience",
+    "title": "Experience",
+    "subtitle": "Professional roles, responsibilities, and impact",
+    "displayOrder": 2,
+    "visibility": "public"
+  },
+
+  "timeline": [
     {
-      "id": "exp-01",
-      "company": "Magicbricks",
-      "companyLogo": "assets/images/experience/magicbricks.png",
-      "location": "Bangalore, India",
+      "id": "exp-magicbricks",
+      "organization": {
+        "name": "Magicbricks",
+        "industry": "Real Estate Technology",
+        "location": {
+          "city": "Bangalore",
+          "state": "Karnataka",
+          "country": "India"
+        },
+        "logo": "assets/images/experience/magicbricks.png",
+        "website": "https://www.magicbricks.com"
+      },
+
+      "employment": {
+        "type": "Full-time",
+        "mode": "On-site"
+      },
+
       "roles": [
         {
-          "designation": "Account Manager",
-          "startDate": "2024-01",
-          "endDate": "Present",
-          "work": [
+          "id": "role-mb-am",
+          "title": "Account Manager",
+          "department": "NRI Department",
+
+          "duration": {
+            "start": {
+              "year": 2024,
+              "month": 1
+            },
+            "end": {
+              "status": "present"
+            }
+          },
+
+          "summary": "Handled high-value NRI accounts, optimized conversion pipelines, and collaborated cross-functionally to improve revenue outcomes.",
+
+          "responsibilities": [
             "Managed NRI accounts and handled high-value property listings.",
             "Improved monthly conversion rates by approximately 15% through call analysis and process optimization.",
             "Collaborated with cross-functional teams to improve lead quality and customer experience."
           ],
-          "projects": [
-            "Revenue optimization for NRI department",
-            "Sales funnel analysis"
+
+          "keyProjects": [
+            {
+              "title": "Revenue Optimization – NRI Department",
+              "description": "Analyzed call data and funnel metrics to improve conversion efficiency.",
+              "impact": "15% increase in monthly conversions"
+            },
+            {
+              "title": "Sales Funnel Analysis",
+              "description": "Identified bottlenecks and proposed data-backed process changes."
+            }
           ],
-          "skills": [
-            "Sales Analytics",
-            "CRM",
-            "Customer Handling",
-            "Revenue Management"
-          ]
+
+          "skills": {
+            "core": [
+              "Sales Analytics",
+              "Revenue Management",
+              "Customer Handling"
+            ],
+            "tools": [
+              "CRM Systems",
+              "Call Analysis Tools"
+            ],
+            "soft": [
+              "Communication",
+              "Stakeholder Management"
+            ]
+          },
+
+          "metrics": [
+            {
+              "label": "Conversion Rate Improvement",
+              "value": "15%",
+              "type": "growth"
+            }
+          ],
+
+          "meta": {
+            "importance": "primary",
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     },
+
     {
-      "id": "exp-02",
-      "company": "NoBroker",
-      "companyLogo": "assets/images/experience/nobroker.png",
-      "location": "Bangalore, India",
+      "id": "exp-nobroker",
+      "organization": {
+        "name": "NoBroker",
+        "industry": "PropTech",
+        "location": {
+          "city": "Bangalore",
+          "state": "Karnataka",
+          "country": "India"
+        },
+        "logo": "assets/images/experience/nobroker.png",
+        "website": "https://www.nobroker.in"
+      },
+
+      "employment": {
+        "type": "Full-time",
+        "mode": "On-site"
+      },
+
       "roles": [
         {
-          "designation": "Senior Account Manager – NRI Department",
-          "startDate": "2023-06",
-          "endDate": "2023-12",
-          "work": [
+          "id": "role-nb-sam",
+          "title": "Senior Account Manager",
+          "department": "NRI Department",
+
+          "duration": {
+            "start": {
+              "year": 2023,
+              "month": 6
+            },
+            "end": {
+              "year": 2023,
+              "month": 12
+            }
+          },
+
+          "summary": "Led a revenue-focused team, implemented performance tracking, and worked directly with builders to scale premium listings.",
+
+          "responsibilities": [
             "Led a team to increase monthly revenue by 15% through performance tracking and coaching.",
             "Analyzed sales calls and implemented feedback-driven improvements.",
             "Worked directly with real estate builders to sell premium online listing space."
           ],
-          "projects": [
-            "Team performance optimization",
-            "Revenue growth strategy"
+
+          "keyProjects": [
+            {
+              "title": "Team Performance Optimization",
+              "description": "Introduced KPI tracking and coaching frameworks.",
+              "impact": "15% month-over-month revenue growth"
+            },
+            {
+              "title": "Revenue Growth Strategy",
+              "description": "Designed and executed premium listing upsell strategy."
+            }
           ],
-          "skills": [
-            "Leadership",
-            "Sales Strategy",
-            "Call Analysis",
-            "Revenue Forecasting"
-          ]
+
+          "skills": {
+            "core": [
+              "Leadership",
+              "Sales Strategy",
+              "Revenue Forecasting"
+            ],
+            "tools": [
+              "CRM",
+              "Analytics Dashboards"
+            ],
+            "soft": [
+              "Coaching",
+              "Decision Making"
+            ]
+          },
+
+          "metrics": [
+            {
+              "label": "Revenue Growth",
+              "value": "15%",
+              "type": "growth"
+            }
+          ],
+
+          "meta": {
+            "importance": "primary",
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     }
-  ]
+  ],
+
+  "meta": {
+    "version": "1.0.0",
+    "schema": "experience.timeline.v1",
+    "maintainedBy": "self"
+  }
 }
