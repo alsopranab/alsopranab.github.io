@@ -1,0 +1,20 @@
+{
+  "name": "Pranab Debnath",
+  "tagline": "Data Analyst",
+  "currentRole": {
+    "designation": "Account Manager",
+    "company": "Magicbricks",
+    "companyLogo": "assets/images/profile/magicbricks-logo.svg"
+  },
+  "summary": "Data-driven professional with experience in analytics, sales optimization, and business intelligence. Focused on building scalable insights through SQL, Python, and dashboarding tools.",
+  "location": "Bangalore, India",
+  "availability": "Open to opportunities",
+  "email": "ibrahimmemon930@gmail.com",
+  "resume": "assets/resume/Pranab_Debnath_Resume.pdf",
+  "social": {
+    "github": "https://github.com/alsopranab",
+    "linkedin": "https://linkedin.com/in/alsopranab",
+    "leetcode": "https://leetcode.com/alsopranab",
+    "hackerrank": "https://www.hackerrank.com/alsopranab"
+  }
+}
