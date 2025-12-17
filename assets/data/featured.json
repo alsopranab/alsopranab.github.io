@@ -1,0 +1,29 @@
+{
+  "sectionTitle": "Featured Project",
+  "projects": [
+    {
+      "id": "featured-01",
+      "title": "Example Project",
+      "description": "A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.",
+      "image": "assets/images/featured/featured-01.png",
+      "alignment": "left",
+      "links": {
+        "live": null,
+        "github": null,
+        "caseStudy": null
+      }
+    },
+    {
+      "id": "featured-02",
+      "title": "Example Project",
+      "description": "A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.",
+      "image": "assets/images/featured/featured-02.png",
+      "alignment": "right",
+      "links": {
+        "live": null,
+        "github": null,
+        "caseStudy": null
+      }
+    }
+  ]
+}
