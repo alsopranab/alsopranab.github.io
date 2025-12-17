@@ -1,53 +1,52 @@
 /**
  * Render GitHub-style contribution heatmap
- * - Pure DOM (no canvas, no SVG)
- * - GitHub-compatible layout (52 weeks × 7 days)
- * - Defensive: never crashes analytics page
- *
- * @param {HTMLElement} container
- * @param {Array} data [{ date: "YYYY-MM-DD", count: number }]
+ * - Pure DOM
+ * - 52 weeks × 7 days
+ * - Timezone-safe
+ * - SPA-safe
  */
 export function renderHeatmap(container, data = []) {
   if (!container) return;
 
-  // Clear container
   container.innerHTML = "";
 
-  // Guard: invalid data
   if (!Array.isArray(data) || data.length === 0) {
     container.innerHTML =
-      "<small>No contribution data available</small>";
+      "<small class='muted'>No contribution data available</small>";
     return;
   }
 
-  // Create heatmap grid
   const heatmap = document.createElement("div");
   heatmap.className = "heatmap";
 
-  // Map date → count
-  const contributionMap = {};
-  data.forEach(item => {
-    if (item && item.date) {
+  // Build lookup map
+  const contributionMap = Object.create(null);
+  for (const item of data) {
+    if (item?.date) {
       contributionMap[item.date] = item.count || 0;
     }
-  });
+  }
 
-  // Determine date range (last 52 weeks)
+  // Calculate start date (Sunday, 52 weeks ago)
   const today = new Date();
-  const start = new Date(today);
-  start.setDate(start.getDate() - 364); // 52 weeks
+  const start = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 364);
 
-  // Normalize to Sunday (GitHub behavior)
   while (start.getDay() !== 0) {
     start.setDate(start.getDate() - 1);
   }
 
-  // Build cells day-by-day
+  // Render 364 days
   for (let i = 0; i < 364; i++) {
-    const date = new Date(start);
-    date.setDate(start.getDate() + i);
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
 
-    const iso = date.toISOString().slice(0, 10);
+    const iso =
+      d.getFullYear() +
+      "-" +
+      String(d.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(d.getDate()).padStart(2, "0");
+
     const count = contributionMap[iso] || 0;
 
     const cell = document.createElement("div");
@@ -60,9 +59,6 @@ export function renderHeatmap(container, data = []) {
   container.appendChild(heatmap);
 }
 
-/**
- * Map contribution count → GitHub intensity level
- */
 function getLevel(count) {
   if (count === 0) return 0;
   if (count < 3) return 1;
