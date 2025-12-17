@@ -3,7 +3,7 @@
     "id": "contact",
     "title": "Contact",
     "subtitle": "Let’s build data-driven solutions together",
-    "description": "I’m currently seeking opportunities as a Data Analyst where I can turn complex data into clear insights using SQL, Python, and business intelligence tools. If you’re building something impactful or need analytical support, let’s connect."
+    "description": "I’m a Data Analyst driven by curiosity and continuous learning. I enjoy turning complex data into clear, actionable insights using SQL, Python, and business intelligence tools. I’m especially drawn to automation and workflow optimization, and I’m always eager to learn new technologies that make systems smarter and more efficient. If you’re building something meaningful or need analytical support, let’s connect."
   },
 
   "primary": {
@@ -38,32 +38,29 @@
       "url": "https://www.hackerrank.com/profile/alsopranab/",
       "priority": 3,
       "enabled": true
-    }
-  ],
-      {
+    },
+    {
       "id": "leetcode",
       "name": "LeetCode",
       "icon": "leetcode",
       "url": "https://leetcode.com/u/alsopranab/",
-      "priority": 3,
+      "priority": 4,
       "enabled": true
-    }
-  ],
-      {
+    },
+    {
       "id": "datalemur",
       "name": "DataLemur",
       "icon": "datalemur",
       "url": "https://datalemur.com/alsopranab",
-      "priority": 3,
+      "priority": 5,
       "enabled": true
-    }
-  ],
-      {
+    },
+    {
       "id": "linkedin",
       "name": "LinkedIn",
       "icon": "linkedin",
       "url": "https://www.linkedin.com/in/alsopranab/",
-      "priority": 3,
+      "priority": 6,
       "enabled": true
     }
   ],
