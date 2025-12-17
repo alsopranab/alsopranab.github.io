@@ -1,0 +1,40 @@
+name: Fetch GitHub Contributions
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch contribution data
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_HEATMAP }}
+        run: |
+          mkdir -p assets/data
+
+          curl -X POST https://api.github.com/graphql \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "query": "query { user(login: \"alsopranab\") { contributionsCollection { contributionCalendar { weeks { contributionDays { date contributionCount } } } } }"
+            }' \
+          | jq '.data.user.contributionsCollection.contributionCalendar.weeks
+                | map(.contributionDays)
+                | flatten
+                | map({date: .date, count: .contributionCount})' \
+          > assets/data/contributions.json
+
+      - name: Commit data
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add assets/data/contributions.json
+          git commit -m "chore: update contribution heatmap data" || echo "No changes"
+          git push
