@@ -5,8 +5,7 @@ const NAV_ITEMS = [
   { label: "Dashboard", route: "dashboard" },
   { label: "Projects", route: "projects" },
   { label: "Learnings", route: "learnings" },
-  { label: "Analytics", route: "analytics" },
-  { label: "Profiles", route: "profiles" }
+  { label: "Analytics", route: "analytics" }
 ];
 
 let navbarMounted = false;
@@ -42,7 +41,7 @@ export function renderNavbar(container = document.body) {
     </ul>
   `;
 
-  // Event delegation (clean + fast)
+  /* Event delegation (clean + fast) */
   nav.addEventListener("click", e => {
     const item = e.target.closest("[data-route]");
     if (!item) return;
@@ -51,7 +50,7 @@ export function renderNavbar(container = document.body) {
     if (route) navigate(route);
   });
 
-  // Keyboard navigation (accessibility)
+  /* Keyboard navigation (accessibility) */
   nav.addEventListener("keydown", e => {
     if (e.key !== "Enter") return;
     const item = e.target.closest("[data-route]");
@@ -63,7 +62,7 @@ export function renderNavbar(container = document.body) {
 
   container.prepend(nav);
 
-  // Sync active route on load + history navigation
+  /* Sync active route */
   syncActiveRoute();
   window.addEventListener("popstate", syncActiveRoute);
 }
