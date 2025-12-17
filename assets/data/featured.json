@@ -1,29 +1,119 @@
 {
-  "sectionTitle": "Featured Project",
-  "projects": [
+  "section": {
+    "id": "featured-projects",
+    "title": "Featured Projects",
+    "subtitle": "Selected work showcasing depth, impact, and problem-solving",
+    "displayOrder": 3,
+    "visibility": "public"
+  },
+
+  "items": [
     {
-      "id": "featured-01",
-      "title": "Example Project",
-      "description": "A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.",
-      "image": "assets/images/featured/featured-01.png",
-      "alignment": "left",
+      "id": "featured-spotify-analytics",
+
+      "project": {
+        "name": "Spotify Analytics Dashboard",
+        "tagline": "Personalized music insights and playlist intelligence",
+        "description": "A web application for visualizing personalized Spotify data. Users can explore top artists, top tracks, recently played songs, and detailed audio features. The platform also generates and saves recommended playlists based on listening behavior.",
+        "category": "Web Application",
+        "status": "completed"
+      },
+
+      "media": {
+        "coverImage": "assets/images/featured/featured-01.png",
+        "alt": "Spotify analytics dashboard showing top artists and tracks"
+      },
+
+      "layout": {
+        "alignment": "left",
+        "priority": 1
+      },
+
+      "highlights": [
+        "OAuth-based Spotify API integration",
+        "Dynamic data visualization of listening patterns",
+        "Automated playlist recommendations"
+      ],
+
+      "technology": {
+        "languages": ["JavaScript"],
+        "frameworks": ["React"],
+        "tools": ["Spotify Web API", "Chart.js"]
+      },
+
+      "impact": {
+        "problem": "Users lack meaningful insights into their music consumption patterns.",
+        "solution": "Built an interactive dashboard that transforms raw Spotify data into actionable insights.",
+        "outcome": "Enabled users to understand preferences and discover new music effortlessly."
+      },
+
       "links": {
         "live": null,
         "github": null,
         "caseStudy": null
+      },
+
+      "meta": {
+        "featured": true,
+        "lastUpdated": "2025-01-01"
       }
     },
+
     {
-      "id": "featured-02",
-      "title": "Example Project",
-      "description": "A web app for visualizing personalized Spotify data. View your top artists, top tracks, recently played tracks, and detailed audio information about each track. Create and save new playlists of recommended tracks based on your existing playlists and more.",
-      "image": "assets/images/featured/featured-02.png",
-      "alignment": "right",
+      "id": "featured-spotify-playlists",
+
+      "project": {
+        "name": "Smart Playlist Generator",
+        "tagline": "Data-driven playlist creation",
+        "description": "An intelligent playlist generator that analyzes existing Spotify playlists and recommends new tracks using audio features and user preferences.",
+        "category": "Data-Driven Application",
+        "status": "completed"
+      },
+
+      "media": {
+        "coverImage": "assets/images/featured/featured-02.png",
+        "alt": "Playlist generation interface with recommended tracks"
+      },
+
+      "layout": {
+        "alignment": "right",
+        "priority": 2
+      },
+
+      "highlights": [
+        "Audio feature-based recommendation logic",
+        "Playlist similarity analysis",
+        "User-controlled playlist saving"
+      ],
+
+      "technology": {
+        "languages": ["JavaScript", "Python"],
+        "frameworks": ["React"],
+        "tools": ["Spotify API", "Data Processing Pipelines"]
+      },
+
+      "impact": {
+        "problem": "Creating high-quality playlists manually is time-consuming.",
+        "solution": "Automated playlist generation using listening behavior and audio metadata.",
+        "outcome": "Reduced playlist creation time while improving relevance of recommendations."
+      },
+
       "links": {
         "live": null,
         "github": null,
         "caseStudy": null
+      },
+
+      "meta": {
+        "featured": true,
+        "lastUpdated": "2025-01-01"
       }
     }
-  ]
+  ],
+
+  "meta": {
+    "version": "1.0.0",
+    "schema": "featured.projects.v1",
+    "maintainedBy": "self"
+  }
 }
