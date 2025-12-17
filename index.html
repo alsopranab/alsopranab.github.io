@@ -1,60 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+  <!-- =====================================================
+       META / CORE
+  ====================================================== -->
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pranab Debnath | Portfolio</title>
+
+  <title>Pranab Debnath — Creative Technologist</title>
+
+  <meta name="description"
+        content="Creative technologist & data analyst crafting interactive, generative, and experimental web experiences." />
+  <meta name="author" content="Pranab Debnath" />
+  <meta name="theme-color" content="#0a0618" />
+
+  <!-- =====================================================
+       SOCIAL / SHARING (OPTIONAL BUT PREMIUM)
+  ====================================================== -->
+  <meta property="og:title" content="Pranab Debnath — Creative Technologist" />
+  <meta property="og:description"
+        content="An experimental, generative, and interactive portfolio experience." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://alsopranab.github.io/" />
+
+  <!-- =====================================================
+       FONTS
+  ====================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+
+  <!-- =====================================================
+       STYLES
+  ====================================================== -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
 </head>
 
 <body>
 
-  <!-- HEADER (rendered via layout controller) -->
-  <header id="site-header"></header>
+  <!-- =====================================================
+       CANVAS / GENERATIVE LAYER
+       (Injected by omniverse.godmode.js)
+  ====================================================== -->
 
-  <!-- MAIN CONTENT -->
+  <!-- =====================================================
+       HEADER
+  ====================================================== -->
+  <header id="site-header"
+          aria-label="Primary navigation">
+  </header>
+
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
   <main id="page-content">
 
     <!-- HERO / INTRO -->
-    <section id="hero-section"></section>
+    <section id="hero-section"
+             aria-labelledby="hero-title">
+    </section>
 
     <!-- EXPERIENCE -->
-    <section id="experience-section"></section>
+    <section id="experience-section"
+             aria-labelledby="experience-title">
+    </section>
 
     <!-- FEATURED PROJECTS -->
-    <section id="featured-section"></section>
+    <section id="featured-section"
+             aria-labelledby="featured-title">
+    </section>
 
-    <!-- PROJECTS (SQL | PYTHON | EXCEL | OTHERS) -->
-    <section id="projects-section"></section>
+    <!-- PROJECTS -->
+    <section id="projects-section"
+             aria-labelledby="projects-title">
+    </section>
 
     <!-- EDUCATION -->
-    <section id="education-section"></section>
+    <section id="education-section"
+             aria-labelledby="education-title">
+    </section>
 
     <!-- LICENSES / CERTIFICATIONS -->
-    <section id="licenses-section"></section>
+    <section id="licenses-section"
+             aria-labelledby="licenses-title">
+    </section>
 
-    <!-- CONTACT (BOTTOM) -->
-    <section id="contact-section"></section>
+    <!-- CONTACT -->
+    <section id="contact-section"
+             aria-labelledby="contact-title">
+    </section>
 
   </main>
 
-  <!-- FOOTER (rendered via layout controller) -->
-  <footer id="site-footer"></footer>
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+  <footer id="site-footer"
+          aria-label="Footer">
+  </footer>
 
-  <!-- CORE -->
+  <!-- =====================================================
+       CORE BOOTSTRAP
+       (DOM safety & execution order)
+  ====================================================== -->
   <script src="assets/js/core/bootstrap.js"></script>
 
-  <!-- DATA SERVICE -->
+  <!-- =====================================================
+       DATA LAYER
+       (Single source of truth)
+  ====================================================== -->
   <script src="assets/js/services/data.service.js"></script>
 
-  <!-- LAYOUT -->
+  <!-- =====================================================
+       LAYOUT CONTROLLERS
+  ====================================================== -->
   <script src="assets/js/layout/header.js"></script>
   <script src="assets/js/layout/footer.js"></script>
 
-  <!-- PAGE CONTROLLER -->
+  <!-- =====================================================
+       PAGE CONTROLLER
+  ====================================================== -->
   <script src="assets/js/pages/home.js"></script>
 
-  <!-- ALL RENDERERS (SINGLE FILE) -->
+  <!-- =====================================================
+       RENDERERS (UNIFIED)
+  ====================================================== -->
   <script src="assets/js/renderers/app.renderer.js"></script>
+
+  <!-- =====================================================
+       OMNIVERSE GODMODE ENGINE
+       (Premium + Creative + Generative + Audio + Canvas)
+       THIS MUST BE LAST
+  ====================================================== -->
+  <script src="assets/js/omniverse.godmode.js"></script>
 
 </body>
 </html>
