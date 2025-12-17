@@ -1,19 +1,12 @@
 /**
- * Unified App Renderer (FINAL & STABLE)
- * ====================================
+ * Unified App Renderer (FINAL & CORRECT)
+ * =====================================
  * - Executes ONLY after home:ready
  * - Deterministic top → bottom
- * - Zero fetch
- * - Zero side effects
  * - Reads ONLY dataset.source
- * - CSS-aligned markup
- * - Defensive against partial / broken data
+ * - Schema-mapped (no JSON changes required)
+ * - Silent, safe, production-ready
  */
-
-/* ============================================================
-   FIXED EVENT LISTENER
-   Renderer must wait until data is attached
-============================================================ */
 
 window.addEventListener("home:ready", () => {
   renderHero();
@@ -26,22 +19,38 @@ window.addEventListener("home:ready", () => {
 });
 
 /* ============================================================
-   HERO / INTRO
+   HERO / INTRO  (profile.json)
 ============================================================ */
 function renderHero() {
   const section = document.getElementById("hero-section");
   const d = getData(section);
-  if (!d) return;
+  if (!d || !d.identity) return;
+
+  const name =
+    d.identity.preferredName ||
+    d.identity.fullName ||
+    "Pranab Debnath";
+
+  const tagline =
+    d.identity.headline ||
+    d.identity.summary ||
+    "";
+
+  const logo =
+    d.currentPosition?.organization?.logo || "";
+
+  const company =
+    d.currentPosition?.organization?.name || "";
 
   section.innerHTML = `
     <div class="hero-wrapper">
-      <h1>${escape(d.name)}</h1>
-      ${d.tagline ? `<p class="hero-tagline">${escape(d.tagline)}</p>` : ""}
+      <h1>${escape(name)}</h1>
+      ${tagline ? `<p class="hero-tagline">${escape(tagline)}</p>` : ""}
       ${
-        d.currentRole?.companyLogo
+        logo
           ? `<img class="hero-company-logo"
-                  src="${d.currentRole.companyLogo}"
-                  alt="${escape(d.currentRole.company || "Company logo")}" />`
+                  src="${logo}"
+                  alt="${escape(company)}" />`
           : ""
       }
     </div>
@@ -49,17 +58,17 @@ function renderHero() {
 }
 
 /* ============================================================
-   EXPERIENCE
+   EXPERIENCE (experience.json)
 ============================================================ */
 function renderExperience() {
   const section = document.getElementById("experience-section");
   const d = getData(section);
-  if (!d) return;
+  if (!d || !Array.isArray(d.companies)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Experience")}</h2>
     <div class="experience-list">
-      ${(d.experience || []).map(renderCompany).join("")}
+      ${d.companies.map(renderCompany).join("")}
     </div>
   `;
 }
@@ -67,7 +76,7 @@ function renderExperience() {
 function renderCompany(c) {
   return `
     <div class="experience-company">
-      <h3>${escape(c.company)}</h3>
+      <h3>${escape(c.name)}</h3>
       ${(c.roles || []).map(renderRole).join("")}
     </div>
   `;
@@ -76,12 +85,14 @@ function renderCompany(c) {
 function renderRole(r) {
   return `
     <div class="experience-role">
-      <strong>${escape(r.designation)}</strong>
-      <span>${escape(r.startDate)} – ${escape(r.endDate)}</span>
+      <strong>${escape(r.title)}</strong>
+      <span>${escape(r.start)} – ${escape(r.end || "Present")}</span>
       ${
-        r.work?.length
+        Array.isArray(r.responsibilities)
           ? `<ul class="experience-work">
-              ${r.work.map(w => `<li>${escape(w)}</li>`).join("")}
+              ${r.responsibilities
+                .map(item => `<li>${escape(item)}</li>`)
+                .join("")}
             </ul>`
           : ""
       }
@@ -90,17 +101,17 @@ function renderRole(r) {
 }
 
 /* ============================================================
-   FEATURED PROJECTS
+   FEATURED PROJECTS (featured.json)
 ============================================================ */
 function renderFeatured() {
   const section = document.getElementById("featured-section");
   const d = getData(section);
-  if (!d) return;
+  if (!d || !Array.isArray(d.items)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Featured Projects")}</h2>
     <div class="featured-list">
-      ${(d.projects || []).map(renderFeaturedItem).join("")}
+      ${d.items.map(renderFeaturedItem).join("")}
     </div>
   `;
 }
@@ -108,7 +119,7 @@ function renderFeatured() {
 function renderFeaturedItem(p) {
   return `
     <div class="featured-item" data-alignment="${p.alignment || "left"}">
-      <img src="${p.image}" alt="${escape(p.title)}" />
+      ${p.image ? `<img src="${p.image}" alt="${escape(p.title)}" />` : ""}
       <div>
         <h3>${escape(p.title)}</h3>
         <p>${escape(p.description)}</p>
@@ -118,24 +129,24 @@ function renderFeaturedItem(p) {
 }
 
 /* ============================================================
-   PROJECTS
+   PROJECTS (projects.json)
 ============================================================ */
 function renderProjects() {
   const section = document.getElementById("projects-section");
   const d = getData(section);
-  if (!d) return;
+  if (!d || !Array.isArray(d.categories)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Projects")}</h2>
-    ${(d.categories || []).map(renderCategory).join("")}
+    ${d.categories.map(renderCategory).join("")}
   `;
 }
 
 function renderCategory(c) {
   return `
     <div class="project-category">
-      <h3>${escape(c.label)}</h3>
-      ${(c.projects || []).map(renderProjectCard).join("")}
+      <h3>${escape(c.name)}</h3>
+      ${(c.items || []).map(renderProjectCard).join("")}
     </div>
   `;
 }
@@ -150,36 +161,36 @@ function renderProjectCard(p) {
 }
 
 /* ============================================================
-   EDUCATION
+   EDUCATION (education.json)
 ============================================================ */
 function renderEducation() {
   const section = document.getElementById("education-section");
   const d = getData(section);
-  if (!d) return;
+  if (!d || !Array.isArray(d.records)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Education")}</h2>
-    ${(d.education || []).map(e => `
+    ${d.records.map(e => `
       <div class="education-item">
         <strong>${escape(e.institution)}</strong>
-        <span>${escape(e.startDate)} – ${escape(e.endDate)}</span>
+        <span>${escape(e.start)} – ${escape(e.end)}</span>
       </div>
     `).join("")}
   `;
 }
 
 /* ============================================================
-   LICENSES
+   LICENSES (licenses.json)
 ============================================================ */
 function renderLicenses() {
   const section = document.getElementById("licenses-section");
   const d = getData(section);
-  if (!d) return;
+  if (!d || !Array.isArray(d.items)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Licenses & Certifications")}</h2>
     <div class="licenses-grid">
-      ${(d.licenses || []).map(l => `
+      ${d.items.map(l => `
         <img class="license-image"
              src="${l.image}"
              alt="${escape(l.title)}" />
@@ -189,19 +200,14 @@ function renderLicenses() {
 }
 
 /* ============================================================
-   CONTACT
+   CONTACT (contact.json)
 ============================================================ */
 function renderContact() {
   const section = document.getElementById("contact-section");
-  if (!section || !section.dataset.source) return;
-
-  const d = safeParse(section.dataset.source);
+  const d = getData(section);
   if (!d) return;
 
-  const email =
-    d.primary?.email?.value ||
-    d.contact?.email?.value ||
-    "";
+  const email = d.email || "";
 
   section.innerHTML = `
     <h2>${escape(d.title || "Contact")}</h2>
@@ -222,15 +228,6 @@ function getData(section) {
   if (!section || !section.dataset?.source) return null;
   try {
     return JSON.parse(section.dataset.source);
-  } catch (e) {
-    console.error("[Renderer] Invalid dataset.source", e);
-    return null;
-  }
-}
-
-function safeParse(str) {
-  try {
-    return JSON.parse(str);
   } catch {
     return null;
   }
