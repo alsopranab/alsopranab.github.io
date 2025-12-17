@@ -1,21 +1,88 @@
 {
-  "sectionTitle": "Education",
-  "education": [
+  "section": {
+    "id": "education",
+    "title": "Education",
+    "subtitle": "Academic background and formal learning",
+    "displayOrder": 4,
+    "visibility": "public"
+  },
+
+  "timeline": [
     {
       "id": "edu-01",
-      "institution": "Your Board / University Name",
-      "degree": "Bachelor’s Degree / Diploma / Certification",
-      "fieldOfStudy": "Field of Study",
-      "startDate": "2019",
-      "endDate": "2023",
-      "location": "City, State, Country",
-      "description": "Brief description of coursework, focus areas, or academic achievements.",
-      "subjects": [
+      "institution": {
+        "name": "Your University / Board Name",
+        "type": "University",
+        "location": {
+          "city": "City",
+          "state": "State",
+          "country": "Country"
+        },
+        "logo": "assets/images/education/university-logo.png",
+        "website": "https://www.university.edu"
+      },
+
+      "program": {
+        "level": "Bachelor",
+        "degree": "Bachelor of Science",
+        "field": "Statistics",
+        "specialization": "Data Analytics",
+        "mode": "Full-time"
+      },
+
+      "duration": {
+        "start": {
+          "year": 2019,
+          "month": 7
+        },
+        "end": {
+          "year": 2023,
+          "month": 6
+        },
+        "status": "completed"
+      },
+
+      "performance": {
+        "gradingSystem": "CGPA",
+        "score": "8.2",
+        "scale": "10",
+        "honors": []
+      },
+
+      "coursework": [
         "Statistics",
         "Data Analysis",
-        "Database Management",
+        "Database Management Systems",
+        "Probability Theory",
         "Programming Fundamentals"
-      ]
+      ],
+
+      "projects": [
+        {
+          "title": "Final Year Data Analysis Project",
+          "description": "Analyzed large datasets using Python and SQL to derive actionable insights.",
+          "technologies": ["Python", "SQL", "Excel"]
+        }
+      ],
+
+      "activities": [
+        "Academic research",
+        "Peer mentoring",
+        "Technical workshops"
+      ],
+
+      "description": "Focused on building strong foundations in statistics, data analysis, and problem-solving with real-world datasets.",
+
+      "meta": {
+        "importance": "primary",
+        "lastUpdated": "2025-01-01"
+      }
     }
-  ]
+  ],
+
+  "meta": {
+    "version": "1.0.0",
+    "schema": "education.timeline.v1",
+    "maintainedBy": "self"
+  }
 }
