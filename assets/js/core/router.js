@@ -1,13 +1,28 @@
+/* =====================================================
+   ROUTER (FINAL, AUTO-BOOTSTRAPPED)
+===================================================== */
+
 import { getAppMain } from "../app.js";
 
+/* -----------------------------------------------------
+   VIEWS
+----------------------------------------------------- */
+import { DashboardView } from "../views/dashboard.js";
+import { AnalyticsView } from "../views/analytics.js";
+import { ProjectsView } from "../views/projects.js";
+import { LearningsView } from "../views/learnings.js";
+
+/* -----------------------------------------------------
+   INTERNAL STATE
+----------------------------------------------------- */
 const routes = Object.create(null);
 let activeView = null;
 let currentRoute = null;
 let renderToken = 0;
 
-/**
- * Register a route
- */
+/* -----------------------------------------------------
+   REGISTER ROUTE
+----------------------------------------------------- */
 export function registerRoute(name, viewFn) {
   if (!name || typeof viewFn !== "function") {
     throw new Error(`[Router] Invalid route registration: ${name}`);
@@ -15,17 +30,19 @@ export function registerRoute(name, viewFn) {
   routes[name] = viewFn;
 }
 
-/**
- * Normalize and parse hash
- */
+/* -----------------------------------------------------
+   HASH PARSER
+----------------------------------------------------- */
 function getRouteFromHash() {
-  const raw = window.location.hash.replace(/^#\/?/, "").replace(/\/$/, "");
+  const raw = window.location.hash
+    .replace(/^#\/?/, "")
+    .replace(/\/$/, "");
   return raw || null;
 }
 
-/**
- * Core renderer (race-safe, idempotent)
- */
+/* -----------------------------------------------------
+   CORE RENDERER
+----------------------------------------------------- */
 async function renderRoute(route) {
   if (route === currentRoute) return;
   currentRoute = route;
@@ -33,11 +50,8 @@ async function renderRoute(route) {
   const token = ++renderToken;
   const root = getAppMain();
 
-  if (!root) {
-    throw new Error("[Router] App main container not found");
-  }
+  root.innerHTML = "";
 
-  // Cleanup previous view
   if (activeView && typeof activeView.destroy === "function") {
     try {
       activeView.destroy();
@@ -45,9 +59,6 @@ async function renderRoute(route) {
       console.warn("[Router] View cleanup failed", e);
     }
   }
-
-  activeView = null;
-  root.innerHTML = "";
 
   const View = routes[route];
 
@@ -65,7 +76,6 @@ async function renderRoute(route) {
   try {
     const result = await View(root);
 
-    // Abort if newer navigation occurred
     if (token !== renderToken) return;
 
     if (result && typeof result.destroy === "function") {
@@ -81,15 +91,13 @@ async function renderRoute(route) {
     `;
   }
 
-  // UX: reset scroll (safe)
   window.scrollTo(0, 0);
-
   dispatchRendered(route);
 }
 
-/**
- * Dispatch lifecycle event
- */
+/* -----------------------------------------------------
+   EVENTS
+----------------------------------------------------- */
 function dispatchRendered(route) {
   window.dispatchEvent(
     new CustomEvent("route:rendered", {
@@ -98,9 +106,9 @@ function dispatchRendered(route) {
   );
 }
 
-/**
- * Navigate to route
- */
+/* -----------------------------------------------------
+   NAVIGATION
+----------------------------------------------------- */
 export function navigate(route) {
   if (!routes[route]) {
     console.warn(`[Router] Route "${route}" not registered`);
@@ -109,10 +117,10 @@ export function navigate(route) {
   window.location.hash = `#/${route}`;
 }
 
-/**
- * Initialize router
- */
-export function initRouter(defaultRoute = "dashboard") {
+/* -----------------------------------------------------
+   INIT ROUTER
+----------------------------------------------------- */
+function initRouter(defaultRoute = "dashboard") {
   function onChange() {
     const route = getRouteFromHash() || defaultRoute;
     renderRoute(route);
@@ -120,10 +128,24 @@ export function initRouter(defaultRoute = "dashboard") {
 
   window.addEventListener("hashchange", onChange);
 
-  // Initial load
   if (!window.location.hash) {
     window.location.hash = `#/${defaultRoute}`;
   } else {
     onChange();
   }
 }
+
+/* =====================================================
+   REGISTER ROUTES (AUTO)
+===================================================== */
+
+registerRoute("dashboard", DashboardView);
+registerRoute("analytics", AnalyticsView);
+registerRoute("projects", ProjectsView);
+registerRoute("learnings", LearningsView);
+
+/* =====================================================
+   BOOT ROUTER (AUTO)
+===================================================== */
+
+initRouter("dashboard");
