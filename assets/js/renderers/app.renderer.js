@@ -1,11 +1,11 @@
 /**
- * Unified App Renderer (FINAL & CORRECT)
- * =====================================
+ * Unified App Renderer (FINAL — SCHEMA SAFE)
+ * =========================================
  * - Executes ONLY after home:ready
  * - Deterministic top → bottom
  * - Reads ONLY dataset.source
- * - Schema-mapped (no JSON changes required)
- * - Silent, safe, production-ready
+ * - Fully aligned with current JSON schemas
+ * - No side effects, no fetches
  */
 
 window.addEventListener("home:ready", () => {
@@ -24,12 +24,12 @@ window.addEventListener("home:ready", () => {
 function renderHero() {
   const section = document.getElementById("hero-section");
   const d = getData(section);
-  if (!d || !d.identity) return;
+  if (!d?.identity) return;
 
   const name =
     d.identity.preferredName ||
     d.identity.fullName ||
-    "Pranab Debnath";
+    "";
 
   const tagline =
     d.identity.headline ||
@@ -44,7 +44,7 @@ function renderHero() {
 
   section.innerHTML = `
     <div class="hero-wrapper">
-      <h1>${escape(name)}</h1>
+      ${name ? `<h1>${escape(name)}</h1>` : ""}
       ${tagline ? `<p class="hero-tagline">${escape(tagline)}</p>` : ""}
       ${
         logo
@@ -63,7 +63,7 @@ function renderHero() {
 function renderExperience() {
   const section = document.getElementById("experience-section");
   const d = getData(section);
-  if (!d || !Array.isArray(d.companies)) return;
+  if (!Array.isArray(d?.companies)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Experience")}</h2>
@@ -106,7 +106,7 @@ function renderRole(r) {
 function renderFeatured() {
   const section = document.getElementById("featured-section");
   const d = getData(section);
-  if (!d || !Array.isArray(d.items)) return;
+  if (!Array.isArray(d?.items)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Featured Projects")}</h2>
@@ -134,7 +134,7 @@ function renderFeaturedItem(p) {
 function renderProjects() {
   const section = document.getElementById("projects-section");
   const d = getData(section);
-  if (!d || !Array.isArray(d.categories)) return;
+  if (!Array.isArray(d?.categories)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Projects")}</h2>
@@ -166,7 +166,7 @@ function renderProjectCard(p) {
 function renderEducation() {
   const section = document.getElementById("education-section");
   const d = getData(section);
-  if (!d || !Array.isArray(d.records)) return;
+  if (!Array.isArray(d?.records)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Education")}</h2>
@@ -185,7 +185,7 @@ function renderEducation() {
 function renderLicenses() {
   const section = document.getElementById("licenses-section");
   const d = getData(section);
-  if (!d || !Array.isArray(d.items)) return;
+  if (!Array.isArray(d?.items)) return;
 
   section.innerHTML = `
     <h2>${escape(d.sectionTitle || "Licenses & Certifications")}</h2>
@@ -200,24 +200,48 @@ function renderLicenses() {
 }
 
 /* ============================================================
-   CONTACT (contact.json)
+   CONTACT (contact.json — FIXED)
 ============================================================ */
 function renderContact() {
   const section = document.getElementById("contact-section");
   const d = getData(section);
   if (!d) return;
 
-  const email = d.email || "";
+  const title = d.section?.title || "Contact";
+  const description = d.section?.description || "";
+  const email = d.primary?.email?.value || "";
+
+  const socials = Array.isArray(d.socials)
+    ? d.socials
+        .filter(s => s.enabled)
+        .sort((a, b) => a.priority - b.priority)
+    : [];
 
   section.innerHTML = `
-    <h2>${escape(d.title || "Contact")}</h2>
-    <p>${escape(d.message || "")}</p>
-    ${email ? `<a href="mailto:${email}">${email}</a>` : ""}
-    <div>
-      ${(d.socials || []).map(
-        s => `<a href="${s.url}" target="_blank" rel="noopener">${escape(s.name)}</a>`
-      ).join("")}
-    </div>
+    <h2>${escape(title)}</h2>
+    ${description ? `<p>${escape(description)}</p>` : ""}
+
+    ${
+      email
+        ? `<a class="contact-email" href="mailto:${email}">
+             ${escape(email)}
+           </a>`
+        : ""
+    }
+
+    ${
+      socials.length
+        ? `<div class="contact-socials">
+            ${socials
+              .map(
+                s => `<a href="${s.url}" target="_blank" rel="noopener">
+                        ${escape(s.name)}
+                      </a>`
+              )
+              .join("")}
+           </div>`
+        : ""
+    }
   `;
 }
 
@@ -225,7 +249,7 @@ function renderContact() {
    INTERNAL HELPERS
 ============================================================ */
 function getData(section) {
-  if (!section || !section.dataset?.source) return null;
+  if (!section?.dataset?.source) return null;
   try {
     return JSON.parse(section.dataset.source);
   } catch {
