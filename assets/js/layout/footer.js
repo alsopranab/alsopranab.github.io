@@ -1,18 +1,26 @@
 /**
- * Footer Layout Controller (FINAL — FAIL SAFE + COMPLETE)
- * ======================================================
- * - Always renders footer (even if JSON fails)
- * - Enhances with contact.json + socials.json when available
+ * Footer Layout Controller (FINAL — HARD FAIL SAFE)
+ * ================================================
+ * - Always renders footer
+ * - Enhances with contact.json + social.json when available
  * - Never exits early
+ * - Schema-aligned with your data
+ * - CSS-compatible with omniverse layout
  */
 
 window.addEventListener("app:ready", async () => {
-  const footer = document.getElementById("site-footer");
-  if (!footer) return;
+  const footerEl = document.getElementById("site-footer");
+  if (!footerEl) return;
 
+  /* -------------------------
+     DEFAULT FALLBACK CONTENT
+  ------------------------- */
   let email = "career.pranab@gmail.com";
   let socials = [];
 
+  /* -------------------------
+     TRY DATA ENRICHMENT
+  ------------------------- */
   try {
     const [contact, socialData] = await Promise.all([
       DataService.getContact(),
@@ -23,18 +31,23 @@ window.addEventListener("app:ready", async () => {
       email = contact.primary.email.value;
     }
 
-    if (Array.isArray(socialData?.socials)) {
-      socials = socialData.socials.filter(s => s.enabled);
+    if (Array.isArray(socialData?.profiles)) {
+      socials = socialData.profiles
+        .filter(p => p.enabled)
+        .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
     }
-  } catch {
-    /* silent fallback — footer still renders */
+  } catch (e) {
+    console.warn("[Footer] Using fallback content");
   }
 
-  footer.innerHTML = `
+  /* -------------------------
+     RENDER (ALWAYS)
+  ------------------------- */
+  footerEl.innerHTML = `
     <div class="footer-container">
 
       <div class="footer-email">
-        <a href="mailto:${email}">
+        <a href="mailto:${escapeHTML(email)}">
           ${escapeHTML(email)}
         </a>
       </div>
@@ -46,7 +59,7 @@ window.addEventListener("app:ready", async () => {
                 .map(
                   s => `
                     <a href="${s.url}" target="_blank" rel="noopener">
-                      ${escapeHTML(s.name)}
+                      ${escapeHTML(s.platform)}
                     </a>
                   `
                 )
@@ -61,15 +74,29 @@ window.addEventListener("app:ready", async () => {
 
     </div>
   `;
+
+  /* -------------------------
+     LIFECYCLE EVENT
+  ------------------------- */
+  window.dispatchEvent(
+    new CustomEvent("footer:ready", {
+      detail: { timestamp: Date.now() }
+    })
+  );
 });
 
 /* =========================
    UTIL
 ========================= */
+
 function escapeHTML(str) {
   return typeof str === "string"
-    ? str.replace(/[&<>"']/g, m =>
-        ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m])
-      )
+    ? str.replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[c])
     : "";
 }
