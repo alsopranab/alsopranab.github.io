@@ -118,7 +118,7 @@ function renderFeatured() {
 }
 
 /* ============================================================
-   PROJECTS (projects.json — YOUR REAL SCHEMA)
+   PROJECT RENDER (projects.json)
 ============================================================ */
 
 function renderProjects() {
@@ -126,34 +126,51 @@ function renderProjects() {
   const d = getData(section);
   clear(section);
 
-  if (!Array.isArray(d?.categories)) return;
+  if (!d?.categories || !Array.isArray(d.categories)) return;
+
+  // Sort categories by priority (lower = higher priority)
+  const categories = [...d.categories].sort(
+    (a, b) => (a.priority ?? 99) - (b.priority ?? 99)
+  );
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Projects")}</h2>
-    ${d.categories
-      .sort((a, b) => (a.priority || 99) - (b.priority || 99))
-      .map(cat => `
-        <div class="project-category">
-          <h3>${escape(cat.label)}</h3>
-
-          ${(cat.projects || []).map(p => `
-            <div class="project-card">
-              <h4>${escape(p.project?.name || "")}</h4>
-              <p>${escape(p.project?.summary || "")}</p>
-
-              ${
-                p.repository?.url
-                  ? `<a href="${p.repository.url}" target="_blank" rel="noopener">
-                       View on GitHub →
-                     </a>`
-                  : ""
-              }
-            </div>
-          `).join("")}
-        </div>
-      `).join("")}
+    ${categories.map(renderProjectCategory).join("")}
   `;
 }
+
+function renderProjectCategory(category) {
+  if (!Array.isArray(category.projects)) return "";
+
+  return `
+    <div class="project-category">
+      <h3>${escape(category.label)}</h3>
+      ${category.projects.map(renderProjectCard).join("")}
+    </div>
+  `;
+}
+
+function renderProjectCard(p) {
+  const name = p.project?.name || "";
+  const summary = p.project?.summary || "";
+  const repoUrl = p.repository?.url || "";
+
+  return `
+    <div class="project-card">
+      <h4>${escape(name)}</h4>
+      <p>${escape(summary)}</p>
+
+      ${
+        repoUrl
+          ? `<a href="${repoUrl}" target="_blank" rel="noopener">
+               View on GitHub →
+             </a>`
+          : ""
+      }
+    </div>
+  `;
+}
+
 
 /* ============================================================
    EDUCATION (education.json)
