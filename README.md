@@ -1,62 +1,46 @@
 ```
 alsopranab.github.io/
 │
-├── index.html
+├── index.html              # Home
+├── stats.html              # Stats
+├── resume.html             # Resume
+├── projects.html           # Optional dedicated projects page
+├── contact.html            # Optional
 │
 ├── assets/
 │   ├── css/
-│   │   ├── reset.css
-│   │   ├── variables.css
-│   │   ├── base.css
-│   │   ├── layout.css
-│   │   ├── navbar.css
-│   │   ├── components.css
-│   │   ├── animations.css
-│   │   │
-│   │   ├── dashboard.css
-│   │   ├── analytics.css
-│   │   ├── projects.css
-│   │   ├── profiles.css
-│   │   ├── badges.css
-│   │   └── heatmap.css
+│   │   ├── style.css
+│   │   ├── layout.css      # Header, footer, grid system
+│   │   └── components.css  # Cards, badges, timelines
 │   │
 │   ├── js/
-│   │   ├── main.js
-│   │   ├── app.js
+│   │   ├── common.js       # Navbar, footer injection
+│   │   ├── api/
+│   │   │   ├── github.js
+│   │   │   ├── leetcode.js
+│   │   │   └── hackerrank.js
 │   │   │
-│   │   ├── core/
-│   │   │   ├── router.js
-│   │   │   ├── config.js
-│   │   │   ├── store.js
-│   │   │   ├── projectStore.js
-│   │   │   └── projectClassifier.js
-│   │   │
-│   │   ├── views/
-│   │   │   ├── intro.js
-│   │   │   ├── dashboard.js
-│   │   │   ├── analytics.js
-│   │   │   ├── projects.js
-│   │   │   ├── project.js
-│   │   │   ├── profiles.js
-│   │   │   └── learnings.js
-│   │   │
-│   │   ├── ui/
-│   │   │   ├── navbar.js
-│   │   │   ├── reveal.js
-│   │   │   ├── glow.js
-│   │   │   ├── charts.js
-│   │   │   ├── heatmap.js
-│   │   │   ├── badges.js
-│   │   │   └── cards.js
-│   │   │
-│   │   └── services/
-│   │       ├── github.js
-│   │       ├── githubCode.js
-│   │       └── githubContributions.js
+│   │   ├── pages/
+│   │   │   ├── home.js
+│   │   │   ├── stats.js
+│   │   │   └── resume.js
 │   │
-│   └── data/
-│       └── contributions.json   (auto-updated by GitHub Action)
+│   └── images/
+│       ├── featured/
+│       ├── recommendations/
+│       ├── licenses/
+│       └── profile/
 │
-└── .github/
-    └── workflows/
-        └── contributions.yml
+├── data/
+│   ├── intro.json
+│   ├── experience.json
+│   ├── education.json
+│   ├── recommendations.json
+│   ├── projects.json
+│   └── licenses.json
+│
+└── components/
+    ├── header.html
+    ├── footer.html
+    ├── section-title.html
+    └── project-card.html
