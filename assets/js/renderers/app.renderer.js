@@ -1,10 +1,10 @@
 /**
- * Unified App Renderer (FINAL — SCHEMA CORRECT)
- * ============================================
- * - Executes after home:ready
- * - Reads dataset.source ONLY
- * - Matches actual JSON structure
- * - Silent & production-safe
+ * Unified App Renderer (STABLE & SCHEMA-ALIGNED)
+ * =============================================
+ * - Runs ONLY after home:ready
+ * - Reads ONLY dataset.source
+ * - No fetch, no mutation
+ * - Safe against missing sections
  */
 
 window.addEventListener("home:ready", () => {
@@ -13,24 +13,23 @@ window.addEventListener("home:ready", () => {
   renderFeatured();
   renderProjects();
   renderEducation();
-  renderLicenses();
   renderContact();
 });
 
-/* =========================
+/* ============================================================
    HERO (profile.json)
-========================= */
+============================================================ */
 function renderHero() {
-  const s = document.getElementById("hero-section");
-  const d = getData(s);
-  if (!d?.identity) return;
+  const section = document.getElementById("hero-section");
+  const d = getData(section);
+  if (!d || !d.identity) return;
 
   const name =
     d.identity.preferredName ||
     d.identity.fullName ||
     "Pranab Debnath";
 
-  const tagline =
+  const headline =
     d.identity.headline ||
     d.identity.summary ||
     "";
@@ -38,166 +37,201 @@ function renderHero() {
   const logo = d.currentPosition?.organization?.logo || "";
   const company = d.currentPosition?.organization?.name || "";
 
-  s.innerHTML = `
+  section.innerHTML = `
     <div class="hero-wrapper">
       <h1>${escape(name)}</h1>
-      ${tagline ? `<p>${escape(tagline)}</p>` : ""}
-      ${logo ? `<img src="${logo}" alt="${escape(company)}" />` : ""}
+      ${headline ? `<p class="hero-tagline">${escape(headline)}</p>` : ""}
+      ${
+        logo
+          ? `<img class="hero-company-logo"
+                  src="${logo}"
+                  alt="${escape(company)}" />`
+          : ""
+      }
     </div>
   `;
 }
 
-/* =========================
+/* ============================================================
    EXPERIENCE (experience.json)
-========================= */
+============================================================ */
 function renderExperience() {
-  const s = document.getElementById("experience-section");
-  const d = getData(s);
-  if (!Array.isArray(d?.timeline)) return;
+  const section = document.getElementById("experience-section");
+  const d = getData(section);
+  if (!d || !Array.isArray(d.timeline)) return;
 
-  s.innerHTML = `
+  section.innerHTML = `
     <h2>${escape(d.section?.title || "Experience")}</h2>
     <div class="experience-list">
-      ${d.timeline.map(org => `
-        <div class="experience-company">
-          <h3>${escape(org.organization.name)}</h3>
-          ${org.roles.map(role => `
-            <div class="experience-role">
-              <strong>${escape(role.title)}</strong>
-              <span>
-                ${formatDate(role.duration.start)} –
-                ${role.duration.end?.status || formatDate(role.duration.end)}
-              </span>
-              <ul>
-                ${(role.responsibilities || [])
-                  .map(r => `<li>${escape(r)}</li>`)
-                  .join("")}
-              </ul>
-            </div>
-          `).join("")}
-        </div>
-      `).join("")}
+      ${d.timeline.map(renderOrganization).join("")}
     </div>
   `;
 }
 
-/* =========================
-   FEATURED (featured.json)
-========================= */
+function renderOrganization(org) {
+  return `
+    <div class="experience-company">
+      <h3>${escape(org.organization?.name || "")}</h3>
+      ${(org.roles || []).map(renderRole).join("")}
+    </div>
+  `;
+}
+
+function renderRole(role) {
+  const start = role.duration?.start?.year || "";
+  const end =
+    role.duration?.end?.status === "present"
+      ? "Present"
+      : role.duration?.end?.year || "";
+
+  return `
+    <div class="experience-role">
+      <strong>${escape(role.title)}</strong>
+      <span>${start}${end ? " – " + end : ""}</span>
+      ${
+        Array.isArray(role.responsibilities)
+          ? `<ul class="experience-work">
+              ${role.responsibilities
+                .map(item => `<li>${escape(item)}</li>`)
+                .join("")}
+            </ul>`
+          : ""
+      }
+    </div>
+  `;
+}
+
+/* ============================================================
+   FEATURED (featured.json — ONLY HackerRank)
+============================================================ */
 function renderFeatured() {
-  const s = document.getElementById("featured-section");
-  const d = getData(s);
-  if (!Array.isArray(d?.projects)) return;
+  const section = document.getElementById("featured-section");
+  const d = getData(section);
+  if (!d || !Array.isArray(d.items)) return;
 
-  s.innerHTML = `
-    <h2>${escape(d.sectionTitle || "Featured Projects")}</h2>
+  section.innerHTML = `
+    <h2>${escape(d.section?.title || "Featured")}</h2>
     <div class="featured-list">
-      ${d.projects.map(p => `
-        <div class="featured-item" data-alignment="${p.alignment || "left"}">
-          ${p.image ? `<img src="${p.image}" />` : ""}
-          <div>
-            <h3>${escape(p.title)}</h3>
-            <p>${escape(p.description)}</p>
-          </div>
-        </div>
-      `).join("")}
+      ${d.items.map(renderFeaturedItem).join("")}
     </div>
   `;
 }
 
-/* =========================
-   PROJECTS (projects.json)
-========================= */
-function renderProjects() {
-  const s = document.getElementById("projects-section");
-  const d = getData(s);
-  if (!Array.isArray(d?.categories)) return;
-
-  s.innerHTML = `
-    <h2>${escape(d.sectionTitle || "Projects")}</h2>
-    ${d.categories.map(c => `
-      <div class="project-category">
-        <h3>${escape(c.label)}</h3>
-        ${(c.projects || []).map(p => `
-          <div class="project-card">
-            <h4>${escape(p.title)}</h4>
-            <p>${escape(p.description)}</p>
-          </div>
-        `).join("")}
+function renderFeaturedItem(item) {
+  return `
+    <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
+      ${
+        item.media?.coverImage
+          ? `<img src="${item.media.coverImage}"
+                  alt="${escape(item.media.alt || item.project.name)}" />`
+          : ""
+      }
+      <div>
+        <h3>${escape(item.project.name)}</h3>
+        <p>${escape(item.project.description)}</p>
+        ${
+          item.links?.live
+            ? `<a href="${item.links.live}" target="_blank" rel="noopener">
+                View Proof →
+              </a>`
+            : ""
+        }
       </div>
-    `).join("")}
+    </div>
   `;
 }
 
-/* =========================
-   EDUCATION (education.json)
-========================= */
-function renderEducation() {
-  const s = document.getElementById("education-section");
-  const d = getData(s);
-  if (!Array.isArray(d?.education)) return;
+/* ============================================================
+   PROJECTS (projects.json)
+============================================================ */
+function renderProjects() {
+  const section = document.getElementById("projects-section");
+  const d = getData(section);
+  if (!d || !Array.isArray(d.categories)) return;
 
-  s.innerHTML = `
-    <h2>${escape(d.sectionTitle || "Education")}</h2>
-    ${d.education.map(e => `
+  section.innerHTML = `
+    <h2>${escape(d.section?.title || "Projects")}</h2>
+    ${d.categories.map(renderProjectCategory).join("")}
+  `;
+}
+
+function renderProjectCategory(cat) {
+  return `
+    <div class="project-category">
+      <h3>${escape(cat.label)}</h3>
+      ${(cat.projects || []).map(renderProjectCard).join("")}
+    </div>
+  `;
+}
+
+function renderProjectCard(p) {
+  return `
+    <div class="project-card">
+      <h4>${escape(p.title)}</h4>
+      <p>${escape(p.description)}</p>
+    </div>
+  `;
+}
+
+/* ============================================================
+   EDUCATION (education.json)
+============================================================ */
+function renderEducation() {
+  const section = document.getElementById("education-section");
+  const d = getData(section);
+  if (!d || !Array.isArray(d.records)) return;
+
+  section.innerHTML = `
+    <h2>${escape(d.section?.title || "Education")}</h2>
+    ${d.records.map(e => `
       <div class="education-item">
         <strong>${escape(e.institution)}</strong>
-        <span>${escape(e.startDate)} – ${escape(e.endDate)}</span>
+        <span>${escape(e.start)} – ${escape(e.end)}</span>
       </div>
     `).join("")}
   `;
 }
 
-/* =========================
-   LICENSES (licenses.json)
-========================= */
-function renderLicenses() {
-  const s = document.getElementById("licenses-section");
-  const d = getData(s);
-  if (!Array.isArray(d?.licenses)) return;
-
-  s.innerHTML = `
-    <h2>${escape(d.sectionTitle || "Licenses")}</h2>
-    <div class="licenses-grid">
-      ${d.licenses.map(l => `
-        <img src="${l.image}" alt="${escape(l.title)}" />
-      `).join("")}
-    </div>
-  `;
-}
-
-/* =========================
-   CONTACT (contact.json) ✅ FIXED
-========================= */
+/* ============================================================
+   CONTACT (contact.json)
+============================================================ */
 function renderContact() {
-  const s = document.getElementById("contact-section");
-  const d = getData(s);
-  if (!d?.section) return;
+  const section = document.getElementById("contact-section");
+  const d = getData(section);
+  if (!d) return;
 
   const email = d.primary?.email?.value || "";
 
-  s.innerHTML = `
-    <h2>${escape(d.section.title)}</h2>
-    <p>${escape(d.section.description)}</p>
+  section.innerHTML = `
+    <h2>${escape(d.section?.title || "Contact")}</h2>
+    <p>${escape(d.section?.description || "")}</p>
 
-    ${email ? `<a href="mailto:${email}">${email}</a>` : ""}
+    ${
+      email
+        ? `<a href="mailto:${email}" class="contact-email">
+            ${email}
+          </a>`
+        : ""
+    }
 
-    <div>
+    <div class="contact-socials">
       ${(d.socials || [])
         .filter(s => s.enabled)
-        .sort((a, b) => a.priority - b.priority)
-        .map(s => `
-          <a href="${s.url}" target="_blank">${escape(s.name)}</a>
-        `).join("")}
+        .map(
+          s => `<a href="${s.url}" target="_blank" rel="noopener">
+                  ${escape(s.name)}
+                </a>`
+        )
+        .join("")}
     </div>
   `;
 }
 
-/* =========================
+/* ============================================================
    HELPERS
-========================= */
+============================================================ */
 function getData(section) {
-  if (!section?.dataset?.source) return null;
+  if (!section || !section.dataset?.source) return null;
   try {
     return JSON.parse(section.dataset.source);
   } catch {
@@ -206,18 +240,12 @@ function getData(section) {
 }
 
 function escape(str) {
-  return typeof str === "string"
-    ? str.replace(/[&<>"']/g, m => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      })[m])
-    : "";
-}
-
-function formatDate(d) {
-  if (!d) return "";
-  return `${d.month}/${d.year}`;
+  if (typeof str !== "string") return "";
+  return str.replace(/[&<>"']/g, m => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[m]);
 }
