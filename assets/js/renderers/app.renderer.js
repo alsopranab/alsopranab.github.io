@@ -1,7 +1,7 @@
 /**
  * Unified App Renderer (FINAL & STABLE)
  * ====================================
- * - Executes ONLY after app:ready
+ * - Executes ONLY after home:ready
  * - Deterministic top → bottom
  * - Zero fetch
  * - Zero side effects
@@ -10,7 +10,12 @@
  * - Defensive against partial / broken data
  */
 
-window.addEventListener("app:ready", () => {
+/* ============================================================
+   ✅ FIXED EVENT LISTENER
+   Renderer must wait until data is attached
+============================================================ */
+
+window.addEventListener("home:ready", () => {
   renderHero();
   renderExperience();
   renderFeatured();
@@ -113,7 +118,7 @@ function renderFeaturedItem(p) {
 }
 
 /* ============================================================
-   PROJECTS (CATEGORIES)
+   PROJECTS
 ============================================================ */
 function renderProjects() {
   const section = document.getElementById("projects-section");
@@ -199,26 +204,16 @@ function renderContact() {
     "";
 
   section.innerHTML = `
-    <h2>${d.title || "Contact"}</h2>
-    <p>${d.message || ""}</p>
-
-    ${
-      email
-        ? `<a href="mailto:${email}">${email}</a>`
-        : ""
-    }
-
+    <h2>${escape(d.title || "Contact")}</h2>
+    <p>${escape(d.message || "")}</p>
+    ${email ? `<a href="mailto:${email}">${email}</a>` : ""}
     <div>
-      ${(d.socials || [])
-        .map(
-          (s) =>
-            `<a href="${s.url}" target="_blank" rel="noopener">${s.name}</a>`
-        )
-        .join("")}
+      ${(d.socials || []).map(
+        s => `<a href="${s.url}" target="_blank" rel="noopener">${escape(s.name)}</a>`
+      ).join("")}
     </div>
   `;
 }
-
 
 /* ============================================================
    INTERNAL HELPERS
@@ -229,6 +224,14 @@ function getData(section) {
     return JSON.parse(section.dataset.source);
   } catch (e) {
     console.error("[Renderer] Invalid dataset.source", e);
+    return null;
+  }
+}
+
+function safeParse(str) {
+  try {
+    return JSON.parse(str);
+  } catch {
     return null;
   }
 }
