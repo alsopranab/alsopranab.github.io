@@ -1,80 +1,233 @@
 {
-  "sectionTitle": "Projects",
+  "section": {
+    "id": "projects",
+    "title": "Projects",
+    "subtitle": "Hands-on work across data analytics, automation, and visualization",
+    "displayOrder": 4,
+    "visibility": "public"
+  },
+
   "categories": [
     {
-      "key": "sql",
+      "id": "sql",
       "label": "SQL",
-      "description": "Data analysis, querying, optimization, and reporting using SQL.",
+      "description": "Data analysis, querying, optimization, and reporting using relational databases.",
+      "priority": 1,
+
       "projects": [
         {
-          "id": "sql-01",
-          "title": "Sales Analysis Using SQL",
-          "description": "Analyzed sales data to identify revenue trends, top-performing products, and regional performance using advanced SQL queries.",
-          "githubRepo": "https://github.com/alsopranab/sql-sales-analysis",
-          "topics": ["sql", "data-analysis"],
-          "tools": ["MySQL", "PostgreSQL"]
+          "id": "proj-sql-sales-analysis",
+
+          "project": {
+            "name": "Sales Analysis Using SQL",
+            "summary": "Analyzed sales data to identify revenue trends, top-performing products, and regional performance using advanced SQL queries.",
+            "type": "Data Analysis",
+            "status": "completed"
+          },
+
+          "problem": "Business stakeholders lacked clarity on revenue drivers and regional performance.",
+          "solution": "Designed complex SQL queries with joins, aggregations, and window functions to extract insights.",
+          "impact": "Enabled data-driven decisions by highlighting top products and underperforming regions.",
+
+          "technology": {
+            "languages": ["SQL"],
+            "databases": ["MySQL", "PostgreSQL"],
+            "tools": []
+          },
+
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/sql-sales-analysis",
+            "visibility": "public"
+          },
+
+          "topics": ["sql", "data-analysis", "business-insights"],
+
+          "metrics": [
+            {
+              "label": "Query Performance Optimization",
+              "value": "Improved"
+            }
+          ],
+
+          "meta": {
+            "featured": false,
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     },
+
     {
-      "key": "python",
+      "id": "python",
       "label": "Python",
       "description": "Data analysis, automation, and scripting projects built with Python.",
+      "priority": 2,
+
       "projects": [
         {
-          "id": "python-01",
-          "title": "Data Cleaning Automation",
-          "description": "Automated data cleaning and preprocessing pipeline using Pandas and NumPy.",
-          "githubRepo": "https://github.com/alsopranab/python-data-cleaning",
-          "topics": ["python", "automation"],
-          "tools": ["Python", "Pandas", "NumPy"]
+          "id": "proj-python-data-cleaning",
+
+          "project": {
+            "name": "Data Cleaning Automation",
+            "summary": "Automated data cleaning and preprocessing pipeline using Pandas and NumPy.",
+            "type": "Automation",
+            "status": "completed"
+          },
+
+          "problem": "Manual data cleaning was time-consuming and error-prone.",
+          "solution": "Built reusable Python scripts to standardize and preprocess datasets.",
+          "impact": "Reduced data preparation time and improved data consistency.",
+
+          "technology": {
+            "languages": ["Python"],
+            "libraries": ["Pandas", "NumPy"],
+            "tools": []
+          },
+
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/python-data-cleaning",
+            "visibility": "public"
+          },
+
+          "topics": ["python", "automation", "data-cleaning"],
+
+          "meta": {
+            "featured": false,
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     },
+
     {
-      "key": "excel",
+      "id": "excel",
       "label": "Excel",
       "description": "Advanced Excel dashboards, formulas, and reporting solutions.",
+      "priority": 3,
+
       "projects": [
         {
-          "id": "excel-01",
-          "title": "Sales Dashboard in Excel",
-          "description": "Interactive sales dashboard using Pivot Tables, Power Query, and advanced formulas.",
-          "githubRepo": null,
-          "topics": ["excel", "dashboard"],
-          "tools": ["Excel", "Power Query"]
+          "id": "proj-excel-sales-dashboard",
+
+          "project": {
+            "name": "Sales Dashboard in Excel",
+            "summary": "Interactive sales dashboard using Pivot Tables, Power Query, and advanced formulas.",
+            "type": "Dashboard",
+            "status": "completed"
+          },
+
+          "problem": "Stakeholders needed quick insights without relying on BI tools.",
+          "solution": "Built a self-contained Excel dashboard with automated refresh.",
+          "impact": "Improved accessibility of sales insights for non-technical users.",
+
+          "technology": {
+            "tools": ["Excel", "Power Query"]
+          },
+
+          "repository": {
+            "platform": "Local",
+            "url": null,
+            "visibility": "private"
+          },
+
+          "topics": ["excel", "dashboard", "reporting"],
+
+          "meta": {
+            "featured": false,
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     },
+
     {
-      "key": "dashboard",
+      "id": "dashboard",
       "label": "Dashboards",
-      "description": "BI dashboards and data visualization projects.",
+      "description": "Business intelligence dashboards and data visualization projects.",
+      "priority": 4,
+
       "projects": [
         {
-          "id": "dashboard-01",
-          "title": "Business Performance Dashboard",
-          "description": "End-to-end dashboard visualizing KPIs for business stakeholders.",
-          "githubRepo": "https://github.com/alsopranab/business-dashboard",
-          "topics": ["dashboard", "bi"],
-          "tools": ["Power BI", "SQL"]
+          "id": "proj-bi-performance-dashboard",
+
+          "project": {
+            "name": "Business Performance Dashboard",
+            "summary": "End-to-end dashboard visualizing KPIs for business stakeholders.",
+            "type": "Business Intelligence",
+            "status": "completed"
+          },
+
+          "problem": "KPIs were scattered across multiple reports.",
+          "solution": "Designed a centralized BI dashboard with drill-down capabilities.",
+          "impact": "Improved executive visibility into business performance.",
+
+          "technology": {
+            "tools": ["Power BI", "SQL"]
+          },
+
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/business-dashboard",
+            "visibility": "public"
+          },
+
+          "topics": ["dashboard", "bi", "kpi"],
+
+          "meta": {
+            "featured": true,
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     },
+
     {
-      "key": "others",
+      "id": "others",
       "label": "Others",
       "description": "Miscellaneous projects and experiments.",
+      "priority": 5,
+
       "projects": [
         {
-          "id": "other-01",
-          "title": "Portfolio Website",
-          "description": "Personal portfolio built using HTML, CSS, and JavaScript, hosted on GitHub Pages.",
-          "githubRepo": "https://github.com/alsopranab/alsopranab.github.io",
-          "topics": ["web", "portfolio"],
-          "tools": ["HTML", "CSS", "JavaScript"]
+          "id": "proj-portfolio-website",
+
+          "project": {
+            "name": "Portfolio Website",
+            "summary": "Personal portfolio built using HTML, CSS, and JavaScript, hosted on GitHub Pages.",
+            "type": "Web Development",
+            "status": "live"
+          },
+
+          "problem": "Needed a professional, data-driven portfolio to showcase work.",
+          "solution": "Built a modular, JSON-driven website architecture.",
+          "impact": "Created a scalable platform to present projects and experience.",
+
+          "technology": {
+            "languages": ["HTML", "CSS", "JavaScript"]
+          },
+
+          "repository": {
+            "platform": "GitHub",
+            "url": "https://github.com/alsopranab/alsopranab.github.io",
+            "visibility": "public"
+          },
+
+          "topics": ["web", "portfolio", "github-pages"],
+
+          "meta": {
+            "featured": true,
+            "lastUpdated": "2025-01-01"
+          }
         }
       ]
     }
-  ]
+  ],
+
+  "meta": {
+    "version": "1.0.0",
+    "schema": "projects.catalog.v1",
+    "maintainedBy": "self"
+  }
 }
