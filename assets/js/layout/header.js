@@ -2,42 +2,52 @@
  * Header Layout Controller (FINAL — HARD FAIL SAFE)
  * ================================================
  * - Always renders header + navigation
- * - Uses profile.json if available
+ * - Enhances with profile.json when available
  * - Never exits early
- * - CSS-compatible with current layout
- * - Resume click works
+ * - Resume click compatible
+ * - CSS-compatible with omniverse layout
  */
 
 window.addEventListener("app:ready", async () => {
-  const header = document.getElementById("site-header");
-  if (!header) return;
+  const headerEl = document.getElementById("site-header");
+  if (!headerEl) return;
 
+  /* -------------------------
+     DEFAULT FALLBACK CONTENT
+  ------------------------- */
   let name = "Pranab Debnath";
   let role = "Data Analyst";
 
+  /* -------------------------
+     TRY PROFILE ENRICHMENT
+  ------------------------- */
   try {
     const profile = await DataService.getProfile();
 
     if (profile?.identity) {
       name =
-        profile.identity.fullName ||
         profile.identity.preferredName ||
+        profile.identity.fullName ||
         name;
 
       role =
         profile.identity.headline ||
+        profile.identity.summary ||
         role;
     }
-  } catch {
-    /* silent fallback */
+  } catch (e) {
+    console.warn("[Header] Using fallback identity");
   }
 
-  header.innerHTML = `
+  /* -------------------------
+     RENDER (ALWAYS)
+  ------------------------- */
+  headerEl.innerHTML = `
     <div class="header-container">
 
       <div class="header-identity">
-        <div class="header-name">${name}</div>
-        <div class="header-role">${role}</div>
+        <div class="header-name">${escapeHTML(name)}</div>
+        <div class="header-role">${escapeHTML(role)}</div>
       </div>
 
       <nav class="header-nav" aria-label="Primary Navigation">
@@ -48,4 +58,29 @@ window.addEventListener("app:ready", async () => {
 
     </div>
   `;
+
+  /* -------------------------
+     LIFECYCLE EVENT
+  ------------------------- */
+  window.dispatchEvent(
+    new CustomEvent("header:ready", {
+      detail: { timestamp: Date.now() }
+    })
+  );
 });
+
+/* =========================
+   UTIL
+========================= */
+
+function escapeHTML(str) {
+  return typeof str === "string"
+    ? str.replace(/[&<>"']/g, c => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[c])
+    : "";
+}
