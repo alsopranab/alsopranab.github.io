@@ -1,0 +1,46 @@
+{
+  "title": "Excel for Data Analytics",
+  "level_path": ["Beginner", "Intermediate", "Advanced"],
+  "topics": [
+    {
+      "level": "Beginner",
+      "items": [
+        "Excel interface and navigation",
+        "Basic formulas",
+        "Cell referencing",
+        "Sorting and filtering",
+        "Basic charts",
+        "Conditional formatting",
+        "Text functions",
+        "Date functions"
+      ]
+    },
+    {
+      "level": "Intermediate",
+      "items": [
+        "VLOOKUP and HLOOKUP",
+        "XLOOKUP",
+        "INDEX and MATCH",
+        "Pivot Tables",
+        "Pivot Charts",
+        "Data validation",
+        "Named ranges",
+        "IF, IFS, nested formulas"
+      ]
+    },
+    {
+      "level": "Advanced",
+      "items": [
+        "Power Query",
+        "Power Pivot",
+        "Advanced Pivot modeling",
+        "Excel dashboards",
+        "Array formulas",
+        "Dynamic arrays",
+        "Macros (VBA basics)",
+        "Excel performance optimization",
+        "Real-world analytics projects"
+      ]
+    }
+  ]
+}
