@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — GODMODE (MINIMAL EDITION)
-   Calm • Editorial • Premium
+   OMNIVERSE — APPLE EDITORIAL EDITION
+   Minimal • Calm • Premium • Hairline UI
    ============================================================ */
 
 /* =========================
@@ -11,15 +11,16 @@
   --bg-deep: #0a0618;
 
   --accent: #a78bfa;
-  --accent-soft: rgba(167, 139, 250, 0.35);
+  --accent-soft: rgba(167, 139, 250, 0.18);
 
-  --text-main: #f5f5fa;
-  --text-muted: rgba(245, 245, 250, 0.68);
+  --text-main: rgba(255,255,255,0.92);
+  --text-muted: rgba(255,255,255,0.62);
 
-  --border-soft: rgba(255, 255, 255, 0.08);
+  /* Hairline borders */
+  --border-hairline: rgba(255,255,255,0.035);
 
-  --radius-lg: 18px;
-  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-md: 14px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -43,24 +44,16 @@ html {
 }
 
 body[data-omniverse] {
-  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background:
-    radial-gradient(900px 400px at 80% -20%, rgba(124,58,237,0.18), transparent),
-    radial-gradient(700px 400px at 10% 120%, rgba(167,139,250,0.14), transparent),
+    radial-gradient(900px 400px at 80% -20%, rgba(124,58,237,0.16), transparent),
+    radial-gradient(700px 400px at 10% 120%, rgba(167,139,250,0.12), transparent),
     linear-gradient(180deg, #04020a, var(--bg-deep) 45%, #04020a);
   color: var(--text-main);
-  line-height: 1.65;
+  line-height: 1.7;
   overflow-x: hidden;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Canvas layer */
-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
 }
 
 /* =========================
@@ -68,7 +61,7 @@ canvas {
 ========================= */
 h1, h2, h3 {
   font-weight: 500;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
 }
 
 h1 {
@@ -77,12 +70,12 @@ h1 {
 
 h2 {
   font-size: clamp(24px, 3vw, 32px);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 p {
   color: var(--text-muted);
-  max-width: 65ch;
+  max-width: 62ch;
 }
 
 a {
@@ -110,19 +103,18 @@ section.omniverse-section {
   max-width: 1100px;
   margin: 0 auto;
   padding: clamp(5rem, 10vw, 8rem) 1.5rem;
-  will-change: transform;
 }
 
 /* =========================
-   HEADER / NAV (CENTERED)
+   HEADER
 ========================= */
 #site-header {
   position: sticky;
   top: 0;
   z-index: 50;
   background: rgba(5, 3, 12, 0.55);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border-soft);
+  backdrop-filter: blur(24px);
+  border-bottom: 0.5px solid var(--border-hairline);
 }
 
 .header-container {
@@ -130,21 +122,13 @@ section.omniverse-section {
   margin: 0 auto;
   padding: 18px 24px;
   display: flex;
-  align-items: center;
   justify-content: center;
   gap: 48px;
 }
 
-.header-name {
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
 .header-nav a {
-  font-size: 13px;
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
@@ -154,18 +138,18 @@ section.omniverse-section {
 .hero-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 26px;
   max-width: 640px;
 }
 
 .hero-wrapper img {
   width: 120px;
   opacity: 0.9;
-  filter: drop-shadow(0 0 28px rgba(167,139,250,0.4));
+  filter: drop-shadow(0 0 22px rgba(167,139,250,0.25));
 }
 
 /* =========================
-   MINIMAL CONTAINERS
+   APPLE-STYLE CONTAINERS
 ========================= */
 .project-card,
 .education-item,
@@ -175,12 +159,17 @@ section.omniverse-section {
 .licenses-grid > * {
   padding: 28px;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border-soft);
+
+  /* Hairline border */
+  border: 0.5px solid var(--border-hairline);
+
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.03),
-    rgba(255,255,255,0.01)
+    rgba(255,255,255,0.02),
+    rgba(255,255,255,0.005)
   );
+
+  backdrop-filter: blur(6px);
 }
 
 /* =========================
@@ -189,16 +178,16 @@ section.omniverse-section {
 .experience-list {
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 44px;
 }
 
 /* =========================
-   FEATURED PROJECTS
+   FEATURED
 ========================= */
 .featured-list {
   display: flex;
   flex-direction: column;
-  gap: 88px;
+  gap: 84px;
 }
 
 .featured-item {
@@ -215,8 +204,7 @@ section.omniverse-section {
   width: 100%;
   border-radius: var(--radius-lg);
   box-shadow:
-    0 30px 80px rgba(0,0,0,0.55),
-    0 0 40px rgba(167,139,250,0.35);
+    0 28px 70px rgba(0,0,0,0.55);
 }
 
 /* =========================
@@ -234,7 +222,7 @@ section.omniverse-section {
    EDUCATION / LICENSES
 ========================= */
 .education-item {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .licenses-grid {
@@ -246,9 +234,6 @@ section.omniverse-section {
 .license-image {
   width: 100%;
   border-radius: var(--radius-md);
-  box-shadow:
-    0 20px 60px rgba(0,0,0,0.6),
-    0 0 32px rgba(167,139,250,0.3);
 }
 
 /* =========================
@@ -256,14 +241,8 @@ section.omniverse-section {
 ========================= */
 #contact-section {
   background:
-    radial-gradient(70% 70% at 50% 100%, rgba(124,58,237,0.35), transparent),
+    radial-gradient(70% 70% at 50% 100%, rgba(124,58,237,0.28), transparent),
     var(--bg-deep);
-}
-
-.contact-email {
-  display: inline-block;
-  margin-top: 24px;
-  font-size: 16px;
 }
 
 /* =========================
@@ -274,6 +253,27 @@ section.omniverse-section {
   text-align: center;
   font-size: 12px;
   color: var(--text-muted);
+}
+
+/* =========================
+   MICRO-INTERACTIONS (SUBTLE)
+========================= */
+.project-card,
+.featured-item,
+.education-item,
+.experience-role {
+  transition:
+    transform 0.35s var(--ease-out),
+    border-color 0.35s ease;
+}
+
+@media (pointer: fine) {
+  .project-card:hover,
+  .featured-item:hover,
+  .education-item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(167,139,250,0.15);
+  }
 }
 
 /* =========================
@@ -288,173 +288,14 @@ section.omniverse-section {
     grid-template-columns: 1fr;
     direction: ltr;
   }
-
-  .header-container {
-    gap: 24px;
-  }
 }
 
 /* =========================
-   REDUCED MOTION SAFETY
+   REDUCED MOTION
 ========================= */
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
-  }
-}
-
-/* =========================
-   NAV ACTIVE INDICATOR
-========================= */
-
-.header-nav {
-  position: relative;
-  display: flex;
-  gap: 32px;
-}
-
-.header-nav a {
-  position: relative;
-  padding: 6px 2px;
-  opacity: 0.7;
-  transition: opacity 0.25s ease;
-}
-
-.header-nav a:hover {
-  opacity: 1;
-}
-
-.header-nav a::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -8px;
-  width: 0;
-  height: 1px;
-  background: var(--accent);
-  transform: translateX(-50%);
-  transition: width 0.35s var(--ease-out);
-}
-
-.header-nav a:hover::after {
-  width: 18px;
-}
-
-/* =========================
-   SECTION TITLE MOTION
-========================= */
-
-section h2 {
-  opacity: 0.85;
-  transform: translateY(6px);
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
-}
-
-section:hover h2 {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* =========================
-   SCROLL ACCENT LINE
-========================= */
-
-section::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 2px;
-  height: 0%;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.4;
-  transition: height 0.6s ease;
-}
-
-section:hover::before {
-  height: 100%;
-}
-
-/* =========================
-   CARD MICRO FEEDBACK
-========================= */
-
-.project-card,
-.featured-item,
-.education-item,
-.experience-role {
-  transition:
-    transform 0.4s var(--ease-out),
-    border-color 0.4s ease;
-}
-
-@media (pointer: fine) {
-  .project-card:hover,
-  .featured-item:hover,
-  .education-item:hover {
-    transform: translateY(-6px);
-    border-color: rgba(167,139,250,0.25);
-  }
-}
-
-/* =========================
-   HERO CALM MOTION
-========================= */
-
-.hero-wrapper {
-  animation: heroFloat 10s ease-in-out infinite alternate;
-}
-
-@keyframes heroFloat {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(-6px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-wrapper {
-    animation: none;
-  }
-}
-
-/* =========================
-   IMAGE DEPTH
-========================= */
-
-img {
-  transform: translateZ(0);
-  transition: transform 0.6s ease;
-}
-
-@media (pointer: fine) {
-  .featured-item:hover img {
-    transform: scale(1.02);
-  }
-}
-
-/* =========================
-   MOBILE MOTION HARD STOP
-========================= */
-
-@media (max-width: 768px) {
-  section::before,
-  .hero-wrapper {
-    animation: none !important;
-  }
-
-  .project-card:hover,
-  .featured-item:hover {
-    transform: none;
   }
 }
