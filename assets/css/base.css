@@ -1,47 +1,62 @@
 /* =====================================================
-   BASE.CSS — GLOBAL B/W + GLOW (STABLE)
+   BASE.CSS — GLOBAL FOUNDATION (PREMIUM / STABLE)
    FULL REPLACEMENT
 ===================================================== */
 
-/* -------------------------
+/* -----------------------------------------------------
    BOX MODEL (MANDATORY)
-------------------------- */
+----------------------------------------------------- */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* -------------------------
-   BASE COLORS
-------------------------- */
+/* -----------------------------------------------------
+   ROOT / BODY (ENVIRONMENT LAYER)
+----------------------------------------------------- */
 html,
 body {
   margin: 0;
   padding: 0;
-  background: #000;
-  color: #fff;
+  min-height: 100%;
+  background:
+    var(--bg-space-gradient),
+    var(--bg-space-vignette);
+  background-color: var(--bg-space-base);
+  color: var(--text-primary);
+
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overflow-x: hidden;
 }
 
-/* -------------------------
+/* -----------------------------------------------------
    TYPOGRAPHY
-------------------------- */
+----------------------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
-  color: #fff;
-  text-shadow: 0 0 18px rgba(255,255,255,0.12);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+
+  /* subtle premium glow */
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.08);
 }
 
 p, span, small, li, label {
-  color: #b5b5b5;
+  color: var(--text-secondary);
 }
 
 .muted {
-  color: #7a7a7a;
+  color: var(--text-muted);
 }
 
-/* -------------------------
-   SURFACES (NO MOVEMENT)
-------------------------- */
+/* -----------------------------------------------------
+   SURFACES (STATIC — NO MOVEMENT)
+----------------------------------------------------- */
 section,
 nav,
 aside,
@@ -52,23 +67,30 @@ aside,
 .learning-card,
 pre,
 code {
-  background: #000;
-  border: 1px solid #1f1f1f;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.02),
+      rgba(0, 0, 0, 0.25)
+    ),
+    var(--bg-surface);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-md);
 
   transform: translateZ(0);
   will-change: box-shadow, border-color;
 
-  box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-
   transition:
-    box-shadow 0.25s ease,
-    border-color 0.25s ease;
+    box-shadow var(--duration-md) var(--ease-standard),
+    border-color var(--duration-md) var(--ease-standard);
 }
 
-/* -------------------------
-   HOVER (GLOW ONLY)
-------------------------- */
+/* -----------------------------------------------------
+   HOVER (DEPTH — NOT FLASHY)
+----------------------------------------------------- */
 section:hover,
 nav:hover,
 aside:hover,
@@ -78,67 +100,76 @@ aside:hover,
 .project-card:hover,
 .learning-card:hover,
 pre:hover {
-  border-color: #2f2f2f;
+  border-color: rgba(255, 255, 255, 0.12);
   box-shadow:
-    0 0 18px rgba(255,255,255,0.08),
-    0 14px 60px rgba(0,0,0,0.95);
+    var(--shadow-lg),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
-/* -------------------------
+/* -----------------------------------------------------
    INTERACTIVE ELEMENTS
-------------------------- */
+----------------------------------------------------- */
 a,
 button,
 li[data-route] {
-  color: #fff;
+  color: var(--text-primary);
   cursor: pointer;
-  text-shadow: 0 0 8px rgba(255,255,255,0.15);
+  text-decoration: none;
+
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    text-shadow var(--duration-fast) var(--ease-standard);
 }
 
 a:hover,
 button:hover,
 li[data-route]:hover {
-  text-shadow:
-    0 0 14px rgba(255,255,255,0.35),
-    0 0 28px rgba(255,255,255,0.18);
+  color: var(--accent-secondary);
+  text-shadow: 0 0 12px rgba(56, 189, 248, 0.35);
 }
 
-/* -------------------------
-   NUMBERS / KPI
-------------------------- */
+/* -----------------------------------------------------
+   NUMBERS / KPI / METRICS
+----------------------------------------------------- */
 .value,
 .metric,
 .count {
-  color: #fff;
+  color: var(--text-primary);
   font-weight: 600;
+
   text-shadow:
-    0 0 12px rgba(255,255,255,0.35),
-    0 0 36px rgba(255,255,255,0.18);
+    0 0 10px rgba(255, 255, 255, 0.25),
+    0 0 28px rgba(255, 255, 255, 0.12);
 }
 
-/* -------------------------
+/* -----------------------------------------------------
    CODE VIEWER
-------------------------- */
+----------------------------------------------------- */
 pre,
 code {
   font-family: var(--font-mono);
   color: #eaeaea;
-  background: #000;
-  text-shadow: 0 0 6px rgba(255,255,255,0.08);
+  background: rgba(0, 0, 0, 0.6);
+
+  text-shadow: none;
 }
 
-/* -------------------------
-   SCROLLBAR
-------------------------- */
+/* -----------------------------------------------------
+   SCROLLBAR (DARK / PREMIUM)
+----------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
-  background: #1f1f1f;
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2f2f2f;
+  background: rgba(255, 255, 255, 0.2);
 }
