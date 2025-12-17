@@ -1,25 +1,24 @@
 /* ============================================================
-   OMNIVERSE — APPLE EDITORIAL EDITION
-   Minimal • Calm • Premium • Hairline UI
-   ============================================================ */
+   OMNIVERSE — APPLE EDITORIAL (FINAL)
+   Calm • Precise • Premium • Retina-safe
+============================================================ */
 
 /* =========================
-   ROOT VARIABLES
+   ROOT
 ========================= */
 :root {
   --bg-main: #05030c;
-  --bg-deep: #0a0618;
+  --bg-deep: #090613;
 
   --accent: #a78bfa;
-  --accent-soft: rgba(167, 139, 250, 0.18);
 
-  --text-main: rgba(255,255,255,0.92);
-  --text-muted: rgba(255,255,255,0.62);
+  --text-main: rgba(255,255,255,0.94);
+  --text-muted: rgba(255,255,255,0.64);
 
-  /* Hairline borders */
-  --border-hairline: rgba(255,255,255,0.035);
+  /* Apple hairline (almost invisible) */
+  --border-hairline: rgba(255,255,255,0.018);
 
-  --radius-lg: 20px;
+  --radius-lg: 18px;
   --radius-md: 14px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -40,19 +39,22 @@
 }
 
 html {
-  scroll-behavior: auto;
+  background: var(--bg-main);
 }
 
 body[data-omniverse] {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Apple-style deep background (NO white wash) */
   background:
-    radial-gradient(900px 400px at 80% -20%, rgba(124,58,237,0.16), transparent),
-    radial-gradient(700px 400px at 10% 120%, rgba(167,139,250,0.12), transparent),
-    linear-gradient(180deg, #04020a, var(--bg-deep) 45%, #04020a);
+    radial-gradient(600px 300px at 80% -20%, rgba(124,58,237,0.10), transparent),
+    radial-gradient(500px 300px at 10% 120%, rgba(167,139,250,0.08), transparent),
+    linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
+
   color: var(--text-main);
-  line-height: 1.7;
-  overflow-x: hidden;
+  line-height: 1.65;
   min-height: 100vh;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -61,28 +63,27 @@ body[data-omniverse] {
 ========================= */
 h1, h2, h3 {
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.025em;
 }
 
 h1 {
-  font-size: clamp(42px, 6vw, 64px);
+  font-size: clamp(36px, 6vw, 60px);
 }
 
 h2 {
-  font-size: clamp(24px, 3vw, 32px);
-  margin-bottom: 28px;
+  font-size: clamp(22px, 3vw, 30px);
+  margin-bottom: 24px;
 }
 
 p {
   color: var(--text-muted);
-  max-width: 62ch;
+  max-width: 60ch;
 }
 
 a {
   color: var(--text-main);
   text-decoration: none;
   opacity: 0.85;
-  transition: opacity 0.25s ease;
 }
 
 a:hover {
@@ -102,7 +103,7 @@ main {
 section.omniverse-section {
   max-width: 1100px;
   margin: 0 auto;
-  padding: clamp(5rem, 10vw, 8rem) 1.5rem;
+  padding: clamp(4rem, 8vw, 7rem) 1.25rem;
 }
 
 /* =========================
@@ -111,24 +112,24 @@ section.omniverse-section {
 #site-header {
   position: sticky;
   top: 0;
-  z-index: 50;
-  background: rgba(5, 3, 12, 0.55);
-  backdrop-filter: blur(24px);
+  z-index: 100;
+  background: rgba(6,4,14,0.55);
+  backdrop-filter: blur(28px);
   border-bottom: 0.5px solid var(--border-hairline);
 }
 
 .header-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 18px 24px;
+  padding: 16px 20px;
   display: flex;
   justify-content: center;
-  gap: 48px;
+  gap: 40px;
 }
 
 .header-nav a {
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -136,20 +137,14 @@ section.omniverse-section {
    HERO
 ========================= */
 .hero-wrapper {
+  max-width: 640px;
   display: flex;
   flex-direction: column;
-  gap: 26px;
-  max-width: 640px;
-}
-
-.hero-wrapper img {
-  width: 120px;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 22px rgba(167,139,250,0.25));
+  gap: 22px;
 }
 
 /* =========================
-   APPLE-STYLE CONTAINERS
+   APPLE CONTAINERS
 ========================= */
 .project-card,
 .education-item,
@@ -157,19 +152,16 @@ section.omniverse-section {
 .featured-item,
 .contact-wrapper,
 .licenses-grid > * {
-  padding: 28px;
+  padding: 22px;
   border-radius: var(--radius-md);
-
-  /* Hairline border */
   border: 0.5px solid var(--border-hairline);
 
+  /* Subtle Apple glass */
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.02),
-    rgba(255,255,255,0.005)
+    rgba(255,255,255,0.015),
+    rgba(255,255,255,0.004)
   );
-
-  backdrop-filter: blur(6px);
 }
 
 /* =========================
@@ -178,7 +170,7 @@ section.omniverse-section {
 .experience-list {
   display: flex;
   flex-direction: column;
-  gap: 44px;
+  gap: 36px;
 }
 
 /* =========================
@@ -187,13 +179,13 @@ section.omniverse-section {
 .featured-list {
   display: flex;
   flex-direction: column;
-  gap: 84px;
+  gap: 72px;
 }
 
 .featured-item {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 36px;
 }
 
 .featured-item[data-alignment="right"] {
@@ -203,37 +195,31 @@ section.omniverse-section {
 .featured-item img {
   width: 100%;
   border-radius: var(--radius-lg);
-  box-shadow:
-    0 28px 70px rgba(0,0,0,0.55);
+  box-shadow: 0 26px 60px rgba(0,0,0,0.6);
 }
 
 /* =========================
    PROJECTS
 ========================= */
 .project-category {
-  margin-bottom: 64px;
+  margin-bottom: 56px;
 }
 
 .project-card {
-  margin-top: 24px;
+  margin-top: 20px;
 }
 
 /* =========================
    EDUCATION / LICENSES
 ========================= */
 .education-item {
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .licenses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 32px;
-}
-
-.license-image {
-  width: 100%;
-  border-radius: var(--radius-md);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 28px;
 }
 
 /* =========================
@@ -241,7 +227,7 @@ section.omniverse-section {
 ========================= */
 #contact-section {
   background:
-    radial-gradient(70% 70% at 50% 100%, rgba(124,58,237,0.28), transparent),
+    radial-gradient(60% 60% at 50% 100%, rgba(124,58,237,0.22), transparent),
     var(--bg-deep);
 }
 
@@ -249,44 +235,41 @@ section.omniverse-section {
    FOOTER
 ========================= */
 #site-footer {
-  padding: 56px 24px;
+  padding: 48px 20px;
   text-align: center;
   font-size: 12px;
   color: var(--text-muted);
 }
 
 /* =========================
-   MICRO-INTERACTIONS (SUBTLE)
+   MICRO INTERACTION (APPLE SUBTLE)
 ========================= */
-.project-card,
-.featured-item,
-.education-item,
-.experience-role {
-  transition:
-    transform 0.35s var(--ease-out),
-    border-color 0.35s ease;
-}
-
 @media (pointer: fine) {
   .project-card:hover,
   .featured-item:hover,
   .education-item:hover {
-    transform: translateY(-4px);
-    border-color: rgba(167,139,250,0.15);
+    transform: translateY(-3px);
+    border-color: rgba(167,139,250,0.12);
   }
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE TUNING
 ========================= */
 @media (max-width: 768px) {
   section.omniverse-section {
-    padding: 4rem 1.25rem;
+    padding: 3.5rem 1rem;
   }
 
   .featured-item {
     grid-template-columns: 1fr;
     direction: ltr;
+  }
+
+  .project-card,
+  .education-item,
+  .experience-role {
+    padding: 18px;
   }
 }
 
