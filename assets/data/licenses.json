@@ -1,0 +1,29 @@
+{
+  "sectionTitle": "Licenses & Certifications",
+  "licenses": [
+    {
+      "id": "lic-01",
+      "title": "SQL for Data Analysis",
+      "issuer": "Coursera",
+      "issueDate": "2023-08",
+      "credentialUrl": "https://coursera.org/",
+      "image": "assets/images/licenses/sql-cert.png"
+    },
+    {
+      "id": "lic-02",
+      "title": "Python for Data Science",
+      "issuer": "IBM",
+      "issueDate": "2023-10",
+      "credentialUrl": "https://ibm.com/",
+      "image": "assets/images/licenses/python-cert.png"
+    },
+    {
+      "id": "lic-03",
+      "title": "Advanced Excel",
+      "issuer": "Microsoft",
+      "issueDate": "2024-02",
+      "credentialUrl": "https://learn.microsoft.com/",
+      "image": "assets/images/licenses/excel-cert.png"
+    }
+  ]
+}
