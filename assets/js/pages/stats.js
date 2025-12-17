@@ -1,17 +1,18 @@
 /**
- * Stats Page Controller (ADVANCED & FINAL)
- * =======================================
- * Responsibilities:
- * - Waits for application readiness
- * - Loads and normalizes stats-related data
- * - Handles partial failures gracefully
- * - Attaches clean, deterministic payloads
- * - Emits lifecycle events for observability
- *
- * Rendering is handled elsewhere.
+ * Stats Page Controller (FINAL — PAGE SAFE)
+ * ========================================
+ * - Runs ONLY when stats page exists
+ * - Schema-aligned with current JSON
+ * - Failure-tolerant
+ * - Renderer-safe
  */
 
-window.addEventListener("app:ready", () => {
+/* ============================================================
+   ENTRY POINT (PAGE SAFE)
+============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  if (!document.getElementById("stats-overview-section")) return;
+
   StatsPageController().catch((err) => {
     console.error("[StatsPage] Fatal initialization error", err);
   });
@@ -33,14 +34,12 @@ async function StatsPageController() {
   validateSections(sections);
 
   /* =========================
-     DATA LOADING (BOTTOM → TOP)
+     DATA LOADING
   ========================= */
-  console.info("[StatsPage] Loading data…");
-
   const results = await Promise.allSettled([
-    DataService.getSocials(),   // Competitive platforms
-    DataService.getProjects(),  // Repositories / topics
-    DataService.getProfile()    // Identity + GitHub
+    DataService.getSocials(),
+    DataService.getProjects(),
+    DataService.getProfile()
   ]);
 
   const [socialData, projectsData, profileData] =
@@ -49,83 +48,76 @@ async function StatsPageController() {
   /* =========================
      DATA NORMALIZATION
   ========================= */
-  const competitivePayload = normalizeCompetitive(socialData);
-  const repositoriesPayload = normalizeRepositories(projectsData);
-  const contributionsPayload = normalizeContributions(profileData);
-  const overviewPayload = normalizeOverview(profileData);
-
-  /* =========================
-     DATA ATTACHMENT
-  ========================= */
-  attach(sections.competitive, competitivePayload);
-  attach(sections.repositories, repositoriesPayload);
-  attach(sections.contributions, contributionsPayload);
-  attach(sections.overview, overviewPayload);
+  attach(sections.competitive, normalizeCompetitive(socialData));
+  attach(sections.repositories, normalizeRepositories(projectsData));
+  attach(sections.contributions, normalizeContributions(profileData));
+  attach(sections.overview, normalizeOverview(profileData));
 
   console.info("[StatsPage] Data attached");
   console.groupEnd();
 
-  /* =========================
-     LIFECYCLE EVENT
-  ========================= */
   window.dispatchEvent(
     new CustomEvent("stats:ready", {
-      detail: {
-        timestamp: Date.now()
-      }
+      detail: { timestamp: Date.now() }
     })
   );
 }
 
-/* =========================
-   NORMALIZERS (INTERNAL)
-========================= */
+/* ============================================================
+   NORMALIZERS (SCHEMA ALIGNED)
+============================================================ */
 
 function normalizeCompetitive(socialData) {
   if (!socialData?.socials) return null;
 
-  return {
-    leetcode: socialData.socials.find((s) => s.id === "leetcode") || null,
-    hackerrank: socialData.socials.find((s) => s.id === "hackerrank") || null
-  };
+  return socialData.socials
+    .filter(s => s.enabled)
+    .map(s => ({
+      id: s.id,
+      name: s.name,
+      url: s.url
+    }));
 }
 
 function normalizeRepositories(projectsData) {
   if (!projectsData?.categories) return null;
 
-  return {
-    categories: projectsData.categories.map((cat) => ({
-      key: cat.key,
-      label: cat.label,
-      projectCount: (cat.projects || []).length,
-      projects: cat.projects || []
-    }))
-  };
+  return projectsData.categories.map(cat => ({
+    label: cat.label,
+    projectCount: (cat.projects || []).length,
+    projects: cat.projects || []
+  }));
 }
 
 function normalizeContributions(profileData) {
-  return {
-    github:
-      profileData?.social?.github ||
-      profileData?.linkedinProfile ||
-      null
-  };
+  const github =
+    profileData?.identity?.links?.github || null;
+
+  return github
+    ? { github }
+    : null;
 }
 
 function normalizeOverview(profileData) {
-  if (!profileData) return null;
+  if (!profileData?.identity) return null;
 
   return {
-    name: profileData.name,
-    tagline: profileData.tagline,
-    location: profileData.location,
-    social: profileData.social || {}
+    name:
+      profileData.identity.preferredName ||
+      profileData.identity.fullName ||
+      "",
+    headline:
+      profileData.identity.headline ||
+      profileData.identity.summary ||
+      "",
+    location:
+      profileData.identity.location || ""
   };
 }
 
-/* =========================
-   HELPERS (INTERNAL)
-========================= */
+/* ============================================================
+   HELPERS
+============================================================ */
 
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
@@ -147,7 +139,6 @@ function normalizeResults(results) {
 
 function attach(section, data) {
   if (!section || !data) return;
-
   try {
     section.dataset.source = JSON.stringify(data);
   } catch (err) {
