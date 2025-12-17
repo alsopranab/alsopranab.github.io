@@ -1,34 +1,73 @@
 {
-  "socials": [
+  "section": {
+    "id": "social-profiles",
+    "title": "Social Profiles",
+    "visibility": "public",
+    "displayOrder": 99
+  },
+
+  "profiles": [
     {
       "id": "github",
-      "label": "GitHub",
+      "platform": "GitHub",
+      "username": "alsopranab",
+      "url": "https://github.com/alsopranab",
       "icon": "github",
-      "url": "https://github.com/alsopranab"
+      "category": "developer",
+      "priority": 1,
+      "enabled": true,
+      "verified": true
     },
     {
       "id": "linkedin",
-      "label": "LinkedIn",
+      "platform": "LinkedIn",
+      "username": "alsopranab",
+      "url": "https://linkedin.com/in/alsopranab",
       "icon": "linkedin",
-      "url": "https://linkedin.com/in/alsopranab"
+      "category": "professional",
+      "priority": 2,
+      "enabled": true,
+      "verified": true
     },
     {
       "id": "leetcode",
-      "label": "LeetCode",
+      "platform": "LeetCode",
+      "username": "alsopranab",
+      "url": "https://leetcode.com/alsopranab",
       "icon": "leetcode",
-      "url": "https://leetcode.com/alsopranab"
+      "category": "competitive-programming",
+      "priority": 3,
+      "enabled": true,
+      "verified": true
     },
     {
       "id": "hackerrank",
-      "label": "HackerRank",
+      "platform": "HackerRank",
+      "username": "alsopranab",
+      "url": "https://www.hackerrank.com/alsopranab",
       "icon": "hackerrank",
-      "url": "https://www.hackerrank.com/alsopranab"
+      "category": "competitive-programming",
+      "priority": 4,
+      "enabled": true,
+      "verified": true
     },
     {
       "id": "instagram",
-      "label": "Instagram",
+      "platform": "Instagram",
+      "username": "the.queryguy",
+      "url": "https://instagram.com/the.queryguy",
       "icon": "instagram",
-      "url": "https://instagram.com/"
+      "category": "social",
+      "priority": 5,
+      "enabled": true,
+      "verified": false
     }
-  ]
+  ],
+
+  "meta": {
+    "version": "1.0.0",
+    "schema": "social.profiles.v1",
+    "maintainedBy": "self",
+    "lastUpdated": "2025-01-01"
+  }
 }
