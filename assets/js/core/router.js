@@ -1,16 +1,8 @@
 /* =====================================================
-   ROUTER (FINAL, AUTO-BOOTSTRAPPED)
+   ROUTER (PURE, CONTROLLED)
 ===================================================== */
 
 import { getAppMain } from "../app.js";
-
-/* -----------------------------------------------------
-   VIEWS
------------------------------------------------------ */
-import { DashboardView } from "../views/dashboard.js";
-import { AnalyticsView } from "../views/analytics.js";
-import { ProjectsView } from "../views/projects.js";
-import { LearningsView } from "../views/learnings.js";
 
 /* -----------------------------------------------------
    INTERNAL STATE
@@ -59,6 +51,8 @@ async function renderRoute(route) {
       console.warn("[Router] View cleanup failed", e);
     }
   }
+
+  activeView = null;
 
   const View = routes[route];
 
@@ -118,9 +112,9 @@ export function navigate(route) {
 }
 
 /* -----------------------------------------------------
-   INIT ROUTER
+   INIT ROUTER (EXPORTED)
 ----------------------------------------------------- */
-function initRouter(defaultRoute = "dashboard") {
+export function initRouter(defaultRoute = "dashboard") {
   function onChange() {
     const route = getRouteFromHash() || defaultRoute;
     renderRoute(route);
@@ -134,18 +128,3 @@ function initRouter(defaultRoute = "dashboard") {
     onChange();
   }
 }
-
-/* =====================================================
-   REGISTER ROUTES (AUTO)
-===================================================== */
-
-registerRoute("dashboard", DashboardView);
-registerRoute("analytics", AnalyticsView);
-registerRoute("projects", ProjectsView);
-registerRoute("learnings", LearningsView);
-
-/* =====================================================
-   BOOT ROUTER (AUTO)
-===================================================== */
-
-initRouter("dashboard");
