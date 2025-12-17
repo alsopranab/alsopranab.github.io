@@ -1,17 +1,19 @@
 /* ============================================================
-   APPLE-LEVEL PREMIUM DESIGN SYSTEM (CSS ONLY)
+   OMNIVERSE — GODMODE CSS
+   Purpose: Support a living, generative, reactive website
+   Works ONLY with omniverse.godmode.js
    ============================================================ */
 
 /* =========================
-   ROOT SYSTEM
+   ROOT VARIABLES
 ========================= */
 :root {
-  --bg-main: #07040f;
+  --bg-main: #06030e;
   --bg-deep: #0a0618;
 
-  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-bg: rgba(255, 255, 255, 0.06);
   --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-glow: rgba(167, 139, 250, 0.45);
+  --glass-glow: rgba(167, 139, 250, 0.55);
 
   --accent: #a78bfa;
   --accent-strong: #7c3aed;
@@ -22,6 +24,7 @@
   --radius-xl: 28px;
   --radius-lg: 22px;
   --radius-md: 16px;
+  --radius-sm: 12px;
 
   --blur-lg: blur(32px);
   --blur-md: blur(18px);
@@ -50,18 +53,21 @@ html {
 body {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background:
-    radial-gradient(1200px 600px at 90% -10%, rgba(124,58,237,0.25), transparent),
+    radial-gradient(1200px 600px at 80% -20%, rgba(124,58,237,0.25), transparent),
     radial-gradient(900px 500px at 10% 120%, rgba(167,139,250,0.18), transparent),
-    linear-gradient(180deg, #05030c, #0a0618 40%, #05030c);
+    linear-gradient(180deg, #04020a, #0a0618 40%, #04020a);
   color: var(--text-main);
-  line-height: 1.6;
+  line-height: 1.65;
   overflow-x: hidden;
-  animation: backgroundShift 18s ease-in-out infinite alternate;
+  min-height: 100vh;
 }
 
-@keyframes backgroundShift {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 100% 100%; }
+/* Canvas sits behind everything */
+canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* =========================
@@ -70,14 +76,16 @@ body {
 h1, h2, h3, h4 {
   font-weight: 500;
   letter-spacing: -0.02em;
+  color: var(--text-main);
+  will-change: transform, text-shadow;
 }
 
 h1 {
-  font-size: clamp(36px, 5vw, 56px);
+  font-size: clamp(40px, 6vw, 64px);
 }
 
 h2 {
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: clamp(26px, 3.5vw, 34px);
   margin-bottom: 40px;
 }
 
@@ -91,7 +99,6 @@ a {
   position: relative;
 }
 
-/* underline glow illusion */
 a::after {
   content: "";
   position: absolute;
@@ -108,62 +115,51 @@ a:hover::after {
 }
 
 /* =========================
-   SECTIONS
+   LAYOUT
 ========================= */
 section {
+  position: relative;
+  z-index: 1;
   padding: 120px 24px;
   max-width: 1200px;
   margin: 0 auto;
-  position: relative;
+  will-change: transform, opacity;
 }
 
 /* =========================
-   UNIVERSAL GLASS CARD
+   GLASS CONTAINERS
 ========================= */
 .project-card,
 .education-item,
 .experience-role,
-.contact-wrapper,
 .featured-item,
-.licenses-grid > *,
-.header-container {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.09),
-    rgba(255,255,255,0.02)
-  );
+.contact-wrapper,
+.header-container,
+.licenses-grid > * {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.08),
+      rgba(255,255,255,0.02)
+    );
   backdrop-filter: var(--blur-md);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-lg);
   box-shadow:
-    0 30px 80px rgba(0,0,0,0.55),
+    0 30px 90px rgba(0,0,0,0.6),
     inset 0 1px 0 rgba(255,255,255,0.12);
-  transition:
-    transform 0.6s var(--ease-out),
-    box-shadow 0.6s var(--ease-out);
-}
-
-/* hover depth illusion */
-.project-card:hover,
-.education-item:hover,
-.experience-role:hover,
-.featured-item:hover,
-.licenses-grid > *:hover {
-  transform: translateY(-8px) scale(1.01);
-  box-shadow:
-    0 50px 120px rgba(0,0,0,0.7),
-    0 0 60px var(--glass-glow);
+  will-change: transform;
 }
 
 /* =========================
-   HEADER (APPLE NAV FEEL)
+   HEADER
 ========================= */
 #site-header {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 50;
   backdrop-filter: var(--blur-lg);
-  background: rgba(7,4,15,0.65);
+  background: rgba(6,3,14,0.65);
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -190,11 +186,6 @@ section {
   margin-left: 32px;
   font-size: 14px;
   opacity: 0.85;
-  transition: opacity 0.25s ease;
-}
-
-.header-nav a:hover {
-  opacity: 1;
 }
 
 /* =========================
@@ -209,17 +200,8 @@ section {
 
 .hero-wrapper img {
   width: 140px;
-  filter: drop-shadow(0 0 35px var(--glass-glow));
-  animation: logoGlow 4s ease-in-out infinite;
-}
-
-@keyframes logoGlow {
-  0%,100% {
-    filter: drop-shadow(0 0 20px rgba(167,139,250,0.4));
-  }
-  50% {
-    filter: drop-shadow(0 0 50px rgba(167,139,250,0.85));
-  }
+  filter: drop-shadow(0 0 40px var(--glass-glow));
+  will-change: transform;
 }
 
 /* =========================
@@ -241,7 +223,7 @@ section {
 .featured-list {
   display: flex;
   flex-direction: column;
-  gap: 80px;
+  gap: 96px;
 }
 
 .featured-item {
@@ -259,13 +241,9 @@ section {
   width: 100%;
   border-radius: var(--radius-xl);
   box-shadow:
-    0 40px 100px rgba(0,0,0,0.7),
-    0 0 50px rgba(167,139,250,0.4);
-  transition: transform 0.6s var(--ease-out);
-}
-
-.featured-item img:hover {
-  transform: scale(1.05);
+    0 40px 120px rgba(0,0,0,0.7),
+    0 0 60px rgba(167,139,250,0.5);
+  will-change: transform;
 }
 
 /* =========================
@@ -301,12 +279,12 @@ section {
   width: 100%;
   border-radius: var(--radius-md);
   box-shadow:
-    0 25px 70px rgba(0,0,0,0.7),
-    0 0 35px rgba(167,139,250,0.45);
+    0 25px 80px rgba(0,0,0,0.7),
+    0 0 40px rgba(167,139,250,0.45);
 }
 
 /* =========================
-   CONTACT (AURORA FEEL)
+   CONTACT
 ========================= */
 #contact-section {
   background:
@@ -316,8 +294,8 @@ section {
 
 .contact-email {
   display: inline-block;
-  font-size: 18px;
   margin-top: 28px;
+  font-size: 18px;
 }
 
 /* =========================
@@ -328,32 +306,12 @@ section {
   text-align: center;
   font-size: 13px;
   color: var(--text-muted);
-  background: linear-gradient(
-    to top,
-    rgba(7,4,15,0.9),
-    transparent
-  );
-}
-
-/* =========================
-   MICRO MOTION (CSS-ONLY)
-========================= */
-section,
-.project-card,
-.featured-item,
-.education-item {
-  animation: fadeUp 1s var(--ease-out) both;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  background:
+    linear-gradient(
+      to top,
+      rgba(6,3,14,0.9),
+      transparent
+    );
 }
 
 /* =========================
