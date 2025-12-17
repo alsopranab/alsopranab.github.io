@@ -3,7 +3,7 @@
     "fullName": "Pranab Debnath",
     "preferredName": "Pranab",
     "headline": "Data Analyst",
-    "summary": "Data-driven professional with experience in analytics, sales optimization, and business intelligence. Focused on building scalable insights through SQL, Python, and dashboarding tools.",
+    "summary": "Curious, data-driven professional with hands-on experience in analytics, automation, and business intelligence. I enjoy learning continuously, building efficient workflows, and turning raw data into clear, actionable insights using SQL, Python, and visualization tools.",
     "location": {
       "city": "Bangalore",
       "state": "Karnataka",
@@ -11,7 +11,7 @@
     },
     "availability": {
       "status": "open",
-      "message": "Open to opportunities"
+      "message": "Open to data analyst and analytics-focused roles"
     }
   },
 
@@ -40,44 +40,9 @@
   "resume": {
     "strategy": "external",
     "provider": "linkedin",
-    "description": "Resume is generated and downloaded directly from LinkedIn for authenticity and freshness.",
+    "description": "Resume is maintained on LinkedIn to ensure it stays current and verifiable.",
     "externalProfile": "https://linkedin.com/in/alsopranab"
   },
-
-  "socialProfiles": [
-    {
-      "id": "github",
-      "platform": "GitHub",
-      "url": "https://github.com/alsopranab",
-      "icon": "github",
-      "priority": 1,
-      "visibility": "public"
-    },
-    {
-      "id": "linkedin",
-      "platform": "LinkedIn",
-      "url": "https://linkedin.com/in/alsopranab",
-      "icon": "linkedin",
-      "priority": 2,
-      "visibility": "public"
-    },
-    {
-      "id": "leetcode",
-      "platform": "LeetCode",
-      "url": "https://leetcode.com/alsopranab",
-      "icon": "leetcode",
-      "priority": 3,
-      "visibility": "public"
-    },
-    {
-      "id": "hackerrank",
-      "platform": "HackerRank",
-      "url": "https://www.hackerrank.com/alsopranab",
-      "icon": "hackerrank",
-      "priority": 4,
-      "visibility": "public"
-    }
-  ],
 
   "meta": {
     "profileType": "professional",
