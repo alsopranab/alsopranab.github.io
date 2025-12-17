@@ -1,32 +1,31 @@
 /**
- * Fetch GitHub contribution data from static JSON
- * - NO token
- * - NO GraphQL
+ * Fetch GitHub contribution data (STATIC JSON)
+ * - No tokens
+ * - No CORS
  * - GitHub Pages safe
- * - Never crashes Analytics page
  */
 export async function fetchGitHubContributions() {
   try {
     const res = await fetch("/assets/data/contributions.json", {
-      cache: "no-cache"
+      cache: "no-store"
     });
 
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}`);
     }
 
-    const text = await res.text();
-
-    // 🔒 HARD GUARD: ensure valid JSON
-    const data = JSON.parse(text);
+    const data = await res.json();
 
     if (!Array.isArray(data)) {
-      throw new Error("Invalid contributions format");
+      throw new Error("Invalid contributions JSON");
     }
 
     return data;
-  } catch (err) {
-    console.warn("[GitHub] Contribution JSON unavailable", err);
+  } catch (error) {
+    console.warn(
+      "[GitHub] Contribution JSON unavailable",
+      error
+    );
     return [];
   }
 }
