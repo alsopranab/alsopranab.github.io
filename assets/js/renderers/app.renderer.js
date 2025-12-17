@@ -1,10 +1,10 @@
 /**
- * Unified App Renderer (FINAL — SCHEMA TRUE)
- * =========================================
+ * Unified App Renderer (FINAL — SCHEMA TRUE & HARDENED)
+ * ====================================================
  * - Runs ONLY after home:ready
  * - Reads ONLY dataset.source
- * - Matches your real JSON (projects / featured / profile)
- * - Never renders fake or undefined data
+ * - Matches real JSON exactly
+ * - Never crashes on partial data
  * - Clears sections before render
  */
 
@@ -54,17 +54,25 @@ function renderExperience() {
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Experience")}</h2>
     <div class="experience-list">
-      ${d.timeline.map(org => `
-        <div class="experience-company">
-          <h3>${escape(org.organization?.name || "")}</h3>
-          ${(org.roles || []).map(role => renderRole(role)).join("")}
-        </div>
-      `).join("")}
+      ${d.timeline.map(renderOrganization).join("")}
+    </div>
+  `;
+}
+
+function renderOrganization(org) {
+  if (!org?.organization) return "";
+
+  return `
+    <div class="experience-company">
+      <h3>${escape(org.organization.name || "")}</h3>
+      ${Array.isArray(org.roles) ? org.roles.map(renderRole).join("") : ""}
     </div>
   `;
 }
 
 function renderRole(role) {
+  if (!role) return "";
+
   const start = role.duration?.start?.year || "";
   const end =
     role.duration?.end?.status === "present"
@@ -78,7 +86,9 @@ function renderRole(role) {
       ${
         Array.isArray(role.responsibilities)
           ? `<ul>
-              ${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}
+              ${role.responsibilities
+                .map(r => `<li>${escape(r)}</li>`)
+                .join("")}
             </ul>`
           : ""
       }
@@ -100,25 +110,32 @@ function renderFeatured() {
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Featured")}</h2>
     <div class="featured-list">
-      ${d.items.map(item => `
-        <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
-          ${
-            item.media?.coverImage
-              ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}" />`
-              : ""
-          }
-          <div>
-            <h3>${escape(item.project?.name || "")}</h3>
-            <p>${escape(item.project?.description || "")}</p>
-          </div>
-        </div>
-      `).join("")}
+      ${d.items.map(renderFeaturedItem).join("")}
+    </div>
+  `;
+}
+
+function renderFeaturedItem(item) {
+  if (!item?.project) return "";
+
+  return `
+    <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
+      ${
+        item.media?.coverImage
+          ? `<img src="${item.media.coverImage}"
+                  alt="${escape(item.media.alt || "")}" />`
+          : ""
+      }
+      <div>
+        <h3>${escape(item.project.name || "")}</h3>
+        <p>${escape(item.project.summary || "")}</p>
+      </div>
     </div>
   `;
 }
 
 /* ============================================================
-   PROJECT RENDER (projects.json)
+   PROJECTS (projects.json)
 ============================================================ */
 
 function renderProjects() {
@@ -126,12 +143,11 @@ function renderProjects() {
   const d = getData(section);
   clear(section);
 
-  if (!d?.categories || !Array.isArray(d.categories)) return;
+  if (!Array.isArray(d?.categories)) return;
 
-  // Sort categories by priority (lower = higher priority)
-  const categories = [...d.categories].sort(
-    (a, b) => (a.priority ?? 99) - (b.priority ?? 99)
-  );
+  const categories = [...d.categories]
+    .filter(c => Array.isArray(c.projects) && c.projects.length)
+    .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Projects")}</h2>
@@ -140,25 +156,23 @@ function renderProjects() {
 }
 
 function renderProjectCategory(category) {
-  if (!Array.isArray(category.projects)) return "";
-
   return `
     <div class="project-category">
-      <h3>${escape(category.label)}</h3>
+      <h3>${escape(category.label || "")}</h3>
       ${category.projects.map(renderProjectCard).join("")}
     </div>
   `;
 }
 
 function renderProjectCard(p) {
-  const name = p.project?.name || "";
-  const summary = p.project?.summary || "";
+  if (!p?.project) return "";
+
   const repoUrl = p.repository?.url || "";
 
   return `
     <div class="project-card">
-      <h4>${escape(name)}</h4>
-      <p>${escape(summary)}</p>
+      <h4>${escape(p.project.name || "")}</h4>
+      <p>${escape(p.project.summary || "")}</p>
 
       ${
         repoUrl
@@ -170,7 +184,6 @@ function renderProjectCard(p) {
     </div>
   `;
 }
-
 
 /* ============================================================
    EDUCATION (education.json)
@@ -211,9 +224,10 @@ function renderContact() {
 
     ${
       d.primary?.email?.value
-        ? `<a href="mailto:${d.primary.email.value}" class="contact-email">
-            ${d.primary.email.value}
-          </a>`
+        ? `<a href="mailto:${d.primary.email.value}"
+             class="contact-email">
+             ${escape(d.primary.email.value)}
+           </a>`
         : ""
     }
   `;
