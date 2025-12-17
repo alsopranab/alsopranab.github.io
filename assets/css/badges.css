@@ -1,20 +1,16 @@
-/* =====================================================
-   BADGES
-===================================================== */
-
 .badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.badge-block {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: var(--space-md);
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
 }
 
-.badges-grid img {
-  height: 28px;
-  transition: transform 0.15s ease, filter 0.15s ease;
-}
-
-.badges-grid a:hover img {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
+.badge-block img {
+  max-width: 100%;
 }
