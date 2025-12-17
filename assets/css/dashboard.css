@@ -1,35 +1,52 @@
 /* =====================================================
-   DASHBOARD ROOT (FINAL, ISOLATED)
+   DASHBOARD ROOT (HOME PAGE / PREMIUM)
 ===================================================== */
 
 .dashboard {
   max-width: 1280px;
   margin: 0 auto;
   padding: var(--space-xl) var(--space-md);
+
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
+
+  position: relative;
+  z-index: 1;
 }
 
-/* =====================================================
-   HEADER
-===================================================== */
+/* -----------------------------------------------------
+   DASHBOARD HERO HEADER
+----------------------------------------------------- */
+
+.dashboard-header {
+  position: relative;
+  max-width: 760px;
+}
 
 .dashboard-header h1 {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.6rem);
-  color: #ffffff;
-  margin-bottom: 0.4rem;
+  font-size: clamp(2.2rem, 4vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+
+  margin-bottom: 0.5rem;
+
+  text-shadow:
+    0 0 20px rgba(255, 255, 255, 0.15);
 }
 
 .dashboard-header p {
-  color: #9a9a9a;
-  max-width: 560px;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 600px;
 }
 
-/* =====================================================
-   KPI GRID (DASHBOARD ONLY)
-===================================================== */
+/* -----------------------------------------------------
+   KPI GRID (PRIMARY ATTRACTION)
+----------------------------------------------------- */
 
 .dashboard-kpis {
   display: grid;
@@ -37,81 +54,146 @@
   gap: var(--space-md);
 }
 
+/* -----------------------------------------------------
+   KPI CARD (RICH, NOT FLASHY)
+----------------------------------------------------- */
+
 .kpi-card {
-  background: #000;
-  border: 1px solid #1f1f1f;
+  position: relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(0, 0, 0, 0.35)
+    ),
+    var(--bg-elevated);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-lg);
+
   padding: var(--space-lg);
+
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
 
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  box-shadow: var(--shadow-md);
 
   transition:
-    transform 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-md) var(--ease-standard);
+}
+
+/* subtle surface highlight */
+.kpi-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.06),
+    transparent 35%
+  );
+  pointer-events: none;
 }
 
 .kpi-card:hover {
   transform: translateY(-4px);
-  border-color: #2a2a2a;
+  border-color: rgba(255, 255, 255, 0.14);
+
   box-shadow:
-    0 0 18px rgba(255, 255, 255, 0.08),
-    0 14px 48px rgba(0, 0, 0, 0.95);
+    var(--shadow-lg),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
+/* KPI label */
 .kpi-card .label {
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7a7a7a;
+  color: var(--text-muted);
 }
 
+/* KPI value (hero element) */
 .kpi-card .value {
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.8rem, 3vw, 2.3rem);
   font-weight: 600;
-  color: #ffffff;
+  color: var(--text-primary);
+
   text-shadow:
-    0 0 12px rgba(255, 255, 255, 0.25),
-    0 0 32px rgba(255, 255, 255, 0.12);
+    0 0 14px rgba(255, 255, 255, 0.3),
+    0 0 34px rgba(255, 255, 255, 0.15);
 }
 
-/* =====================================================
-   CHART PANEL (USED BY DASHBOARD + ANALYTICS)
-===================================================== */
+/* -----------------------------------------------------
+   CHART PANEL (HOME PREVIEW)
+----------------------------------------------------- */
 
 .dashboard-chart {
-  background: #000;
-  border: 1px solid #1f1f1f;
+  position: relative;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(0, 0, 0, 0.4)
+    ),
+    var(--bg-surface);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-lg);
+
   padding: var(--space-lg);
+
+  box-shadow: var(--shadow-md);
+}
+
+/* subtle top sheen */
+.dashboard-chart::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    transparent 35%
+  );
+  pointer-events: none;
 }
 
 .dashboard-chart h2 {
   font-size: 1.05rem;
-  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
   margin-bottom: var(--space-md);
 }
 
-/* HARD HEIGHT LOCK — PREVENTS INFINITE GROWTH */
+/* -----------------------------------------------------
+   CHART WRAP (LOCKED HEIGHT)
+----------------------------------------------------- */
+
 .chart-wrap {
   position: relative;
-  height: 280px;
+  height: 300px;
 }
 
 .chart-wrap canvas {
   max-height: 100%;
 }
 
-/* =====================================================
-   MOBILE
-===================================================== */
+/* -----------------------------------------------------
+   MOBILE TUNING
+----------------------------------------------------- */
 
 @media (max-width: 768px) {
   .dashboard {
     padding: var(--space-lg) var(--space-sm);
+    gap: var(--space-lg);
   }
 
   .chart-wrap {
