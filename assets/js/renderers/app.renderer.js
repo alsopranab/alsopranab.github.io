@@ -8,7 +8,8 @@
  * - Clears sections before render
  */
 
-window.addEventListener("home:ready", () => {
+window.addEventListener("app:ready", () => {
+  console.log("[Renderer] app:ready received");
   renderHero();
   renderExperience();
   renderFeatured();
