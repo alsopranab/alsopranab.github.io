@@ -1,23 +1,36 @@
+/* =====================================================
+   APPLICATION ENTRY POINT (FINAL)
+   Stable • SPA-safe • Production-ready
+===================================================== */
+
+/* -----------------------------------------------------
+   Core systems
+----------------------------------------------------- */
+import "./core/router.js";
+
+/* -----------------------------------------------------
+   UI systems
+----------------------------------------------------- */
 import { renderNavbar } from "./ui/navbar.js";
 import { initReveal, destroyReveal } from "./ui/reveal.js";
 import { initGlow } from "./ui/glow.js";
 
+/* -----------------------------------------------------
+   App state
+----------------------------------------------------- */
 let appRoot = null;
 let mainRoot = null;
 let initialized = false;
 let routeListenerBound = false;
 
-/**
- * Initialize application shell
- * - Runs exactly once
- * - Creates permanent DOM structure
- * - Boots global UI systems safely
- */
+/* =====================================================
+   INITIALIZE APPLICATION SHELL
+===================================================== */
 export function initApp() {
   if (initialized) return;
   initialized = true;
 
-  // Ensure DOM ready
+  /* Ensure DOM is ready */
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initApp, { once: true });
     return;
@@ -29,12 +42,14 @@ export function initApp() {
       throw new Error("#app root not found");
     }
 
-    // Hard reset root
+    /* --------------------------------------------------
+       HARD RESET ROOT
+    -------------------------------------------------- */
     appRoot.innerHTML = "";
 
-    // --------------------------------------------------
-    // LOCKED APP SHELL STRUCTURE
-    // --------------------------------------------------
+    /* --------------------------------------------------
+       LOCKED APP SHELL STRUCTURE
+    -------------------------------------------------- */
     const shell = document.createElement("div");
     shell.id = "app-shell";
 
@@ -48,19 +63,19 @@ export function initApp() {
     shell.appendChild(mainRoot);
     appRoot.appendChild(shell);
 
-    // --------------------------------------------------
-    // Static UI (render once)
-    // --------------------------------------------------
+    /* --------------------------------------------------
+       STATIC UI (RENDER ONCE)
+    -------------------------------------------------- */
     renderNavbar(header);
 
-    // --------------------------------------------------
-    // Global visual systems (safe init)
-    // --------------------------------------------------
+    /* --------------------------------------------------
+       GLOBAL VISUAL SYSTEMS
+    -------------------------------------------------- */
     initGlow();
 
-    // --------------------------------------------------
-    // Reveal lifecycle (route-aware)
-    // --------------------------------------------------
+    /* --------------------------------------------------
+       REVEAL SYSTEM (ROUTE-AWARE)
+    -------------------------------------------------- */
     initReveal(mainRoot);
 
     if (!routeListenerBound) {
@@ -73,7 +88,7 @@ export function initApp() {
   } catch (err) {
     console.error("[App] Fatal initialization error", err);
 
-    // Hard fallback (never blank screen)
+    /* Hard fallback – never blank screen */
     if (appRoot) {
       appRoot.innerHTML = `
         <div style="padding:40px;color:white">
@@ -85,12 +100,17 @@ export function initApp() {
   }
 }
 
-/**
- * Router access point (strict)
- */
+/* =====================================================
+   ROUTER ACCESS POINT (STRICT)
+===================================================== */
 export function getAppMain() {
   if (!mainRoot) {
     throw new Error("[App] App shell not initialized");
   }
   return mainRoot;
 }
+
+/* =====================================================
+   AUTO BOOTSTRAP (REQUIRED)
+===================================================== */
+initApp();
