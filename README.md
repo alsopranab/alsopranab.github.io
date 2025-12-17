@@ -12,39 +12,51 @@ alsopranab.github.io/
 │   │   ├── navbar.css
 │   │   ├── components.css
 │   │   ├── animations.css
+│   │   │
 │   │   ├── dashboard.css
-│   │   ├── certifications.css
-│   │   └── code.css
+│   │   ├── analytics.css
+│   │   ├── projects.css
+│   │   ├── profiles.css
+│   │   ├── badges.css
+│   │   └── heatmap.css
 │   │
 │   ├── js/
-│   │   ├── main.js              
-│   │   ├── app.js               
+│   │   ├── main.js
+│   │   ├── app.js
 │   │   │
 │   │   ├── core/
-│   │   │   └── router.js        
+│   │   │   ├── router.js
+│   │   │   ├── config.js
+│   │   │   ├── store.js
+│   │   │   ├── projectStore.js
+│   │   │   └── projectClassifier.js
+│   │   │
+│   │   ├── views/
+│   │   │   ├── intro.js
+│   │   │   ├── dashboard.js
+│   │   │   ├── analytics.js
+│   │   │   ├── projects.js
+│   │   │   ├── project.js
+│   │   │   ├── profiles.js
+│   │   │   └── learnings.js
 │   │   │
 │   │   ├── ui/
-│   │   │   ├── reveal.js        
-│   │   │   ├── glow.js          
-│   │   │   ├── navbar.js        
-│   │   │   └── charts.js       
+│   │   │   ├── navbar.js
+│   │   │   ├── reveal.js
+│   │   │   ├── glow.js
+│   │   │   ├── charts.js
+│   │   │   ├── heatmap.js
+│   │   │   ├── badges.js
+│   │   │   └── cards.js
 │   │   │
-│   │   └── views/
-│   │       ├── intro.js         
-│   │       ├── dashboard.js     
-│   │       ├── projects.js
-│   │       ├── project.js
-│   │       ├── learnings.js
-│   │       ├── analytics.js
-│   │       └── profiles.js
+│   │   └── services/
+│   │       ├── github.js
+│   │       ├── githubCode.js
+│   │       └── githubContributions.js
 │   │
-│   ├── images/
-│   │   ├── certifications/
-│   │   │   └── *.png
-│   │   ├── icons/
-│   │   └── projects/
-│   │
-│   └── fonts/
+│   └── data/
+│       └── contributions.json   (auto-updated by GitHub Action)
 │
-└── resume/
-    └── Pranab_Debnath_Resume.pdf
+└── .github/
+    └── workflows/
+        └── contributions.yml
