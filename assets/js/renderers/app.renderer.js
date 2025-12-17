@@ -1,10 +1,9 @@
 /**
- * Unified App Renderer (FINAL — JSON SCHEMA LOCKED)
- * =================================================
+ * Unified App Renderer (FINAL — DEFENSIVE & SCHEMA SAFE)
+ * =====================================================
  * - Runs ONLY after home:ready
  * - Reads ONLY dataset.source
- * - Zero demo / fallback content
- * - Strictly aligned to your JSON structure
+ * - Never crashes on partial data
  */
 
 window.addEventListener("home:ready", () => {
@@ -16,9 +15,8 @@ window.addEventListener("home:ready", () => {
   renderContact();
 });
 
-/* ============================================================
-   HERO (profile.json)
-============================================================ */
+/* ================= HERO ================= */
+
 function renderHero() {
   const section = document.getElementById("hero-section");
   const d = getData(section);
@@ -26,7 +24,7 @@ function renderHero() {
 
   section.innerHTML = `
     <div class="hero-wrapper">
-      <h1>${escape(d.identity.fullName)}</h1>
+      <h1>${escape(d.identity.fullName || "")}</h1>
       ${
         d.identity.headline
           ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>`
@@ -36,16 +34,15 @@ function renderHero() {
   `;
 }
 
-/* ============================================================
-   EXPERIENCE (experience.json)
-============================================================ */
+/* ================= EXPERIENCE ================= */
+
 function renderExperience() {
   const section = document.getElementById("experience-section");
   const d = getData(section);
   if (!Array.isArray(d?.timeline)) return;
 
   section.innerHTML = `
-    <h2>${escape(d.section.title)}</h2>
+    <h2>${escape(d.section?.title || "Experience")}</h2>
     <div class="experience-list">
       ${d.timeline.map(renderOrganization).join("")}
     </div>
@@ -55,29 +52,27 @@ function renderExperience() {
 function renderOrganization(item) {
   return `
     <div class="experience-company">
-      <h3>${escape(item.organization.name)}</h3>
-      ${item.roles.map(renderRole).join("")}
+      <h3>${escape(item.organization?.name || "")}</h3>
+      ${(item.roles || []).map(renderRole).join("")}
     </div>
   `;
 }
 
 function renderRole(role) {
-  const start = `${role.duration.start.month}/${role.duration.start.year}`;
+  const startYear = role.duration?.start?.year || "";
   const end =
-    role.duration.end?.status === "present"
+    role.duration?.end?.status === "present"
       ? "Present"
-      : `${role.duration.end.month}/${role.duration.end.year}`;
+      : role.duration?.end?.year || "";
 
   return `
     <div class="experience-role">
-      <strong>${escape(role.title)}</strong>
-      <span>${start} – ${end}</span>
+      <strong>${escape(role.title || "")}</strong>
+      <span>${startYear}${end ? " – " + end : ""}</span>
       ${
         Array.isArray(role.responsibilities)
           ? `<ul>
-              ${role.responsibilities
-                .map(r => `<li>${escape(r)}</li>`)
-                .join("")}
+              ${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}
             </ul>`
           : ""
       }
@@ -85,16 +80,15 @@ function renderRole(role) {
   `;
 }
 
-/* ============================================================
-   FEATURED (featured.json — ONLY WHAT EXISTS)
-============================================================ */
+/* ================= FEATURED ================= */
+
 function renderFeatured() {
   const section = document.getElementById("featured-section");
   const d = getData(section);
   if (!Array.isArray(d?.items)) return;
 
   section.innerHTML = `
-    <h2>${escape(d.section.title)}</h2>
+    <h2>${escape(d.section?.title || "Featured")}</h2>
     <div class="featured-list">
       ${d.items.map(renderFeaturedItem).join("")}
     </div>
@@ -103,30 +97,29 @@ function renderFeatured() {
 
 function renderFeaturedItem(item) {
   return `
-    <div class="featured-item" data-alignment="${item.layout.alignment}">
+    <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
       ${
         item.media?.coverImage
-          ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt)}" />`
+          ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}" />`
           : ""
       }
       <div>
-        <h3>${escape(item.project.name)}</h3>
-        <p>${escape(item.project.description)}</p>
+        <h3>${escape(item.project?.name || "")}</h3>
+        <p>${escape(item.project?.description || "")}</p>
       </div>
     </div>
   `;
 }
 
-/* ============================================================
-   PROJECTS (projects.json)
-============================================================ */
+/* ================= PROJECTS ================= */
+
 function renderProjects() {
   const section = document.getElementById("projects-section");
   const d = getData(section);
   if (!Array.isArray(d?.categories)) return;
 
   section.innerHTML = `
-    <h2>${escape(d.section.title)}</h2>
+    <h2>${escape(d.section?.title || "Projects")}</h2>
     ${d.categories.map(renderProjectCategory).join("")}
   `;
 }
@@ -134,8 +127,8 @@ function renderProjects() {
 function renderProjectCategory(cat) {
   return `
     <div class="project-category">
-      <h3>${escape(cat.label)}</h3>
-      ${cat.projects.map(renderProjectCard).join("")}
+      <h3>${escape(cat.label || "")}</h3>
+      ${(cat.projects || []).map(renderProjectCard).join("")}
     </div>
   `;
 }
@@ -143,34 +136,32 @@ function renderProjectCategory(cat) {
 function renderProjectCard(p) {
   return `
     <div class="project-card">
-      <h4>${escape(p.title)}</h4>
-      <p>${escape(p.description)}</p>
+      <h4>${escape(p.title || "")}</h4>
+      <p>${escape(p.description || "")}</p>
     </div>
   `;
 }
 
-/* ============================================================
-   EDUCATION (education.json)
-============================================================ */
+/* ================= EDUCATION ================= */
+
 function renderEducation() {
   const section = document.getElementById("education-section");
   const d = getData(section);
   if (!Array.isArray(d?.records)) return;
 
   section.innerHTML = `
-    <h2>${escape(d.section.title)}</h2>
+    <h2>${escape(d.section?.title || "Education")}</h2>
     ${d.records.map(r => `
       <div class="education-item">
-        <strong>${escape(r.institution)}</strong>
-        <span>${escape(r.start)} – ${escape(r.end)}</span>
+        <strong>${escape(r.institution || "")}</strong>
+        <span>${escape(r.start || "")} – ${escape(r.end || "")}</span>
       </div>
     `).join("")}
   `;
 }
 
-/* ============================================================
-   CONTACT (contact.json)
-============================================================ */
+/* ================= CONTACT ================= */
+
 function renderContact() {
   const section = document.getElementById("contact-section");
   const d = getData(section);
@@ -178,8 +169,7 @@ function renderContact() {
 
   section.innerHTML = `
     <h2>${escape(d.section.title)}</h2>
-    <p>${escape(d.section.description)}</p>
-
+    <p>${escape(d.section.description || "")}</p>
     ${
       d.primary?.email?.value
         ? `<a href="mailto:${d.primary.email.value}" class="contact-email">
@@ -187,39 +177,23 @@ function renderContact() {
           </a>`
         : ""
     }
-
-    <div class="contact-socials">
-      ${(d.socials || [])
-        .filter(s => s.enabled)
-        .map(s => `
-          <a href="${s.url}" target="_blank" rel="noopener">
-            ${escape(s.name)}
-          </a>
-        `)
-        .join("")}
-    </div>
   `;
 }
 
-/* ============================================================
-   HELPERS
-============================================================ */
+/* ================= HELPERS ================= */
+
 function getData(section) {
-  if (!section?.dataset?.source) return null;
   try {
-    return JSON.parse(section.dataset.source);
+    return JSON.parse(section?.dataset?.source || "");
   } catch {
     return null;
   }
 }
 
 function escape(str) {
-  if (typeof str !== "string") return "";
-  return str.replace(/[&<>"']/g, c => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  })[c]);
+  return typeof str === "string"
+    ? str.replace(/[&<>"']/g, c =>
+        ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c])
+      )
+    : "";
 }
