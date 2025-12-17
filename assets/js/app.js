@@ -1,26 +1,38 @@
 /* =====================================================
-   APPLICATION ENTRY POINT (FINAL)
-   Stable • SPA-safe • Production-ready
+   APPLICATION ENTRY POINT (FINAL, CORRECT)
+   Stable • SPA-safe • Deterministic boot
 ===================================================== */
 
 /* -----------------------------------------------------
-   Core systems
+   ROUTER (CONTROLLED — NO AUTO BOOT)
 ----------------------------------------------------- */
-import "./core/router.js";
+import {
+  initRouter,
+  registerRoute
+} from "./core/router.js";
 
 /* -----------------------------------------------------
-   UI systems
+   VIEWS
+----------------------------------------------------- */
+import { DashboardView } from "./views/dashboard.js";
+import { AnalyticsView } from "./views/analytics.js";
+import { ProjectsView } from "./views/projects.js";
+import { LearningsView } from "./views/learnings.js";
+
+/* -----------------------------------------------------
+   UI SYSTEMS
 ----------------------------------------------------- */
 import { renderNavbar } from "./ui/navbar.js";
 import { initReveal, destroyReveal } from "./ui/reveal.js";
 import { initGlow } from "./ui/glow.js";
 
 /* -----------------------------------------------------
-   App state
+   APP STATE
 ----------------------------------------------------- */
 let appRoot = null;
 let mainRoot = null;
 let initialized = false;
+let routerStarted = false;
 let routeListenerBound = false;
 
 /* =====================================================
@@ -37,6 +49,9 @@ export function initApp() {
   }
 
   try {
+    /* --------------------------------------------------
+       ROOT CHECK
+    -------------------------------------------------- */
     appRoot = document.getElementById("app");
     if (!appRoot) {
       throw new Error("#app root not found");
@@ -85,6 +100,19 @@ export function initApp() {
       });
       routeListenerBound = true;
     }
+
+    /* --------------------------------------------------
+       ROUTER SETUP (AFTER SHELL EXISTS)
+    -------------------------------------------------- */
+    if (!routerStarted) {
+      registerRoute("dashboard", DashboardView);
+      registerRoute("analytics", AnalyticsView);
+      registerRoute("projects", ProjectsView);
+      registerRoute("learnings", LearningsView);
+
+      initRouter("dashboard");
+      routerStarted = true;
+    }
   } catch (err) {
     console.error("[App] Fatal initialization error", err);
 
@@ -111,6 +139,6 @@ export function getAppMain() {
 }
 
 /* =====================================================
-   AUTO BOOTSTRAP (REQUIRED)
+   AUTO BOOTSTRAP (ENTRY POINT)
 ===================================================== */
 initApp();
