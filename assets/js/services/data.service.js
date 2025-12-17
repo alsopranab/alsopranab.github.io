@@ -1,9 +1,11 @@
 /**
- * Advanced Centralized Data Service (FINAL — FIXED)
- * =================================================
- * GitHub Pages safe
- * Absolute-path resilient
- * Silent in prod, loud in debug
+ * Advanced Centralized Data Service (FINAL — SCHEMA SAFE)
+ * =====================================================
+ * - GitHub Pages safe
+ * - Absolute-path resilient
+ * - Memory + session cache
+ * - In-flight deduplication
+ * - JSON schema normalization (social.json FIXED)
  */
 
 const DataService = (() => {
@@ -11,12 +13,15 @@ const DataService = (() => {
      CONFIGURATION
   ========================= */
 
-  // Automatically resolve base path safely
   const BASE_PATH = (() => {
     const path = window.location.pathname;
+
+    // Root or direct HTML
     if (path === "/" || path.endsWith(".html")) {
       return "/assets/data/";
     }
+
+    // Sub-paths (GitHub Pages safe)
     return path.replace(/\/[^/]*$/, "/assets/data/");
   })();
 
@@ -28,126 +33,123 @@ const DataService = (() => {
      INTERNAL STATE
   ========================= */
 
-  const memoryCache = {};
-  const inFlightRequests = {};
+  const memoryCache = Object.create(null);
+  const inFlightRequests = Object.create(null);
+
+  /* =========================
+     LOGGING
+  ========================= */
+
+  const log = (...a) => DEBUG && console.log("[DataService]", ...a);
+  const warn = (...a) => console.warn("[DataService]", ...a);
+  const err = (...a) => console.error("[DataService]", ...a);
 
   /* =========================
      UTILITIES
   ========================= */
 
-  function log(...args) {
-    if (DEBUG) console.log("[DataService]", ...args);
-  }
-
-  function warn(...args) {
-    console.warn("[DataService]", ...args);
-  }
-
-  function error(...args) {
-    console.error("[DataService]", ...args);
-  }
-
-  function withTimeout(promise, timeoutMs) {
-    return new Promise((resolve, reject) => {
-      const timer = setTimeout(
-        () => reject(new Error("Request timed out")),
-        timeoutMs
+  const withTimeout = (promise, ms) =>
+    new Promise((resolve, reject) => {
+      const t = setTimeout(() => reject(new Error("Timeout")), ms);
+      promise.then(
+        r => { clearTimeout(t); resolve(r); },
+        e => { clearTimeout(t); reject(e); }
       );
-
-      promise
-        .then((res) => {
-          clearTimeout(timer);
-          resolve(res);
-        })
-        .catch((err) => {
-          clearTimeout(timer);
-          reject(err);
-        });
     });
-  }
 
-  function getSessionKey(fileName) {
-    return `DataService::${fileName}`;
+  const sessionKey = (f) => `DataService::${f}`;
+
+  /* =========================
+     SCHEMA NORMALIZERS
+  ========================= */
+
+  function normalizeSocial(data) {
+    if (!data?.profiles || !Array.isArray(data.profiles)) {
+      warn("social.json malformed or empty");
+      return { profiles: [] };
+    }
+
+    return {
+      profiles: [...data.profiles]
+        .filter(p => p && typeof p === "object")
+        .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
+    };
   }
 
   /* =========================
      CORE FETCH
   ========================= */
 
-  async function fetchJSON(fileName) {
-    const url = `${BASE_PATH}${fileName}`;
+  async function fetchJSON(file) {
+    const url = `${BASE_PATH}${file}`;
     log("Fetching:", url);
 
-    const response = await withTimeout(fetch(url, { cache: "no-store" }), FETCH_TIMEOUT);
+    const res = await withTimeout(
+      fetch(url, { cache: "no-store" }),
+      FETCH_TIMEOUT
+    );
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} — ${url}`);
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} → ${url}`);
     }
 
-    return response.json();
+    return res.json();
   }
 
-  async function loadJSON(fileName) {
-    /* ---- Memory Cache ---- */
-    if (memoryCache[fileName]) {
-      log("Memory cache hit:", fileName);
-      return memoryCache[fileName];
+  async function loadJSON(file) {
+    /* ---- Memory cache ---- */
+    if (memoryCache[file]) {
+      log("Memory hit:", file);
+      return memoryCache[file];
     }
 
-    /* ---- Session Cache ---- */
+    /* ---- Session cache ---- */
     if (ENABLE_SESSION_CACHE) {
-      const cached = sessionStorage.getItem(getSessionKey(fileName));
+      const cached = sessionStorage.getItem(sessionKey(file));
       if (cached) {
         const parsed = JSON.parse(cached);
-        memoryCache[fileName] = parsed;
-        log("Session cache hit:", fileName);
+        memoryCache[file] = parsed;
+        log("Session hit:", file);
         return parsed;
       }
     }
 
-    /* ---- In-flight Dedup ---- */
-    if (inFlightRequests[fileName]) {
-      return inFlightRequests[fileName];
+    /* ---- In-flight dedup ---- */
+    if (inFlightRequests[file]) {
+      return inFlightRequests[file];
     }
 
     /* ---- Network ---- */
     const request = (async () => {
       try {
-        const data = await fetchJSON(fileName);
+        let data = await fetchJSON(file);
+        if (!data) return null;
 
-        if (!data) {
-          warn("Empty data:", fileName);
-          return null;
+        // 🔒 Schema lock point
+        if (file === "social.json") {
+          data = normalizeSocial(data);
         }
 
-        memoryCache[fileName] = data;
+        memoryCache[file] = data;
 
         if (ENABLE_SESSION_CACHE) {
           sessionStorage.setItem(
-            getSessionKey(fileName),
+            sessionKey(file),
             JSON.stringify(data)
           );
         }
 
-        log("Loaded:", fileName);
+        log("Loaded:", file);
         return data;
-      } catch (err) {
-        error(`Failed to load ${fileName}`, err);
-
-        // DEV VISIBILITY — do not stay silent
-        if (DEBUG) {
-          warn(
-            `⚠️ ${fileName} missing. Renderer will skip this section.`
-          );
-        }
-
+      } catch (e) {
+        err(`Failed loading ${file}`, e);
         return null;
       } finally {
-        delete inFlightRequests[fileName];
+        delete inFlightRequests[file];
       }
     })();
 
-    inFlightRequests[fileName] = request;
+    inFlightRequests[file] = request;
     return request;
   }
 
@@ -156,17 +158,17 @@ const DataService = (() => {
   ========================= */
 
   return Object.freeze({
-    getProfile: () => loadJSON("profile.json"),
-    getExperience: () => loadJSON("experience.json"),
+    getProfile:   () => loadJSON("profile.json"),
+    getExperience:() => loadJSON("experience.json"),
     getEducation: () => loadJSON("education.json"),
-    getProjects: () => loadJSON("projects.json"),
-    getFeatured: () => loadJSON("featured.json"),
-    getLicenses: () => loadJSON("licenses.json"),
-    getContact: () => loadJSON("contact.json"),
-    getSocials: () => loadJSON("social.json"),
+    getProjects:  () => loadJSON("projects.json"),
+    getFeatured:  () => loadJSON("featured.json"),
+    getLicenses:  () => loadJSON("licenses.json"),
+    getContact:   () => loadJSON("contact.json"),
+    getSocials:   () => loadJSON("social.json"),
 
     preloadAll: async () => {
-      log("Preloading all data...");
+      log("Preloading all JSON…");
       await Promise.allSettled([
         loadJSON("profile.json"),
         loadJSON("experience.json"),
@@ -183,7 +185,7 @@ const DataService = (() => {
     debugSnapshot: () => ({
       basePath: BASE_PATH,
       memoryCache: Object.keys(memoryCache),
-      inFlightRequests: Object.keys(inFlightRequests)
+      inFlight: Object.keys(inFlightRequests)
     })
   });
 })();
