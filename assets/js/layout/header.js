@@ -1,20 +1,12 @@
 /**
- * Header Layout Controller (FINAL — MINIMAL & STABLE)
- * ==================================================
- * Purpose:
- * - Always render a visible navbar
- * - Depend ONLY on profile.json
- * - Never block page rendering
- * - Resume handled via data-action
+ * Header Layout Controller (FINAL — FAIL SAFE)
+ * ===========================================
+ * Always renders navigation
+ * Uses profile data when available
+ * Never exits early
  */
 
-window.addEventListener("app:ready", () => {
-  renderHeader().catch(err => {
-    console.error("[Header] Failed to render", err);
-  });
-});
-
-async function renderHeader() {
+window.addEventListener("app:ready", async () => {
   const header = document.getElementById("site-header");
   if (!header) return;
 
@@ -33,10 +25,10 @@ async function renderHeader() {
     <div class="header-container">
 
       <div class="header-name">
-        ${escapeHTML(name)}
+        ${name}
       </div>
 
-      <nav class="header-nav" aria-label="Primary Navigation">
+      <nav class="header-nav">
         <a href="index.html">Home</a>
         <a href="stats.html">Stats</a>
         <a href="#" data-action="resume">Resume</a>
@@ -44,19 +36,4 @@ async function renderHeader() {
 
     </div>
   `;
-}
-
-/* =========================
-   UTIL
-========================= */
-function escapeHTML(str) {
-  return typeof str === "string"
-    ? str.replace(/[&<>"']/g, c => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        "\"": "&quot;",
-        "'": "&#39;"
-      }[c]))
-    : "";
-}
+});
