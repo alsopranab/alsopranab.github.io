@@ -1,19 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
+/* ================================
+   ROOT VARIABLES
+================================ */
 :root {
   --bg: #050816;
   --bg-soft: #070b1f;
-  --card: rgba(255,255,255,0.04);
-  --border: rgba(255,255,255,0.08);
+  --card: rgba(255, 255, 255, 0.04);
+  --border: rgba(255, 255, 255, 0.08);
   --text: #e6ebff;
   --muted: #9aa4c7;
   --blue: #2563eb;
 }
 
-* {
+/* ================================
+   RESET & BASE
+================================ */
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -21,26 +33,33 @@ body {
   background: radial-gradient(circle at top left, #0b1b4d, var(--bg));
   color: var(--text);
   line-height: 1.6;
+  min-height: 100vh;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
+/* ================================
+   LAYOUT
+================================ */
 .container {
   max-width: 1200px;
-  margin: auto;
-  padding: 24px;
+  margin: 0 auto;
+  padding: 100px 24px 120px;
 }
 
-/* NAV */
+/* ================================
+   NAVBAR (DESKTOP)
+================================ */
 nav {
   position: fixed;
   top: 0;
   width: 100%;
   height: 70px;
-  background: rgba(5,8,22,0.7);
+  background: rgba(5, 8, 22, 0.75);
   backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
   z-index: 100;
@@ -48,24 +67,29 @@ nav {
 
 .nav-inner {
   max-width: 1200px;
-  margin: auto;
-  padding: 0 24px;
   height: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .nav-links a {
-  margin-left: 20px;
+  margin-left: 22px;
   color: var(--muted);
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
+.nav-links a:hover,
 .nav-links a.active {
-  color: white;
+  color: #ffffff;
 }
 
-/* MOBILE NAV */
+/* ================================
+   MOBILE NAV
+================================ */
 .mobile-nav {
   display: none;
 }
@@ -81,38 +105,73 @@ nav {
     bottom: 0;
     width: 100%;
     height: 65px;
-    background: rgba(5,8,22,0.9);
+    background: rgba(5, 8, 22, 0.9);
     border-top: 1px solid var(--border);
     justify-content: space-around;
     align-items: center;
     z-index: 100;
   }
+
+  .mobile-nav a {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .mobile-nav a.active {
+    color: #ffffff;
+  }
+
+  .container {
+    padding: 40px 20px 120px;
+  }
 }
 
-/* SECTIONS */
+/* ================================
+   SECTIONS (SPA LOGIC)
+================================ */
 section {
-  margin-top: 100px;
+  display: none;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
+section.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================
+   CARDS
+================================ */
 .card {
-  background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.02)
+  );
   border: 1px solid var(--border);
   border-radius: 18px;
   padding: 24px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
   margin-bottom: 24px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
 }
 
-/* HERO */
+/* ================================
+   HERO
+================================ */
 .hero {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 40px;
+  grid-template-columns: 160px 1fr;
+  gap: 32px;
   align-items: center;
 }
 
 .hero img {
   width: 160px;
+  height: 160px;
+  object-fit: cover;
   border-radius: 50%;
   border: 2px solid var(--border);
 }
@@ -124,37 +183,51 @@ section {
   }
 }
 
-/* TITLES */
+/* ================================
+   TYPOGRAPHY
+================================ */
 h1 {
   font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
 }
 
 h2 {
   margin-bottom: 12px;
+  font-weight: 600;
+}
+
+p {
+  margin-top: 8px;
 }
 
 .muted {
   color: var(--muted);
 }
 
-/* TAGS */
+/* ================================
+   TAGS / SKILLS
+================================ */
 .tags span {
   display: inline-block;
   padding: 6px 12px;
   border-radius: 12px;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.06);
   margin: 6px 6px 0 0;
   font-size: 14px;
 }
 
-/* GRID */
+/* ================================
+   GRID
+================================ */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 20px;
 }
 
-/* FOOTER SPACE */
+/* ================================
+   FOOTER SPACER (MOBILE SAFE)
+================================ */
 .footer-space {
   height: 80px;
 }
