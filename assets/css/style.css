@@ -1,10 +1,46 @@
+/* ============================================================
+   APPLE-LEVEL PREMIUM DESIGN SYSTEM (CSS ONLY)
+   ============================================================ */
+
 /* =========================
-   RESET & BASE
+   ROOT SYSTEM
 ========================= */
+:root {
+  --bg-main: #07040f;
+  --bg-deep: #0a0618;
+
+  --glass-bg: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.14);
+  --glass-glow: rgba(167, 139, 250, 0.45);
+
+  --accent: #a78bfa;
+  --accent-strong: #7c3aed;
+
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.75);
+
+  --radius-xl: 28px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+
+  --blur-lg: blur(32px);
+  --blur-md: blur(18px);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* =========================
+   RESET
+========================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 html {
@@ -13,73 +49,152 @@ html {
 
 body {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background-color: #0a0618;
-  color: #ffffff;
+  background:
+    radial-gradient(1200px 600px at 90% -10%, rgba(124,58,237,0.25), transparent),
+    radial-gradient(900px 500px at 10% 120%, rgba(167,139,250,0.18), transparent),
+    linear-gradient(180deg, #05030c, #0a0618 40%, #05030c);
+  color: var(--text-main);
   line-height: 1.6;
+  overflow-x: hidden;
+  animation: backgroundShift 18s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundShift {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
 }
 
 /* =========================
-   GLOBAL ELEMENTS
+   TYPOGRAPHY
 ========================= */
 h1, h2, h3, h4 {
   font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: 48px;
+  font-size: clamp(36px, 5vw, 56px);
 }
 
 h2 {
-  font-size: 28px;
-  margin-bottom: 32px;
+  font-size: clamp(24px, 3vw, 32px);
+  margin-bottom: 40px;
 }
 
 p {
-  color: rgba(255, 255, 255, 0.75);
+  color: var(--text-muted);
 }
 
 a {
-  color: #a78bfa;
+  color: var(--text-main);
   text-decoration: none;
+  position: relative;
 }
 
-a:hover {
-  text-decoration: underline;
+/* underline glow illusion */
+a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transition: width 0.3s ease;
 }
 
+a:hover::after {
+  width: 100%;
+}
+
+/* =========================
+   SECTIONS
+========================= */
 section {
   padding: 120px 24px;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
 }
 
 /* =========================
-   HEADER
+   UNIVERSAL GLASS CARD
+========================= */
+.project-card,
+.education-item,
+.experience-role,
+.contact-wrapper,
+.featured-item,
+.licenses-grid > *,
+.header-container {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.09),
+    rgba(255,255,255,0.02)
+  );
+  backdrop-filter: var(--blur-md);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.12);
+  transition:
+    transform 0.6s var(--ease-out),
+    box-shadow 0.6s var(--ease-out);
+}
+
+/* hover depth illusion */
+.project-card:hover,
+.education-item:hover,
+.experience-role:hover,
+.featured-item:hover,
+.licenses-grid > *:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow:
+    0 50px 120px rgba(0,0,0,0.7),
+    0 0 60px var(--glass-glow);
+}
+
+/* =========================
+   HEADER (APPLE NAV FEEL)
 ========================= */
 #site-header {
-  padding: 32px 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: var(--blur-lg);
+  background: rgba(7,4,15,0.65);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
 .header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .header-name {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .header-role {
-  font-size: 14px;
-  opacity: 0.7;
+  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .header-nav a {
-  margin-left: 24px;
+  margin-left: 32px;
   font-size: 14px;
+  opacity: 0.85;
+  transition: opacity 0.25s ease;
+}
+
+.header-nav a:hover {
+  opacity: 1;
 }
 
 /* =========================
@@ -88,17 +203,23 @@ section {
 .hero-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
+  max-width: 720px;
 }
 
-.hero-tagline {
-  font-size: 20px;
-  opacity: 0.8;
+.hero-wrapper img {
+  width: 140px;
+  filter: drop-shadow(0 0 35px var(--glass-glow));
+  animation: logoGlow 4s ease-in-out infinite;
 }
 
-.hero-company-logo {
-  width: 120px;
-  margin-top: 24px;
+@keyframes logoGlow {
+  0%,100% {
+    filter: drop-shadow(0 0 20px rgba(167,139,250,0.4));
+  }
+  50% {
+    filter: drop-shadow(0 0 50px rgba(167,139,250,0.85));
+  }
 }
 
 /* =========================
@@ -108,14 +229,6 @@ section {
   display: flex;
   flex-direction: column;
   gap: 48px;
-}
-
-.experience-company-logo {
-  width: 48px;
-}
-
-.experience-role {
-  margin-top: 16px;
 }
 
 .experience-work li {
@@ -134,7 +247,8 @@ section {
 .featured-item {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 48px;
+  gap: 56px;
+  padding: 40px;
 }
 
 .featured-item[data-alignment="right"] {
@@ -143,27 +257,34 @@ section {
 
 .featured-item img {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--radius-xl);
+  box-shadow:
+    0 40px 100px rgba(0,0,0,0.7),
+    0 0 50px rgba(167,139,250,0.4);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.featured-item img:hover {
+  transform: scale(1.05);
 }
 
 /* =========================
    PROJECTS
 ========================= */
 .project-category {
-  margin-bottom: 64px;
+  margin-bottom: 72px;
 }
 
 .project-card {
-  margin-top: 24px;
-  padding: 24px;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
+  padding: 32px;
+  margin-top: 28px;
 }
 
 /* =========================
    EDUCATION
 ========================= */
 .education-item {
+  padding: 32px;
   margin-bottom: 40px;
 }
 
@@ -172,52 +293,75 @@ section {
 ========================= */
 .licenses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 36px;
 }
 
 .license-image {
   width: 100%;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 25px 70px rgba(0,0,0,0.7),
+    0 0 35px rgba(167,139,250,0.45);
 }
 
 /* =========================
-   CONTACT
+   CONTACT (AURORA FEEL)
 ========================= */
 #contact-section {
-  background: radial-gradient(
-      60% 60% at 50% 100%,
-      rgba(124, 58, 237, 0.25),
-      rgba(10, 6, 24, 0.95)
-    ),
-    #0a0618;
-}
-
-.contact-wrapper {
-  max-width: 520px;
+  background:
+    radial-gradient(80% 80% at 50% 100%, rgba(124,58,237,0.45), transparent),
+    var(--bg-deep);
 }
 
 .contact-email {
   display: inline-block;
-  margin: 24px 0;
+  font-size: 18px;
+  margin-top: 28px;
 }
 
 /* =========================
    FOOTER
 ========================= */
 #site-footer {
-  padding: 48px 24px;
+  padding: 64px 24px;
   text-align: center;
-  font-size: 14px;
-  opacity: 0.6;
+  font-size: 13px;
+  color: var(--text-muted);
+  background: linear-gradient(
+    to top,
+    rgba(7,4,15,0.9),
+    transparent
+  );
+}
+
+/* =========================
+   MICRO MOTION (CSS-ONLY)
+========================= */
+section,
+.project-card,
+.featured-item,
+.education-item {
+  animation: fadeUp 1s var(--ease-out) both;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 @media (max-width: 768px) {
-  h1 {
-    font-size: 36px;
+  section {
+    padding: 80px 20px;
   }
 
   .featured-item {
@@ -225,7 +369,7 @@ section {
     direction: ltr;
   }
 
-  section {
-    padding: 80px 20px;
+  .header-nav a {
+    margin-left: 16px;
   }
 }
