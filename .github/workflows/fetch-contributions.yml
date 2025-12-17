@@ -29,13 +29,12 @@ jobs:
             }' > response.json
 
           jq -s '
-[
-  .[0].data.user.contributionsCollection.contributionCalendar.weeks[]
-  .contributionDays[]
-  | { date: .date, count: .contributionCount }
-]
-' response.json > assets/data/contributions.json
-
+          [
+            .[0].data.user.contributionsCollection.contributionCalendar.weeks[]
+            .contributionDays[]
+            | { date: .date, count: .contributionCount }
+          ]
+          ' response.json > assets/data/contributions.json
 
       - name: Commit data
         run: |
