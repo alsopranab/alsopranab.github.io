@@ -1,13 +1,28 @@
 /**
- * Home Page Controller
- * --------------------
- * Responsible for:
- * - Orchestrating section-level rendering
- * - Ensuring data is loaded before render
- * - Maintaining bottom-to-top logical order
+ * Home Page Controller (ADVANCED & FINAL)
+ * ======================================
+ * Responsibilities:
+ * - Waits for app bootstrap
+ * - Loads all required data (bottom → top)
+ * - Normalizes and validates payloads
+ * - Attaches data safely to DOM
+ * - Emits lifecycle events for observability
+ *
+ * No rendering logic lives here.
  */
 
-(async function HomePageController() {
+window.addEventListener("app:ready", () => {
+  HomePageController().catch((err) => {
+    console.error("[HomePage] Fatal initialization error", err);
+  });
+});
+
+async function HomePageController() {
+  console.group("[HomePage] Initialization");
+
+  /* =========================
+     SECTION REGISTRY
+  ========================= */
   const sections = {
     hero: document.getElementById("hero-section"),
     experience: document.getElementById("experience-section"),
@@ -18,26 +33,14 @@
     contact: document.getElementById("contact-section")
   };
 
-  // Guard: page integrity
-  Object.values(sections).forEach((el) => {
-    if (!el) {
-      console.error("[HomePage] Missing section container");
-    }
-  });
+  validateSections(sections);
 
-  /**
-   * Bottom → Top data loading order
-   * (no rendering assumptions here)
-   */
-  const [
-    contactData,
-    licensesData,
-    educationData,
-    projectsData,
-    featuredData,
-    experienceData,
-    profileData
-  ] = await Promise.all([
+  /* =========================
+     DATA LOADING (BOTTOM → TOP)
+  ========================= */
+  console.info("[HomePage] Loading data…");
+
+  const results = await Promise.allSettled([
     DataService.getContact(),
     DataService.getLicenses(),
     DataService.getEducation(),
@@ -47,15 +50,71 @@
     DataService.getProfile()
   ]);
 
-  /**
-   * Attach raw data to DOM nodes
-   * Rendering logic is intentionally deferred
-   */
-  if (sections.contact) sections.contact.dataset.source = JSON.stringify(contactData);
-  if (sections.licenses) sections.licenses.dataset.source = JSON.stringify(licensesData);
-  if (sections.education) sections.education.dataset.source = JSON.stringify(educationData);
-  if (sections.projects) sections.projects.dataset.source = JSON.stringify(projectsData);
-  if (sections.featured) sections.featured.dataset.source = JSON.stringify(featuredData);
-  if (sections.experience) sections.experience.dataset.source = JSON.stringify(experienceData);
-  if (sections.hero) sections.hero.dataset.source = JSON.stringify(profileData);
-})();
+  const [
+    contactData,
+    licensesData,
+    educationData,
+    projectsData,
+    featuredData,
+    experienceData,
+    profileData
+  ] = normalizeResults(results);
+
+  /* =========================
+     DATA ATTACHMENT
+  ========================= */
+  attach(sections.contact, contactData);
+  attach(sections.licenses, licensesData);
+  attach(sections.education, educationData);
+  attach(sections.projects, projectsData);
+  attach(sections.featured, featuredData);
+  attach(sections.experience, experienceData);
+  attach(sections.hero, profileData);
+
+  console.info("[HomePage] Data attached");
+  console.groupEnd();
+
+  /* =========================
+     LIFECYCLE EVENT
+  ========================= */
+  window.dispatchEvent(
+    new CustomEvent("home:ready", {
+      detail: {
+        timestamp: Date.now()
+      }
+    })
+  );
+}
+
+/* =========================
+   HELPERS (INTERNAL)
+========================= */
+
+function validateSections(sections) {
+  Object.entries(sections).forEach(([key, el]) => {
+    if (!el) {
+      console.warn(`[HomePage] Missing section: ${key}`);
+    }
+  });
+}
+
+function normalizeResults(results) {
+  return results.map((res, idx) => {
+    if (res.status === "fulfilled" && res.value) {
+      return res.value;
+    }
+
+    console.warn(`[HomePage] Data source failed at index ${idx}`);
+    return null;
+  });
+}
+
+function attach(section, data) {
+  if (!section || !data) return;
+
+  try {
+    section.dataset.source = JSON.stringify(data);
+  } catch (err) {
+    console.error("[HomePage] Failed to attach data", err);
+  }
+}
