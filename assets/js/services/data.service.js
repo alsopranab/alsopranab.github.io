@@ -1,30 +1,33 @@
 /**
- * Advanced Centralized Data Service (FINAL)
- * =========================================
- * Responsibilities:
- * - Centralized JSON loading
- * - Intelligent caching (memory + sessionStorage)
- * - Request de-duplication
- * - Timeout protection
- * - Graceful fallback handling
- * - Environment-safe (GitHub Pages)
- * - Debug-friendly
- *
- * This file is the ONLY place that touches fetch().
+ * Advanced Centralized Data Service (FINAL — FIXED)
+ * =================================================
+ * GitHub Pages safe
+ * Absolute-path resilient
+ * Silent in prod, loud in debug
  */
 
 const DataService = (() => {
   /* =========================
      CONFIGURATION
   ========================= */
-  const BASE_PATH = "assets/data/";
-  const FETCH_TIMEOUT = 8000; // ms
+
+  // Automatically resolve base path safely
+  const BASE_PATH = (() => {
+    const path = window.location.pathname;
+    if (path === "/" || path.endsWith(".html")) {
+      return "/assets/data/";
+    }
+    return path.replace(/\/[^/]*$/, "/assets/data/");
+  })();
+
+  const FETCH_TIMEOUT = 8000;
   const ENABLE_SESSION_CACHE = true;
   const DEBUG = true;
 
   /* =========================
      INTERNAL STATE
   ========================= */
+
   const memoryCache = {};
   const inFlightRequests = {};
 
@@ -36,15 +39,20 @@ const DataService = (() => {
     if (DEBUG) console.log("[DataService]", ...args);
   }
 
+  function warn(...args) {
+    console.warn("[DataService]", ...args);
+  }
+
   function error(...args) {
     console.error("[DataService]", ...args);
   }
 
   function withTimeout(promise, timeoutMs) {
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        reject(new Error("Request timed out"));
-      }, timeoutMs);
+      const timer = setTimeout(
+        () => reject(new Error("Request timed out")),
+        timeoutMs
+      );
 
       promise
         .then((res) => {
@@ -63,51 +71,54 @@ const DataService = (() => {
   }
 
   /* =========================
-     CORE FETCH LOGIC
+     CORE FETCH
   ========================= */
 
   async function fetchJSON(fileName) {
     const url = `${BASE_PATH}${fileName}`;
-
     log("Fetching:", url);
 
-    const response = await withTimeout(fetch(url), FETCH_TIMEOUT);
+    const response = await withTimeout(fetch(url, { cache: "no-store" }), FETCH_TIMEOUT);
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status} while loading ${fileName}`);
+      throw new Error(`HTTP ${response.status} — ${url}`);
     }
 
     return response.json();
   }
 
   async function loadJSON(fileName) {
-    /* ---- 1. Memory Cache ---- */
+    /* ---- Memory Cache ---- */
     if (memoryCache[fileName]) {
       log("Memory cache hit:", fileName);
       return memoryCache[fileName];
     }
 
-    /* ---- 2. Session Storage Cache ---- */
+    /* ---- Session Cache ---- */
     if (ENABLE_SESSION_CACHE) {
       const cached = sessionStorage.getItem(getSessionKey(fileName));
       if (cached) {
-        log("Session cache hit:", fileName);
         const parsed = JSON.parse(cached);
         memoryCache[fileName] = parsed;
+        log("Session cache hit:", fileName);
         return parsed;
       }
     }
 
-    /* ---- 3. In-flight De-duplication ---- */
+    /* ---- In-flight Dedup ---- */
     if (inFlightRequests[fileName]) {
-      log("Awaiting in-flight request:", fileName);
       return inFlightRequests[fileName];
     }
 
-    /* ---- 4. Network Fetch ---- */
+    /* ---- Network ---- */
     const request = (async () => {
       try {
         const data = await fetchJSON(fileName);
+
+        if (!data) {
+          warn("Empty data:", fileName);
+          return null;
+        }
 
         memoryCache[fileName] = data;
 
@@ -122,6 +133,14 @@ const DataService = (() => {
         return data;
       } catch (err) {
         error(`Failed to load ${fileName}`, err);
+
+        // DEV VISIBILITY — do not stay silent
+        if (DEBUG) {
+          warn(
+            `⚠️ ${fileName} missing. Renderer will skip this section.`
+          );
+        }
+
         return null;
       } finally {
         delete inFlightRequests[fileName];
@@ -133,11 +152,10 @@ const DataService = (() => {
   }
 
   /* =========================
-     PUBLIC API (STRICT)
+     PUBLIC API
   ========================= */
 
   return Object.freeze({
-    /* ---- Core Data ---- */
     getProfile: () => loadJSON("profile.json"),
     getExperience: () => loadJSON("experience.json"),
     getEducation: () => loadJSON("education.json"),
@@ -147,10 +165,9 @@ const DataService = (() => {
     getContact: () => loadJSON("contact.json"),
     getSocials: () => loadJSON("social.json"),
 
-    /* ---- Utilities ---- */
     preloadAll: async () => {
       log("Preloading all data...");
-      await Promise.all([
+      await Promise.allSettled([
         loadJSON("profile.json"),
         loadJSON("experience.json"),
         loadJSON("education.json"),
@@ -163,19 +180,8 @@ const DataService = (() => {
       log("Preload complete");
     },
 
-    clearMemoryCache: () => {
-      Object.keys(memoryCache).forEach((k) => delete memoryCache[k]);
-      log("Memory cache cleared");
-    },
-
-    clearSessionCache: () => {
-      Object.keys(sessionStorage)
-        .filter((k) => k.startsWith("DataService::"))
-        .forEach((k) => sessionStorage.removeItem(k));
-      log("Session cache cleared");
-    },
-
     debugSnapshot: () => ({
+      basePath: BASE_PATH,
       memoryCache: Object.keys(memoryCache),
       inFlightRequests: Object.keys(inFlightRequests)
     })
