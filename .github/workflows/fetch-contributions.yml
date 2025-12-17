@@ -18,7 +18,7 @@ jobs:
           mkdir -p assets/data
 
           curl -s -X POST https://api.github.com/graphql \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: Bearer ${{ secrets.THESECRETALSOPRANAB }}" \
             -H "Content-Type: application/json" \
             -d '{
               "query": "query ($login: String!) { user(login: $login) { contributionsCollection { contributionCalendar { weeks { contributionDays { date contributionCount } } } } } }",
