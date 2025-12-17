@@ -11,7 +11,7 @@
  */
 
 /* ============================================================
-   ✅ FIXED EVENT LISTENER
+   FIXED EVENT LISTENER
    Renderer must wait until data is attached
 ============================================================ */
 
