@@ -1,19 +1,15 @@
 /**
- * Home Page Controller (FINAL — RACE SAFE)
- * =======================================
+ * Home Page Controller (FINAL — SCHEMA & RENDER SAFE)
+ * ==================================================
  * Responsibilities:
- * - Runs deterministically after DOM is ready
- * - Loads all required data (bottom → top)
- * - Attaches data safely to DOM
- * - Emits lifecycle events for renderers
+ * - Runs after DOM is ready
+ * - Loads required JSONs
+ * - Attaches data ONLY if valid
+ * - Fires home:ready deterministically
  *
- * No rendering logic lives here.
+ * NO rendering logic here.
  */
 
-/* ============================================================
-   ENTRY POINT (FIXED)
-   DOMContentLoaded cannot be missed
-============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
   HomePageController().catch((err) => {
     console.error("[HomePage] Fatal initialization error", err);
@@ -39,42 +35,51 @@ async function HomePageController() {
   validateSections(sections);
 
   /* =========================
-     DATA LOADING (BOTTOM → TOP)
+     DATA LOADING
   ========================= */
   console.info("[HomePage] Loading data…");
 
   const results = await Promise.allSettled([
-    DataService.getContact(),
-    DataService.getLicenses(),
-    DataService.getEducation(),
-    DataService.getProjects(),
-    DataService.getFeatured(),
+    DataService.getProfile(),     // REQUIRED
     DataService.getExperience(),
-    DataService.getProfile()
+    DataService.getFeatured(),
+    DataService.getProjects(),
+    DataService.getEducation(),
+    DataService.getLicenses(),
+    DataService.getContact()
   ]);
 
   const [
-    contactData,
-    licensesData,
-    educationData,
-    projectsData,
-    featuredData,
+    profileData,
     experienceData,
-    profileData
+    featuredData,
+    projectsData,
+    educationData,
+    licensesData,
+    contactData
   ] = normalizeResults(results);
 
   /* =========================
-     DATA ATTACHMENT
+     HARD REQUIREMENT CHECK
   ========================= */
-  attach(sections.contact, contactData);
-  attach(sections.licenses, licensesData);
-  attach(sections.education, educationData);
-  attach(sections.projects, projectsData);
-  attach(sections.featured, featuredData);
-  attach(sections.experience, experienceData);
-  attach(sections.hero, profileData);
+  if (!profileData?.identity) {
+    console.error("[HomePage] profile.json missing or invalid — aborting render");
+    console.groupEnd();
+    return;
+  }
 
-  console.info("[HomePage] Data attached");
+  /* =========================
+     DATA ATTACHMENT (SAFE)
+  ========================= */
+  attach(sections.hero, profileData);
+  attach(sections.experience, experienceData);
+  attach(sections.featured, featuredData);
+  attach(sections.projects, projectsData);
+  attach(sections.education, educationData);
+  attach(sections.licenses, licensesData);
+  attach(sections.contact, contactData);
+
+  console.info("[HomePage] Data attached successfully");
   console.groupEnd();
 
   /* =========================
@@ -90,10 +95,11 @@ async function HomePageController() {
 /* ============================================================
    HELPERS
 ============================================================ */
+
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
     if (!el) {
-      console.warn(`[HomePage] Missing section: ${key}`);
+      console.warn(`[HomePage] Missing section in DOM: ${key}`);
     }
   });
 }
