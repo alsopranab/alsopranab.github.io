@@ -28,14 +28,10 @@ jobs:
               "variables": { "login": "alsopranab" }
             }' > response.json
 
-          jq -r '
-            if .data and .data.user then
-              .data.user.contributionsCollection.contributionCalendar.weeks[]
-              .contributionDays[]
-              | {date: .date, count: .contributionCount}
-            else
-              empty
-            end
+          jq -s '
+            .[0].data.user.contributionsCollection.contributionCalendar.weeks[]
+            .contributionDays[]
+            | { date: .date, count: .contributionCount }
           ' response.json > assets/data/contributions.json
 
       - name: Commit data
