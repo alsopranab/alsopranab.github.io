@@ -1,16 +1,31 @@
+/* =====================================================
+   REVEAL ANIMATIONS (CINEMATIC, SUBTLE)
+===================================================== */
+
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  transition: all 0.8s ease;
+  transform: translateY(28px) scale(0.98);
+
+  transition:
+    opacity var(--duration-slow) var(--ease-emphasized),
+    transform var(--duration-slow) var(--ease-emphasized);
+
+  will-change: opacity, transform;
 }
 
 [data-reveal].revealed {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
-/* ============================
-   ICON GLOW BASE
-============================ */
+
+/* Optional stagger support */
+[data-reveal][data-delay="1"] { transition-delay: 120ms; }
+[data-reveal][data-delay="2"] { transition-delay: 240ms; }
+[data-reveal][data-delay="3"] { transition-delay: 360ms; }
+
+/* =====================================================
+   ICON GLOW BASE (CONTROLLED, PREMIUM)
+===================================================== */
 
 .icon-glow {
   position: relative;
@@ -21,11 +36,15 @@
   width: 48px;
   height: 48px;
 
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
 
-  transition: transform 0.35s ease;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  transition:
+    transform var(--duration-md) var(--ease-standard),
+    border-color var(--duration-md) var(--ease-standard);
+
   isolation: isolate;
 }
 
@@ -34,39 +53,52 @@
 .icon-glow svg {
   width: 22px;
   height: 22px;
+
   z-index: 2;
   opacity: 0.9;
+
+  transition: opacity var(--duration-fast) var(--ease-standard);
 }
 
-/* ============================
+/* =====================================================
    TRANSPARENT GLOW LAYER
-============================ */
+===================================================== */
 
 .icon-glow::before {
   content: "";
   position: absolute;
-  inset: -12px;
+  inset: -14px;
   border-radius: inherit;
 
   background:
     radial-gradient(
       circle at center,
       rgba(99, 102, 241, 0.45),
+      rgba(56, 189, 248, 0.25),
       transparent 65%
     );
 
   opacity: 0;
-  filter: blur(18px);
-  transition: opacity 0.45s ease;
+  filter: blur(20px);
+
+  transition:
+    opacity var(--duration-md) var(--ease-standard);
+
   z-index: 1;
 }
 
-/* ============================
-   HOVER INTERACTION
-============================ */
+/* =====================================================
+   HOVER INTERACTION (CONFIDENT, NOT FLASHY)
+===================================================== */
 
 .icon-glow:hover {
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-3px) scale(1.05);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.icon-glow:hover img,
+.icon-glow:hover svg {
+  opacity: 1;
 }
 
 .icon-glow:hover::before {
