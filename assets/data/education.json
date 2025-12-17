@@ -11,35 +11,35 @@
     {
       "id": "edu-01",
       "institution": {
-        "name": "Your University / Board Name",
+        "name": "Rajiv Gandhi University Of Health & Sciences",
         "type": "University",
         "location": {
-          "city": "City",
-          "state": "State",
-          "country": "Country"
+          "city": "Bangalore",
+          "state": "Karnataka",
+          "country": "India"
         },
         "logo": "assets/images/education/university-logo.png",
-        "website": "https://www.university.edu"
+        "website": "http://www.rguhs.ac.in/"
       },
 
       "program": {
         "level": "Bachelor",
         "degree": "Bachelor of Science",
-        "field": "Statistics",
-        "specialization": "Data Analytics",
+        "field": "Medical",
+        "specialization": "PMHNP",
         "mode": "Full-time"
       },
 
       "duration": {
         "start": {
           "year": 2019,
-          "month": 7
+          "month": 10
         },
         "end": {
           "year": 2023,
-          "month": 6
+          "month": 10
         },
-        "status": "completed"
+        "status": "Completed"
       },
 
       "performance": {
@@ -50,28 +50,28 @@
       },
 
       "coursework": [
-        "Statistics",
-        "Data Analysis",
-        "Database Management Systems",
-        "Probability Theory",
-        "Programming Fundamentals"
-      ],
+    "Anatomy and Physiology",
+    "Medical-Surgical Nursing (MHN)",
+    "Psychology",
+    "Pharmacology",
+    "Fundamentals of Nursing (FoN)"
+  ],
 
-      "projects": [
-        {
-          "title": "Final Year Data Analysis Project",
-          "description": "Analyzed large datasets using Python and SQL to derive actionable insights.",
-          "technologies": ["Python", "SQL", "Excel"]
-        }
-      ],
+  "projects": [
+    {
+      "title": "Final Year Project",
+      "description": "A research study on the ethical challenges and practical implications of using Artificial Intelligence and Electronic Health Records (EHRs) in day-to-day nursing practice.",
+      "technologies": ["Electronic Health Records (EHR)", "Healthcare Data Systems"]
+    }
+  ],
 
-      "activities": [
-        "Academic research",
-        "Peer mentoring",
-        "Technical workshops"
-      ],
+  "activities": [
+    "Clinical case studies and academic research",
+    "Peer mentoring and collaborative learning",
+    "Participation in healthcare seminars and technical workshops"
+  ],
 
-      "description": "Focused on building strong foundations in statistics, data analysis, and problem-solving with real-world datasets.",
+  "description": "Developed a strong foundation in nursing sciences, patient care, and clinical decision-making, with exposure to healthcare data, ethical practices, and the growing role of digital systems in modern nursing.",
 
       "meta": {
         "importance": "primary",
