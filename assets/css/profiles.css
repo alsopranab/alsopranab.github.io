@@ -1,27 +1,36 @@
 /* =====================================================
-   PROFILES / SOCIALS (FINAL)
+   PROFILES / DIGITAL FOOTPRINT (PREMIUM)
 ===================================================== */
 
 .profiles {
   max-width: 1100px;
   margin: 0 auto;
   padding: var(--space-xl) var(--space-md);
+  position: relative;
+  z-index: 1;
 }
 
 /* -----------------------------------------------------
    HEADER
 ----------------------------------------------------- */
 
+.profiles-header {
+  margin-bottom: var(--space-lg);
+}
+
 .profiles-header h1 {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 2.6rem);
-  color: #ffffff;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
   margin-bottom: 0.4rem;
 }
 
 .profiles-header p {
-  color: #9a9a9a;
-  margin-bottom: var(--space-lg);
+  max-width: 520px;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 
 /* -----------------------------------------------------
@@ -30,58 +39,93 @@
 
 .profiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--space-md);
 }
 
 /* -----------------------------------------------------
-   PROFILE ITEM
+   PROFILE ITEM (CARD-LIKE, ANALYTICS FEEL)
 ----------------------------------------------------- */
 
 .profile-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
 
-  padding: 1rem 1.2rem;
-  background: #000000;
-  border: 1px solid #1f1f1f;
+  padding: 1.1rem 1.3rem;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(0, 0, 0, 0.35)
+    ),
+    var(--bg-elevated);
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: var(--radius-md);
 
   text-decoration: none;
+
+  box-shadow: var(--shadow-md);
+
   transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-md) var(--ease-standard);
 }
 
+/* subtle surface highlight */
+.profile-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    transparent 35%
+  );
+  pointer-events: none;
+}
+
+/* Hover: depth, not flash */
 .profile-item:hover {
   transform: translateY(-3px);
-  border-color: #2a2a2a;
+  border-color: rgba(255, 255, 255, 0.14);
   box-shadow:
-    0 0 16px rgba(255, 255, 255, 0.08),
-    0 12px 40px rgba(0, 0, 0, 0.9);
+    var(--shadow-lg),
+    0 0 0 1px rgba(255, 255, 255, 0.04);
 }
 
 /* -----------------------------------------------------
-   ICONS (VISIBLE + GLOW)
+   ICONS (REFINED, BRAND-NEUTRAL)
 ----------------------------------------------------- */
 
 .icon {
   width: 28px;
   height: 28px;
+  flex-shrink: 0;
+
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
 
-  filter: invert(1) brightness(0.9);
-  transition: filter 0.2s ease, drop-shadow 0.2s ease;
+  filter: invert(1) brightness(0.85);
+  opacity: 0.85;
+
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    filter var(--duration-fast) var(--ease-standard);
 }
 
 .profile-item:hover .icon {
-  filter: invert(1) brightness(1.1)
-          drop-shadow(0 0 6px rgba(255, 255, 255, 0.35))
-          drop-shadow(0 0 14px rgba(255, 255, 255, 0.18));
+  opacity: 1;
+  filter:
+    invert(1)
+    brightness(1)
+    drop-shadow(0 0 6px rgba(255, 255, 255, 0.25));
 }
 
 /* Platform logos */
@@ -94,12 +138,19 @@
 .icon.kaggle     { background-image: url("https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/kaggle.svg"); }
 
 /* -----------------------------------------------------
-   HANDLE
+   HANDLE / LABEL
 ----------------------------------------------------- */
 
 .profile-item .handle {
-  color: #e5e7eb;
+  color: var(--text-secondary);
   font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* subtle emphasis on hover */
+.profile-item:hover .handle {
+  color: var(--text-primary);
 }
 
 /* -----------------------------------------------------
@@ -109,5 +160,9 @@
 @media (max-width: 768px) {
   .profiles {
     padding: var(--space-lg) var(--space-sm);
+  }
+
+  .profiles-grid {
+    gap: var(--space-sm);
   }
 }
