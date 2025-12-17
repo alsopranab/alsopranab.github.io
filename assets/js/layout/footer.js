@@ -1,9 +1,9 @@
 /**
- * Footer Layout Controller (FINAL — FAIL SAFE + CONTENT COMPLETE)
- * ==============================================================
- * - Always renders footer
- * - Never depends on JSON to exist
- * - Enhances with email + socials when available
+ * Footer Layout Controller (FINAL — FAIL SAFE + COMPLETE)
+ * ======================================================
+ * - Always renders footer (even if JSON fails)
+ * - Enhances with contact.json + socials.json when available
+ * - Never exits early
  */
 
 window.addEventListener("app:ready", async () => {
@@ -19,13 +19,15 @@ window.addEventListener("app:ready", async () => {
       DataService.getSocials()
     ]);
 
-    email = contact?.primary?.email?.value || email;
+    if (contact?.primary?.email?.value) {
+      email = contact.primary.email.value;
+    }
 
-    socials = Array.isArray(socialData?.socials)
-      ? socialData.socials.filter(s => s.enabled)
-      : [];
+    if (Array.isArray(socialData?.socials)) {
+      socials = socialData.socials.filter(s => s.enabled);
+    }
   } catch {
-    /* silent fallback */
+    /* silent fallback — footer still renders */
   }
 
   footer.innerHTML = `
@@ -33,15 +35,14 @@ window.addEventListener("app:ready", async () => {
 
       <div class="footer-email">
         <a href="mailto:${email}">
-          ${email}
+          ${escapeHTML(email)}
         </a>
       </div>
 
-      ${
-        socials.length
-          ? `
-            <div class="footer-socials">
-              ${socials
+      <div class="footer-socials">
+        ${
+          socials.length
+            ? socials
                 .map(
                   s => `
                     <a href="${s.url}" target="_blank" rel="noopener">
@@ -49,13 +50,10 @@ window.addEventListener("app:ready", async () => {
                     </a>
                   `
                 )
-                .join("")}
-            </div>
-          `
-          : `<div class="footer-socials muted">
-               Social links coming soon
-             </div>`
-      }
+                .join("")
+            : `<span class="footer-muted">Social links coming soon</span>`
+        }
+      </div>
 
       <div class="footer-meta">
         © ${new Date().getFullYear()} Pranab Debnath
