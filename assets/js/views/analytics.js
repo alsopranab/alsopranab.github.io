@@ -5,33 +5,33 @@ import { fetchGitHubContributions } from "../services/githubContributions.js";
 import { getProjectsByCategory } from "../core/projectStore.js";
 
 /**
- * Analytics View (FINAL, STABLE)
- * - Auto project distribution
- * - GitHub-style heatmap
- * - Social / profile badges
- * - Async-safe
+ * Analytics View (FINAL)
+ * - Stable & deterministic
+ * - Project distribution (auto)
+ * - GitHub-style heatmap (async)
+ * - Profile / platform badges
  */
 export async function AnalyticsView(container) {
   if (!container) return;
 
-  /* ----------------------------------------
+  /* --------------------------------------------------
      DATA: Projects by category
-  ---------------------------------------- */
-  const grouped = getProjectsByCategory();
+  -------------------------------------------------- */
+  const grouped = getProjectsByCategory() || {};
 
   const labels = [];
   const values = [];
 
-  Object.entries(grouped).forEach(([category, projects]) => {
+  for (const [category, projects] of Object.entries(grouped)) {
     if (Array.isArray(projects) && projects.length > 0) {
       labels.push(category.toUpperCase());
       values.push(projects.length);
     }
-  });
+  }
 
-  /* ----------------------------------------
+  /* --------------------------------------------------
      BASE LAYOUT (ALWAYS RENDERS)
-  ---------------------------------------- */
+  -------------------------------------------------- */
   container.innerHTML = `
     <section class="analytics dashboard">
 
@@ -60,34 +60,52 @@ export async function AnalyticsView(container) {
     </section>
   `;
 
-  /* ----------------------------------------
+  /* --------------------------------------------------
      BAR CHART (SYNC, SAFE)
-  ---------------------------------------- */
+  -------------------------------------------------- */
   const chartCanvas = container.querySelector("#category-chart");
+
   if (chartCanvas && labels.length > 0) {
-    renderBarChart(chartCanvas, labels, values);
+    try {
+      renderBarChart(chartCanvas, labels, values);
+    } catch (err) {
+      console.warn("[Analytics] Chart render failed", err);
+      chartCanvas.parentElement.innerHTML =
+        "<p class='muted'>Chart unavailable.</p>";
+    }
   } else if (chartCanvas) {
     chartCanvas.parentElement.innerHTML =
       "<p class='muted'>No project data available.</p>";
   }
 
-  /* ----------------------------------------
-     HEATMAP (ASYNC, NON-BLOCKING)
-  ---------------------------------------- */
-  try {
-    const contributions = await fetchGitHubContributions();
-    renderHeatmap(
-      container.querySelector("#heatmap"),
-      contributions
-    );
-  } catch (err) {
-    console.warn("[Analytics] Heatmap failed", err);
-    container.querySelector("#heatmap").innerHTML =
-      "<p class='muted'>Contribution data unavailable.</p>";
+  /* --------------------------------------------------
+     HEATMAP (ASYNC, ISOLATED)
+  -------------------------------------------------- */
+  const heatmapEl = container.querySelector("#heatmap");
+
+  if (heatmapEl) {
+    try {
+      const contributions = await fetchGitHubContributions();
+      renderHeatmap(heatmapEl, contributions);
+    } catch (err) {
+      console.warn("[Analytics] Heatmap failed", err);
+      heatmapEl.innerHTML =
+        "<p class='muted'>Contribution data unavailable.</p>";
+    }
   }
 
-  /* ----------------------------------------
-     BADGES (SYNC, SAFE)
-  ---------------------------------------- */
-  renderBadges(container.querySelector("#badges"));
+  /* --------------------------------------------------
+     BADGES (SYNC, ISOLATED)
+  -------------------------------------------------- */
+  const badgesEl = container.querySelector("#badges");
+
+  if (badgesEl) {
+    try {
+      renderBadges(badgesEl);
+    } catch (err) {
+      console.warn("[Analytics] Badges render failed", err);
+      badgesEl.innerHTML =
+        "<p class='muted'>Badges unavailable.</p>";
+    }
+  }
 }
