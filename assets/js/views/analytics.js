@@ -1,49 +1,85 @@
-import { getProjectsByCategory } from "../core/projectStore.js";
 import { renderBarChart } from "../ui/charts.js";
+import { renderHeatmap } from "../ui/heatmap.js";
+import { fetchGitHubContributions } from "../services/githubContributions.js";
+import { getProjectsByCategory } from "../core/projectStore.js";
 
-export function AnalyticsView(container) {
+/**
+ * Analytics View (FINAL, FIXED)
+ * - Single source of truth
+ * - Auto project distribution
+ * - GitHub-style heatmap
+ * - Async-safe
+ */
+export async function AnalyticsView(container) {
   if (!container) return;
 
-  // 🔥 ALWAYS read fresh grouped data
+  /* ----------------------------------------
+     DATA: Projects by category
+  ---------------------------------------- */
   const grouped = getProjectsByCategory();
 
   const labels = [];
   const values = [];
 
-  Object.entries(grouped).forEach(([category, items]) => {
-    if (Array.isArray(items) && items.length > 0) {
+  Object.entries(grouped).forEach(([category, projects]) => {
+    if (Array.isArray(projects) && projects.length > 0) {
       labels.push(category.toUpperCase());
-      values.push(items.length);
+      values.push(projects.length);
     }
   });
 
-  // HARD fallback (never blank)
-  if (labels.length === 0) {
-    container.innerHTML = `
-      <section class="dashboard">
-        <h1>Analytics</h1>
-        <p>No analytics data available yet.</p>
-      </section>
-    `;
-    return;
-  }
-
+  /* ----------------------------------------
+     BASE LAYOUT (ALWAYS RENDERS)
+  ---------------------------------------- */
   container.innerHTML = `
-    <section class="dashboard">
-      <header class="dashboard-header">
+    <section class="analytics dashboard">
+
+      <header class="dashboard-header" data-reveal>
         <h1>Analytics</h1>
-        <p>Project distribution by category</p>
+        <p>Project distribution & activity overview</p>
       </header>
 
-      <section class="dashboard-chart">
+      <section class="dashboard-chart panel" data-reveal>
         <h2>Projects by Type</h2>
         <div class="chart-wrap">
-          <canvas id="analytics-chart"></canvas>
+          <canvas id="category-chart"></canvas>
         </div>
       </section>
+
+      <section class="panel" data-reveal>
+        <h2>Contribution Activity</h2>
+        <div id="heatmap"></div>
+      </section>
+
     </section>
   `;
 
-  const canvas = container.querySelector("#analytics-chart");
-  renderBarChart(canvas, labels, values);
+  /* ----------------------------------------
+     BAR CHART (SYNC, SAFE)
+  ---------------------------------------- */
+  if (labels.length > 0) {
+    renderBarChart(
+      container.querySelector("#category-chart"),
+      labels,
+      values
+    );
+  } else {
+    container.querySelector(".dashboard-chart").innerHTML =
+      "<p class='muted'>No project data available.</p>";
+  }
+
+  /* ----------------------------------------
+     HEATMAP (ASYNC, NON-BLOCKING)
+  ---------------------------------------- */
+  try {
+    const contributions = await fetchGitHubContributions();
+    renderHeatmap(
+      container.querySelector("#heatmap"),
+      contributions
+    );
+  } catch (err) {
+    console.warn("[Analytics] Heatmap failed", err);
+    container.querySelector("#heatmap").innerHTML =
+      "<p class='muted'>Contribution data unavailable.</p>";
+  }
 }
