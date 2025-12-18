@@ -928,3 +928,87 @@ section.omniverse-section {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — GLOBAL SECTION RHYTHM (CANONICAL)
+============================================================ */
+
+/* All sections follow the same editorial flow */
+section.omniverse-section {
+  align-items: flex-start;
+  position: relative;
+}
+
+/* Section headings */
+section.omniverse-section > h2 {
+  margin-bottom: 2.5rem;
+  text-align: left;
+}
+
+/* Unified content column (matches Experience offset) */
+section.omniverse-section > :not(h2) {
+  max-width: 720px;
+}
+
+/* Experience already pushes content — don’t double apply */
+#experience-section > .experience-list {
+  max-width: none;
+}
+
+/* Featured, Projects, Education, Licenses */
+#featured-section > *,
+#projects-section > *,
+#education-section > *,
+#licenses-section > * {
+  margin-left: 64px;
+}
+
+/* Cards & blocks align naturally */
+.project-category,
+.education-item,
+.featured-item {
+  text-align: left;
+}
+
+/* Headings inside sections */
+.project-category h3,
+.featured-item h3,
+.education-item strong {
+  margin-bottom: 0.75rem;
+}
+
+/* Paragraph spacing consistency */
+section.omniverse-section p {
+  margin-top: 0.5rem;
+}
+
+/* ================= CONTACT — SAME SYSTEM ================= */
+
+/* Heading stays above panel */
+#contact-section > h2 {
+  text-align: left;
+  margin-left: 64px;
+}
+
+/* Panel aligns with other content */
+.contact-panel {
+  margin-left: 64px;
+  max-width: 900px;
+}
+
+/* ================= MOBILE — COLLAPSE SYSTEM ================= */
+@media (max-width: 768px) {
+  section.omniverse-section {
+    align-items: center;
+  }
+
+  section.omniverse-section > h2,
+  section.omniverse-section > * {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .contact-panel {
+    margin-left: 0;
+  }
+}
