@@ -1,6 +1,6 @@
 /**
- * Home Page Controller
- * ====================
+ * Home Page Controller (FINAL — CANONICAL & SAFE)
+ * ===============================================
  * Responsibilities:
  * - Runs only after `app:ready`
  * - Loads all required JSON via DataService
@@ -18,16 +18,16 @@ async function HomePageController() {
   console.group("[HomePage] Initialization");
 
   /* -------------------------------------------------
-     Section references (must match index.html IDs)
+     Section references (MUST match index.html IDs)
   ------------------------------------------------- */
   const sections = {
-    hero: document.getElementById("hero"),
-    experience: document.getElementById("experience"),
-    featured: document.getElementById("featured"),
-    projects: document.getElementById("projects"),
-    education: document.getElementById("education"),
-    licenses: document.getElementById("licenses"),
-    contact: document.getElementById("contact")
+    hero: document.getElementById("hero-section"),
+    experience: document.getElementById("experience-section"),
+    featured: document.getElementById("featured-section"),
+    projects: document.getElementById("projects-section"),
+    education: document.getElementById("education-section"),
+    licenses: document.getElementById("licenses-section"),
+    contact: document.getElementById("contact-section")
   };
 
   validateSections(sections);
@@ -60,7 +60,7 @@ async function HomePageController() {
   /* -------------------------------------------------
      Profile is mandatory for homepage
   ------------------------------------------------- */
-  if (!profileData || !profileData.identity) {
+  if (!profileData?.identity) {
     console.error("[HomePage] profile.json missing or invalid");
     console.groupEnd();
     return;
@@ -93,7 +93,7 @@ async function HomePageController() {
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
     if (!el) {
-      console.info(`[HomePage] Section not present: ${key}`);
+      console.warn(`[HomePage] Section not present: ${key}`);
     }
   });
 }
