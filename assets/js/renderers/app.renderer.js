@@ -9,6 +9,7 @@
 
 window.addEventListener("home:ready", () => {
   console.log("[Renderer] home:ready received");
+
   renderHero();
   renderExperience();
   renderFeatured();
@@ -24,8 +25,6 @@ window.addEventListener("home:ready", () => {
 function renderHero() {
   const section = document.getElementById("hero");
   const d = getData(section);
-  clear(section);
-
   if (!d?.identity) return;
 
   section.innerHTML = `
@@ -44,8 +43,6 @@ function renderHero() {
 function renderExperience() {
   const section = document.getElementById("experience");
   const d = getData(section);
-  clear(section);
-
   if (!Array.isArray(d?.timeline)) return;
 
   section.innerHTML = `
@@ -96,8 +93,6 @@ function renderRole(role) {
 function renderFeatured() {
   const section = document.getElementById("featured");
   const d = getData(section);
-  clear(section);
-
   if (!Array.isArray(d?.items)) return;
 
   section.innerHTML = `
@@ -113,10 +108,14 @@ function renderFeaturedItem(item) {
 
   return `
     <div class="featured-item">
-      ${item.media?.coverImage ? `<img src="${item.media.coverImage}" alt="">` : ""}
+      ${
+        item.media?.coverImage
+          ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}">`
+          : ""
+      }
       <div>
         <h3>${escape(item.project.name || "")}</h3>
-        <p>${escape(item.project.summary || "")}</p>
+        <p>${escape(item.project.description || "")}</p>
       </div>
     </div>
   `;
@@ -129,17 +128,21 @@ function renderFeaturedItem(item) {
 function renderProjects() {
   const section = document.getElementById("projects");
   const d = getData(section);
-  clear(section);
-
   if (!Array.isArray(d?.categories)) return;
+
+  const categories = [...d.categories].sort(
+    (a, b) => (a.priority ?? 99) - (b.priority ?? 99)
+  );
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Projects")}</h2>
-    ${d.categories.map(renderProjectCategory).join("")}
+    ${categories.map(renderProjectCategory).join("")}
   `;
 }
 
 function renderProjectCategory(category) {
+  if (!Array.isArray(category.projects)) return "";
+
   return `
     <div class="project-category">
       <h3>${escape(category.label || "")}</h3>
@@ -157,7 +160,7 @@ function renderProjectCard(p) {
       <p>${escape(p.project.summary || "")}</p>
       ${
         p.repository?.url
-          ? `<a href="${p.repository.url}" target="_blank">View on GitHub →</a>`
+          ? `<a href="${p.repository.url}" target="_blank" rel="noopener">View on GitHub →</a>`
           : ""
       }
     </div>
@@ -171,8 +174,6 @@ function renderProjectCard(p) {
 function renderEducation() {
   const section = document.getElementById("education");
   const d = getData(section);
-  clear(section);
-
   if (!Array.isArray(d?.records)) return;
 
   section.innerHTML = `
@@ -180,8 +181,26 @@ function renderEducation() {
     ${d.records.map(r => `
       <div class="education-item">
         <strong>${escape(r.institution)}</strong>
-        <div>${escape(r.degree || "")} ${r.field ? "— " + escape(r.field) : ""}</div>
+
+        ${
+          r.degree || r.field
+            ? `<div>${escape(r.degree || "")}${r.field ? " — " + escape(r.field) : ""}</div>`
+            : ""
+        }
+
         <div>${escape(r.start)} – ${escape(r.end)}</div>
+
+        ${
+          r.description
+            ? `<p>${escape(r.description)}</p>`
+            : ""
+        }
+
+        ${
+          Array.isArray(r.highlights)
+            ? `<ul>${r.highlights.map(h => `<li>${escape(h)}</li>`).join("")}</ul>`
+            : ""
+        }
       </div>
     `).join("")}
   `;
@@ -194,12 +213,15 @@ function renderEducation() {
 function renderContact() {
   const section = document.getElementById("contact");
   const d = getData(section);
-  clear(section);
-
   if (!d?.section) return;
 
   section.innerHTML = `
     <h2>${escape(d.section.title)}</h2>
+    ${
+      d.section.subtitle
+        ? `<p class="contact-subtitle">${escape(d.section.subtitle)}</p>`
+        : ""
+    }
     <p>${escape(d.section.description || "")}</p>
     ${
       d.primary?.email?.value
@@ -220,10 +242,6 @@ function getData(section) {
   } catch {
     return null;
   }
-}
-
-function clear(section) {
-  if (section) section.innerHTML = "";
 }
 
 function escape(str) {
