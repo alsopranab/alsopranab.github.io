@@ -1,36 +1,92 @@
-(function heroToHeaderMorph() {
-  const hero = document.querySelector(".hero-wrapper");
-  const headerIdentity = document.querySelector(".header-identity");
+/**
+ * Hero → Header Morph Interaction (Apple-style)
+ * =============================================
+ * - Hero identity shrinks into header identity
+ * - Runs only after header + hero are ready
+ * - No layout shift
+ * - No DOM mutation of renderer output
+ */
 
-  if (!hero || !headerIdentity) return;
+(function () {
+  let heroEl, headerIdentity;
+  let hasMorphed = false;
 
-  const maxScroll = 180;
+  function init() {
+    heroEl = document.querySelector(".hero-wrapper");
+    headerIdentity = document.querySelector(".header-identity");
 
-  function clamp(v, min, max) {
-    return Math.min(max, Math.max(min, v));
+    if (!heroEl || !headerIdentity) return;
+
+    // Hide header identity initially
+    headerIdentity.style.opacity = "0";
+    headerIdentity.style.transform = "translateY(6px)";
+    headerIdentity.style.transition = "opacity 240ms ease, transform 240ms ease";
+
+    window.addEventListener("scroll", onScroll, { passive: true });
   }
 
   function onScroll() {
-    const scrollY = clamp(window.scrollY, 0, maxScroll);
-    const progress = scrollY / maxScroll;
+    if (hasMorphed) return;
 
-    // HERO TRANSFORM
-    const scale = 1 - progress * 0.25;
-    const translateY = -progress * 60;
+    const rect = heroEl.getBoundingClientRect();
 
-    hero.style.transform = `
-      translateY(${translateY}px)
-      scale(${scale})
-    `;
-    hero.style.opacity = 1 - progress * 0.6;
-
-    // HEADER IDENTITY
-    if (progress > 0.55) {
-      headerIdentity.removeAttribute("data-hidden");
-    } else {
-      headerIdentity.setAttribute("data-hidden", "");
+    // Trigger point: hero starts leaving viewport
+    if (rect.bottom < window.innerHeight * 0.55) {
+      morph();
+      hasMorphed = true;
     }
   }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
+  function morph() {
+    const heroTitle = heroEl.querySelector("h1");
+    const heroTagline = heroEl.querySelector(".hero-tagline");
+
+    if (!heroTitle) return;
+
+    const clone = document.createElement("div");
+    clone.className = "hero-morph-clone";
+    clone.innerHTML = `
+      <div class="hero-morph-name">${heroTitle.textContent}</div>
+      ${
+        heroTagline
+          ? `<div class="hero-morph-role">${heroTagline.textContent}</div>`
+          : ""
+      }
+    `;
+
+    document.body.appendChild(clone);
+
+    const from = heroTitle.getBoundingClientRect();
+    const to = headerIdentity.getBoundingClientRect();
+
+    clone.style.position = "fixed";
+    clone.style.left = `${from.left}px`;
+    clone.style.top = `${from.top}px`;
+    clone.style.width = `${from.width}px`;
+    clone.style.zIndex = "999";
+    clone.style.transition =
+      "transform 520ms cubic-bezier(0.22,1,0.36,1), opacity 300ms ease";
+
+    const scale =
+      headerIdentity.offsetHeight / heroTitle.offsetHeight;
+
+    const dx = to.left - from.left;
+    const dy = to.top - from.top;
+
+    requestAnimationFrame(() => {
+      clone.style.transform = `
+        translate(${dx}px, ${dy}px)
+        scale(${scale})
+      `;
+      clone.style.opacity = "0";
+    });
+
+    setTimeout(() => {
+      clone.remove();
+      headerIdentity.style.opacity = "1";
+      headerIdentity.style.transform = "translateY(0)";
+    }, 520);
+  }
+
+  window.addEventListener("header:ready", init);
 })();
