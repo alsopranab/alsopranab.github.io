@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — CANONICAL STYLE SYSTEM (FINAL)
-   VISUALS ONLY • GODMODE SAFE • LOCKED
+   OMNIVERSE — REFINED COMFORT CANONICAL (FINAL)
+   EDITORIAL • CALM • HIGH-END • LOCKED
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -37,6 +37,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  overscroll-behavior-y: none;
 }
 
 /* ================= BODY ================= */
@@ -45,6 +46,9 @@ body[data-omniverse] {
   color: var(--text-main);
   min-height: 100vh;
   overflow-x: hidden;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 
   display: flex;
   flex-direction: column;
@@ -110,12 +114,42 @@ p {
   margin-top: 0.5rem;
 }
 
+/* ================= LINKS ================= */
+a {
+  color: var(--text-main);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 11px;
+  opacity: 0.6;
+  transition: opacity 180ms ease, color 180ms ease;
+}
+
+a:hover,
+a.active {
+  opacity: 1;
+  color: var(--accent);
+}
+
 /* ================= HEADER ================= */
 #site-header {
   position: sticky;
   top: 10px;
   z-index: 100;
   width: 100%;
+}
+
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.header-nav {
+  display: flex;
+  gap: 26px;
 }
 
 /* ================= SECTIONS ================= */
@@ -126,6 +160,20 @@ section.omniverse-section {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  position: relative;
+}
+
+/* ================= HERO ================= */
+.hero-wrapper {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.hero-wrapper h1,
+.hero-wrapper p {
+  text-align: left;
 }
 
 /* ================= CARDS ================= */
@@ -145,15 +193,130 @@ section.omniverse-section {
   );
   border: 1px solid var(--border-hairline);
   box-shadow: 0 18px 38px rgba(0,0,0,0.45);
-  transition: transform 420ms var(--ease-vision);
+  transition: transform 360ms var(--ease-vision),
+              box-shadow 360ms var(--ease-vision);
+}
+
+@media (pointer:fine) {
+  .project-card:hover,
+  .education-item:hover,
+  .featured-item:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 26px 52px rgba(0,0,0,0.55),
+      0 0 28px var(--accent-glow);
+  }
 }
 
 /* ================= FEATURED MEDIA ================= */
 .featured-item img[data-expandable] {
   width: 100%;
-  display: block;
+  max-height: 420px;
+  object-fit: cover;
   border-radius: 14px;
+  margin-bottom: 18px;
   cursor: zoom-in;
+}
+
+/* ================= EXPERIENCE ================= */
+#experience-section::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: var(--space-section);
+  bottom: var(--space-section);
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.45;
+}
+
+.experience-list {
+  margin-left: 64px;
+}
+
+.experience-company,
+.experience-role {
+  text-align: left;
+}
+
+.experience-company {
+  margin-top: 3rem;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+/* Bullet alignment */
+.experience-role ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+
+.experience-role li {
+  position: relative;
+  padding-left: 1.4em;
+  margin-bottom: 0.65em;
+  line-height: 1.65;
+}
+
+.experience-role li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  color: rgba(255,255,255,0.65);
+}
+
+/* ================= PROJECTS ================= */
+#projects-section {
+  align-items: center;
+}
+
+.project-category {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 3rem;
+}
+
+/* ================= CONTACT ================= */
+#contact-section {
+  align-items: center;
+}
+
+.contact-panel {
+  max-width: 900px;
+  width: 100%;
+  padding: 56px 48px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.015)
+  );
+  border: 1px solid var(--border-hairline);
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1.2fr;
+  gap: 48px;
+}
+
+.contact-description p {
+  max-width: none;
+  margin: 0;
+}
+
+.contact-email a {
+  text-transform: lowercase;
+  letter-spacing: normal;
+  font-size: 13px;
+  opacity: 0.6;
 }
 
 /* ================= FOOTER ================= */
@@ -165,9 +328,18 @@ section.omniverse-section {
   text-align: center;
 }
 
-/* ============================================================
-   IMAGE VIEWER OVERLAY (LOCKED)
-============================================================ */
+.footer-socials {
+  display: flex;
+  gap: 26px;
+  justify-content: center;
+}
+
+.footer-socials a {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+/* ================= IMAGE VIEWER ================= */
 #image-viewer-overlay {
   position: fixed;
   inset: 0;
@@ -182,7 +354,7 @@ section.omniverse-section {
 
 .image-viewer-panel {
   position: relative;
-  max-width: min(92vw, 1100px);
+  max-width: min(92vw,1100px);
   max-height: 92vh;
   margin: auto;
   top: 50%;
@@ -192,7 +364,6 @@ section.omniverse-section {
 .image-viewer-panel img {
   max-width: 100%;
   max-height: 92vh;
-  display: block;
   border-radius: var(--radius-lg);
 }
 
@@ -203,89 +374,27 @@ section.omniverse-section {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: none;
   background: rgba(0,0,0,0.6);
-  color: white;
+  color: #fff;
   font-size: 22px;
+  border: none;
   cursor: pointer;
 }
 
-/* ============================================================
-   STARFIELD — SAFE & VISIBLE
-============================================================ */
-.starry-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -2;
-}
-
-.starry-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.45), transparent),
-    radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,0.35), transparent),
-    radial-gradient(1px 1px at 44% 38%, rgba(255,255,255,0.4), transparent),
-    radial-gradient(1px 1px at 61% 55%, rgba(255,255,255,0.32), transparent),
-    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,0.38), transparent),
-    radial-gradient(1px 1px at 90% 68%, rgba(255,255,255,0.3), transparent);
-  background-size: 280px 280px;
-  opacity: 0.6;
-}
-
-.starry-bg::after {
-  content: "";
-  position: absolute;
-  inset: -50%;
-  background-image:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.35), transparent),
-    radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.3), transparent);
-  background-size: 420px 420px;
-  opacity: 0.25;
-  animation: star-drift 160s linear infinite;
-}
-
-@keyframes star-drift {
-  from { transform: translateY(0); }
-  to   { transform: translateY(200px); }
-}
-
+/* ================= STARFIELD ================= */
+.starry-bg,
 .shooting-stars {
   position: fixed;
   inset: 0;
   pointer-events: none;
+}
+
+.starry-bg {
+  z-index: -2;
+}
+
+.shooting-stars {
   z-index: -1;
-}
-
-.shooting-stars::before {
-  content: "";
-  position: absolute;
-  top: -30%;
-  left: -40%;
-  width: 520px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0),
-    rgba(255,255,255,0.6),
-    rgba(167,139,250,1),
-    rgba(255,255,255,0.6),
-    rgba(255,255,255,0)
-  );
-  filter: blur(1px);
-  opacity: 0;
-  transform: rotate(26deg);
-  animation: shooting-star 26s ease-in-out infinite;
-}
-
-@keyframes shooting-star {
-  0% { transform: translate(-40vw,-25vh) rotate(26deg); opacity: 0; }
-  12% { opacity: 1; }
-  30% { transform: translate(120vw,75vh) rotate(26deg); opacity: 0.6; }
-  45% { opacity: 0; }
-  100% { opacity: 0; }
 }
 
 /* ================= REDUCED MOTION ================= */
@@ -293,5 +402,27 @@ section.omniverse-section {
   .starry-bg,
   .shooting-stars {
     display: none;
+  }
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  section.omniverse-section {
+    align-items: center;
+  }
+
+  .hero-wrapper,
+  .experience-list {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  #experience-section::before {
+    display: none;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 }
