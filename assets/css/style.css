@@ -448,3 +448,161 @@ section.omniverse-section {
   line-height: 1;
   color: rgba(255,255,255,0.65);
 }
+
+/* ============================================================
+   OMNIVERSE — STRUCTURE & HIERARCHY FIX (FINAL)
+============================================================ */
+
+/* ================= HERO — EDITORIAL LEFT ================= */
+.hero-wrapper {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.hero-wrapper h1,
+.hero-wrapper h2,
+.hero-wrapper p {
+  text-align: left;
+  margin-left: 0;
+}
+
+/* ================= GLOBAL SECTION ALIGNMENT ================= */
+section.omniverse-section {
+  align-items: flex-start;
+}
+
+/* Keep projects centered visually */
+#projects-section {
+  align-items: center;
+}
+
+/* ================= EXPERIENCE — LEFT + GROWTH SPINE ================= */
+#experience-section h2 {
+  align-self: flex-start;
+}
+
+.experience-wrapper {
+  position: relative;
+  padding-left: 56px;
+  width: 100%;
+}
+
+/* Vertical glowing growth line */
+.experience-wrapper::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.45;
+}
+
+/* Company label spacing */
+.experience-company {
+  margin-top: 3.5rem;
+  font-weight: 500;
+  opacity: 0.85;
+  text-align: left;
+}
+
+/* Experience cards align to spine */
+.experience-role {
+  text-align: left;
+  margin-left: 24px;
+}
+
+/* ================= EXPERIENCE LIST READABILITY ================= */
+.experience-role ul {
+  margin-top: 1rem;
+}
+
+.experience-role li {
+  line-height: 1.65;
+}
+
+/* ================= EDUCATION — GAP FIX ================= */
+#education-section {
+  padding-top: calc(var(--space-section) - 2rem);
+}
+
+#education-section .education-item {
+  margin-top: 1.5rem;
+  text-align: left;
+}
+
+/* ================= CONTACT — BALANCE & COMFORT ================= */
+#contact-section > div {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.045),
+    rgba(255,255,255,0.015)
+  );
+}
+
+.contact-grid {
+  grid-template-columns: 1.2fr 1.6fr 1.2fr;
+  align-items: center;
+}
+
+/* Contact headings */
+.contact-grid h3,
+.contact-grid span,
+.contact-grid a:not(.email) {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Email — small, quiet, lowercase */
+.contact-grid .email {
+  font-size: 13px;
+  text-transform: lowercase;
+  opacity: 0.6;
+}
+
+/* ================= FOOTER — QUIET ================= */
+.footer-socials a {
+  opacity: 0.6;
+}
+
+/* ================= MOBILE — SAFE OVERRIDES ================= */
+@media (max-width: 768px) {
+  section.omniverse-section {
+    align-items: center;
+  }
+
+  .hero-wrapper {
+    align-items: center;
+    text-align: center;
+  }
+
+  .experience-wrapper {
+    padding-left: 0;
+  }
+
+  .experience-wrapper::before {
+    display: none;
+  }
+
+  .experience-role {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  #education-section .education-item {
+    text-align: center;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
