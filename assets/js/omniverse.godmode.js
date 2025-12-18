@@ -1,10 +1,10 @@
 /**
  * ==============================================================
- * OMNIVERSE — GODMODE (FINAL, PRODUCTION SAFE)
+ * OMNIVERSE — GODMODE (FINAL, LOCKED, PRODUCTION SAFE)
  * ==============================================================
- * Smooth > Loud
  * Stable > Flashy
- * Intentional > Excessive
+ * Isolated > Coupled
+ * Ambient > Reactive
  * ==============================================================
  */
 
@@ -12,7 +12,7 @@
   "use strict";
 
   /* ============================================================
-     ENVIRONMENT (SAFE DETECTION)
+     ENVIRONMENT
   ============================================================ */
   const ENV = {
     dpr: Math.min(window.devicePixelRatio || 1, 1.4),
@@ -28,7 +28,7 @@
   if (ENV.reduceMotion) return;
 
   /* ============================================================
-     VIEWPORT STATE
+     VIEWPORT
   ============================================================ */
   const VIEW = {
     w: window.innerWidth,
@@ -74,6 +74,7 @@
     TASKS.forEach(fn => fn(t));
     requestAnimationFrame(LOOP);
   }
+
   requestAnimationFrame(LOOP);
 
   /* ============================================================
@@ -92,18 +93,18 @@
     );
   }
 
+  // SAFE scroll listener — NO energy injection
   window.addEventListener(
     "scroll",
     () => {
-      const y = window.scrollY;
-      STATE.scroll.speed = (y - STATE.scroll.y) * 0.7;
-      STATE.scroll.y = y;
+      STATE.scroll.y = window.scrollY;
+      STATE.scroll.speed *= 0.9; // decay only
     },
     { passive: true }
   );
 
   /* ============================================================
-     CANVAS BACKGROUND (ISOLATED LAYER)
+     CANVAS BACKGROUND (AMBIENT ONLY)
   ============================================================ */
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d", { alpha: true });
@@ -114,6 +115,7 @@
     z-index: -1;
     pointer-events: none;
   `;
+
   document.body.prepend(canvas);
 
   function resize() {
@@ -129,30 +131,31 @@
       ENV.dpr * scale, 0, 0, ENV.dpr * scale, 0, 0
     );
   }
+
   resize();
   window.addEventListener("resize", resize);
 
   /* ============================================================
-     PARTICLES
+     PARTICLES (STABLE)
   ============================================================ */
   const PARTICLE_COUNT = ENV.isMobile ? 40 : 90;
 
   const PARTICLES = Array.from({ length: PARTICLE_COUNT }, () => ({
     x: Math.random() * VIEW.w,
     y: Math.random() * VIEW.h,
-    vx: (Math.random() - 0.5) * 0.3,
-    vy: (Math.random() - 0.5) * 0.3,
+    vx: (Math.random() - 0.5) * 0.25,
+    vy: (Math.random() - 0.5) * 0.25,
     r: Math.random() * 1.4 + 0.4
   }));
 
   TASKS.add(() => {
-    ctx.clearRect(0, 0, VIEW.w, VIEW.h);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const rawEnergy =
-      Math.abs(STATE.scroll.speed) * 0.02 +
       Math.hypot(STATE.velocity.x, STATE.velocity.y) * 0.01;
 
-    STATE.energy += (Math.min(rawEnergy, 1.2) - STATE.energy) * 0.08;
+    STATE.energy += (Math.min(rawEnergy, 0.8) - STATE.energy) * 0.08;
 
     for (const p of PARTICLES) {
       p.x += p.vx * (1 + STATE.energy);
@@ -162,8 +165,8 @@
       if (p.y < 0 || p.y > VIEW.h) p.vy *= -1;
 
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r + STATE.energy * 0.25, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(167,139,250,0.14)";
+      ctx.arc(p.x, p.y, p.r + STATE.energy * 0.2, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(167,139,250,0.12)";
       ctx.fill();
     }
   });
@@ -204,7 +207,7 @@
   }
 
   /* ============================================================
-     CARD TILT (SAFE TARGETS ONLY)
+     CARD TILT (TRANSFORM-SAFE)
   ============================================================ */
   if (!ENV.isMobile) {
     const REACTIVE = document.querySelectorAll(
@@ -224,13 +227,12 @@
         const dy = STATE.cursor.y - (r.top + r.height / 2);
         const dist = Math.hypot(dx, dy);
 
-        if (dist < 300) {
-          const f = 1 - dist / 300;
+        if (dist < 280) {
+          const f = 1 - dist / 280;
           el.style.transform =
             `perspective(1000px)
-             rotateX(${dy * f * 0.01}deg)
-             rotateY(${-dx * f * 0.01}deg)
-             translateY(${-f * 5}px)`;
+             rotateX(${dy * f * 0.008}deg)
+             rotateY(${-dx * f * 0.008}deg)`;
         } else {
           el.style.transform = "";
         }
