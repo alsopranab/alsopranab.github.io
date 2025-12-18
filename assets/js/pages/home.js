@@ -16,14 +16,15 @@ window.addEventListener("app:ready", () => {
 async function HomePageController() {
   console.group("[HomePage] Initialization");
 
+  // ✅ IDs NOW MATCH index.html EXACTLY
   const sections = {
-    hero: document.getElementById("hero-section"),
-    experience: document.getElementById("experience-section"),
-    featured: document.getElementById("featured-section"),
-    projects: document.getElementById("projects-section"),
-    education: document.getElementById("education-section"),
-    licenses: document.getElementById("licenses-section"),
-    contact: document.getElementById("contact-section")
+    hero: document.getElementById("hero"),
+    experience: document.getElementById("experience"),
+    featured: document.getElementById("featured"),
+    projects: document.getElementById("projects"),
+    education: document.getElementById("education"),
+    licenses: document.getElementById("licenses"),
+    contact: document.getElementById("contact")
   };
 
   validateSections(sections);
