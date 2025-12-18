@@ -18,13 +18,17 @@
   <meta name="theme-color" content="#05030c" />
   <meta name="color-scheme" content="dark light" />
 
-  <!-- SOCIAL -->
+  <!-- =====================================================
+       SOCIAL SHARING
+  ====================================================== -->
   <meta property="og:title" content="Pranab Debnath — Data Analyst" />
   <meta property="og:description" content="Data-driven professional building insights." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
-  <!-- FONTS -->
+  <!-- =====================================================
+       FONTS
+  ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -32,49 +36,91 @@
     rel="stylesheet"
   />
 
-  <!-- STYLES -->
+  <!-- =====================================================
+       STYLES
+  ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body data-omniverse>
 
   <!-- =====================================================
-       BACKGROUND LAYERS (REQUIRED)
+       BACKGROUND LAYERS (CSS-DRIVEN)
+       • No JS
+       • No canvas
+       • Safe for Godmode
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
-  <!-- HEADER -->
+  <!-- =====================================================
+       HEADER (INJECTED)
+  ====================================================== -->
   <header id="site-header" aria-label="Primary Navigation"></header>
 
-  <!-- MAIN -->
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
   <main id="page-content" role="main">
+
     <section id="hero-section" class="omniverse-section"></section>
+
     <section id="experience-section" class="omniverse-section"></section>
+
     <section id="featured-section" class="omniverse-section"></section>
+
     <section id="projects-section" class="omniverse-section"></section>
+
     <section id="education-section" class="omniverse-section"></section>
+
     <section id="licenses-section" class="omniverse-section"></section>
+
     <section id="contact-section" class="omniverse-section"></section>
+
   </main>
 
-  <!-- FOOTER -->
+  <!-- =====================================================
+       FOOTER (INJECTED)
+  ====================================================== -->
   <footer id="site-footer" aria-label="Footer"></footer>
 
-  <!-- JS -->
+  <!-- =====================================================
+       CORE JS (ORDER MATTERS)
+  ====================================================== -->
   <script src="assets/js/core/bootstrap.js" defer></script>
   <script src="assets/js/services/data.service.js" defer></script>
+
+  <!-- Layout -->
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
+
+  <!-- Pages / Rendering -->
   <script src="assets/js/pages/home.js" defer></script>
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
-  <!-- GODMODE -->
+  <!-- =====================================================
+       GODMODE (ORCHESTRATOR ONLY)
+       • Reads CSS + DOM
+       • Does NOT own visuals
+  ====================================================== -->
   <script src="assets/js/interactions/godmode.js" defer></script>
 
+  <!-- =====================================================
+       MOTION.UI (ANIMATION ONLY)
+       • Uses classes set by Godmode
+       • No state, no canvas
+  ====================================================== -->
+  <script src="assets/js/interactions/ui.motion.js" defer></script>
+
+  <!-- =====================================================
+       NO-JS FALLBACK
+  ====================================================== -->
   <noscript>
     <style>
-      .omniverse-section { opacity: 1 !important; transform: none !important; }
+      .omniverse-section {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     </style>
   </noscript>
 
