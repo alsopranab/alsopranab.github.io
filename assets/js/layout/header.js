@@ -1,11 +1,11 @@
 /**
  * Header Layout Controller (FINAL — LOCKED & STABLE)
  * =================================================
- * - Renders header with NAME ONLY (no role)
- * - Uppercase navigation (desktop + mobile)
- * - Fixed structure to prevent layout shift
+ * - Renders header with NAME ONLY (no role, no subtitle)
+ * - Navigation ALWAYS uppercase (desktop + mobile)
+ * - Fixed DOM structure (no layout shift)
  * - SPA-safe smooth scrolling
- * - Omniverse & motion compatible
+ * - Compatible with Omniverse + motion engines
  */
 
 window.addEventListener("app:ready", async () => {
@@ -13,16 +13,12 @@ window.addEventListener("app:ready", async () => {
   if (!headerEl) return;
 
   /* -------------------------
-     DEFAULT IDENTITY
+     NAME ONLY (NO ROLE)
   ------------------------- */
   let name = "Pranab Debnath";
 
-  /* -------------------------
-     PROFILE ENRICHMENT (NAME ONLY)
-  ------------------------- */
   try {
     const profile = await DataService.getProfile();
-
     if (profile?.identity) {
       name =
         profile.identity.preferredName ||
@@ -30,7 +26,7 @@ window.addEventListener("app:ready", async () => {
         name;
     }
   } catch {
-    console.warn("[Header] Using fallback name");
+    // silent fallback — no console noise
   }
 
   /* -------------------------
@@ -40,7 +36,7 @@ window.addEventListener("app:ready", async () => {
     <div class="header-container">
 
       <div class="header-identity">
-        <div class="header-name">${escapeHTML(name)}</div>
+        <span class="header-name">${escapeHTML(name)}</span>
       </div>
 
       <nav class="header-nav" aria-label="Primary Navigation">
@@ -55,9 +51,6 @@ window.addEventListener("app:ready", async () => {
 
   initNavBehavior();
 
-  /* -------------------------
-     LIFECYCLE EVENT
-  ------------------------- */
   window.dispatchEvent(
     new CustomEvent("header:ready", {
       detail: { timestamp: Date.now() }
@@ -66,7 +59,7 @@ window.addEventListener("app:ready", async () => {
 });
 
 /* =====================================================
-   NAV BEHAVIOR (SPA SAFE, NO LAYOUT SHIFT)
+   NAV BEHAVIOR — SPA SAFE
 ===================================================== */
 function initNavBehavior() {
   document.querySelectorAll("[data-nav]").forEach(link => {
@@ -78,7 +71,6 @@ function initNavBehavior() {
       if (!target) return;
 
       e.preventDefault();
-
       target.scrollIntoView({
         behavior: "smooth",
         block: "start"
