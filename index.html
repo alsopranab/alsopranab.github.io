@@ -1,53 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- =====================================================
+       CORE META
+  ====================================================== -->
   <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Pranab Debnath — Data Analyst</title>
 
   <meta name="description"
-        content="Data Analyst crafting structured, data-driven insights." />
+        content="Pranab Debnath is a Data Analyst focused on SQL, Python, automation, and data-driven decision making." />
+  <meta name="author" content="Pranab Debnath" />
+  <meta name="theme-color" content="#05030c" />
+  <meta name="color-scheme" content="dark light" />
 
+  <!-- =====================================================
+       SOCIAL SHARING
+  ====================================================== -->
+  <meta property="og:title" content="Pranab Debnath — Data Analyst" />
+  <meta property="og:description"
+        content="Data-driven professional building insights through SQL, Python, and automation." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://alsopranab.github.io/" />
+
+  <!-- =====================================================
+       FONTS
+  ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-        rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
+  <!-- =====================================================
+       STYLES
+  ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body data-omniverse>
 
-  <header id="site-header"></header>
+  <!-- =====================================================
+       HEADER (Injected by header.js)
+  ====================================================== -->
+  <header id="site-header" aria-label="Primary Navigation"></header>
 
-  <main>
-    <section id="hero-section" class="omniverse-section"></section>
-    <section id="experience-section" class="omniverse-section"></section>
-    <section id="featured-section" class="omniverse-section"></section>
-    <section id="projects-section" class="omniverse-section"></section>
-    <section id="education-section" class="omniverse-section"></section>
-    <section id="licenses-section" class="omniverse-section"></section>
-    <section id="contact-section" class="omniverse-section"></section>
+  <!-- =====================================================
+       MAIN CONTENT
+  ====================================================== -->
+  <main id="page-content" role="main">
+
+    <!-- HERO -->
+    <section
+      id="hero-section"
+      class="omniverse-section"
+      aria-labelledby="hero-title">
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section
+      id="experience-section"
+      class="omniverse-section"
+      aria-labelledby="experience-title">
+    </section>
+
+    <!-- FEATURED -->
+    <section
+      id="featured-section"
+      class="omniverse-section"
+      aria-labelledby="featured-title">
+    </section>
+
+    <!-- PROJECTS -->
+    <section
+      id="projects-section"
+      class="omniverse-section"
+      aria-labelledby="projects-title">
+    </section>
+
+    <!-- EDUCATION -->
+    <section
+      id="education-section"
+      class="omniverse-section"
+      aria-labelledby="education-title">
+    </section>
+
+    <!-- LICENSES / CERTS -->
+    <section
+      id="licenses-section"
+      class="omniverse-section"
+      aria-labelledby="licenses-title">
+    </section>
+
+    <!-- CONTACT -->
+    <section
+      id="contact-section"
+      class="omniverse-section"
+      aria-labelledby="contact-title">
+    </section>
+
   </main>
 
-  <footer id="site-footer"></footer>
+  <!-- =====================================================
+       FOOTER (Injected by footer.js)
+  ====================================================== -->
+  <footer id="site-footer" aria-label="Footer"></footer>
 
-  <!-- Core -->
+  <!-- =====================================================
+       CORE JS (ORDER MATTERS)
+  ====================================================== -->
+
+  <!-- Bootstrap & lifecycle -->
   <script src="assets/js/core/bootstrap.js" defer></script>
+
+  <!-- Data layer -->
   <script src="assets/js/services/data.service.js" defer></script>
 
   <!-- Layout -->
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
 
-  <!-- Page -->
+  <!-- Page controller -->
   <script src="assets/js/pages/home.js" defer></script>
 
-  <!-- Renderer -->
+  <!-- Unified renderer -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
-  <!-- Visual Engine -->
+  <!-- Visual / omniverse layer -->
   <script src="assets/js/omniverse.godmode.js" defer></script>
 
 </body>
