@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
   <!-- =====================================================
-       CORE META
+       CORE META (LOCKED)
   ====================================================== -->
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <title>Pranab Debnath — Data Analyst</title>
 
@@ -19,7 +19,7 @@
   <meta name="color-scheme" content="dark light" />
 
   <!-- =====================================================
-       SOCIAL SHARING
+       SOCIAL SHARING (LOCKED)
   ====================================================== -->
   <meta property="og:title" content="Pranab Debnath — Data Analyst" />
   <meta property="og:description" content="Data-driven professional building insights." />
@@ -27,7 +27,7 @@
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
   <!-- =====================================================
-       FONTS
+       FONTS (LOCKED)
   ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,7 +37,7 @@
   />
 
   <!-- =====================================================
-       STYLES
+       STYLES (CSS OWNS ALL VISUALS)
   ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
@@ -45,21 +45,25 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       BACKGROUND LAYERS (CSS-DRIVEN)
+       BACKGROUND LAYERS (CSS-ONLY)
        • No JS
        • No canvas
-       • Safe for Godmode
+       • Godmode-safe
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
   <!-- =====================================================
        HEADER (INJECTED)
+       • header.js
+       • motion + nav safe
   ====================================================== -->
   <header id="site-header" aria-label="Primary Navigation"></header>
 
   <!-- =====================================================
        MAIN CONTENT
+       • Renderer owns innerHTML
+       • Godmode reads only
   ====================================================== -->
   <main id="page-content" role="main">
 
@@ -81,39 +85,49 @@
 
   <!-- =====================================================
        FOOTER (INJECTED)
+       • footer.js
+       • zero duplication
   ====================================================== -->
   <footer id="site-footer" aria-label="Footer"></footer>
 
   <!-- =====================================================
-       CORE JS (ORDER MATTERS)
+       CORE JS (ORDER IS CANONICAL — DO NOT CHANGE)
   ====================================================== -->
+
+  <!-- Bootstrap / App lifecycle -->
   <script src="assets/js/core/bootstrap.js" defer></script>
+
+  <!-- Data layer -->
   <script src="assets/js/services/data.service.js" defer></script>
 
-  <!-- Layout -->
+  <!-- Layout injection -->
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
 
-  <!-- Pages / Rendering -->
+  <!-- Page logic -->
   <script src="assets/js/pages/home.js" defer></script>
+
+  <!-- Rendering (DOM ownership) -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
   <!-- =====================================================
        GODMODE (ORCHESTRATOR ONLY)
-       • Reads CSS + DOM
-       • Does NOT own visuals
+       • Reads DOM
+       • Coordinates motion
+       • Image-viewer aware
   ====================================================== -->
   <script src="assets/js/interactions/godmode.js" defer></script>
 
   <!-- =====================================================
-       MOTION.UI (ANIMATION ONLY)
-       • Uses classes set by Godmode
-       • No state, no canvas
+       UI MOTION (ANIMATION ONLY)
+       • Class-based
+       • No state
   ====================================================== -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
 
   <!-- =====================================================
        NO-JS FALLBACK
+       • Accessibility safe
   ====================================================== -->
   <noscript>
     <style>
