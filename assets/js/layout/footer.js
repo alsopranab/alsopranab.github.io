@@ -1,11 +1,11 @@
 /**
- * Footer Layout Controller — FINAL IMMUTABLE BUILD
- * ==============================================
- * - Social-only footer (NO contact logic)
- * - Zero duplication risk
- * - Mobile & desktop safe
- * - Safari layout stable
- * - Race-condition immune
+ * Footer Layout Controller (FINAL — IMMUTABLE)
+ * ===========================================
+ * - Social links ONLY
+ * - No contact/email rendering
+ * - Apple-style minimal footer
+ * - Canonical IDs
+ * - Race-condition safe
  */
 
 window.addEventListener("app:ready", async () => {
@@ -15,20 +15,16 @@ window.addEventListener("app:ready", async () => {
   let socials = [];
 
   try {
-    if (window.DataService?.getSocials) {
-      const socialData = await DataService.getSocials();
+    const socialData = await DataService.getSocials();
 
-      if (Array.isArray(socialData?.profiles)) {
-        socials = socialData.profiles
-          .filter(p => p.enabled && typeof p.url === "string")
-          .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
-      }
+    if (Array.isArray(socialData?.profiles)) {
+      socials = socialData.profiles
+        .filter(p => p.enabled && p.url)
+        .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
     }
   } catch (err) {
-    console.warn("[Footer] Social load failed — continuing safely", err);
+    console.warn("[Footer] Social fallback enabled", err);
   }
-
-  /* ================= RENDER ================= */
 
   footerEl.innerHTML = `
     <div class="footer-container">
@@ -40,17 +36,16 @@ window.addEventListener("app:ready", async () => {
                 .map(
                   s => `
                     <a
-                      href="${escapeHTML(s.url)}"
+                      href="${s.url}"
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="${escapeHTML(formatPlatform(s.platform))}"
                     >
                       ${escapeHTML(formatPlatform(s.platform))}
                     </a>
                   `
                 )
                 .join("")
-            : `<span class="footer-muted" aria-hidden="true"></span>`
+            : ""
         }
       </div>
 
