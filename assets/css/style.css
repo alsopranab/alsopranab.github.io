@@ -1,5 +1,5 @@
 /* ============================================================
-   OMNIVERSE — APPLE EDITORIAL (FINAL, COMPLETE)
+   OMNIVERSE — APPLE EDITORIAL (FINAL, POLISHED)
    Calm • Precise • Premium • Liquid Glass • Retina-safe
 ============================================================ */
 
@@ -118,7 +118,6 @@ section.omniverse-section {
   top: 16px;
   z-index: 100;
   background: transparent;
-  border: none;
 }
 
 .header-container {
@@ -210,6 +209,7 @@ section.omniverse-section {
 .featured-item,
 .contact-wrapper,
 .licenses-grid > * {
+  position: relative;
   padding: 22px;
   border-radius: var(--radius-md);
   border: 0.5px solid var(--border-hairline);
@@ -225,6 +225,26 @@ section.omniverse-section {
     border-color 0.35s ease;
 }
 
+/* ===== CORNER GLOW (Safari-correct) ===== */
+.project-card::before,
+.education-item::before,
+.experience-role::before,
+.featured-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+
+  background:
+    radial-gradient(40px 40px at 0% 0%, rgba(167,139,250,0.14), transparent 70%),
+    radial-gradient(40px 40px at 100% 0%, rgba(167,139,250,0.12), transparent 70%),
+    radial-gradient(40px 40px at 0% 100%, rgba(167,139,250,0.10), transparent 70%),
+    radial-gradient(40px 40px at 100% 100%, rgba(167,139,250,0.08), transparent 70%);
+
+  opacity: 0.55;
+}
+
 /* =========================
    EXPERIENCE
 ========================= */
@@ -232,32 +252,6 @@ section.omniverse-section {
   display: flex;
   flex-direction: column;
   gap: 36px;
-}
-
-.experience-company h3 {
-  margin-bottom: 8px;
-}
-
-.experience-role strong {
-  display: block;
-  font-size: 15px;
-  margin-bottom: 4px;
-}
-
-.experience-role span {
-  font-size: 13px;
-  opacity: 0.6;
-}
-
-.experience-role ul {
-  margin-top: 10px;
-  padding-left: 18px;
-}
-
-.experience-role li {
-  font-size: 14px;
-  line-height: 1.6;
-  opacity: 0.8;
 }
 
 /* =========================
@@ -296,61 +290,11 @@ section.omniverse-section {
   margin-top: 20px;
 }
 
-.project-card h4 {
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 6px;
-}
-
-.project-card p {
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.project-card a {
-  display: inline-block;
-  margin-top: 10px;
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-.project-card a:hover {
-  opacity: 1;
-}
-
 /* =========================
    EDUCATION
 ========================= */
 .education-item {
   margin-bottom: 24px;
-}
-
-.education-item strong {
-  display: block;
-  font-size: 15px;
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.education-item span {
-  font-size: 13px;
-  opacity: 0.6;
-  display: block;
-  margin-bottom: 8px;
-}
-
-.education-item p {
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-/* =========================
-   LICENSES
-========================= */
-.licenses-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 28px;
 }
 
 /* =========================
@@ -372,52 +316,6 @@ section.omniverse-section {
   color: var(--text-muted);
 }
 
-.footer-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 48px 24px 32px;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-}
-
-.footer-email a {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-main);
-}
-
-.footer-socials {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.footer-socials a {
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.75;
-}
-
-.footer-socials a:hover {
-  opacity: 1;
-}
-
-.footer-muted {
-  font-size: 12px;
-  opacity: 0.45;
-}
-
-.footer-meta {
-  font-size: 11px;
-  opacity: 0.45;
-  margin-top: 6px;
-}
-
 /* =========================
    MICRO INTERACTION
 ========================= */
@@ -426,12 +324,12 @@ section.omniverse-section {
   .featured-item:hover,
   .education-item:hover {
     transform: translateY(-3px);
-    border-color: rgba(167,139,250,0.12);
+    border-color: rgba(167,139,250,0.14);
   }
 }
 
 /* =========================
-   MOBILE TUNING
+   MOBILE
 ========================= */
 @media (max-width: 768px) {
   section.omniverse-section {
@@ -441,17 +339,6 @@ section.omniverse-section {
   .featured-item {
     grid-template-columns: 1fr;
     direction: ltr;
-  }
-
-  .project-card,
-  .education-item,
-  .experience-role {
-    padding: 18px;
-  }
-
-  .header-container {
-    padding: 12px 22px;
-    gap: 22px;
   }
 }
 
