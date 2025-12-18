@@ -30,7 +30,7 @@
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
   <!-- =====================================================
-       FONTS (PERFORMANCE SAFE)
+       FONTS
   ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -48,88 +48,45 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       AMBIENT BACKGROUND (CSS ONLY, SAFE)
-       - starry dust
-       - shooting stars
+       BACKGROUND — CSS ONLY (SAFE)
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
   <!-- =====================================================
-       HEADER (Injected by header.js)
+       HEADER
   ====================================================== -->
   <header id="site-header" aria-label="Primary Navigation">
-    <!-- JS injects header content -->
+    <!-- injected -->
   </header>
 
   <!-- =====================================================
-       MAIN CONTENT (CANONICAL IDS — DO NOT CHANGE)
+       MAIN CONTENT
   ====================================================== -->
   <main id="page-content" role="main">
 
-    <!-- HERO -->
-    <section
-      id="hero-section"
-      class="omniverse-section"
-      aria-label="Introduction"
-    ></section>
-
-    <!-- EXPERIENCE -->
-    <section
-      id="experience-section"
-      class="omniverse-section"
-      aria-label="Experience"
-    ></section>
-
-    <!-- FEATURED -->
-    <section
-      id="featured-section"
-      class="omniverse-section"
-      aria-label="Featured Work"
-    ></section>
-
-    <!-- PROJECTS -->
-    <section
-      id="projects-section"
-      class="omniverse-section"
-      aria-label="Projects"
-    ></section>
-
-    <!-- EDUCATION -->
-    <section
-      id="education-section"
-      class="omniverse-section"
-      aria-label="Education"
-    ></section>
-
-    <!-- LICENSES -->
-    <section
-      id="licenses-section"
-      class="omniverse-section"
-      aria-label="Licenses and Certifications"
-    ></section>
-
-    <!-- CONTACT -->
-    <section
-      id="contact-section"
-      class="omniverse-section"
-      aria-label="Contact"
-    ></section>
+    <section id="hero-section" class="omniverse-section"></section>
+    <section id="experience-section" class="omniverse-section"></section>
+    <section id="featured-section" class="omniverse-section"></section>
+    <section id="projects-section" class="omniverse-section"></section>
+    <section id="education-section" class="omniverse-section"></section>
+    <section id="licenses-section" class="omniverse-section"></section>
+    <section id="contact-section" class="omniverse-section"></section>
 
   </main>
 
   <!-- =====================================================
-       FOOTER (Injected by footer.js)
+       FOOTER
   ====================================================== -->
   <footer id="site-footer" aria-label="Footer">
-    <!-- JS injects footer content -->
+    <!-- injected -->
   </footer>
 
   <!-- =====================================================
-       CORE JS (ORDER IS CRITICAL)
-       ✔ NO cursor
-       ✔ NO canvas
-       ✔ NO godmode
+       JS — CLEAN & SAFE
+       ❌ NO godmode
+       ❌ NO cursor
+       ❌ NO canvas
   ====================================================== -->
 
   <script src="assets/js/core/bootstrap.js" defer></script>
@@ -139,11 +96,11 @@
   <script src="assets/js/pages/home.js" defer></script>
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
-  <!-- SAFE MOTION ONLY (header + hero) -->
+  <!-- SAFE MOTION ONLY (Header + Hero) -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
 
   <!-- =====================================================
-       NO-JS FALLBACK (ACCESSIBILITY SAFE)
+       NO-JS FALLBACK
   ====================================================== -->
   <noscript>
     <style>
