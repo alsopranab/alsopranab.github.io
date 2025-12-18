@@ -693,3 +693,112 @@ section.omniverse-section {
     text-align: center;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — RENDERER-SAFE STRUCTURE FIX
+============================================================ */
+
+/* ================= EXPERIENCE — SINGLE GLOWING LINE ================= */
+
+/* Anchor experience section */
+#experience-section {
+  position: relative;
+  align-items: flex-start;
+}
+
+/* Add ONE vertical transformation line */
+#experience-section::before {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: var(--space-section);
+  bottom: var(--space-section);
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.5;
+}
+
+/* Push all experience cards away from the line */
+#experience-section > * {
+  margin-left: 64px;
+  max-width: 720px;
+}
+
+/* Text should be editorial, not centered */
+#experience-section h2,
+#experience-section h3,
+#experience-section p,
+#experience-section li {
+  text-align: left;
+}
+
+/* ================= PROJECTS — ALIGNMENT FIX ================= */
+
+#projects-section {
+  align-items: center;
+}
+
+#projects-section > * {
+  max-width: 720px;
+  width: 100%;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ================= CONTACT — RESTRUCTURE ================= */
+
+/* Section alignment */
+#contact-section {
+  align-items: center;
+}
+
+/* Headings ABOVE container */
+#contact-section h2,
+#contact-section h3:first-child {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Contact container */
+#contact-section > div {
+  max-width: 900px;
+  width: 100%;
+  padding: 56px 48px;
+}
+
+/* Ensure inner text fills container */
+#contact-section p {
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+
+/* Email — lowercase, small, quiet */
+#contact-section a[href^="mailto"] {
+  text-transform: lowercase;
+  font-size: 13px;
+  opacity: 0.6;
+  letter-spacing: normal;
+}
+
+/* ================= MOBILE SAFETY ================= */
+@media (max-width: 768px) {
+  #experience-section::before {
+    display: none;
+  }
+
+  #experience-section > * {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  #contact-section p {
+    text-align: center;
+  }
+}
