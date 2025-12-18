@@ -86,24 +86,18 @@ async function ResumeController() {
 ============================================================ */
 
 function resolveResumeTarget(profile) {
-  const resume = profile?.resume;
+  const url = profile?.resume?.externalProfile;
 
-  if (!resume || resume.strategy !== "external") {
-    return null;
-  }
-
-  if (
-    resume.provider === "linkedin" &&
-    isValidUrl(resume.externalProfile)
-  ) {
+  if (isValidUrl(url)) {
     return {
-      provider: "linkedin",
-      url: resume.externalProfile
+      provider: profile.resume.provider || "external",
+      url
     };
   }
 
   return null;
 }
+
 
 /* ============================================================
    SAFETY UTILITIES
