@@ -51,12 +51,7 @@
   /* ============================================================
      RAF GOVERNOR
   ============================================================ */
-  const TARGET_FPS = ENV.isMobile
-    ? 45
-    : ENV.isLowEnd
-    ? 40
-    : 60;
-
+  const TARGET_FPS = ENV.isMobile ? 45 : ENV.isLowEnd ? 40 : 60;
   const FRAME_INTERVAL = 1000 / TARGET_FPS;
   let lastFrame = 0;
   const TASKS = new Set();
@@ -93,12 +88,11 @@
     );
   }
 
-  // SAFE scroll listener — NO energy injection
   window.addEventListener(
     "scroll",
     () => {
       STATE.scroll.y = window.scrollY;
-      STATE.scroll.speed *= 0.9; // decay only
+      STATE.scroll.speed *= 0.9;
     },
     { passive: true }
   );
@@ -123,7 +117,6 @@
     VIEW.h = window.innerHeight;
 
     const scale = ENV.isMobile ? 0.85 : 1;
-
     canvas.width = VIEW.w * ENV.dpr * scale;
     canvas.height = VIEW.h * ENV.dpr * scale;
 
@@ -134,6 +127,17 @@
 
   resize();
   window.addEventListener("resize", resize);
+
+  /* ============================================================
+     STAR DUST (STATIC AMBIENT)
+  ============================================================ */
+  const DUST_COUNT = ENV.isMobile ? 30 : 60;
+  const STAR_DUST = Array.from({ length: DUST_COUNT }, () => ({
+    x: Math.random() * VIEW.w,
+    y: Math.random() * VIEW.h,
+    r: Math.random() * 0.9 + 0.3,
+    a: Math.random() * 0.35 + 0.15
+  }));
 
   /* ============================================================
      PARTICLES (STABLE)
@@ -148,15 +152,44 @@
     r: Math.random() * 1.4 + 0.4
   }));
 
-  TASKS.add(() => {
+  /* ============================================================
+     SHOOTING STAR (RARE)
+  ============================================================ */
+  let nextShootingStar = performance.now() + 10000;
+  let shootingStar = null;
+
+  function spawnShootingStar() {
+    shootingStar = {
+      x: -200,
+      y: Math.random() * VIEW.h * 0.6,
+      vx: VIEW.w * 1.6,
+      vy: VIEW.h * 0.7,
+      life: 0
+    };
+  }
+
+  /* ============================================================
+     RENDER LOOP
+  ============================================================ */
+  TASKS.add(t => {
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    /* ---- STAR DUST ---- */
+    for (const s of STAR_DUST) {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.a})`;
+      ctx.fill();
+    }
+
+    /* ---- ENERGY MODEL ---- */
     const rawEnergy =
       Math.hypot(STATE.velocity.x, STATE.velocity.y) * 0.01;
 
     STATE.energy += (Math.min(rawEnergy, 0.8) - STATE.energy) * 0.08;
 
+    /* ---- FLOATING PARTICLES ---- */
     for (const p of PARTICLES) {
       p.x += p.vx * (1 + STATE.energy);
       p.y += p.vy * (1 + STATE.energy);
@@ -168,6 +201,32 @@
       ctx.arc(p.x, p.y, p.r + STATE.energy * 0.2, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(167,139,250,0.12)";
       ctx.fill();
+    }
+
+    /* ---- SHOOTING STAR ---- */
+    if (t > nextShootingStar && !shootingStar) {
+      spawnShootingStar();
+      nextShootingStar = t + 10000;
+    }
+
+    if (shootingStar) {
+      shootingStar.life += 1;
+      shootingStar.x += shootingStar.vx * 0.016;
+      shootingStar.y += shootingStar.vy * 0.016;
+
+      ctx.strokeStyle = "rgba(167,139,250,0.85)";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(shootingStar.x, shootingStar.y);
+      ctx.lineTo(
+        shootingStar.x - 120,
+        shootingStar.y - 60
+      );
+      ctx.stroke();
+
+      if (shootingStar.life > 25) {
+        shootingStar = null;
+      }
     }
   });
 
@@ -207,7 +266,7 @@
   }
 
   /* ============================================================
-     CARD TILT (TRANSFORM-SAFE)
+     CARD TILT (TRANSFORM SAFE)
   ============================================================ */
   if (!ENV.isMobile) {
     const REACTIVE = document.querySelectorAll(
