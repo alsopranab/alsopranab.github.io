@@ -1,11 +1,11 @@
 /**
- * UI Motion Engine — FINAL (CANONICAL, STABLE, PRODUCTION)
- * ======================================================
- * - Uses canonical section IDs
- * - Waits for header + home render
- * - Motion-safe (reduced-motion aware)
- * - Smooth, non-jittery behavior
- * - Mobile friendly
+ * UI Motion Engine — FINAL IMMUTABLE BUILD
+ * ======================================
+ * - Canonical section IDs
+ * - Header fade + scale (no slide)
+ * - Zero scroll-up lag
+ * - Safari rubber-band safe
+ * - Vision Pro easing compatible
  * - Active nav highlighting (race-condition safe)
  */
 
@@ -14,11 +14,9 @@
 
   /* ================= ENV ================= */
 
-  const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)"
-  ).matches;
-
-  if (reduceMotion) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
 
   const header = document.getElementById("site-header");
   const heroSection = document.getElementById("hero-section");
@@ -31,68 +29,67 @@
   let heroWrapper = null;
   let headerIdentity = null;
 
-  let lastY = window.scrollY;
+  let lastScrollY = window.scrollY;
   let ticking = false;
 
   /* ================= READY GATES ================= */
 
-  window.addEventListener("header:ready", bindHeaderIdentity);
-  window.addEventListener("home:ready", bindHeroWrapper);
-
-  function bindHeaderIdentity() {
+  window.addEventListener("header:ready", () => {
     headerIdentity = header.querySelector(".header-identity");
+
     if (!headerIdentity) return;
 
     headerIdentity.style.opacity = "0";
-    headerIdentity.style.transform = "translateY(6px) scale(0.96)";
+    headerIdentity.style.transform = "scale(0.96)";
     headerIdentity.style.transition =
-      "opacity 260ms ease, transform 260ms ease";
-  }
+      "opacity 240ms ease, transform 320ms cubic-bezier(0.25,0.8,0.25,1)";
+  });
 
-  function bindHeroWrapper() {
+  window.addEventListener("home:ready", () => {
     heroWrapper = heroSection.querySelector(".hero-wrapper");
-  }
+  });
 
   /* ================= SCROLL LOOP ================= */
 
   window.addEventListener(
     "scroll",
     () => {
-      const y = window.scrollY;
+      if (ticking) return;
 
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          handleHeaderAutoHide(y);
-          handleHeroMorph(y);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+
+        handleHeaderVisibility(y);
+        handleHeroProgress(y);
+
+        lastScrollY = y;
+        ticking = false;
+      });
     },
     { passive: true }
   );
 
-  /* ================= HEADER AUTO HIDE ================= */
+  /* ================= HEADER VISIBILITY ================= */
 
-  function handleHeaderAutoHide(y) {
-    const delta = y - lastY;
+  function handleHeaderVisibility(y) {
+    const delta = y - lastScrollY;
 
-    // Deadzone prevents jitter
+    // Deadzone prevents micro jitter
     if (Math.abs(delta) < 6) return;
 
-    if (y > lastY && y > 120) {
+    if (y > lastScrollY && y > 120) {
       header.classList.add("header-hidden");
     } else {
       header.classList.remove("header-hidden");
     }
-
-    lastY = y;
   }
 
-  /* ================= HERO MORPH ================= */
+  /* ================= HERO PROGRESS ================= */
 
-  function handleHeroMorph(scrollY) {
-    if (!heroWrapper || !headerIdentity || scrollY < 1) return;
+  function handleHeroProgress(scrollY) {
+    if (!heroWrapper || scrollY < 1) return;
 
     const heroHeight = heroSection.offsetHeight || 1;
     const progress = Math.min(scrollY / heroHeight, 1);
@@ -102,12 +99,14 @@
       progress.toFixed(3)
     );
 
+    if (!headerIdentity) return;
+
     if (progress > 0.72) {
       headerIdentity.style.opacity = "1";
-      headerIdentity.style.transform = "translateY(0) scale(1)";
+      headerIdentity.style.transform = "scale(1)";
     } else {
       headerIdentity.style.opacity = "0";
-      headerIdentity.style.transform = "translateY(6px) scale(0.96)";
+      headerIdentity.style.transform = "scale(0.96)";
     }
   }
 
@@ -122,7 +121,10 @@
         }
       }
     },
-    { threshold: 0.15 }
+    {
+      threshold: 0.15,
+      rootMargin: "0px 0px -10% 0px"
+    }
   );
 
   document
@@ -131,14 +133,17 @@
 })();
 
 /* ======================================================
-   ACTIVE NAV TRACKER — HEADER SAFE
+   ACTIVE NAV TRACKER — FINAL SAFE VERSION
 ====================================================== */
 
 window.addEventListener("header:ready", () => {
-  const links = document.querySelectorAll(".header-nav a[href^='#']");
-  if (!links.length) return;
+  const navLinks = Array.from(
+    document.querySelectorAll(".header-nav a[href^='#']")
+  );
 
-  const sections = [...links]
+  if (!navLinks.length) return;
+
+  const sections = navLinks
     .map(link => {
       const id = link.getAttribute("href");
       return id ? document.querySelector(id) : null;
@@ -147,18 +152,18 @@ window.addEventListener("header:ready", () => {
 
   if (!sections.length) return;
 
-  const observer = new IntersectionObserver(
+  const navObserver = new IntersectionObserver(
     entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
 
-        links.forEach(a => a.classList.remove("active"));
+        navLinks.forEach(link => link.classList.remove("active"));
 
-        const activeLink = document.querySelector(
-          `.header-nav a[href="#${entry.target.id}"]`
+        const active = navLinks.find(
+          link => link.getAttribute("href") === `#${entry.target.id}`
         );
 
-        if (activeLink) activeLink.classList.add("active");
+        if (active) active.classList.add("active");
       });
     },
     {
@@ -167,5 +172,5 @@ window.addEventListener("header:ready", () => {
     }
   );
 
-  sections.forEach(section => observer.observe(section));
+  sections.forEach(section => navObserver.observe(section));
 });
