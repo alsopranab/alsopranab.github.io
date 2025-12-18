@@ -1,10 +1,10 @@
 /**
- * Stats Page Controller (FINAL — PAGE SAFE)
- * ========================================
- * - Runs ONLY when stats page exists
- * - Schema-aligned with current JSON
- * - Failure-tolerant
- * - Renderer-safe
+ * Stats Page Controller (FINAL — HARD SAFE & SCHEMA TRUE)
+ * ======================================================
+ * - Runs ONLY on stats page
+ * - Matches your real JSON structures
+ * - Attaches clean dataset.source
+ * - Never crashes rendering
  */
 
 /* ============================================================
@@ -13,7 +13,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   if (!document.getElementById("stats-overview-section")) return;
 
-  StatsPageController().catch((err) => {
+  StatsPageController().catch(err => {
     console.error("[StatsPage] Fatal initialization error", err);
   });
 });
@@ -25,10 +25,10 @@ async function StatsPageController() {
      SECTION REGISTRY
   ========================= */
   const sections = {
+    overview: document.getElementById("stats-overview-section"),
     competitive: document.getElementById("competitive-section"),
     repositories: document.getElementById("repositories-section"),
-    contributions: document.getElementById("contributions-section"),
-    overview: document.getElementById("stats-overview-section")
+    contributions: document.getElementById("contributions-section")
   };
 
   validateSections(sections);
@@ -48,14 +48,17 @@ async function StatsPageController() {
   /* =========================
      DATA NORMALIZATION
   ========================= */
+  attach(sections.overview, normalizeOverview(profileData));
   attach(sections.competitive, normalizeCompetitive(socialData));
   attach(sections.repositories, normalizeRepositories(projectsData));
-  attach(sections.contributions, normalizeContributions(profileData));
-  attach(sections.overview, normalizeOverview(profileData));
+  attach(sections.contributions, normalizeContributions(socialData));
 
-  console.info("[StatsPage] Data attached");
+  console.info("[StatsPage] Data attached successfully");
   console.groupEnd();
 
+  /* =========================
+     LIFECYCLE EVENT
+  ========================= */
   window.dispatchEvent(
     new CustomEvent("stats:ready", {
       detail: { timestamp: Date.now() }
@@ -64,40 +67,13 @@ async function StatsPageController() {
 }
 
 /* ============================================================
-   NORMALIZERS (SCHEMA ALIGNED)
+   NORMALIZERS (REAL SCHEMA)
 ============================================================ */
 
-function normalizeCompetitive(socialData) {
-  if (!socialData?.socials) return null;
-
-  return socialData.socials
-    .filter(s => s.enabled)
-    .map(s => ({
-      id: s.id,
-      name: s.name,
-      url: s.url
-    }));
-}
-
-function normalizeRepositories(projectsData) {
-  if (!projectsData?.categories) return null;
-
-  return projectsData.categories.map(cat => ({
-    label: cat.label,
-    projectCount: (cat.projects || []).length,
-    projects: cat.projects || []
-  }));
-}
-
-function normalizeContributions(profileData) {
-  const github =
-    profileData?.identity?.links?.github || null;
-
-  return github
-    ? { github }
-    : null;
-}
-
+/**
+ * OVERVIEW
+ * Uses profile.json → identity
+ */
 function normalizeOverview(profileData) {
   if (!profileData?.identity) return null;
 
@@ -106,13 +82,81 @@ function normalizeOverview(profileData) {
       profileData.identity.preferredName ||
       profileData.identity.fullName ||
       "",
+
     headline:
       profileData.identity.headline ||
+      "",
+
+    summary:
       profileData.identity.summary ||
       "",
+
     location:
-      profileData.identity.location || ""
+      profileData.identity.location
+        ? `${profileData.identity.location.city}, ${profileData.identity.location.country}`
+        : ""
   };
+}
+
+/**
+ * COMPETITIVE
+ * Uses social.json → socials[]
+ */
+function normalizeCompetitive(socialData) {
+  if (!Array.isArray(socialData?.socials)) return null;
+
+  return socialData.socials
+    .filter(s => s.enabled)
+    .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
+    .map(s => ({
+      id: s.id,
+      name: s.name,
+      platform: s.platform || s.name,
+      url: s.url
+    }));
+}
+
+/**
+ * REPOSITORIES
+ * Uses projects.json → categories[]
+ */
+function normalizeRepositories(projectsData) {
+  if (!Array.isArray(projectsData?.categories)) return null;
+
+  return projectsData.categories
+    .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
+    .map(cat => ({
+      label: cat.label,
+      projectCount: Array.isArray(cat.projects)
+        ? cat.projects.length
+        : 0,
+      projects: Array.isArray(cat.projects)
+        ? cat.projects.map(p => ({
+            name: p.project?.name || "",
+            summary: p.project?.summary || "",
+            repo: p.repository?.url || ""
+          }))
+        : []
+    }));
+}
+
+/**
+ * CONTRIBUTIONS
+ * Derived from socials (GitHub presence)
+ */
+function normalizeContributions(socialData) {
+  if (!Array.isArray(socialData?.socials)) return null;
+
+  const github = socialData.socials.find(
+    s => s.enabled && s.id === "github"
+  );
+
+  return github
+    ? {
+        platform: "GitHub",
+        url: github.url
+      }
+    : null;
 }
 
 /* ============================================================
@@ -122,7 +166,7 @@ function normalizeOverview(profileData) {
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
     if (!el) {
-      console.warn(`[StatsPage] Missing section: ${key}`);
+      console.warn(`[StatsPage] Missing section in DOM: ${key}`);
     }
   });
 }
