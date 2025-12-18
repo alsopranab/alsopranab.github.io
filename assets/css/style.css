@@ -1223,3 +1223,89 @@ body[data-omniverse] {
 .omniverse-section {
   contain: layout paint;
 }
+
+   /* ============================================================
+   OMNIVERSE — FLICKER HOTFIX (SAFE PATCH)
+   DOES NOT CHANGE LAYOUT OR LOGIC
+============================================================ */
+
+/* Stabilize heavy background layers */
+body[data-omniverse]::before,
+body[data-omniverse]::after,
+.shooting-stars {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* Prevent GPU repaint glitches on fast scroll */
+body[data-omniverse] {
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Ensure sections are NOT isolated into repaint layers */
+.omniverse-section {
+  contain: none !important;
+}
+
+   /* ============================================================
+   OMNIVERSE — SHOOTING STARS (SAFE ADDITION)
+============================================================ */
+
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1; /* behind content, above background */
+  overflow: hidden;
+}
+
+/* Stars */
+.shooting-stars::before,
+.shooting-stars::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 360px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(167,139,250,0.75),
+    rgba(255,255,255,0)
+  );
+  opacity: 0;
+  transform: rotate(24deg);
+  animation: shooting-star 26s linear infinite;
+}
+
+/* Second star offset */
+.shooting-stars::after {
+  animation-delay: 13s;
+  top: 45%;
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(24deg);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.7;
+  }
+  18% {
+    transform: translateX(170vw) translateY(80vh) rotate(24deg);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .shooting-stars {
+    display: none;
+  }
+}
