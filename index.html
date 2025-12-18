@@ -37,7 +37,7 @@
   />
 
   <!-- =====================================================
-       FAVICON (PREVENT 404)
+       FAVICON (MATCHES STRUCTURE)
   ====================================================== -->
   <link rel="icon" href="assets/favicon.ico" />
 
@@ -50,7 +50,7 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       BACKGROUND LAYERS (CSS ONLY)
+       BACKGROUND LAYERS (CSS-ONLY)
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
@@ -61,7 +61,7 @@
   <header id="site-header" aria-label="Primary Navigation"></header>
 
   <!-- =====================================================
-       MAIN CONTENT
+       MAIN CONTENT (RENDERER OWNS CONTENT)
   ====================================================== -->
   <main id="page-content" role="main">
 
@@ -81,13 +81,13 @@
   <footer id="site-footer" aria-label="Footer"></footer>
 
   <!-- =====================================================
-       CORE JS (CANONICAL ORDER)
+       CORE JS (ORDER IS CRITICAL — VERIFIED)
   ====================================================== -->
 
-  <!-- Bootstrap -->
+  <!-- App lifecycle -->
   <script src="assets/js/core/bootstrap.js" defer></script>
 
-  <!-- Data -->
+  <!-- Data layer -->
   <script src="assets/js/services/data.service.js" defer></script>
 
   <!-- Layout -->
@@ -97,18 +97,20 @@
   <!-- Page logic -->
   <script src="assets/js/pages/home.js" defer></script>
 
-  <!-- Renderer -->
+  <!-- Renderer (DOM ownership) -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
   <!-- =====================================================
-       GODMODE (FIXED PATH)
+       GODMODE (CORRECT PATH)
+       FILE: assets/js/omniverse.godmode.js
   ====================================================== -->
-  <script src="assets/js/godmode.js" defer></script>
+  <script src="assets/js/omniverse.godmode.js" defer></script>
 
   <!-- =====================================================
-       UI MOTION (FIXED PATH)
+       UI MOTION (CORRECT PATH)
+       FILE: assets/js/interactions/ui.motion.js
   ====================================================== -->
-  <script src="assets/js/ui.motion.js" defer></script>
+  <script src="assets/js/interactions/ui.motion.js" defer></script>
 
   <!-- =====================================================
        NO-JS FALLBACK
