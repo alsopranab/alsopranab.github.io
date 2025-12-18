@@ -1532,3 +1532,106 @@ body[data-omniverse]::after,
     display: none;
   }
 }
+
+   /* ============================================================
+   OMNIVERSE — STAR DUST + RARE SHOOTING STAR
+   CSS ONLY • SAFE • NO FLICKER
+============================================================ */
+
+/* ---------- STAR DUST (STATIC, CALM) ---------- */
+
+.starry-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1; /* behind content, above gradients */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.starry-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  /* Sparse star dust pattern */
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 44% 38%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 61% 55%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 90% 68%, rgba(255,255,255,0.35), transparent);
+
+  background-size: 320px 320px;
+  opacity: 0.35;
+}
+
+/* ---------- RARE SHOOTING STAR ---------- */
+
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.shooting-stars::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: -35%;
+  width: 280px;
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(167,139,250,0.85),
+    rgba(255,255,255,0)
+  );
+
+  opacity: 0;
+  transform: rotate(24deg);
+
+  /* Rare appearance — ~once every 10s */
+  animation: shooting-star 10s linear infinite;
+}
+
+@keyframes shooting-star {
+  0% {
+    opacity: 0;
+    transform: translateX(0) translateY(0) rotate(24deg);
+  }
+
+  6% {
+    opacity: 0.8;
+  }
+
+  16% {
+    transform: translateX(160vw) translateY(70vh) rotate(24deg);
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------- STABILITY PATCH ---------- */
+
+/* Lock background layers to GPU without repaint */
+.starry-bg,
+.shooting-stars {
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+/* ---------- ACCESSIBILITY ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .starry-bg,
+  .shooting-stars {
+    display: none;
+  }
+}
