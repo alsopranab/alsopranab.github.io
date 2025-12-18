@@ -19,7 +19,7 @@
   <meta name="color-scheme" content="dark light" />
 
   <!-- =====================================================
-       SOCIAL SHARING (LOCKED)
+       SOCIAL SHARING
   ====================================================== -->
   <meta property="og:title" content="Pranab Debnath — Data Analyst" />
   <meta property="og:description" content="Data-driven professional building insights." />
@@ -27,7 +27,7 @@
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
   <!-- =====================================================
-       FONTS (LOCKED)
+       FONTS
   ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -37,7 +37,12 @@
   />
 
   <!-- =====================================================
-       STYLES (CSS OWNS ALL VISUALS)
+       FAVICON (PREVENT 404)
+  ====================================================== -->
+  <link rel="icon" href="assets/favicon.ico" />
+
+  <!-- =====================================================
+       STYLES
   ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
@@ -45,89 +50,68 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       BACKGROUND LAYERS (CSS-ONLY)
-       • No JS
-       • No canvas
-       • Godmode-safe
+       BACKGROUND LAYERS (CSS ONLY)
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
   <!-- =====================================================
        HEADER (INJECTED)
-       • header.js
-       • motion + nav safe
   ====================================================== -->
   <header id="site-header" aria-label="Primary Navigation"></header>
 
   <!-- =====================================================
        MAIN CONTENT
-       • Renderer owns innerHTML
-       • Godmode reads only
   ====================================================== -->
   <main id="page-content" role="main">
 
     <section id="hero-section" class="omniverse-section"></section>
-
     <section id="experience-section" class="omniverse-section"></section>
-
     <section id="featured-section" class="omniverse-section"></section>
-
     <section id="projects-section" class="omniverse-section"></section>
-
     <section id="education-section" class="omniverse-section"></section>
-
     <section id="licenses-section" class="omniverse-section"></section>
-
     <section id="contact-section" class="omniverse-section"></section>
 
   </main>
 
   <!-- =====================================================
        FOOTER (INJECTED)
-       • footer.js
-       • zero duplication
   ====================================================== -->
   <footer id="site-footer" aria-label="Footer"></footer>
 
   <!-- =====================================================
-       CORE JS (ORDER IS CANONICAL — DO NOT CHANGE)
+       CORE JS (CANONICAL ORDER)
   ====================================================== -->
 
-  <!-- Bootstrap / App lifecycle -->
+  <!-- Bootstrap -->
   <script src="assets/js/core/bootstrap.js" defer></script>
 
-  <!-- Data layer -->
+  <!-- Data -->
   <script src="assets/js/services/data.service.js" defer></script>
 
-  <!-- Layout injection -->
+  <!-- Layout -->
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
 
   <!-- Page logic -->
   <script src="assets/js/pages/home.js" defer></script>
 
-  <!-- Rendering (DOM ownership) -->
+  <!-- Renderer -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
   <!-- =====================================================
-       GODMODE (ORCHESTRATOR ONLY)
-       • Reads DOM
-       • Coordinates motion
-       • Image-viewer aware
+       GODMODE (FIXED PATH)
   ====================================================== -->
-  <script src="assets/js/interactions/godmode.js" defer></script>
+  <script src="assets/js/godmode.js" defer></script>
 
   <!-- =====================================================
-       UI MOTION (ANIMATION ONLY)
-       • Class-based
-       • No state
+       UI MOTION (FIXED PATH)
   ====================================================== -->
-  <script src="assets/js/interactions/ui.motion.js" defer></script>
+  <script src="assets/js/ui.motion.js" defer></script>
 
   <!-- =====================================================
        NO-JS FALLBACK
-       • Accessibility safe
   ====================================================== -->
   <noscript>
     <style>
