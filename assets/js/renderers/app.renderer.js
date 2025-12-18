@@ -30,17 +30,29 @@ function renderHero() {
 
   if (!d?.identity) return;
 
+  const name = d.identity.fullName || "";
+  const headline = d.identity.headline || "";
+  const summary = d.identity.summary || "";
+
   section.innerHTML = `
     <div class="hero-wrapper">
-      <h1>${escape(d.identity.fullName || "")}</h1>
+      <h1>${escape(name)}</h1>
+
       ${
-        d.identity.headline
-          ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>`
+        headline
+          ? `<p class="hero-tagline">${escape(headline)}</p>`
+          : ""
+      }
+
+      ${
+        summary
+          ? `<p class="hero-summary">${escape(summary)}</p>`
           : ""
       }
     </div>
   `;
 }
+
 
 /* ============================================================
    EXPERIENCE (experience.json)
@@ -200,10 +212,45 @@ function renderEducation() {
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Education")}</h2>
+
     ${d.records.map(r => `
       <div class="education-item">
-        <strong>${escape(r.institution || "")}</strong>
-        <span>${escape(r.start || "")} – ${escape(r.end || "")}</span>
+
+        <strong class="education-institution">
+          ${escape(r.institution)}
+        </strong>
+
+        ${
+          r.degree || r.field
+            ? `<div class="education-degree">
+                ${escape(r.degree || "")}
+                ${r.field ? ` — ${escape(r.field)}` : ""}
+              </div>`
+            : ""
+        }
+
+        <div class="education-duration">
+          ${escape(r.start)} – ${escape(r.end)}
+        </div>
+
+        ${
+          r.description
+            ? `<p class="education-description">
+                ${escape(r.description)}
+              </p>`
+            : ""
+        }
+
+        ${
+          Array.isArray(r.highlights) && r.highlights.length
+            ? `<ul class="education-highlights">
+                ${r.highlights.map(h => `
+                  <li>✕ ${escape(h)}</li>
+                `).join("")}
+              </ul>`
+            : ""
+        }
+
       </div>
     `).join("")}
   `;
