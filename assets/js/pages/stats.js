@@ -2,7 +2,7 @@
  * Stats Page Controller (FINAL — HARD SAFE & SCHEMA TRUE)
  * ======================================================
  * - Runs ONLY on stats page
- * - Matches your real JSON structures
+ * - Matches real JSON structures
  * - Attaches clean dataset.source
  * - Never crashes rendering
  */
@@ -67,12 +67,12 @@ async function StatsPageController() {
 }
 
 /* ============================================================
-   NORMALIZERS (REAL SCHEMA)
+   NORMALIZERS (SCHEMA TRUE)
 ============================================================ */
 
 /**
  * OVERVIEW
- * Uses profile.json → identity
+ * profile.json → identity
  */
 function normalizeOverview(profileData) {
   if (!profileData?.identity) return null;
@@ -83,42 +83,37 @@ function normalizeOverview(profileData) {
       profileData.identity.fullName ||
       "",
 
-    headline:
-      profileData.identity.headline ||
-      "",
+    headline: profileData.identity.headline || "",
 
-    summary:
-      profileData.identity.summary ||
-      "",
+    summary: profileData.identity.summary || "",
 
-    location:
-      profileData.identity.location
-        ? `${profileData.identity.location.city}, ${profileData.identity.location.country}`
-        : ""
+    location: profileData.identity.location
+      ? `${profileData.identity.location.city}, ${profileData.identity.location.country}`
+      : ""
   };
 }
 
 /**
  * COMPETITIVE
- * Uses social.json → socials[]
+ * social.json → profiles[]
  */
 function normalizeCompetitive(socialData) {
-  if (!Array.isArray(socialData?.socials)) return null;
+  if (!Array.isArray(socialData?.profiles)) return null;
 
-  return socialData.socials
-    .filter(s => s.enabled)
+  return socialData.profiles
+    .filter(p => p.enabled)
     .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
-    .map(s => ({
-      id: s.id,
-      name: s.name,
-      platform: s.platform || s.name,
-      url: s.url
+    .map(p => ({
+      id: p.id,
+      platform: p.platform,
+      username: p.username || "",
+      url: p.url
     }));
 }
 
 /**
  * REPOSITORIES
- * Uses projects.json → categories[]
+ * projects.json → categories[]
  */
 function normalizeRepositories(projectsData) {
   if (!Array.isArray(projectsData?.categories)) return null;
@@ -142,13 +137,13 @@ function normalizeRepositories(projectsData) {
 
 /**
  * CONTRIBUTIONS
- * Derived from socials (GitHub presence)
+ * Derived from GitHub profile
  */
 function normalizeContributions(socialData) {
-  if (!Array.isArray(socialData?.socials)) return null;
+  if (!Array.isArray(socialData?.profiles)) return null;
 
-  const github = socialData.socials.find(
-    s => s.enabled && s.id === "github"
+  const github = socialData.profiles.find(
+    p => p.enabled && p.id === "github"
   );
 
   return github
