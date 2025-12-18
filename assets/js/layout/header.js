@@ -1,17 +1,22 @@
 /**
- * Header Layout Controller (FINAL — NAV ONLY)
- * ==========================================
+ * Header Layout Controller (FINAL — NAV ONLY, LOCKED)
+ * ==================================================
  * - NO name
- * - NO role
- * - ONLY uppercase navigation
- * - Zero layout shift
- * - SPA-safe
+ * - NO designation
+ * - NAVIGATION ONLY
+ * - Uppercase links
+ * - SPA-safe smooth scroll
+ * - Zero duplication
+ * - Omniverse & motion compatible
  */
 
 window.addEventListener("app:ready", () => {
   const headerEl = document.getElementById("site-header");
   if (!headerEl) return;
 
+  /* -------------------------
+     RENDER — NAV ONLY
+  ------------------------- */
   headerEl.innerHTML = `
     <div class="header-container">
 
@@ -27,6 +32,9 @@ window.addEventListener("app:ready", () => {
 
   initNavBehavior();
 
+  /* -------------------------
+     LIFECYCLE EVENT
+  ------------------------- */
   window.dispatchEvent(
     new CustomEvent("header:ready", {
       detail: { timestamp: Date.now() }
@@ -34,19 +42,20 @@ window.addEventListener("app:ready", () => {
   );
 });
 
-/* =========================
-   NAV BEHAVIOR
-========================= */
+/* =====================================================
+   NAV BEHAVIOR (SPA SAFE)
+===================================================== */
 function initNavBehavior() {
   document.querySelectorAll("[data-nav]").forEach(link => {
     link.addEventListener("click", e => {
       const targetId = link.getAttribute("href");
-      if (!targetId?.startsWith("#")) return;
+      if (!targetId || !targetId.startsWith("#")) return;
 
       const target = document.querySelector(targetId);
       if (!target) return;
 
       e.preventDefault();
+
       target.scrollIntoView({
         behavior: "smooth",
         block: "start"
