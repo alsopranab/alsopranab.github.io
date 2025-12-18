@@ -1,61 +1,37 @@
 /**
- * Footer Layout Controller (FINAL — IMMUTABLE & DEDUP SAFE)
- * ========================================================
- * - Never duplicates contact email
- * - Social-first Apple-style footer
- * - Canonical IDs only
- * - Hard-fail safe
+ * Footer Layout Controller — FINAL IMMUTABLE BUILD
+ * ==============================================
+ * - Social-only footer (NO contact logic)
+ * - Zero duplication risk
+ * - Mobile & desktop safe
+ * - Safari layout stable
+ * - Race-condition immune
  */
 
 window.addEventListener("app:ready", async () => {
   const footerEl = document.getElementById("site-footer");
   if (!footerEl) return;
 
-  let email = null;
   let socials = [];
 
   try {
-    const [contact, socialData] = await Promise.all([
-      DataService.getContact(),
-      DataService.getSocials()
-    ]);
+    if (window.DataService?.getSocials) {
+      const socialData = await DataService.getSocials();
 
-    /* ================= CONTACT DEDUP ================= */
-
-    const contactRendered =
-      document.getElementById("contact-section")?.innerHTML?.trim();
-
-    if (!contactRendered && contact?.primary?.email?.value) {
-      email = contact.primary.email.value;
-    }
-
-    /* ================= SOCIALS ================= */
-
-    if (Array.isArray(socialData?.profiles)) {
-      socials = socialData.profiles
-        .filter(p => p.enabled && p.url)
-        .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
+      if (Array.isArray(socialData?.profiles)) {
+        socials = socialData.profiles
+          .filter(p => p.enabled && typeof p.url === "string")
+          .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
+      }
     }
   } catch (err) {
-    console.warn("[Footer] Fallback mode enabled", err);
+    console.warn("[Footer] Social load failed — continuing safely", err);
   }
 
   /* ================= RENDER ================= */
 
   footerEl.innerHTML = `
     <div class="footer-container">
-
-      ${
-        email
-          ? `
-            <div class="footer-email">
-              <a href="mailto:${escapeHTML(email)}">
-                ${escapeHTML(email)}
-              </a>
-            </div>
-          `
-          : ""
-      }
 
       <div class="footer-socials">
         ${
@@ -64,16 +40,17 @@ window.addEventListener("app:ready", async () => {
                 .map(
                   s => `
                     <a
-                      href="${s.url}"
+                      href="${escapeHTML(s.url)}"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label="${escapeHTML(formatPlatform(s.platform))}"
                     >
                       ${escapeHTML(formatPlatform(s.platform))}
                     </a>
                   `
                 )
                 .join("")
-            : ""
+            : `<span class="footer-muted" aria-hidden="true"></span>`
         }
       </div>
 
