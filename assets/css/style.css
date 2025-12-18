@@ -1443,3 +1443,92 @@ body[data-omniverse]::after,
 .omniverse-section {
   contain: none !important;
 }
+/* ============================================================
+   OMNIVERSE — AMBIENT STARFIELD + SHOOTING STARS (SAFE)
+   NO JS • NO CANVAS • NO FLICKER
+============================================================ */
+
+/* ---------- STAR DUST (STATIC FLOATING DOTS) ---------- */
+
+.starry-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Small stars */
+.starry-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 30% 80%, rgba(255,255,255,0.5), transparent),
+    radial-gradient(1px 1px at 50% 40%, rgba(255,255,255,0.6), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.5), transparent);
+  background-size: 300px 300px;
+  opacity: 0.35;
+}
+
+/* ---------- SHOOTING STARS ---------- */
+
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.shooting-stars::before,
+.shooting-stars::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -30%;
+  width: 260px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(167,139,250,0.85),
+    rgba(255,255,255,0)
+  );
+  opacity: 0;
+  transform: rotate(25deg);
+  animation: shooting-star 22s linear infinite;
+}
+
+.shooting-stars::after {
+  top: 40%;
+  animation-delay: 11s;
+}
+
+@keyframes shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(25deg);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.9;
+  }
+  16% {
+    transform: translateX(160vw) translateY(70vh) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------- ACCESSIBILITY ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .shooting-stars,
+  .starry-bg {
+    display: none;
+  }
+}
