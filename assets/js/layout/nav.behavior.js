@@ -1,16 +1,39 @@
-let lastScroll = 0;
-const header = document.getElementById("site-header");
+/**
+ * Nav Behaviour Controller (FINAL — SAFE)
+ * ---------------------------------------
+ * - No inline styles
+ * - Uses CSS classes only
+ * - rAF throttled
+ * - Compatible with ui.motion.js
+ */
 
-window.addEventListener("scroll", () => {
-  const current = window.scrollY;
+(() => {
+  const header = document.getElementById("site-header");
+  if (!header) return;
 
-  if (current > lastScroll && current > 120) {
-    header.style.transform = "translateY(-120%)";
-    header.style.opacity = "0";
-  } else {
-    header.style.transform = "translateY(0)";
-    header.style.opacity = "1";
-  }
+  let lastScrollY = window.scrollY;
+  let ticking = false;
 
-  lastScroll = current;
-});
+  window.addEventListener(
+    "scroll",
+    () => {
+      const currentY = window.scrollY;
+
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (currentY > lastScrollY && currentY > 120) {
+            header.classList.add("header-hidden");
+          } else {
+            header.classList.remove("header-hidden");
+          }
+
+          lastScrollY = currentY;
+          ticking = false;
+        });
+
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+})();
