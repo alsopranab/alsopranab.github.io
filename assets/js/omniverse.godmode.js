@@ -1,10 +1,10 @@
 /**
  * ==============================================================
- * OMNIVERSE — GODMODE (CANONICAL)
+ * OMNIVERSE — GODMODE (FINAL, IMAGE-VIEWER SAFE)
  * Orchestrator ONLY
- * NO visuals
+ * NO visuals ownership
  * NO canvas
- * CSS owns background
+ * CSS owns background & overlays
  * ==============================================================
  */
 
@@ -34,9 +34,14 @@
     h: window.innerHeight
   };
 
+  let resizeRAF = null;
   window.addEventListener("resize", () => {
-    VIEW.w = window.innerWidth;
-    VIEW.h = window.innerHeight;
+    if (resizeRAF) return;
+    resizeRAF = requestAnimationFrame(() => {
+      VIEW.w = window.innerWidth;
+      VIEW.h = window.innerHeight;
+      resizeRAF = null;
+    });
   });
 
   /* ============================================================
@@ -66,7 +71,11 @@
 
     lastFrame = t;
     STATE.frame++;
-    TASKS.forEach(fn => fn(t));
+
+    if (!document.getElementById("image-viewer-overlay")) {
+      TASKS.forEach(fn => fn(t));
+    }
+
     requestAnimationFrame(LOOP);
   }
 
@@ -89,7 +98,7 @@
   }
 
   /* ============================================================
-     ENERGY MODEL (GLOBAL)
+     ENERGY MODEL
   ============================================================ */
   TASKS.add(() => {
     const raw =
@@ -102,13 +111,14 @@
      CURSOR ORB (DESKTOP ONLY)
   ============================================================ */
   if (ENV.pointer && !ENV.isMobile) {
+    const ORB_SIZE = 14;
     const orb = document.createElement("div");
     orb.className = "omni-cursor";
 
     orb.style.cssText = `
       position: fixed;
-      width: 14px;
-      height: 14px;
+      width: ${ORB_SIZE}px;
+      height: ${ORB_SIZE}px;
       border-radius: 50%;
       pointer-events: none;
       z-index: 9999;
@@ -132,27 +142,34 @@
       );
 
       orb.style.transform =
-        `translate3d(${STATE.cursor.x}px, ${STATE.cursor.y}px, 0)
-         scale(${1 + speed / 240})`;
+        `translate3d(
+          ${STATE.cursor.x - ORB_SIZE / 2}px,
+          ${STATE.cursor.y - ORB_SIZE / 2}px,
+          0
+        )
+        scale(${1 + speed / 240})`;
     });
   }
 
   /* ============================================================
-     CARD TILT (SAFE)
+     CARD TILT (IMAGE-VIEWER SAFE)
   ============================================================ */
   if (!ENV.isMobile) {
-    const CARDS = document.querySelectorAll(
-      ".project-card, .featured-item, .education-item"
-    );
-
-    CARDS.forEach(el => (el.style.willChange = "transform"));
-
     TASKS.add(() => {
       if (STATE.frame % 2) return;
 
+      const CARDS = document.querySelectorAll(
+        ".project-card, .featured-item, .education-item"
+      );
+
       for (const el of CARDS) {
+        el.style.willChange = "transform";
+
         const r = el.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > VIEW.h) continue;
+        if (r.bottom < 0 || r.top > VIEW.h) {
+          el.style.transform = "";
+          continue;
+        }
 
         const dx = STATE.cursor.x - (r.left + r.width / 2);
         const dy = STATE.cursor.y - (r.top + r.height / 2);
