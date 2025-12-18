@@ -1012,3 +1012,71 @@ section.omniverse-section p {
     margin-left: 0;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — UNIVERSAL SECTION SPINE
+============================================================ */
+
+/* Apply spine to all content sections */
+#featured-section,
+#projects-section,
+#education-section,
+#licenses-section,
+#contact-section {
+  position: relative;
+  align-items: flex-start;
+}
+
+/* Vertical glowing line (same as Experience) */
+#featured-section::before,
+#projects-section::before,
+#education-section::before,
+#licenses-section::before,
+#contact-section::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: calc(var(--space-section) + 2rem);
+  bottom: 2rem;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.45;
+  box-shadow: 0 0 12px rgba(167,139,250,0.35);
+}
+
+/* Push content away from spine */
+#featured-section > *,
+#projects-section > *,
+#education-section > *,
+#licenses-section > *,
+#contact-section > * {
+  margin-left: 64px;
+  max-width: 720px;
+}
+
+/* Contact panel alignment */
+.contact-panel {
+  margin-left: 0;
+}
+
+/* ================= MOBILE — REMOVE SPINES ================= */
+@media (max-width: 768px) {
+  #featured-section::before,
+  #projects-section::before,
+  #education-section::before,
+  #licenses-section::before,
+  #contact-section::before {
+    display: none;
+  }
+
+  #featured-section > *,
+  #projects-section > *,
+  #education-section > *,
+  #licenses-section > *,
+  #contact-section > * {
+    mar
