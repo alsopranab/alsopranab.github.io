@@ -3,11 +3,11 @@
  * =========================================
  * Handles:
  * - Header auto-hide
- * - Hero → Header morph (one-time)
+ * - Hero → Header morph (continuous)
  * - Section reveal animation
  *
- * Single scroll loop
- * Single source of truth
+ * No clones
+ * No DOM mutation
  * Safari-safe
  */
 
@@ -17,11 +17,11 @@
 
   if (!header || !heroSection) return;
 
-  let heroWrapper;
-  let headerIdentity;
+  let heroWrapper = null;
+  let headerIdentity = null;
+
   let lastY = window.scrollY;
   let ticking = false;
-  let hasMorphed = false;
 
   /* =============================
      INIT AFTER HEADER READY
@@ -32,9 +32,9 @@
 
     if (!heroWrapper || !headerIdentity) return;
 
-    // Hide header identity initially
+    // Header identity hidden initially
     headerIdentity.style.opacity = "0";
-    headerIdentity.style.transform = "translateY(6px)";
+    headerIdentity.style.transform = "translateY(6px) scale(0.96)";
     headerIdentity.style.transition =
       "opacity 260ms ease, transform 260ms ease";
   });
@@ -50,7 +50,7 @@
       if (!ticking) {
         requestAnimationFrame(() => {
           handleHeaderAutoHide(y);
-          handleHeroMorph();
+          handleHeroMorph(y);
           ticking = false;
         });
         ticking = true;
@@ -72,69 +72,30 @@
   }
 
   /* =============================
-     HERO → HEADER MORPH (ONCE)
+     HERO → HEADER MORPH (CONTINUOUS)
   ============================= */
-  function handleHeroMorph() {
-    if (hasMorphed || !heroWrapper || !headerIdentity) return;
+  function handleHeroMorph(scrollY) {
+    if (!heroWrapper || !headerIdentity) return;
 
-    const rect = heroWrapper.getBoundingClientRect();
+    const heroHeight = heroSection.offsetHeight || 1;
 
-    if (rect.bottom < window.innerHeight * 0.55) {
-      morphHeroToHeader();
-      hasMorphed = true;
-    }
-  }
+    // Progress: 0 → 1
+    const progress = Math.min(scrollY / heroHeight, 1);
 
-  function morphHeroToHeader() {
-    const heroTitle = heroWrapper.querySelector("h1");
-    const heroTagline = heroWrapper.querySelector(".hero-tagline");
+    // Drive CSS variables
+    document.documentElement.style.setProperty(
+      "--hero-progress",
+      progress.toFixed(3)
+    );
 
-    if (!heroTitle) return;
-
-    const clone = document.createElement("div");
-    clone.className = "hero-morph-clone";
-    clone.innerHTML = `
-      <div class="hero-morph-name">${heroTitle.textContent}</div>
-      ${
-        heroTagline
-          ? `<div class="hero-morph-role">${heroTagline.textContent}</div>`
-          : ""
-      }
-    `;
-
-    document.body.appendChild(clone);
-
-    const from = heroTitle.getBoundingClientRect();
-    const to = headerIdentity.getBoundingClientRect();
-
-    clone.style.position = "fixed";
-    clone.style.left = `${from.left}px`;
-    clone.style.top = `${from.top}px`;
-    clone.style.width = `${from.width}px`;
-    clone.style.zIndex = "999";
-    clone.style.pointerEvents = "none";
-    clone.style.transition =
-      "transform 520ms cubic-bezier(0.22,1,0.36,1), opacity 260ms ease";
-
-    const scale =
-      headerIdentity.offsetHeight / heroTitle.offsetHeight;
-
-    const dx = to.left - from.left;
-    const dy = to.top - from.top;
-
-    requestAnimationFrame(() => {
-      clone.style.transform = `
-        translate(${dx}px, ${dy}px)
-        scale(${scale})
-      `;
-      clone.style.opacity = "0";
-    });
-
-    setTimeout(() => {
-      clone.remove();
+    // Reveal header identity late (handoff moment)
+    if (progress > 0.75) {
       headerIdentity.style.opacity = "1";
-      headerIdentity.style.transform = "translateY(0)";
-    }, 520);
+      headerIdentity.style.transform = "translateY(0) scale(1)";
+    } else {
+      headerIdentity.style.opacity = "0";
+      headerIdentity.style.transform = "translateY(6px) scale(0.96)";
+    }
   }
 
   /* =============================
@@ -155,5 +116,4 @@
   document
     .querySelectorAll("section.omniverse-section")
     .forEach(section => revealObserver.observe(section));
-
 })();
