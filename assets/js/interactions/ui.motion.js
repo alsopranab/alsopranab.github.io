@@ -6,12 +6,14 @@
  * - Motion-safe (reduced-motion aware)
  * - Smooth, non-jittery behavior
  * - Mobile friendly
+ * - Active nav highlighting (race-condition safe)
  */
 
 (() => {
   "use strict";
 
   /* ================= ENV ================= */
+
   const reduceMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
@@ -90,7 +92,7 @@
   /* ================= HERO MORPH ================= */
 
   function handleHeroMorph(scrollY) {
-    if (!heroWrapper || !headerIdentity) return;
+    if (!heroWrapper || !headerIdentity || scrollY < 1) return;
 
     const heroHeight = heroSection.offsetHeight || 1;
     const progress = Math.min(scrollY / heroHeight, 1);
@@ -127,3 +129,43 @@
     .querySelectorAll("section.omniverse-section")
     .forEach(section => revealObserver.observe(section));
 })();
+
+/* ======================================================
+   ACTIVE NAV TRACKER — HEADER SAFE
+====================================================== */
+
+window.addEventListener("header:ready", () => {
+  const links = document.querySelectorAll(".header-nav a[href^='#']");
+  if (!links.length) return;
+
+  const sections = [...links]
+    .map(link => {
+      const id = link.getAttribute("href");
+      return id ? document.querySelector(id) : null;
+    })
+    .filter(Boolean);
+
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+
+        links.forEach(a => a.classList.remove("active"));
+
+        const activeLink = document.querySelector(
+          `.header-nav a[href="#${entry.target.id}"]`
+        );
+
+        if (activeLink) activeLink.classList.add("active");
+      });
+    },
+    {
+      rootMargin: "-45% 0px -45% 0px",
+      threshold: 0.01
+    }
+  );
+
+  sections.forEach(section => observer.observe(section));
+});
