@@ -21,7 +21,7 @@
 
   --ease-vision: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* 🔒 single vertical rhythm */
+  /* single vertical rhythm */
   --space-section: clamp(5.5rem, 10vw, 9rem);
   --space-block: 2.75rem;
   --space-card: 2.25rem;
