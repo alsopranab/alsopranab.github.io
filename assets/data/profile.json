@@ -15,40 +15,14 @@
     }
   },
 
-  "currentPosition": {
-    "title": "Account Manager",
-    "organization": {
-      "name": "Magicbricks",
-      "industry": "Real Estate Technology",
-      "logo": "assets/images/profile/magicbricks-logo.svg",
-      "website": "https://www.magicbricks.com"
-    },
-    "employmentType": "Full-time",
-    "startDate": {
-      "year": 2024,
-      "month": 1
-    }
-  },
-
-  "contact": {
-    "email": {
-      "value": "career.pranab@gmail.com",
-      "preferred": true
-    }
-  },
-
   "resume": {
     "strategy": "external",
     "provider": "linkedin",
-    "description": "Resume is maintained on LinkedIn to ensure it stays current and verifiable.",
     "externalProfile": "https://linkedin.com/in/alsopranab"
   },
 
   "meta": {
-    "profileType": "professional",
     "visibility": "public",
-    "lastUpdated": "2025-01-01",
-    "schema": "profile.identity.v1",
-    "maintainedBy": "self"
+    "lastUpdated": "2025-01-01"
   }
 }
