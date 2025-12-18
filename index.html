@@ -28,11 +28,11 @@
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
-  <!-- Optional but recommended -->
+  <!-- Optional OG image -->
   <!-- <meta property="og:image" content="https://alsopranab.github.io/assets/og-image.png" /> -->
 
   <!-- =====================================================
-       FONTS (Preloaded for performance)
+       FONTS (PERFORMANCE SAFE)
   ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -55,7 +55,9 @@
   <!-- =====================================================
        HEADER (Injected by header.js)
   ====================================================== -->
-  <header id="site-header" aria-label="Primary Navigation"></header>
+  <header id="site-header" aria-label="Primary Navigation">
+    <!-- JS injects header content -->
+  </header>
 
   <!-- =====================================================
        MAIN CONTENT (CANONICAL IDS — DO NOT CHANGE)
@@ -105,9 +107,10 @@
     ></section>
 
     <!-- CONTACT -->
-    <!-- NOTE:
-         Renderer should inject a single wrapper div inside this section
-         (e.g. .contact-panel) — CSS already handles layout.
+    <!-- IMPORTANT:
+         Renderer MUST inject exactly ONE wrapper div:
+         .contact-panel → .contact-grid → left/center/right
+         CSS assumes this structure.
     -->
     <section
       id="contact-section"
@@ -120,7 +123,9 @@
   <!-- =====================================================
        FOOTER (Injected by footer.js)
   ====================================================== -->
-  <footer id="site-footer" aria-label="Footer"></footer>
+  <footer id="site-footer" aria-label="Footer">
+    <!-- JS injects footer content -->
+  </footer>
 
   <!-- =====================================================
        CORE JS (ORDER IS CRITICAL — DO NOT REORDER)
@@ -139,17 +144,22 @@
   <!-- 4. Page controllers -->
   <script src="assets/js/pages/home.js" defer></script>
 
-  <!-- 5. Renderer -->
+  <!-- 5. Renderer (listens to home:ready) -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
   <!-- 6. Motion & effects -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
   <script src="assets/js/omniverse.godmode.js" defer></script>
 
-  <!-- Fallback for no JS -->
+  <!-- =====================================================
+       NO-JS FALLBACK (ACCESSIBILITY SAFE)
+  ====================================================== -->
   <noscript>
     <style>
-      .omniverse-section { opacity: 1 !important; transform: none !important; }
+      .omniverse-section {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     </style>
   </noscript>
 
