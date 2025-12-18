@@ -37,7 +37,7 @@
   />
 
   <!-- =====================================================
-       FAVICON (MATCHES STRUCTURE)
+       FAVICON
   ====================================================== -->
   <link rel="icon" href="assets/favicon.ico" />
 
@@ -50,25 +50,79 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       BACKGROUND LAYERS (CSS-ONLY)
+       BACKGROUND
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
   <!-- =====================================================
-       HEADER (INJECTED)
+       HEADER
   ====================================================== -->
   <header id="site-header" aria-label="Primary Navigation"></header>
 
   <!-- =====================================================
-       MAIN CONTENT (RENDERER OWNS CONTENT)
+       MAIN CONTENT
   ====================================================== -->
   <main id="page-content" role="main">
 
     <section id="hero-section" class="omniverse-section"></section>
     <section id="experience-section" class="omniverse-section"></section>
     <section id="featured-section" class="omniverse-section"></section>
-    <section id="projects-section" class="omniverse-section"></section>
+
+    <!-- =====================================================
+         PROJECTS — ADVANCED ANALYTICS CARD
+    ====================================================== -->
+    <section id="projects-section" class="omniverse-section">
+
+      <article
+        class="project-card project-analytics"
+        data-omni-hover
+        data-omni-reveal
+      >
+        <header class="project-header">
+          <h3>Revenue Funnel Optimization</h3>
+          <span class="project-type">Analytics • Automation</span>
+        </header>
+
+        <!-- SVG ANALYTICS -->
+        <div class="project-graph" aria-hidden="true">
+          <svg viewBox="0 0 600 220" preserveAspectRatio="none">
+            <!-- Grid -->
+            <line x1="0" y1="180" x2="600" y2="180" class="graph-grid" />
+            <line x1="0" y1="120" x2="600" y2="120" class="graph-grid" />
+            <line x1="0" y1="60"  x2="600" y2="60"  class="graph-grid" />
+
+            <!-- Bars -->
+            <rect x="60"  y="120" width="40" height="60"  class="graph-bar" />
+            <rect x="160" y="90"  width="40" height="90"  class="graph-bar" />
+            <rect x="260" y="70"  width="40" height="110" class="graph-bar" />
+            <rect x="360" y="40"  width="40" height="140" class="graph-bar" />
+            <rect x="460" y="20"  width="40" height="160" class="graph-bar" />
+
+            <!-- Line -->
+            <path
+              d="M 80 130 L 180 100 L 280 85 L 380 55 L 480 35"
+              class="graph-line"
+            />
+          </svg>
+        </div>
+
+        <p class="project-desc">
+          Built an end-to-end analytics pipeline to identify drop-offs,
+          automate KPI reporting, and improve lead-to-conversion efficiency.
+        </p>
+
+        <!-- TECH STACK -->
+        <div class="project-tech">
+          <span class="icon python">Python</span>
+          <span class="icon sql">SQL</span>
+          <span class="icon powerbi">Power BI</span>
+          <span class="icon excel">Excel</span>
+        </div>
+      </article>
+
+    </section>
+
     <section id="education-section" class="omniverse-section"></section>
     <section id="licenses-section" class="omniverse-section"></section>
     <section id="contact-section" class="omniverse-section"></section>
@@ -76,41 +130,48 @@
   </main>
 
   <!-- =====================================================
-       FOOTER (INJECTED)
+       FOOTER
   ====================================================== -->
   <footer id="site-footer" aria-label="Footer"></footer>
 
   <!-- =====================================================
-       CORE JS (ORDER IS CRITICAL — VERIFIED)
+       CORE JS (LOCKED ORDER)
   ====================================================== -->
-
-  <!-- App lifecycle -->
   <script src="assets/js/core/bootstrap.js" defer></script>
-
-  <!-- Data layer -->
   <script src="assets/js/services/data.service.js" defer></script>
-
-  <!-- Layout -->
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
-
-  <!-- Page logic -->
   <script src="assets/js/pages/home.js" defer></script>
-
-  <!-- Renderer (DOM ownership) -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
-  <!-- =====================================================
-       GODMODE (CORRECT PATH)
-       FILE: assets/js/omniverse.godmode.js
-  ====================================================== -->
+  <!-- GODMODE -->
   <script src="assets/js/omniverse.godmode.js" defer></script>
 
-  <!-- =====================================================
-       UI MOTION (CORRECT PATH)
-       FILE: assets/js/interactions/ui.motion.js
-  ====================================================== -->
+  <!-- UI MOTION -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
+
+  <!-- =====================================================
+       SCROLL REVEAL (FPS SAFE)
+  ====================================================== -->
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.35 }
+      );
+
+      document
+        .querySelectorAll("[data-omni-reveal]")
+        .forEach(el => observer.observe(el));
+    });
+  </script>
 
   <!-- =====================================================
        NO-JS FALLBACK
