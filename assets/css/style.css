@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — FINAL CANONICAL BUILD
-   Vision Pro Easing • Safari Tuned • GPU Safe • Lock Version
+   OMNIVERSE — FINAL STABLE CANONICAL BUILD
+   Apple Dev–Style • Zero Flicker • GPU Safe
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -9,21 +9,17 @@
   --bg-deep: #090613;
 
   --accent: #a78bfa;
-  --accent-glow: rgba(167,139,250,0.45);
-  --accent-soft: rgba(167,139,250,0.18);
+  --accent-glow: rgba(167,139,250,0.35);
 
   --text-main: rgba(255,255,255,0.94);
   --text-muted: rgba(255,255,255,0.62);
 
-  --border-hairline: rgba(255,255,255,0.10);
+  --border-hairline: rgba(255,255,255,0.1);
 
   --radius-lg: 22px;
   --radius-md: 16px;
 
-  /* Apple-style spatial easing */
   --ease-vision: cubic-bezier(0.22, 1, 0.36, 1);
-
-  --hero-progress: 0;
 }
 
 /* ================= RESET ================= */
@@ -37,7 +33,7 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overscroll-behavior-y: none; /* iOS rubber-band control */
+  overscroll-behavior-y: none;
 }
 
 /* ================= BODY ================= */
@@ -51,92 +47,113 @@ body[data-omniverse] {
   text-rendering: optimizeLegibility;
 
   background:
-    radial-gradient(900px 520px at 70% -20%, rgba(124,58,237,0.18), transparent),
-    radial-gradient(700px 420px at 15% 120%, rgba(167,139,250,0.16), transparent),
+    radial-gradient(800px 500px at 70% -10%, rgba(124,58,237,0.14), transparent),
+    radial-gradient(700px 450px at 15% 120%, rgba(167,139,250,0.12), transparent),
     linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
 }
 
+/* ============================================================
+   AMBIENT BACKGROUND — NO FLICKER VERSION
+============================================================ */
+body[data-omniverse]::before,
+body[data-omniverse]::after {
+  content: "";
+  position: fixed;
+  inset: -30%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(140px);
+  opacity: 0.22;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+}
+
+body[data-omniverse]::before {
+  background: radial-gradient(
+    900px 900px at 20% 30%,
+    rgba(167,139,250,0.35),
+    transparent 65%
+  );
+  animation: drift-a 60s ease-in-out infinite;
+}
+
+body[data-omniverse]::after {
+  background: radial-gradient(
+    1000px 1000px at 80% 70%,
+    rgba(124,58,237,0.28),
+    transparent 65%
+  );
+  animation: drift-b 80s ease-in-out infinite;
+}
+
+@keyframes drift-a {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(4%, -3%, 0); }
+  100% { transform: translate3d(0,0,0); }
+}
+
+@keyframes drift-b {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(-3%, 4%, 0); }
+  100% { transform: translate3d(0,0,0); }
+}
+
 /* ================= TYPOGRAPHY ================= */
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-weight: 500;
   letter-spacing: -0.025em;
   margin: 0;
 }
 
 h1 {
-  font-size: clamp(34px, 6vw, 60px);
+  font-size: clamp(34px, 6vw, 58px);
   line-height: 1.08;
 }
 
 h2 {
-  font-size: clamp(22px, 3vw, 30px);
-  margin-bottom: 20px;
+  font-size: clamp(22px, 3vw, 28px);
+  margin-bottom: 28px;
 }
 
 p {
   font-size: 15px;
   line-height: 1.7;
   color: var(--text-muted);
-  max-width: 64ch;
-  margin: 0;
+  max-width: 65ch;
 }
 
 /* ================= LINKS ================= */
 a {
   color: var(--text-main);
   text-decoration: none;
-  opacity: 0.78;
+  opacity: 0.8;
   transition: opacity 160ms linear;
 }
-
-a:hover {
-  opacity: 1;
-}
+a:hover { opacity: 1; }
 
 /* ============================================================
-   HEADER — FADE + SCALE (ZERO LAG)
+   HEADER — LIGHTWEIGHT & CONSISTENT
 ============================================================ */
 #site-header {
   position: sticky;
   top: 10px;
   z-index: 100;
-
-  opacity: 1;
-  transform: translateZ(0) scale(1);
-
-  transition:
-    opacity 160ms linear,
-    transform 240ms var(--ease-vision);
-
-  will-change: opacity, transform;
-  backface-visibility: hidden;
+  transition: opacity 160ms linear, transform 240ms var(--ease-vision);
 }
 
-#site-header.header-hidden {
-  opacity: 0;
-  transform: translateZ(0) scale(0.96);
-  pointer-events: none;
-}
-
-/* Desktop header — flat */
 .header-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 8px 24px;
+  padding: 6px 20px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  background: transparent;
 }
 
-/* Nav */
 .header-nav {
   display: flex;
-  gap: 26px;
+  gap: 22px;
 }
 
 .header-nav a {
@@ -144,7 +161,6 @@ a:hover {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   opacity: 0.6;
-  position: relative;
 }
 
 .header-nav a.active {
@@ -152,24 +168,21 @@ a:hover {
   color: var(--accent);
 }
 
-.header-nav a.active::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -6px;
-  height: 1px;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent-glow);
-}
-
 /* ============================================================
-   SECTIONS
+   SECTIONS — FIXED RHYTHM
 ============================================================ */
 section.omniverse-section {
   max-width: 1100px;
   margin: 0 auto;
-  padding: clamp(5rem, 9vw, 8rem) 1.25rem;
+  padding: clamp(5.5rem, 10vw, 9rem) 1.25rem;
+}
+
+/* Prevent company-name → card collisions */
+.experience-company {
+  margin-top: 2.5rem;
+}
+.experience-company:first-child {
+  margin-top: 0;
 }
 
 /* ================= HERO ================= */
@@ -178,12 +191,6 @@ section.omniverse-section {
   display: flex;
   flex-direction: column;
   gap: 22px;
-
-  transform:
-    translateY(calc(var(--hero-progress) * -38px))
-    scale(calc(1 - var(--hero-progress) * 0.11));
-
-  will-change: transform;
 }
 
 /* ================= CARDS ================= */
@@ -191,21 +198,19 @@ section.omniverse-section {
 .education-item,
 .experience-role,
 .featured-item {
-  margin-top: 28px;
-  padding: 24px;
+  margin-top: 36px;
+  padding: 26px;
   border-radius: var(--radius-md);
 
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.05),
-      rgba(255,255,255,0.015)
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.05),
+    rgba(255,255,255,0.015)
+  );
 
   border: 1px solid var(--border-hairline);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
-
-  transition: transform 300ms var(--ease-vision);
+  box-shadow: 0 18px 38px rgba(0,0,0,0.45);
+  transition: transform 280ms var(--ease-vision);
 }
 
 @media (pointer: fine) {
@@ -214,143 +219,75 @@ section.omniverse-section {
   .featured-item:hover {
     transform: translateY(-6px);
     box-shadow:
-      0 26px 56px rgba(0,0,0,0.55),
-      0 0 32px var(--accent-glow);
+      0 26px 52px rgba(0,0,0,0.55),
+      0 0 28px var(--accent-glow);
   }
 }
 
-/* ================= FEATURED MEDIA ================= */
-.featured-item .media-frame {
-  aspect-ratio: 1 / 1;
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 18px;
-  background: rgba(0,0,0,0.35);
-}
-
+/* ================= FEATURED IMAGE FIX ================= */
 .featured-item img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  max-height: 420px;        /* 🔒 prevents full-page takeover */
+  object-fit: cover;
+  border-radius: 14px;
 }
 
 /* ============================================================
-   CONTACT — FINAL EDITORIAL LAYOUT (FIXED)
+   CONTACT — BALANCED GRID
 ============================================================ */
-#contact-section {
-  display: flex;
-  justify-content: center;
-}
-
 #contact-section > div {
-  width: 100%;
   max-width: 1100px;
-  padding: 72px 48px;
-
+  padding: 64px 48px;
   border-radius: var(--radius-lg);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.06),
-      rgba(255,255,255,0.02)
-    );
-
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.06),
+    rgba(255,255,255,0.02)
+  );
   border: 1px solid var(--border-hairline);
-  box-shadow:
-    0 28px 64px rgba(0,0,0,0.6),
-    0 0 56px rgba(167,139,250,0.18);
 }
 
-/* Grid */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1.2fr 2.2fr 1fr;
+  grid-template-columns: 1.1fr 2fr 1fr;
   gap: 48px;
-  align-items: start;
-}
-
-/* Left */
-.contact-title h2 {
-  margin-bottom: 6px;
-}
-
-.contact-tagline {
-  font-size: 14px;
-  color: var(--text-muted);
-  max-width: 22ch;
-}
-
-/* Center */
-.contact-description p {
-  max-width: 60ch;
-}
-
-/* Right */
-.contact-email {
-  font-size: 14px;
-  white-space: nowrap;
-  opacity: 0.9;
 }
 
 /* ============================================================
    FOOTER
 ============================================================ */
 #site-footer {
-  padding: 72px 20px 56px;
-  text-align: center;
-}
-
-.footer-container {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  align-items: center;
+  margin-top: 5rem;
+  padding: 64px 20px 56px;
+  border-top: 1px solid var(--border-hairline);
 }
 
 .footer-socials {
   display: flex;
   gap: 22px;
-  flex-wrap: wrap;
   justify-content: center;
 }
 
 .footer-socials a {
   font-size: 12px;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
   opacity: 0.7;
 }
 
 /* ============================================================
-   MOBILE — COMPACT SAFARI BEHAVIOR
+   MOBILE — CLEAN & COMPACT
 ============================================================ */
 @media (max-width: 768px) {
-  #site-header {
-    top: 8px;
-  }
-
   .header-container {
-    padding: 6px 14px;
-    border-radius: 999px;
-
-    background: rgba(15,12,32,0.5);
-    backdrop-filter: blur(14px) saturate(1.25);
-
-    box-shadow:
-      0 8px 22px rgba(0,0,0,0.45),
-      inset 0 0 0 0.5px var(--border-hairline);
+    padding: 4px 12px;
   }
 
-  .header-nav {
-    gap: 14px;
+  .header-nav a {
+    font-size: 10px;
   }
 
   section.omniverse-section {
-    padding: 4rem 1rem;
-  }
-
-  #contact-section > div {
-    padding: 44px 24px;
+    padding: 4.5rem 1rem;
   }
 
   .contact-grid {
@@ -359,139 +296,14 @@ section.omniverse-section {
     text-align: center;
   }
 
-  .contact-description p {
-    margin: 0 auto;
-  }
-
-  .contact-email {
-    font-size: 13px;
+  .featured-item img {
+    max-height: 260px;
   }
 }
 
 /* ================= REDUCED MOTION ================= */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none !important;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — SPATIAL POLISH LAYER
-   Apple Dev–Style Ambient Motion & Spacing
-============================================================ */
-
-/* ================= AMBIENT BACKGROUND MOTION ================= */
-body[data-omniverse]::before,
-body[data-omniverse]::after {
-  content: "";
-  position: fixed;
-  inset: -20%;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.35;
-  filter: blur(120px);
-  transform: translateZ(0);
-}
-
-body[data-omniverse]::before {
-  background:
-    radial-gradient(
-      800px 800px at 20% 30%,
-      rgba(167,139,250,0.25),
-      transparent 60%
-    );
-  animation: ambient-drift-a 38s linear infinite;
-}
-
-body[data-omniverse]::after {
-  background:
-    radial-gradient(
-      900px 900px at 80% 70%,
-      rgba(124,58,237,0.22),
-      transparent 60%
-    );
-  animation: ambient-drift-b 52s linear infinite;
-}
-
-@keyframes ambient-drift-a {
-  0% { transform: translate3d(0,0,0); }
-  50% { transform: translate3d(6%, -4%, 0); }
-  100% { transform: translate3d(0,0,0); }
-}
-
-@keyframes ambient-drift-b {
-  0% { transform: translate3d(0,0,0); }
-  50% { transform: translate3d(-5%, 6%, 0); }
-  100% { transform: translate3d(0,0,0); }
-}
-
-/* ================= GLOBAL SPACING RHYTHM ================= */
-section.omniverse-section {
-  padding-top: clamp(5.5rem, 10vw, 9rem);
-  padding-bottom: clamp(5.5rem, 10vw, 9rem);
-}
-
-section.omniverse-section + section.omniverse-section {
-  margin-top: -1.5rem; /* optical continuity */
-}
-
-/* ================= CARD STACK BREATHING ================= */
-.project-card,
-.education-item,
-.experience-role,
-.featured-item {
-  margin-top: 34px;
-}
-
-/* ================= CONTACT VISUAL BALANCE ================= */
-.contact-grid {
-  align-items: center;
-}
-
-.contact-title h2 {
-  font-size: clamp(22px, 3vw, 28px);
-}
-
-.contact-tagline {
-  line-height: 1.5;
-}
-
-.contact-email {
-  text-align: right;
-}
-
-/* ================= FOOTER SEPARATION ================= */
-#site-footer {
-  margin-top: 4rem;
-  border-top: 1px solid var(--border-hairline);
-}
-
-/* ================= MOBILE HEADER REFINEMENT ================= */
-@media (max-width: 768px) {
-  .header-container {
-    padding: 4px 12px;
-    min-height: 40px;
-  }
-
-  .header-nav a {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-  }
-
-  /* Makes header feel lighter while scrolling */
-  #site-header {
-    backdrop-filter: blur(12px) saturate(1.1);
-  }
-}
-
-/* ================= IMAGE CONTAINMENT TUNING ================= */
-.featured-item img {
-  object-fit: cover;
-  border-radius: 14px;
-}
-
-/* ================= REDUCED MOTION SAFETY ================= */
-@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
   body[data-omniverse]::before,
   body[data-omniverse]::after {
     animation: none !important;
