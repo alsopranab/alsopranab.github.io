@@ -1,5 +1,5 @@
 /* ============================================================
-   OMNIVERSE — APPLE EDITORIAL (FINAL, POLISHED)
+   OMNIVERSE — APPLE EDITORIAL (FINAL, MASTER)
    Calm • Precise • Premium • Liquid Glass • Retina-safe
 ============================================================ */
 
@@ -15,8 +15,7 @@
   --text-main: rgba(255,255,255,0.94);
   --text-muted: rgba(255,255,255,0.64);
 
-  /* Ultra subtle Apple hairline */
-  --border-hairline: rgba(255,255,255,0.018);
+  --border-hairline: rgba(255,255,255,0.02);
 
   --radius-lg: 18px;
   --radius-md: 14px;
@@ -74,16 +73,15 @@ h2 {
   margin-bottom: 36px;
 }
 
-h3 {
-  font-size: 16px;
-}
-
 p {
   color: var(--text-muted);
   max-width: 60ch;
   font-size: 15px;
 }
 
+/* =========================
+   LINKS
+========================= */
 a {
   color: var(--text-main);
   text-decoration: none;
@@ -117,13 +115,11 @@ section.omniverse-section {
   position: sticky;
   top: 16px;
   z-index: 100;
-  background: transparent;
 }
 
 .header-container {
-  max-width: max-content;
   margin: 0 auto;
-  padding: 14px 28px;
+  padding: 14px 30px;
 
   display: flex;
   align-items: center;
@@ -132,15 +128,11 @@ section.omniverse-section {
   border-radius: 999px;
 
   background: rgba(15, 12, 32, 0.55);
-  backdrop-filter: blur(22px) saturate(1.4);
+  backdrop-filter: blur(26px) saturate(1.5);
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,0.35),
+    0 18px 40px rgba(0,0,0,0.45),
     inset 0 0 0 0.5px var(--border-hairline);
-
-  transition:
-    transform 0.4s var(--ease-out),
-    opacity 0.3s ease;
 }
 
 .header-identity {
@@ -171,10 +163,6 @@ section.omniverse-section {
   opacity: 0.7;
 }
 
-.header-nav a:hover {
-  opacity: 1;
-}
-
 /* =========================
    HERO
 ========================= */
@@ -188,44 +176,37 @@ section.omniverse-section {
 .hero-tagline {
   font-size: 15px;
   font-weight: 500;
-  color: var(--text-main);
-  opacity: 0.85;
 }
 
 .hero-summary {
-  margin-top: 6px;
   font-size: 15px;
   line-height: 1.7;
-  color: var(--text-muted);
-  max-width: 58ch;
 }
 
 /* =========================
-   APPLE GLASS CONTAINERS
+   GLASS CARDS (WITH CORNER GLOW)
 ========================= */
 .project-card,
 .education-item,
 .experience-role,
-.featured-item,
-.contact-wrapper,
-.licenses-grid > * {
+.featured-item {
   position: relative;
   padding: 22px;
   border-radius: var(--radius-md);
   border: 0.5px solid var(--border-hairline);
 
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.015),
-    rgba(255,255,255,0.004)
-  );
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.02),
+      rgba(255,255,255,0.006)
+    );
 
-  transition:
-    transform 0.35s var(--ease-out),
-    border-color 0.35s ease;
+  box-shadow:
+    0 14px 30px rgba(0,0,0,0.35);
 }
 
-/* ===== CORNER GLOW (Safari-correct) ===== */
+/* --- CORNER GLOW ONLY --- */
 .project-card::before,
 .education-item::before,
 .experience-role::before,
@@ -237,94 +218,55 @@ section.omniverse-section {
   pointer-events: none;
 
   background:
-    radial-gradient(40px 40px at 0% 0%, rgba(167,139,250,0.14), transparent 70%),
-    radial-gradient(40px 40px at 100% 0%, rgba(167,139,250,0.12), transparent 70%),
-    radial-gradient(40px 40px at 0% 100%, rgba(167,139,250,0.10), transparent 70%),
-    radial-gradient(40px 40px at 100% 100%, rgba(167,139,250,0.08), transparent 70%);
+    radial-gradient(42px 42px at 0% 0%, rgba(167,139,250,0.16), transparent 70%),
+    radial-gradient(42px 42px at 100% 0%, rgba(167,139,250,0.14), transparent 70%),
+    radial-gradient(42px 42px at 0% 100%, rgba(167,139,250,0.12), transparent 70%),
+    radial-gradient(42px 42px at 100% 100%, rgba(167,139,250,0.10), transparent 70%);
 
-  opacity: 0.55;
+  opacity: 0.6;
 }
 
 /* =========================
-   EXPERIENCE
-========================= */
-.experience-list {
-  display: flex;
-  flex-direction: column;
-  gap: 36px;
-}
-
-/* =========================
-   FEATURED
-========================= */
-.featured-list {
-  display: flex;
-  flex-direction: column;
-  gap: 72px;
-}
-
-.featured-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 36px;
-}
-
-.featured-item[data-alignment="right"] {
-  direction: rtl;
-}
-
-.featured-item img {
-  width: 100%;
-  border-radius: var(--radius-lg);
-  box-shadow: 0 26px 60px rgba(0,0,0,0.6);
-}
-
-/* =========================
-   PROJECTS
-========================= */
-.project-category {
-  margin-bottom: 56px;
-}
-
-.project-card {
-  margin-top: 20px;
-}
-
-/* =========================
-   EDUCATION
-========================= */
-.education-item {
-  margin-bottom: 24px;
-}
-
-/* =========================
-   CONTACT
-========================= */
-#contact-section {
-  background:
-    radial-gradient(60% 60% at 50% 100%, rgba(124,58,237,0.22), transparent),
-    var(--bg-deep);
-}
-
-/* =========================
-   FOOTER
+   FOOTER (FINAL FIX)
 ========================= */
 #site-footer {
-  padding: 48px 20px;
+  padding: 56px 20px;
   text-align: center;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+.footer-email a {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.footer-socials a {
   font-size: 12px;
-  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase; /* ← FIXED */
+  opacity: 0.75;
+}
+
+.footer-meta {
+  font-size: 11px;
+  opacity: 0.45;
 }
 
 /* =========================
-   MICRO INTERACTION
+   HOVER (DESKTOP ONLY)
 ========================= */
 @media (pointer: fine) {
   .project-card:hover,
   .featured-item:hover,
   .education-item:hover {
     transform: translateY(-3px);
-    border-color: rgba(167,139,250,0.14);
+    border-color: rgba(167,139,250,0.18);
   }
 }
 
@@ -334,11 +276,6 @@ section.omniverse-section {
 @media (max-width: 768px) {
   section.omniverse-section {
     padding: 3.5rem 1rem;
-  }
-
-  .featured-item {
-    grid-template-columns: 1fr;
-    direction: ltr;
   }
 }
 
