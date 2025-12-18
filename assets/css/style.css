@@ -802,3 +802,129 @@ section.omniverse-section {
     text-align: center;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — RENDERER-LOCKED FIXES
+============================================================ */
+
+/* ================= EXPERIENCE — SINGLE GROWTH LINE ================= */
+
+#experience-section {
+  position: relative;
+  align-items: flex-start;
+}
+
+/* Vertical glowing transformation line */
+#experience-section::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: calc(var(--space-section) + 2rem);
+  bottom: 2rem;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.45;
+}
+
+/* Push content away from the line */
+.experience-list {
+  margin-left: 64px;
+  width: 100%;
+}
+
+/* Editorial alignment */
+.experience-company,
+.experience-role {
+  text-align: left;
+}
+
+/* Company spacing */
+.experience-company {
+  margin-top: 3rem;
+}
+
+.experience-company:first-child {
+  margin-top: 0;
+}
+
+/* ================= PROJECTS — ALIGNMENT FIX ================= */
+
+#projects-section {
+  align-items: flex-start;
+}
+
+/* Categories behave like blocks */
+.project-category {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto 3rem;
+  text-align: left;
+}
+
+/* Cards stay aligned */
+.project-card {
+  text-align: left;
+}
+
+/* ================= CONTACT — RESTRUCTURE ================= */
+
+/* Move heading ABOVE the panel */
+#contact-section > h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Panel remains centered */
+.contact-panel {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Grid balance */
+.contact-grid {
+  grid-template-columns: 1.2fr 2fr 1fr;
+  align-items: start;
+  text-align: left;
+}
+
+/* Description fills space */
+.contact-description p {
+  max-width: none;
+  margin: 0;
+}
+
+/* Email — lowercase, quiet */
+.contact-email a {
+  text-transform: lowercase;
+  font-size: 13px;
+  opacity: 0.6;
+  letter-spacing: normal;
+}
+
+/* ================= MOBILE SAFETY ================= */
+@media (max-width: 768px) {
+  #experience-section::before {
+    display: none;
+  }
+
+  .experience-list {
+    margin-left: 0;
+  }
+
+  .experience-company,
+  .experience-role,
+  .project-category,
+  .project-card,
+  .contact-grid {
+    text-align: center;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
