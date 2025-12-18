@@ -1,13 +1,11 @@
 /**
- * Resume Redirect Controller (FINAL — SCHEMA TRUE & SAFE)
+ * Resume Redirect Controller (FINAL — SAFE & USER-DRIVEN)
  * ======================================================
- * - Runs ONLY on explicit user click
+ * - Runs only on explicit user click
  * - Reads real profile.json schema
- * - Supports LinkedIn-first strategy
- * - Prevents redirect loops
+ * - Opens resume in new tab
+ * - No redirect loops
  * - Emits lifecycle events
- *
- * NEVER auto-runs on page load.
  */
 
 (function initResumeController() {
@@ -51,15 +49,6 @@ async function ResumeController() {
   }
 
   /* =========================
-     LOOP PREVENTION
-  ========================= */
-  if (isRedirectLoop(resumeTarget.url)) {
-    fail("Redirect loop detected");
-    console.groupEnd();
-    return;
-  }
-
-  /* =========================
      ANALYTICS EVENT
   ========================= */
   window.dispatchEvent(
@@ -72,18 +61,18 @@ async function ResumeController() {
     })
   );
 
-  console.info("[Resume] Redirecting to", resumeTarget.provider);
+  console.info("[Resume] Opening resume:", resumeTarget.provider);
   console.groupEnd();
 
   /* =========================
-     REDIRECT
+     OPEN (USER EXPECTATION SAFE)
   ========================= */
-  performRedirect(resumeTarget.url);
+  openResume(resumeTarget.url);
 }
 
-/* ============================================================
-   PROVIDER RESOLUTION (REAL SCHEMA)
-============================================================ */
+/* =================================================
+   PROVIDER RESOLUTION (SCHEMA TRUE)
+================================================= */
 
 function resolveResumeTarget(profile) {
   const url = profile?.resume?.externalProfile;
@@ -98,10 +87,9 @@ function resolveResumeTarget(profile) {
   return null;
 }
 
-
-/* ============================================================
-   SAFETY UTILITIES
-============================================================ */
+/* =================================================
+   UTILITIES
+================================================= */
 
 function isValidUrl(url) {
   try {
@@ -112,13 +100,8 @@ function isValidUrl(url) {
   }
 }
 
-function isRedirectLoop(targetUrl) {
-  return window.location.href === targetUrl;
-}
-
-function performRedirect(url) {
-  // replace() prevents back-button loops
-  window.location.replace(url);
+function openResume(url) {
+  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function fail(reason) {
