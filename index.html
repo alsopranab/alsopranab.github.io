@@ -18,17 +18,13 @@
   <meta name="theme-color" content="#05030c" />
   <meta name="color-scheme" content="dark light" />
 
-  <!-- =====================================================
-       SOCIAL SHARING
-  ====================================================== -->
+  <!-- SOCIAL -->
   <meta property="og:title" content="Pranab Debnath — Data Analyst" />
   <meta property="og:description" content="Data-driven professional building insights." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
-  <!-- =====================================================
-       FONTS
-  ====================================================== -->
+  <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -36,116 +32,145 @@
     rel="stylesheet"
   />
 
-  <!-- =====================================================
-       FAVICON
-  ====================================================== -->
+  <!-- FAVICON -->
   <link rel="icon" href="assets/favicon.ico" />
 
-  <!-- =====================================================
-       STYLES
-  ====================================================== -->
+  <!-- STYLES -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body data-omniverse>
 
-  <!-- =====================================================
-       BACKGROUND (CSS ONLY)
-  ====================================================== -->
+  <!-- BACKGROUND -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
-  <!-- =====================================================
-       HEADER (INJECTED)
-  ====================================================== -->
+  <!-- HEADER -->
   <header id="site-header" aria-label="Primary Navigation"></header>
 
-  <!-- =====================================================
-       MAIN CONTENT
-  ====================================================== -->
+  <!-- MAIN -->
   <main id="page-content" role="main">
 
     <!-- =====================================================
-         HERO SECTION — DASHBOARD GRAPH
+         HERO SECTION — FULL WIDTH DASHBOARD
     ====================================================== -->
     <section id="hero-section" class="omniverse-section">
 
       <div class="hero-wrapper">
         <h1>Pranab Debnath</h1>
         <p>
-          Data Analyst focused on SQL, Python, automation, and
-          data-driven decision making.
+          Data Analyst focused on SQL, Python, automation,
+          and data-driven decision making.
         </p>
       </div>
 
-      <!-- HERO ANALYTICS GRAPH -->
-      <div class="project-graph hero-graph" aria-hidden="true">
-        <svg viewBox="0 0 900 260" preserveAspectRatio="none">
-          <line x1="0" y1="210" x2="900" y2="210" class="graph-grid"/>
-          <line x1="0" y1="150" x2="900" y2="150" class="graph-grid"/>
-          <line x1="0" y1="90"  x2="900" y2="90"  class="graph-grid"/>
+      <!-- ================= HERO DASHBOARD (FULL WIDTH) ================= -->
+      <div data-static class="hero-dashboard-shell">
 
-          <path
-            d="M0 200
-               L100 190 L200 185 L300 165
-               L400 170 L500 145 L600 150
-               L700 120 L800 110 L900 95"
-            class="graph-line"
-          />
-        </svg>
+        <div class="hero-dashboard-glow"></div>
+
+        <div class="hero-dashboard-grid">
+
+          <!-- LEFT KPI PANEL -->
+          <aside class="dashboard-panel kpi-panel">
+            <div class="kpi-box">
+              <span class="kpi-label">Revenue</span>
+              <strong class="kpi-value">₹4.8M</strong>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-label">Growth</span>
+              <strong class="kpi-value">+32%</strong>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-label">Conversion</span>
+              <strong class="kpi-value">5.4%</strong>
+            </div>
+          </aside>
+
+          <!-- MAIN CHART -->
+          <section class="dashboard-main">
+
+            <div class="dashboard-chart project-graph hero-graph">
+              <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
+
+                <!-- GRID -->
+                <line x1="0" y1="250" x2="1000" y2="250" class="graph-grid"/>
+                <line x1="0" y1="180" x2="1000" y2="180" class="graph-grid"/>
+                <line x1="0" y1="110" x2="1000" y2="110" class="graph-grid"/>
+
+                <!-- BARS -->
+                <rect x="100" y="160" width="40" height="90" class="graph-bar"/>
+                <rect x="220" y="140" width="40" height="110" class="graph-bar"/>
+                <rect x="340" y="120" width="40" height="130" class="graph-bar"/>
+                <rect x="460" y="90"  width="40" height="160" class="graph-bar"/>
+                <rect x="580" y="70"  width="40" height="180" class="graph-bar"/>
+                <rect x="700" y="50"  width="40" height="200" class="graph-bar"/>
+
+                <!-- LINE -->
+                <path
+                  d="M120 170
+                     L240 150
+                     L360 135
+                     L480 100
+                     L600 80
+                     L720 60
+                     L840 45"
+                  class="graph-line"
+                />
+
+              </svg>
+            </div>
+
+          </section>
+
+        </div>
       </div>
+      <!-- ================= END HERO DASHBOARD ================= -->
 
     </section>
 
-    <!-- =====================================================
-         EXPERIENCE (INJECTED)
-    ====================================================== -->
+    <!-- EXPERIENCE -->
     <section id="experience-section" class="omniverse-section"></section>
 
-    <!-- =====================================================
-         FEATURED (INJECTED)
-    ====================================================== -->
+    <!-- FEATURED -->
     <section id="featured-section" class="omniverse-section"></section>
 
     <!-- =====================================================
-         PROJECTS — FAKE ANALYTICS CARD
+         PROJECTS — ANALYTICS CARDS
     ====================================================== -->
     <section id="projects-section" class="omniverse-section">
 
-      <article
-        class="project-card project-analytics"
-        data-omni-hover
-        data-omni-reveal
-      >
+      <!-- PROJECT 1 -->
+      <article class="project-card project-analytics" data-omni-hover data-omni-reveal>
+
         <header class="project-header">
           <h3>Revenue Funnel Optimization</h3>
           <span class="project-type">Analytics • Automation</span>
         </header>
 
-        <!-- PROJECT GRAPH -->
-        <div class="project-graph" aria-hidden="true">
-          <svg viewBox="0 0 600 220" preserveAspectRatio="none">
+        <div class="project-graph">
+          <svg viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet">
 
             <line x1="0" y1="180" x2="600" y2="180" class="graph-grid"/>
             <line x1="0" y1="120" x2="600" y2="120" class="graph-grid"/>
             <line x1="0" y1="60"  x2="600" y2="60"  class="graph-grid"/>
 
-            <rect x="60"  y="120" width="40" height="60"  class="graph-bar"/>
-            <rect x="160" y="90"  width="40" height="90"  class="graph-bar"/>
-            <rect x="260" y="70"  width="40" height="110" class="graph-bar"/>
-            <rect x="360" y="40"  width="40" height="140" class="graph-bar"/>
-            <rect x="460" y="20"  width="40" height="160" class="graph-bar"/>
+            <rect x="80"  y="120" width="36" height="60"  class="graph-bar"/>
+            <rect x="170" y="95"  width="36" height="85"  class="graph-bar"/>
+            <rect x="260" y="70"  width="36" height="110" class="graph-bar"/>
+            <rect x="350" y="45"  width="36" height="135" class="graph-bar"/>
+            <rect x="440" y="25"  width="36" height="155" class="graph-bar"/>
 
             <path
-              d="M80 130 L180 100 L280 85 L380 55 L480 35"
+              d="M98 130 L188 108 L278 88 L368 60 L458 42"
               class="graph-line"
             />
           </svg>
         </div>
 
         <p class="project-desc">
-          Built an end-to-end analytics pipeline to identify funnel drop-offs,
-          automate KPI reporting, and improve lead-to-conversion efficiency.
+          End-to-end KPI pipeline to identify funnel leakage,
+          automate reporting, and boost conversion velocity.
         </p>
 
         <div class="project-tech">
@@ -159,23 +184,17 @@
 
     </section>
 
-    <!-- =====================================================
-         EDUCATION / LICENSES / CONTACT (INJECTED)
-    ====================================================== -->
+    <!-- EDUCATION / LICENSES / CONTACT -->
     <section id="education-section" class="omniverse-section"></section>
     <section id="licenses-section" class="omniverse-section"></section>
     <section id="contact-section" class="omniverse-section"></section>
 
   </main>
 
-  <!-- =====================================================
-       FOOTER (INJECTED)
-  ====================================================== -->
+  <!-- FOOTER -->
   <footer id="site-footer" aria-label="Footer"></footer>
 
-  <!-- =====================================================
-       CORE JS (LOCKED ORDER)
-  ====================================================== -->
+  <!-- CORE JS -->
   <script src="assets/js/core/bootstrap.js" defer></script>
   <script src="assets/js/services/data.service.js" defer></script>
   <script src="assets/js/layout/header.js" defer></script>
@@ -189,38 +208,26 @@
   <!-- UI MOTION -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
 
-  <!-- =====================================================
-       SCROLL REVEAL
-  ====================================================== -->
+  <!-- SCROLL REVEAL -->
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
-      const observer = new IntersectionObserver(
-        entries => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            }
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
           }
-        },
-        { threshold: 0.35 }
-      );
+        });
+      }, { threshold: 0.35 });
 
-      document
-        .querySelectorAll("[data-omni-reveal]")
-        .forEach(el => observer.observe(el));
+      document.querySelectorAll("[data-omni-reveal]").forEach(el => observer.observe(el));
     });
   </script>
 
-  <!-- =====================================================
-       NO-JS FALLBACK
-  ====================================================== -->
+  <!-- NO JS -->
   <noscript>
     <style>
-      .omniverse-section {
-        opacity: 1 !important;
-        transform: none !important;
-      }
+      .omniverse-section { opacity: 1 !important; transform: none !important; }
     </style>
   </noscript>
 
