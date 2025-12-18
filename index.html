@@ -48,7 +48,7 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       SHOOTING STARS BACKGROUND (NON-INTERACTIVE)
+       SHOOTING STARS BACKGROUND (CSS ONLY, SAFE)
   ====================================================== -->
   <div class="shooting-stars" aria-hidden="true"></div>
 
@@ -123,7 +123,10 @@
   </footer>
 
   <!-- =====================================================
-       CORE JS (ORDER IS CRITICAL — DO NOT REORDER)
+       CORE JS (ORDER IS CRITICAL)
+       ✔ NO cursor
+       ✔ NO canvas
+       ✔ NO godmode
   ====================================================== -->
 
   <script src="assets/js/core/bootstrap.js" defer></script>
@@ -132,8 +135,9 @@
   <script src="assets/js/layout/footer.js" defer></script>
   <script src="assets/js/pages/home.js" defer></script>
   <script src="assets/js/renderers/app.renderer.js" defer></script>
+
+  <!-- SAFE MOTION ONLY -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
-  <script src="assets/js/omniverse.godmode.js" defer></script>
 
   <!-- =====================================================
        NO-JS FALLBACK (ACCESSIBILITY SAFE)
