@@ -374,3 +374,126 @@ section.omniverse-section {
     transition: none !important;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — SPATIAL POLISH LAYER
+   Apple Dev–Style Ambient Motion & Spacing
+============================================================ */
+
+/* ================= AMBIENT BACKGROUND MOTION ================= */
+body[data-omniverse]::before,
+body[data-omniverse]::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.35;
+  filter: blur(120px);
+  transform: translateZ(0);
+}
+
+body[data-omniverse]::before {
+  background:
+    radial-gradient(
+      800px 800px at 20% 30%,
+      rgba(167,139,250,0.25),
+      transparent 60%
+    );
+  animation: ambient-drift-a 38s linear infinite;
+}
+
+body[data-omniverse]::after {
+  background:
+    radial-gradient(
+      900px 900px at 80% 70%,
+      rgba(124,58,237,0.22),
+      transparent 60%
+    );
+  animation: ambient-drift-b 52s linear infinite;
+}
+
+@keyframes ambient-drift-a {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(6%, -4%, 0); }
+  100% { transform: translate3d(0,0,0); }
+}
+
+@keyframes ambient-drift-b {
+  0% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(-5%, 6%, 0); }
+  100% { transform: translate3d(0,0,0); }
+}
+
+/* ================= GLOBAL SPACING RHYTHM ================= */
+section.omniverse-section {
+  padding-top: clamp(5.5rem, 10vw, 9rem);
+  padding-bottom: clamp(5.5rem, 10vw, 9rem);
+}
+
+section.omniverse-section + section.omniverse-section {
+  margin-top: -1.5rem; /* optical continuity */
+}
+
+/* ================= CARD STACK BREATHING ================= */
+.project-card,
+.education-item,
+.experience-role,
+.featured-item {
+  margin-top: 34px;
+}
+
+/* ================= CONTACT VISUAL BALANCE ================= */
+.contact-grid {
+  align-items: center;
+}
+
+.contact-title h2 {
+  font-size: clamp(22px, 3vw, 28px);
+}
+
+.contact-tagline {
+  line-height: 1.5;
+}
+
+.contact-email {
+  text-align: right;
+}
+
+/* ================= FOOTER SEPARATION ================= */
+#site-footer {
+  margin-top: 4rem;
+  border-top: 1px solid var(--border-hairline);
+}
+
+/* ================= MOBILE HEADER REFINEMENT ================= */
+@media (max-width: 768px) {
+  .header-container {
+    padding: 4px 12px;
+    min-height: 40px;
+  }
+
+  .header-nav a {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  /* Makes header feel lighter while scrolling */
+  #site-header {
+    backdrop-filter: blur(12px) saturate(1.1);
+  }
+}
+
+/* ================= IMAGE CONTAINMENT TUNING ================= */
+.featured-item img {
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* ================= REDUCED MOTION SAFETY ================= */
+@media (prefers-reduced-motion: reduce) {
+  body[data-omniverse]::before,
+  body[data-omniverse]::after {
+    animation: none !important;
+  }
+}
