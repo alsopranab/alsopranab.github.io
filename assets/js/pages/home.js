@@ -1,10 +1,11 @@
 /**
- * Home Page Controller (FINAL — LIFECYCLE SAFE)
- * ============================================
- * - Runs ONLY after app:ready
- * - Loads all required JSON
- * - Attaches data to DOM
- * - Emits home:ready exactly once
+ * Home Page Controller
+ * ====================
+ * Responsibilities:
+ * - Runs only after `app:ready`
+ * - Loads all required JSON via DataService
+ * - Attaches data to DOM sections
+ * - Emits `home:ready` exactly once
  */
 
 window.addEventListener("app:ready", () => {
@@ -16,7 +17,9 @@ window.addEventListener("app:ready", () => {
 async function HomePageController() {
   console.group("[HomePage] Initialization");
 
-  // ✅ IDs NOW MATCH index.html EXACTLY
+  /* -------------------------------------------------
+     Section references (must match index.html IDs)
+  ------------------------------------------------- */
   const sections = {
     hero: document.getElementById("hero"),
     experience: document.getElementById("experience"),
@@ -31,6 +34,9 @@ async function HomePageController() {
 
   console.info("[HomePage] Loading data…");
 
+  /* -------------------------------------------------
+     Load all page data (partial failure safe)
+  ------------------------------------------------- */
   const results = await Promise.allSettled([
     DataService.getProfile(),
     DataService.getExperience(),
@@ -51,12 +57,18 @@ async function HomePageController() {
     contactData
   ] = normalizeResults(results);
 
-  if (!profileData?.identity) {
-    console.error("[HomePage] profile.json missing — aborting");
+  /* -------------------------------------------------
+     Profile is mandatory for homepage
+  ------------------------------------------------- */
+  if (!profileData || !profileData.identity) {
+    console.error("[HomePage] profile.json missing or invalid");
     console.groupEnd();
     return;
   }
 
+  /* -------------------------------------------------
+     Attach data to sections
+  ------------------------------------------------- */
   attach(sections.hero, profileData);
   attach(sections.experience, experienceData);
   attach(sections.featured, featuredData);
@@ -68,15 +80,20 @@ async function HomePageController() {
   console.info("[HomePage] Data attached successfully");
   console.groupEnd();
 
+  /* -------------------------------------------------
+     Signal renderer + motion engine
+  ------------------------------------------------- */
   window.dispatchEvent(new CustomEvent("home:ready"));
 }
 
-/* ================= HELPERS ================= */
+/* =================================================
+   Helpers
+================================================= */
 
 function validateSections(sections) {
   Object.entries(sections).forEach(([key, el]) => {
     if (!el) {
-      console.warn(`[HomePage] Missing section: ${key}`);
+      console.info(`[HomePage] Section not present: ${key}`);
     }
   });
 }
