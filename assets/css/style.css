@@ -624,3 +624,60 @@ section.omniverse-section > h2 {
     height: 140px;
   }
 }
+
+/* ============================================================
+   GRAPH VISIBILITY LOCK — CRITICAL FIX
+   Prevents JS / Observer / Motion systems from hiding SVG
+============================================================ */
+
+/* Hard-lock all analytics graphs */
+.project-graph,
+.project-graph *,
+.hero-graph,
+.hero-graph * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Disable reveal animations ONLY for graphs */
+.project-graph,
+.hero-graph {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Stop IntersectionObserver from hiding SVG children */
+.project-graph svg,
+.hero-graph svg {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+/* Ensure SVG paths are always drawn */
+.graph-line {
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* Ensure bars never collapse */
+.graph-bar {
+  transform: scaleY(1) !important;
+}
+
+/* Prevent motion scripts from resetting */
+[data-omni-reveal] .project-graph,
+[data-omni-reveal] .hero-graph {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Mobile safety */
+@media (max-width: 768px) {
+  .project-graph,
+  .hero-graph {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
