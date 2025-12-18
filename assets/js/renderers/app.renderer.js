@@ -1,10 +1,11 @@
 /**
- * Unified App Renderer (FINAL — CANONICAL & HARDENED)
+ * Unified App Renderer (FINAL — CANONICAL & IMMUTABLE)
  * ==================================================
  * - Runs ONLY after home:ready
  * - Reads ONLY dataset.source
- * - Matches real JSON exactly
- * - Never crashes on partial data
+ * - Matches CSS layout contracts exactly
+ * - Zero duplication (footer-safe)
+ * - Never breaks on partial data
  */
 
 window.addEventListener("home:ready", () => {
@@ -19,7 +20,7 @@ window.addEventListener("home:ready", () => {
 });
 
 /* ============================================================
-   HERO (profile.json)
+   HERO
 ============================================================ */
 
 function renderHero() {
@@ -45,7 +46,7 @@ function renderHero() {
 }
 
 /* ============================================================
-   EXPERIENCE (experience.json)
+   EXPERIENCE
 ============================================================ */
 
 function renderExperience() {
@@ -97,7 +98,7 @@ function renderRole(role) {
 }
 
 /* ============================================================
-   FEATURED (featured.json)
+   FEATURED
 ============================================================ */
 
 function renderFeatured() {
@@ -120,9 +121,13 @@ function renderFeaturedItem(item) {
     <div class="featured-item">
       ${
         item.media?.coverImage
-          ? `<img src="${item.media.coverImage}" alt="${escape(
-              item.media.alt || ""
-            )}">`
+          ? `
+            <div class="media-frame">
+              <img src="${item.media.coverImage}" alt="${escape(
+                item.media.alt || ""
+              )}">
+            </div>
+          `
           : ""
       }
       <div>
@@ -134,7 +139,7 @@ function renderFeaturedItem(item) {
 }
 
 /* ============================================================
-   PROJECTS (projects.json)
+   PROJECTS
 ============================================================ */
 
 function renderProjects() {
@@ -182,7 +187,7 @@ function renderProjectCard(p) {
 }
 
 /* ============================================================
-   EDUCATION (education.json)
+   EDUCATION
 ============================================================ */
 
 function renderEducation() {
@@ -192,44 +197,36 @@ function renderEducation() {
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Education")}</h2>
-    ${d.records
-      .map(
-        r => `
-      <div class="education-item">
-        <strong>${escape(r.institution || "")}</strong>
+    ${d.records.map(renderEducationItem).join("")}
+  `;
+}
 
-        ${
-          r.degree || r.field
-            ? `<div>${escape(r.degree || "")}${
-                r.field ? " — " + escape(r.field) : ""
-              }</div>`
-            : ""
-        }
-
-        <div>${escape(r.start || "")} – ${escape(r.end || "")}</div>
-
-        ${
-          r.description
-            ? `<p>${escape(r.description)}</p>`
-            : ""
-        }
-
-        ${
-          Array.isArray(r.highlights)
-            ? `<ul>${r.highlights
-                .map(h => `<li>${escape(h)}</li>`)
-                .join("")}</ul>`
-            : ""
-        }
-      </div>
-    `
-      )
-      .join("")}
+function renderEducationItem(r) {
+  return `
+    <div class="education-item">
+      <strong>${escape(r.institution || "")}</strong>
+      ${
+        r.degree || r.field
+          ? `<div>${escape(r.degree || "")}${
+              r.field ? " — " + escape(r.field) : ""
+            }</div>`
+          : ""
+      }
+      <div>${escape(r.start || "")} – ${escape(r.end || "")}</div>
+      ${r.description ? `<p>${escape(r.description)}</p>` : ""}
+      ${
+        Array.isArray(r.highlights)
+          ? `<ul>${r.highlights
+              .map(h => `<li>${escape(h)}</li>`)
+              .join("")}</ul>`
+          : ""
+      }
+    </div>
   `;
 }
 
 /* ============================================================
-   CONTACT (contact.json)
+   CONTACT — FINAL & CSS-COMPATIBLE
 ============================================================ */
 
 function renderContact() {
@@ -238,20 +235,40 @@ function renderContact() {
   if (!d?.section) return;
 
   section.innerHTML = `
-    <h2>${escape(d.section.title)}</h2>
-    ${
-      d.section.subtitle
-        ? `<p class="contact-subtitle">${escape(d.section.subtitle)}</p>`
-        : ""
-    }
-    <p>${escape(d.section.description || "")}</p>
-    ${
-      d.primary?.email?.value
-        ? `<a href="mailto:${d.primary.email.value}">
-            ${escape(d.primary.email.value)}
-          </a>`
-        : ""
-    }
+    <div class="contact-panel">
+      <div class="contact-grid">
+
+        <div>
+          <h2>${escape(d.section.title || "Contact")}</h2>
+          ${
+            d.section.subtitle
+              ? `<div class="contact-tagline">
+                  ${escape(d.section.subtitle)}
+                </div>`
+              : ""
+          }
+        </div>
+
+        <div class="contact-description">
+          ${
+            d.section.description
+              ? `<p>${escape(d.section.description)}</p>`
+              : ""
+          }
+        </div>
+
+        <div class="contact-email">
+          ${
+            d.primary?.email?.value
+              ? `<a href="mailto:${escape(d.primary.email.value)}">
+                  ${escape(d.primary.email.value)}
+                </a>`
+              : ""
+          }
+        </div>
+
+      </div>
+    </div>
   `;
 }
 
