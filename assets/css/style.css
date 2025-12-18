@@ -439,3 +439,188 @@ section.omniverse-section > * + * {
   transform: scaleY(0) !important;
   animation: bar-rise 1.4s var(--ease-vision) forwards !important;
 }
+
+/* ============================================================
+   OMNIVERSE — HERO DASHBOARD EXTENSION (SAFE APPEND)
+   DOES NOT MODIFY EXISTING RULES
+============================================================ */
+
+/* ---------- HERO FULL WIDTH OVERRIDE ---------- */
+#hero-section {
+  max-width: 100% !important;
+  padding-left: clamp(1.5rem, 6vw, 6rem);
+  padding-right: clamp(1.5rem, 6vw, 6rem);
+}
+
+/* ---------- HERO DASHBOARD SHELL ---------- */
+.hero-dashboard-shell {
+  position: relative;
+  width: 100%;
+  margin-top: 4.5rem;
+  padding: 3.5rem 3rem;
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(167,139,250,0.08),
+      rgba(9,6,19,0.85)
+    );
+
+  border: 1px solid rgba(167,139,250,0.18);
+  overflow: hidden;
+}
+
+/* Glow layer */
+.hero-dashboard-glow {
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(167,139,250,0.35), transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(96,165,250,0.28), transparent 45%);
+  filter: blur(160px);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* ---------- DASHBOARD GRID ---------- */
+.hero-dashboard-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 3rem;
+  z-index: 2;
+}
+
+/* ---------- KPI PANEL ---------- */
+.kpi-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.kpi-box {
+  padding: 1.4rem 1.6rem;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow:
+    0 10px 26px rgba(0,0,0,0.45),
+    0 0 18px rgba(167,139,250,0.22);
+}
+
+.kpi-label {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+}
+
+.kpi-value {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ---------- DASHBOARD MAIN GRAPH ---------- */
+.dashboard-main {
+  width: 100%;
+}
+
+.dashboard-chart {
+  height: 280px;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.05),
+      rgba(255,255,255,0.015)
+    );
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.6),
+    0 0 40px rgba(167,139,250,0.25);
+}
+
+/* ---------- GRAPH VISIBILITY HARD FIX ---------- */
+/* Prevent 0.5s disappear bug */
+.graph-bar,
+.graph-line {
+  animation-fill-mode: forwards !important;
+  opacity: 1 !important;
+}
+
+/* Bars always visible */
+.graph-bar {
+  transform: scaleY(1) !important;
+}
+
+/* Line always drawn */
+.graph-line {
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* ---------- SECTION SPACING FIX (GLOBAL) ---------- */
+section.omniverse-section {
+  margin-bottom: clamp(5rem, 9vw, 8rem);
+}
+
+/* Space between heading and content */
+section.omniverse-section > h2 {
+  margin-bottom: 3.4rem !important;
+}
+
+/* Space between stacked cards */
+.project-card + .project-card,
+.education-item + .education-item,
+.featured-item + .featured-item,
+.experience-role + .experience-role {
+  margin-top: 3.2rem;
+}
+
+/* ---------- PROJECT GRAPH SIZE FIX ---------- */
+.project-graph {
+  height: 180px;
+  margin: 1.8rem 0 2.2rem;
+}
+
+/* ---------- MOBILE SAFETY ---------- */
+@media (max-width: 900px) {
+  .hero-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-panel {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .kpi-box {
+    flex: 1 1 calc(50% - 1rem);
+  }
+
+  .dashboard-chart {
+    height: 220px;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero-dashboard-shell {
+    padding: 2.2rem 1.6rem;
+  }
+
+  .dashboard-chart {
+    height: 180px;
+  }
+
+  .kpi-box {
+    flex: 1 1 100%;
+  }
+
+  .project-graph {
+    height: 140px;
+  }
+}
