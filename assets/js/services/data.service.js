@@ -1,11 +1,12 @@
 /**
- * Advanced Centralized Data Service (FINAL — SCHEMA SAFE)
- * =====================================================
+ * Centralized Data Service (FINAL — LOCKED & SCHEMA SAFE)
+ * ======================================================
  * - GitHub Pages safe
  * - Absolute-path resilient
  * - Memory + session cache
  * - In-flight deduplication
- * - JSON schema normalization (social.json FIXED)
+ * - Canonical schema output
+ * - Fail-open (never crashes UI)
  */
 
 const DataService = (() => {
@@ -16,18 +17,20 @@ const DataService = (() => {
   const BASE_PATH = (() => {
     const path = window.location.pathname;
 
-    // Root or direct HTML
+    // Root or direct HTML access
     if (path === "/" || path.endsWith(".html")) {
       return "/assets/data/";
     }
 
-    // Sub-paths (GitHub Pages safe)
+    // Sub-paths (GitHub Pages)
     return path.replace(/\/[^/]*$/, "/assets/data/");
   })();
 
   const FETCH_TIMEOUT = 8000;
   const ENABLE_SESSION_CACHE = true;
-  const DEBUG = true;
+
+  // Disable noisy logs in production
+  const DEBUG = location.hostname === "localhost";
 
   /* =========================
      INTERNAL STATE
@@ -42,7 +45,7 @@ const DataService = (() => {
 
   const log = (...a) => DEBUG && console.log("[DataService]", ...a);
   const warn = (...a) => console.warn("[DataService]", ...a);
-  const err = (...a) => console.error("[DataService]", ...a);
+  const err  = (...a) => console.error("[DataService]", ...a);
 
   /* =========================
      UTILITIES
@@ -57,21 +60,21 @@ const DataService = (() => {
       );
     });
 
-  const sessionKey = (f) => `DataService::${f}`;
+  const sessionKey = file => `DataService::${file}`;
 
   /* =========================
      SCHEMA NORMALIZERS
   ========================= */
 
   function normalizeSocial(data) {
-    if (!data?.profiles || !Array.isArray(data.profiles)) {
-      warn("social.json malformed or empty");
+    if (!Array.isArray(data?.profiles)) {
+      warn("social.json malformed — returning empty profiles");
       return { profiles: [] };
     }
 
     return {
-      profiles: [...data.profiles]
-        .filter(p => p && typeof p === "object")
+      profiles: data.profiles
+        .filter(p => p && typeof p === "object" && p.enabled !== false)
         .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
     };
   }
@@ -107,25 +110,29 @@ const DataService = (() => {
     if (ENABLE_SESSION_CACHE) {
       const cached = sessionStorage.getItem(sessionKey(file));
       if (cached) {
-        const parsed = JSON.parse(cached);
-        memoryCache[file] = parsed;
-        log("Session hit:", file);
-        return parsed;
+        try {
+          const parsed = JSON.parse(cached);
+          memoryCache[file] = parsed;
+          log("Session hit:", file);
+          return parsed;
+        } catch {
+          sessionStorage.removeItem(sessionKey(file));
+        }
       }
     }
 
-    /* ---- In-flight dedup ---- */
+    /* ---- In-flight dedupe ---- */
     if (inFlightRequests[file]) {
       return inFlightRequests[file];
     }
 
-    /* ---- Network ---- */
+    /* ---- Network fetch ---- */
     const request = (async () => {
       try {
         let data = await fetchJSON(file);
         if (!data) return null;
 
-        // 🔒 Schema lock point
+        // Canonical schema lock
         if (file === "social.json") {
           data = normalizeSocial(data);
         }
@@ -154,18 +161,18 @@ const DataService = (() => {
   }
 
   /* =========================
-     PUBLIC API
+     PUBLIC API (LOCKED)
   ========================= */
 
   return Object.freeze({
-    getProfile:   () => loadJSON("profile.json"),
-    getExperience:() => loadJSON("experience.json"),
-    getEducation: () => loadJSON("education.json"),
-    getProjects:  () => loadJSON("projects.json"),
-    getFeatured:  () => loadJSON("featured.json"),
-    getLicenses:  () => loadJSON("licenses.json"),
-    getContact:   () => loadJSON("contact.json"),
-    getSocials:   () => loadJSON("social.json"),
+    getProfile:    () => loadJSON("profile.json"),
+    getExperience: () => loadJSON("experience.json"),
+    getEducation:  () => loadJSON("education.json"),
+    getProjects:   () => loadJSON("projects.json"),
+    getFeatured:   () => loadJSON("featured.json"),
+    getLicenses:   () => loadJSON("licenses.json"),
+    getContact:    () => loadJSON("contact.json"),
+    getSocials:    () => loadJSON("social.json"),
 
     preloadAll: async () => {
       log("Preloading all JSON…");
