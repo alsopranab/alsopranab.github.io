@@ -420,3 +420,31 @@ section.omniverse-section {
 .omni-cursor.is-active {
   transform: translate3d(-50%, -50%, 0) scale(1.2);
 }
+
+/* ============================================================
+   LIST ALIGNMENT — BULLET + TEXT SYNC
+============================================================ */
+
+.experience-role ul {
+  list-style: none; /* remove native bullets */
+  padding: 0;
+  margin: 0;
+}
+
+.experience-role li {
+  position: relative;
+  padding-left: 1.4em; /* controlled indent */
+  margin-bottom: 0.65em;
+  line-height: 1.6;
+}
+
+/* Custom bullet — perfectly centered to first line */
+.experience-role li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0.2em; /* THIS is the key */
+  font-size: 1.1em;
+  line-height: 1;
+  color: rgba(255,255,255,0.65);
+}
