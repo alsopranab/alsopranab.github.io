@@ -1,10 +1,10 @@
 /**
  * ==============================================================
- * OMNIVERSE — GODMODE (FINAL, IMAGE-VIEWER SAFE)
+ * OMNIVERSE — GODMODE (CANONICAL • LOCKED)
  * Orchestrator ONLY
- * NO visuals ownership
+ * NO visual ownership
  * NO canvas
- * CSS owns background & overlays
+ * NO layout mutation
  * ==============================================================
  */
 
@@ -52,7 +52,8 @@
     cursor: { x: VIEW.w / 2, y: VIEW.h / 2 },
     velocity: { x: 0, y: 0 },
     energy: 0,
-    frame: 0
+    frame: 0,
+    hovering: false
   };
 
   /* ============================================================
@@ -72,6 +73,7 @@
     lastFrame = t;
     STATE.frame++;
 
+    // Pause Godmode when image viewer is open
     if (!document.getElementById("image-viewer-overlay")) {
       TASKS.forEach(fn => fn(t));
     }
@@ -82,7 +84,7 @@
   requestAnimationFrame(LOOP);
 
   /* ============================================================
-     INPUT
+     INPUT — POINTER
   ============================================================ */
   if (ENV.pointer) {
     window.addEventListener(
@@ -110,9 +112,11 @@
   /* ============================================================
      CURSOR ORB (DESKTOP ONLY)
   ============================================================ */
+  let orb = null;
+
   if (ENV.pointer && !ENV.isMobile) {
     const ORB_SIZE = 14;
-    const orb = document.createElement("div");
+    orb = document.createElement("div");
     orb.className = "omni-cursor";
 
     orb.style.cssText = `
@@ -152,19 +156,44 @@
   }
 
   /* ============================================================
-     CARD TILT (IMAGE-VIEWER SAFE)
+     CURSOR HOVER INTELLIGENCE
+  ============================================================ */
+  if (ENV.pointer && orb) {
+    document.addEventListener("mouseover", e => {
+      const target = e.target.closest("[data-omni-hover]");
+      if (!target) return;
+      STATE.hovering = true;
+      orb.classList.add("is-hover");
+    });
+
+    document.addEventListener("mouseout", e => {
+      const target = e.target.closest("[data-omni-hover]");
+      if (!target) return;
+      STATE.hovering = false;
+      orb.classList.remove("is-hover");
+    });
+
+    document.addEventListener("mousedown", () => {
+      if (STATE.hovering) orb.classList.add("is-active");
+    });
+
+    document.addEventListener("mouseup", () => {
+      orb.classList.remove("is-active");
+    });
+  }
+
+  /* ============================================================
+     CARD TILT (SAFE + ANALYTICS AWARE)
   ============================================================ */
   if (!ENV.isMobile) {
     TASKS.add(() => {
       if (STATE.frame % 2) return;
 
       const CARDS = document.querySelectorAll(
-        ".project-card, .featured-item, .education-item"
+        ".project-card:not(.is-visible), .featured-item, .education-item"
       );
 
       for (const el of CARDS) {
-        el.style.willChange = "transform";
-
         const r = el.getBoundingClientRect();
         if (r.bottom < 0 || r.top > VIEW.h) {
           el.style.transform = "";
@@ -187,5 +216,23 @@
       }
     });
   }
+
+  /* ============================================================
+     SCROLL-LINKED REVEAL (FPS SAFE)
+  ============================================================ */
+  const revealObserver = new IntersectionObserver(
+    entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    { threshold: 0.35 }
+  );
+
+  document
+    .querySelectorAll("[data-omni-reveal]")
+    .forEach(el => revealObserver.observe(el));
 
 })();
