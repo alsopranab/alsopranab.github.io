@@ -384,3 +384,39 @@ section.omniverse-section {
     text-align: center;
   }
 }
+
+/* ============================================================
+   CURSOR — CANONICAL, ZERO-LAG
+============================================================ */
+
+.omni-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+
+  background: var(--accent);
+  opacity: 0.85;
+
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform, opacity;
+
+  transition:
+    opacity 120ms linear,
+    transform 120ms linear;
+}
+
+/* HOVER STATE — SCALE ONLY */
+.omni-cursor.is-hover {
+  transform: translate3d(-50%, -50%, 0) scale(1.6);
+  opacity: 1;
+}
+
+/* CLICK FEEDBACK — MICRO ONLY */
+.omni-cursor.is-active {
+  transform: translate3d(-50%, -50%, 0) scale(1.2);
+}
