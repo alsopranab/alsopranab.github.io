@@ -745,3 +745,83 @@ section.omniverse-section > h2 {
     transform: none !important;
   }
 }
+
+/* ============================================================
+   HERO DASHBOARD — FULL WIDTH OVERRIDE (SAFE)
+============================================================ */
+
+#hero-section {
+  max-width: none !important;
+  width: 100%;
+  padding-left: clamp(1.5rem, 4vw, 4rem);
+  padding-right: clamp(1.5rem, 4vw, 4rem);
+}
+
+.hero-dashboard,
+.hero-graph {
+  width: 100%;
+  max-width: none;
+}
+
+/* ============================================================
+   HERO DASHBOARD — VISUAL CONTAINER
+============================================================ */
+
+.hero-dashboard {
+  margin-top: 3.5rem;
+  padding: 2.8rem;
+  border-radius: 22px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(167,139,250,0.08),
+      rgba(255,255,255,0.02)
+    );
+
+  border: 1px solid rgba(255,255,255,0.12);
+
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.65),
+    inset 0 0 60px rgba(167,139,250,0.08);
+
+  backdrop-filter: blur(14px);
+}
+
+/* ============================================================
+   GRAPH VISUAL BOOST — READABILITY
+============================================================ */
+
+.hero-graph,
+.project-graph {
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(167,139,250,0.18),
+      transparent 60%
+    );
+}
+
+.graph-line {
+  stroke-width: 3.2;
+}
+
+.graph-bar {
+  fill: var(--accent);
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .hero-dashboard {
+    padding: 1.8rem;
+  }
+
+  .hero-graph {
+    height: 160px;
+  }
+
+  .project-graph {
+    height: 140px;
+  }
+}
+
