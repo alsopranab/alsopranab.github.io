@@ -20,21 +20,22 @@ window.addEventListener("app:ready", async () => {
       DataService.getSocials()
     ]);
 
-    // Email ONLY if contact section is not present
+    /* ================= CONTACT DEDUP ================= */
     const contactSectionExists =
-      document.getElementById("contact-section")?.innerHTML?.trim();
+      document.getElementById("contact")?.innerHTML?.trim(); // ✅ FIXED ID
 
     if (!contactSectionExists && contact?.primary?.email?.value) {
       email = contact.primary.email.value;
     }
 
+    /* ================= SOCIALS ================= */
     if (Array.isArray(socialData?.profiles)) {
       socials = socialData.profiles
         .filter(p => p.enabled)
         .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
     }
-  } catch {
-    console.warn("[Footer] Using minimal fallback");
+  } catch (err) {
+    console.warn("[Footer] Using minimal fallback", err);
   }
 
   footerEl.innerHTML = `
@@ -82,9 +83,7 @@ window.addEventListener("app:ready", async () => {
   );
 });
 
-/* =========================
-   UTIL
-========================= */
+/* ================= UTIL ================= */
 function escapeHTML(str) {
   return typeof str === "string"
     ? str.replace(/[&<>"']/g, c => ({
