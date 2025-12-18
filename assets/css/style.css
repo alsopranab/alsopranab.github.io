@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — REFINED COMFORT BUILD
-   CENTERED • CALM • ZERO STRAIN
+   OMNIVERSE — CANONICAL STYLE SYSTEM
+   VISUALS ONLY • GODMODE SAFE • PRODUCTION
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -37,7 +37,6 @@ html,
 body {
   margin: 0;
   padding: 0;
-  overscroll-behavior-y: none;
 }
 
 /* ================= BODY ================= */
@@ -46,9 +45,6 @@ body[data-omniverse] {
   color: var(--text-main);
   min-height: 100vh;
   overflow-x: hidden;
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 
   display: flex;
   flex-direction: column;
@@ -60,16 +56,15 @@ body[data-omniverse] {
     linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
 }
 
-/* ================= AMBIENT BACKGROUND ================= */
+/* ================= AMBIENT GLOW ================= */
 body[data-omniverse]::before,
 body[data-omniverse]::after {
   content: "";
   position: fixed;
   inset: -25%;
-  z-index: -1;
+  z-index: -3;
   pointer-events: none;
   filter: blur(140px);
-  opacity: 0.22;
 }
 
 body[data-omniverse]::before {
@@ -78,7 +73,7 @@ body[data-omniverse]::before {
     rgba(167,139,250,0.35),
     transparent 65%
   );
-  animation: glow-a 18s ease-in-out infinite alternate;
+  opacity: 0.22;
 }
 
 body[data-omniverse]::after {
@@ -87,17 +82,7 @@ body[data-omniverse]::after {
     rgba(124,58,237,0.28),
     transparent 65%
   );
-  animation: glow-b 24s ease-in-out infinite alternate;
-}
-
-@keyframes glow-a {
-  from { opacity: 0.18; }
-  to   { opacity: 0.28; }
-}
-
-@keyframes glow-b {
-  from { opacity: 0.16; }
-  to   { opacity: 0.26; }
+  opacity: 0.2;
 }
 
 /* ================= TYPOGRAPHY ================= */
@@ -105,7 +90,6 @@ h1, h2, h3 {
   font-weight: 500;
   letter-spacing: -0.025em;
   margin: 0;
-  text-align: center;
 }
 
 h1 {
@@ -123,22 +107,7 @@ p {
   line-height: 1.7;
   color: var(--text-muted);
   max-width: 65ch;
-  margin: 0 auto;
-  text-align: center;
-}
-
-/* ================= LINKS ================= */
-a {
-  color: var(--text-main);
-  text-decoration: none;
-  opacity: 0.82;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  transition: opacity 160ms linear;
-}
-
-a:hover {
-  opacity: 1;
+  margin-top: 0.5rem;
 }
 
 /* ================= HEADER ================= */
@@ -149,47 +118,14 @@ a:hover {
   width: 100%;
 }
 
-.header-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 8px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.header-nav {
-  display: flex;
-  gap: 24px;
-}
-
-.header-nav a {
-  font-size: 11px;
-  opacity: 0.6;
-}
-
-.header-nav a.active {
-  opacity: 1;
-  color: var(--accent);
-}
-
 /* ================= SECTIONS ================= */
 section.omniverse-section {
   width: 100%;
   max-width: 1100px;
-  margin: 0 auto;
   padding: var(--space-section) 1.5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-/* ================= HERO ================= */
-.hero-wrapper {
-  max-width: 620px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  align-items: center;
+  align-items: flex-start;
 }
 
 /* ================= CARDS ================= */
@@ -209,68 +145,6 @@ section.omniverse-section {
   );
   border: 1px solid var(--border-hairline);
   box-shadow: 0 18px 38px rgba(0,0,0,0.45);
-  text-align: center;
-}
-
-@media (pointer: fine) {
-  .project-card:hover,
-  .education-item:hover,
-  .featured-item:hover {
-    transform: translateY(-5px);
-    transition: transform 240ms var(--ease-vision);
-    box-shadow:
-      0 26px 52px rgba(0,0,0,0.55),
-      0 0 26px var(--accent-glow);
-  }
-}
-
-/* ================= FEATURED IMAGE ================= */
-.featured-item img {
-  width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  border-radius: 14px;
-  margin-bottom: 18px;
-}
-
-/* ================= CONTACT ================= */
-#contact-section > div {
-  max-width: 900px;
-  padding: 64px 48px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.06),
-    rgba(255,255,255,0.02)
-  );
-  border: 1px solid var(--border-hairline);
-  margin: 0 auto;
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-  text-align: center;
-}
-
-.contact-grid h3,
-.contact-grid span,
-.contact-grid a:not(.email) {
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 12px;
-  opacity: 0.85;
-}
-
-/* EMAIL — LOWERCASE, SOFTER */
-.contact-grid .email {
-  text-transform: lowercase;
-  letter-spacing: normal;
-  font-size: 14px;
-  opacity: 0.7;
-  display: block;
-  margin-top: 12px;
 }
 
 /* ================= FOOTER ================= */
@@ -282,874 +156,16 @@ section.omniverse-section {
   text-align: center;
 }
 
-.footer-container {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  align-items: center;
-}
-
-.footer-socials {
-  display: flex;
-  gap: 26px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.footer-socials a {
-  font-size: 13px;
-  opacity: 0.75;
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  h1 {
-    font-size: clamp(30px, 8vw, 42px);
-  }
-
-  section.omniverse-section {
-    padding: 4.25rem 1rem;
-  }
-
-  .project-card,
-  .education-item,
-  .experience-role,
-  .featured-item {
-    padding: 22px;
-  }
-
-  .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  .featured-item img {
-    max-height: 260px;
-  }
-}
-
-/* ================= REDUCED MOTION ================= */
-@media (prefers-reduced-motion: reduce) {
-  body[data-omniverse]::before,
-  body[data-omniverse]::after {
-    animation: none !important;
-  }
-}
-
 /* ============================================================
-   OMNIVERSE — COMFORT PATCH (NON-DESTRUCTIVE)
+   STARFIELD — REAL, VISIBLE, SAFE
 ============================================================ */
 
-/* HERO — SOFT CENTER WITHOUT FLATTENING */
-.hero-wrapper {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* CONTACT — CENTER THE BLOCK, NOT THE CONTENT FLOW */
-#contact-section > div {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* CONTACT GRID — KEEP STRUCTURE, IMPROVE READABILITY */
-.contact-grid {
-  align-items: center;
-}
-
-/* CONTACT TEXT RULES */
-.contact-grid h3,
-.contact-grid span,
-.contact-grid a:not(.email) {
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-}
-
-/* EMAIL — LOWERCASE, QUIET, LAST */
-.contact-grid .email {
-  text-transform: lowercase;
-  letter-spacing: normal;
-  opacity: 0.7;
-  display: block;
-  margin-top: 14px;
-}
-
-/* MOBILE — ONLY WHAT IS NECESSARY */
-@media (max-width: 768px) {
-  .hero-wrapper {
-    text-align: center;
-  }
-
-  .contact-grid {
-    text-align: center;
-  }
-}
-
-
-/* HOVER STATE — SCALE ONLY */
-.omni-cursor.is-hover {
-  transform: translate3d(-50%, -50%, 0) scale(1.6);
-  opacity: 1;
-}
-
-/* CLICK FEEDBACK — MICRO ONLY */
-.omni-cursor.is-active {
-  transform: translate3d(-50%, -50%, 0) scale(1.2);
-}
-
-/* ============================================================
-   LIST ALIGNMENT — BULLET + TEXT SYNC
-============================================================ */
-
-.experience-role ul {
-  list-style: none; /* remove native bullets */
-  padding: 0;
-  margin: 0;
-}
-
-.experience-role li {
-  position: relative;
-  padding-left: 1.4em; /* controlled indent */
-  margin-bottom: 0.65em;
-  line-height: 1.6;
-}
-
-/* Custom bullet — perfectly centered to first line */
-.experience-role li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  top: 0.2em; /* THIS is the key */
-  font-size: 1.1em;
-  line-height: 1;
-  color: rgba(255,255,255,0.65);
-}
-
-/* ============================================================
-   OMNIVERSE — STRUCTURE & HIERARCHY FIX (FINAL)
-============================================================ */
-
-/* ================= HERO — EDITORIAL LEFT ================= */
-.hero-wrapper {
-  align-items: flex-start;
-  text-align: left;
-}
-
-.hero-wrapper h1,
-.hero-wrapper h2,
-.hero-wrapper p {
-  text-align: left;
-  margin-left: 0;
-}
-
-/* ================= GLOBAL SECTION ALIGNMENT ================= */
-section.omniverse-section {
-  align-items: flex-start;
-}
-
-/* Keep projects centered visually */
-#projects-section {
-  align-items: center;
-}
-
-/* ================= EXPERIENCE — LEFT + GROWTH SPINE ================= */
-#experience-section h2 {
-  align-self: flex-start;
-}
-
-.experience-wrapper {
-  position: relative;
-  padding-left: 56px;
-  width: 100%;
-}
-
-/* Vertical glowing growth line */
-.experience-wrapper::before {
-  content: "";
-  position: absolute;
-  left: 20px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.45;
-}
-
-/* Company label spacing */
-.experience-company {
-  margin-top: 3.5rem;
-  font-weight: 500;
-  opacity: 0.85;
-  text-align: left;
-}
-
-/* Experience cards align to spine */
-.experience-role {
-  text-align: left;
-  margin-left: 24px;
-}
-
-/* ================= EXPERIENCE LIST READABILITY ================= */
-.experience-role ul {
-  margin-top: 1rem;
-}
-
-.experience-role li {
-  line-height: 1.65;
-}
-
-/* ================= EDUCATION — GAP FIX ================= */
-#education-section {
-  padding-top: calc(var(--space-section) - 2rem);
-}
-
-#education-section .education-item {
-  margin-top: 1.5rem;
-  text-align: left;
-}
-
-/* ================= CONTACT — BALANCE & COMFORT ================= */
-#contact-section > div {
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.045),
-    rgba(255,255,255,0.015)
-  );
-}
-
-.contact-grid {
-  grid-template-columns: 1.2fr 1.6fr 1.2fr;
-  align-items: center;
-}
-
-/* Contact headings */
-.contact-grid h3,
-.contact-grid span,
-.contact-grid a:not(.email) {
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 12px;
-  opacity: 0.8;
-}
-
-/* Email — small, quiet, lowercase */
-.contact-grid .email {
-  font-size: 13px;
-  text-transform: lowercase;
-  opacity: 0.6;
-}
-
-/* ================= FOOTER — QUIET ================= */
-.footer-socials a {
-  opacity: 0.6;
-}
-
-/* ================= MOBILE — SAFE OVERRIDES ================= */
-@media (max-width: 768px) {
-  section.omniverse-section {
-    align-items: center;
-  }
-
-  .hero-wrapper {
-    align-items: center;
-    text-align: center;
-  }
-
-  .experience-wrapper {
-    padding-left: 0;
-  }
-
-  .experience-wrapper::before {
-    display: none;
-  }
-
-  .experience-role {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  #education-section .education-item {
-    text-align: center;
-  }
-
-  .contact-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — FINAL STRUCTURE CORRECTIONS
-============================================================ */
-
-/* ================= EXPERIENCE — SINGLE GLOWING LINE ================= */
-#experience-section {
-  position: relative;
-}
-
-.experience-wrapper {
-  position: relative;
-  padding-left: 48px;
-  width: 100%;
-}
-
-.experience-wrapper::before {
-  content: "";
-  position: absolute;
-  left: 16px;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.5;
-}
-
-/* Cards align to the line */
-.experience-role {
-  margin-left: 20px;
-  text-align: left;
-}
-
-/* Company labels */
-.experience-company {
-  margin: 3rem 0 1rem;
-  font-weight: 500;
-  opacity: 0.85;
-  text-align: left;
-}
-
-/* ================= PROJECTS — ALIGNMENT FIX ================= */
-#projects-section {
-  align-items: center;
-}
-
-#projects-section .project-card {
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
-}
-
-/* ================= CONTACT — RESTRUCTURE ================= */
-
-/* Move heading ABOVE the container */
-#contact-section h2,
-#contact-section .contact-heading {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-/* Contact container */
-#contact-section > div {
-  padding: 56px 48px;
-}
-
-/* Grid balance */
-.contact-grid {
-  grid-template-columns: 1fr 2fr 1fr;
-  align-items: start;
-  text-align: left;
-}
-
-/* Middle content fills container */
-.contact-grid p {
-  max-width: none;
-  margin: 0;
-}
-
-/* Email — lowercase, small, calm */
-.contact-grid .email {
-  font-size: 13px;
-  text-transform: lowercase;
-  opacity: 0.6;
-}
-
-/* ================= MOBILE SAFETY ================= */
-@media (max-width: 768px) {
-  .experience-wrapper {
-    padding-left: 0;
-  }
-
-  .experience-wrapper::before {
-    display: none;
-  }
-
-  .experience-role {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .contact-grid {
-    grid-template-columns: 1fr;
-    text-align: center;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — RENDERER-SAFE STRUCTURE FIX
-============================================================ */
-
-/* ================= EXPERIENCE — SINGLE GLOWING LINE ================= */
-
-/* Anchor experience section */
-#experience-section {
-  position: relative;
-  align-items: flex-start;
-}
-
-/* Add ONE vertical transformation line */
-#experience-section::before {
-  content: "";
-  position: absolute;
-  left: 24px;
-  top: var(--space-section);
-  bottom: var(--space-section);
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.5;
-}
-
-/* Push all experience cards away from the line */
-#experience-section > * {
-  margin-left: 64px;
-  max-width: 720px;
-}
-
-/* Text should be editorial, not centered */
-#experience-section h2,
-#experience-section h3,
-#experience-section p,
-#experience-section li {
-  text-align: left;
-}
-
-/* ================= PROJECTS — ALIGNMENT FIX ================= */
-
-#projects-section {
-  align-items: center;
-}
-
-#projects-section > * {
-  max-width: 720px;
-  width: 100%;
-  text-align: left;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ================= CONTACT — RESTRUCTURE ================= */
-
-/* Section alignment */
-#contact-section {
-  align-items: center;
-}
-
-/* Headings ABOVE container */
-#contact-section h2,
-#contact-section h3:first-child {
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-/* Contact container */
-#contact-section > div {
-  max-width: 900px;
-  width: 100%;
-  padding: 56px 48px;
-}
-
-/* Ensure inner text fills container */
-#contact-section p {
-  max-width: none;
-  margin: 0;
-  text-align: left;
-}
-
-/* Email — lowercase, small, quiet */
-#contact-section a[href^="mailto"] {
-  text-transform: lowercase;
-  font-size: 13px;
-  opacity: 0.6;
-  letter-spacing: normal;
-}
-
-/* ================= MOBILE SAFETY ================= */
-@media (max-width: 768px) {
-  #experience-section::before {
-    display: none;
-  }
-
-  #experience-section > * {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  #contact-section p {
-    text-align: center;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — RENDERER-LOCKED FIXES
-============================================================ */
-
-/* ================= EXPERIENCE — SINGLE GROWTH LINE ================= */
-
-#experience-section {
-  position: relative;
-  align-items: flex-start;
-}
-
-/* Vertical glowing transformation line */
-#experience-section::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: calc(var(--space-section) + 2rem);
-  bottom: 2rem;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.45;
-}
-
-/* Push content away from the line */
-.experience-list {
-  margin-left: 64px;
-  width: 100%;
-}
-
-/* Editorial alignment */
-.experience-company,
-.experience-role {
-  text-align: left;
-}
-
-/* Company spacing */
-.experience-company {
-  margin-top: 3rem;
-}
-
-.experience-company:first-child {
-  margin-top: 0;
-}
-
-/* ================= PROJECTS — ALIGNMENT FIX ================= */
-
-#projects-section {
-  align-items: flex-start;
-}
-
-/* Categories behave like blocks */
-.project-category {
-  width: 100%;
-  max-width: 720px;
-  margin: 0 auto 3rem;
-  text-align: left;
-}
-
-/* Cards stay aligned */
-.project-card {
-  text-align: left;
-}
-
-/* ================= CONTACT — RESTRUCTURE ================= */
-
-/* Move heading ABOVE the panel */
-#contact-section > h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-/* Panel remains centered */
-.contact-panel {
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-/* Grid balance */
-.contact-grid {
-  grid-template-columns: 1.2fr 2fr 1fr;
-  align-items: start;
-  text-align: left;
-}
-
-/* Description fills space */
-.contact-description p {
-  max-width: none;
-  margin: 0;
-}
-
-/* Email — lowercase, quiet */
-.contact-email a {
-  text-transform: lowercase;
-  font-size: 13px;
-  opacity: 0.6;
-  letter-spacing: normal;
-}
-
-/* ================= MOBILE SAFETY ================= */
-@media (max-width: 768px) {
-  #experience-section::before {
-    display: none;
-  }
-
-  .experience-list {
-    margin-left: 0;
-  }
-
-  .experience-company,
-  .experience-role,
-  .project-category,
-  .project-card,
-  .contact-grid {
-    text-align: center;
-  }
-
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — GLOBAL SECTION RHYTHM (CANONICAL)
-============================================================ */
-
-/* All sections follow the same editorial flow */
-section.omniverse-section {
-  align-items: flex-start;
-  position: relative;
-}
-
-/* Section headings */
-section.omniverse-section > h2 {
-  margin-bottom: 2.5rem;
-  text-align: left;
-}
-
-/* Unified content column (matches Experience offset) */
-section.omniverse-section > :not(h2) {
-  max-width: 720px;
-}
-
-/* Experience already pushes content — don’t double apply */
-#experience-section > .experience-list {
-  max-width: none;
-}
-
-/* Featured, Projects, Education, Licenses */
-#featured-section > *,
-#projects-section > *,
-#education-section > *,
-#licenses-section > * {
-  margin-left: 64px;
-}
-
-/* Cards & blocks align naturally */
-.project-category,
-.education-item,
-.featured-item {
-  text-align: left;
-}
-
-/* Headings inside sections */
-.project-category h3,
-.featured-item h3,
-.education-item strong {
-  margin-bottom: 0.75rem;
-}
-
-/* Paragraph spacing consistency */
-section.omniverse-section p {
-  margin-top: 0.5rem;
-}
-
-/* ================= CONTACT — SAME SYSTEM ================= */
-
-/* Heading stays above panel */
-#contact-section > h2 {
-  text-align: left;
-  margin-left: 64px;
-}
-
-/* Panel aligns with other content */
-.contact-panel {
-  margin-left: 64px;
-  max-width: 900px;
-}
-
-/* ================= MOBILE — COLLAPSE SYSTEM ================= */
-@media (max-width: 768px) {
-  section.omniverse-section {
-    align-items: center;
-  }
-
-  section.omniverse-section > h2,
-  section.omniverse-section > * {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .contact-panel {
-    margin-left: 0;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — UNIVERSAL SECTION SPINE
-============================================================ */
-
-/* Apply spine to all content sections */
-#featured-section,
-#projects-section,
-#education-section,
-#licenses-section,
-#contact-section {
-  position: relative;
-  align-items: flex-start;
-}
-
-/* Vertical glowing line (same as Experience) */
-#featured-section::before,
-#projects-section::before,
-#education-section::before,
-#licenses-section::before,
-#contact-section::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: calc(var(--space-section) + 2rem);
-  bottom: 2rem;
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.45;
-  box-shadow: 0 0 12px rgba(167,139,250,0.35);
-}
-
-/* Push content away from spine */
-#featured-section > *,
-#projects-section > *,
-#education-section > *,
-#licenses-section > *,
-#contact-section > * {
-  margin-left: 64px;
-  max-width: 720px;
-}
-
-/* Contact panel alignment */
-.contact-panel {
-  margin-left: 0;
-}
-
-/* ================= MOBILE — REMOVE SPINES ================= */
-@media (max-width: 768px) {
-  #featured-section::before,
-  #projects-section::before,
-  #education-section::before,
-  #licenses-section::before,
-  #contact-section::before {
-    display: none;
-  }
-
-  #featured-section > *,
-  #projects-section > *,
-  #education-section > *,
-  #licenses-section > *,
-  #contact-section > * {
-    mar
-
-/* ============================================================
-   OMNIVERSE — MOBILE SPINE & ALIGNMENT FIX (FINAL)
-============================================================ */
-
-@media (max-width: 768px) {
-
-  /* DO NOT center sections on mobile */
-  section.omniverse-section {
-    align-items: flex-start;
-  }
-
-  /* Keep headings editorial */
-  section.omniverse-section > h2 {
-    text-align: left;
-    margin-left: 48px;
-  }
-
-  /* Apply same left offset as desktop, scaled */
-  #experience-section > *,
-  #featured-section > *,
-  #projects-section > *,
-  #education-section > *,
-  #licenses-section > *,
-  #contact-section > * {
-    margin-left: 48px;
-    max-width: calc(100% - 64px);
-    text-align: left;
-  }
-
-  /* Mobile spine — thinner and softer */
-  #experience-section::before,
-  #featured-section::before,
-  #projects-section::before,
-  #education-section::before,
-  #licenses-section::before,
-  #contact-section::before {
-    left: 14px;
-    width: 1.5px;
-    opacity: 0.35;
-  }
-
-  /* Cards should not center themselves */
-  .project-card,
-  .featured-item,
-  .education-item,
-  .experience-role {
-    text-align: left;
-  }
-
-  /* Contact grid stacks but stays aligned */
-  .contact-grid {
-    grid-template-columns: 1fr;
-    align-items: flex-start;
-    text-align: left;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — FINAL REAL STARFIELD (PRODUCTION)
-   ONLY BACKGROUND • ZERO LAYOUT IMPACT
-============================================================ */
-
-/* ================= STAR DUST (MICRO, EVER-PRESENT) ================= */
-
+/* ---------- STAR DUST ---------- */
 .starry-bg {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: -2;
 }
 
 .starry-bg::before {
@@ -1157,152 +173,86 @@ section.omniverse-section p {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.35), transparent),
-    radial-gradient(1px 1px at 20% 70%, rgba(255,255,255,0.25), transparent),
-    radial-gradient(1px 1px at 35% 40%, rgba(255,255,255,0.3), transparent),
-    radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,0.22), transparent),
-    radial-gradient(1px 1px at 65% 25%, rgba(255,255,255,0.28), transparent),
-    radial-gradient(1px 1px at 78% 55%, rgba(255,255,255,0.24), transparent),
-    radial-gradient(1px 1px at 88% 15%, rgba(255,255,255,0.26), transparent);
-
-  background-size: 260px 260px;
-  opacity: 0.45;
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 44% 38%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 61% 55%, rgba(255,255,255,0.32), transparent),
+    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,0.38), transparent),
+    radial-gradient(1px 1px at 90% 68%, rgba(255,255,255,0.3), transparent);
+  background-size: 280px 280px;
+  opacity: 0.6;
 }
 
-/* slow cosmic drift */
+/* gentle drift */
 .starry-bg::after {
   content: "";
   position: absolute;
   inset: -50%;
   background-image:
-    radial-gradient(1px 1px at 15% 30%, rgba(255,255,255,0.35), transparent),
-    radial-gradient(1px 1px at 40% 60%, rgba(255,255,255,0.28), transparent),
-    radial-gradient(1px 1px at 65% 35%, rgba(255,255,255,0.32), transparent),
-    radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.26), transparent);
-
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 60% 60%, rgba(255,255,255,0.3), transparent);
   background-size: 420px 420px;
-  opacity: 0.22;
-  animation: omniverse-drift 160s linear infinite;
+  opacity: 0.25;
+  animation: star-drift 160s linear infinite;
 }
 
-@keyframes omniverse-drift {
+@keyframes star-drift {
   from { transform: translateY(0); }
   to   { transform: translateY(200px); }
 }
 
-/* ================= SHOOTING STAR (TRUE METEOR) ================= */
-
+/* ---------- SHOOTING STAR ---------- */
 .shooting-stars {
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: -1;
-  overflow: hidden;
 }
 
 .shooting-stars::before {
   content: "";
   position: absolute;
-  top: -35%;
-  left: -45%;
+  top: -30%;
+  left: -40%;
   width: 520px;
-  height: 4px;
+  height: 3px;
 
-  background:
-    radial-gradient(
-      circle at 80% 50%,
-      rgba(255,255,255,1),
-      rgba(167,139,250,0.9),
-      rgba(255,255,255,0.4),
-      transparent 70%
-    );
-
-  filter: blur(1.2px);
-  opacity: 0;
-  transform: rotate(26deg);
-
-  animation: omniverse-meteor 28s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-}
-
-/* sparkle fragments */
-.shooting-stars::after {
-  content: "";
-  position: absolute;
-  top: -35%;
-  left: -45%;
-  width: 160px;
-  height: 6px;
-
-  background: radial-gradient(
-    closest-side,
-    rgba(255,255,255,0.9),
-    rgba(255,255,255,0.4),
-    transparent
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.6),
+    rgba(167,139,250,1),
+    rgba(255,255,255,0.6),
+    rgba(255,255,255,0)
   );
 
-  filter: blur(3px);
+  filter: blur(1px);
   opacity: 0;
   transform: rotate(26deg);
-
-  animation: omniverse-spark 28s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  animation: shooting-star 26s ease-in-out infinite;
 }
 
-@keyframes omniverse-meteor {
+@keyframes shooting-star {
   0% {
     transform: translate(-40vw, -25vh) rotate(26deg);
     opacity: 0;
   }
-
   12% {
     opacity: 1;
   }
-
-  32% {
-  transform: translate(120vw, 75vh) rotate(26deg) scaleX(0.85);
-  opacity: 0.6;
-}
-
-  45% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes omniverse-spark {
-  0% {
-    transform: translate(-40vw, -25vh) rotate(26deg);
-    opacity: 0;
-  }
-
-  14% {
-    opacity: 0.8;
-  }
-
   30% {
     transform: translate(120vw, 75vh) rotate(26deg);
-    opacity: 0.2;
+    opacity: 0.6;
   }
-
   45% {
     opacity: 0;
   }
-
   100% {
     opacity: 0;
   }
 }
 
-/* ================= SAFETY ================= */
-
-.starry-bg,
-.shooting-stars {
-  transform: translateZ(0);
-  will-change: transform, opacity;
-}
-
+/* ================= REDUCED MOTION ================= */
 @media (prefers-reduced-motion: reduce) {
   .starry-bg,
   .shooting-stars {
