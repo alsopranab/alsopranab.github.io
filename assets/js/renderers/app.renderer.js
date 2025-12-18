@@ -5,7 +5,6 @@
  * - Reads ONLY dataset.source
  * - Matches real JSON exactly
  * - Never crashes on partial data
- * - Clears sections before render
  */
 
 window.addEventListener("home:ready", () => {
@@ -18,48 +17,32 @@ window.addEventListener("home:ready", () => {
   renderContact();
 });
 
-
 /* ============================================================
    HERO (profile.json)
 ============================================================ */
 
 function renderHero() {
-  const section = document.getElementById("hero-section");
+  const section = document.getElementById("hero");
   const d = getData(section);
   clear(section);
 
   if (!d?.identity) return;
 
-  const name = d.identity.fullName || "";
-  const headline = d.identity.headline || "";
-  const summary = d.identity.summary || "";
-
   section.innerHTML = `
     <div class="hero-wrapper">
-      <h1>${escape(name)}</h1>
-
-      ${
-        headline
-          ? `<p class="hero-tagline">${escape(headline)}</p>`
-          : ""
-      }
-
-      ${
-        summary
-          ? `<p class="hero-summary">${escape(summary)}</p>`
-          : ""
-      }
+      <h1>${escape(d.identity.fullName || "")}</h1>
+      ${d.identity.headline ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>` : ""}
+      ${d.identity.summary ? `<p class="hero-summary">${escape(d.identity.summary)}</p>` : ""}
     </div>
   `;
 }
-
 
 /* ============================================================
    EXPERIENCE (experience.json)
 ============================================================ */
 
 function renderExperience() {
-  const section = document.getElementById("experience-section");
+  const section = document.getElementById("experience");
   const d = getData(section);
   clear(section);
 
@@ -99,11 +82,7 @@ function renderRole(role) {
       <span>${start}${end ? " – " + end : ""}</span>
       ${
         Array.isArray(role.responsibilities)
-          ? `<ul>
-              ${role.responsibilities
-                .map(r => `<li>${escape(r)}</li>`)
-                .join("")}
-            </ul>`
+          ? `<ul>${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}</ul>`
           : ""
       }
     </div>
@@ -115,7 +94,7 @@ function renderRole(role) {
 ============================================================ */
 
 function renderFeatured() {
-  const section = document.getElementById("featured-section");
+  const section = document.getElementById("featured");
   const d = getData(section);
   clear(section);
 
@@ -133,13 +112,8 @@ function renderFeaturedItem(item) {
   if (!item?.project) return "";
 
   return `
-    <div class="featured-item" data-alignment="${item.layout?.alignment || "left"}">
-      ${
-        item.media?.coverImage
-          ? `<img src="${item.media.coverImage}"
-                  alt="${escape(item.media.alt || "")}" />`
-          : ""
-      }
+    <div class="featured-item">
+      ${item.media?.coverImage ? `<img src="${item.media.coverImage}" alt="">` : ""}
       <div>
         <h3>${escape(item.project.name || "")}</h3>
         <p>${escape(item.project.summary || "")}</p>
@@ -153,19 +127,15 @@ function renderFeaturedItem(item) {
 ============================================================ */
 
 function renderProjects() {
-  const section = document.getElementById("projects-section");
+  const section = document.getElementById("projects");
   const d = getData(section);
   clear(section);
 
   if (!Array.isArray(d?.categories)) return;
 
-  const categories = [...d.categories]
-    .filter(c => Array.isArray(c.projects) && c.projects.length)
-    .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
-
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Projects")}</h2>
-    ${categories.map(renderProjectCategory).join("")}
+    ${d.categories.map(renderProjectCategory).join("")}
   `;
 }
 
@@ -181,18 +151,13 @@ function renderProjectCategory(category) {
 function renderProjectCard(p) {
   if (!p?.project) return "";
 
-  const repoUrl = p.repository?.url || "";
-
   return `
     <div class="project-card">
       <h4>${escape(p.project.name || "")}</h4>
       <p>${escape(p.project.summary || "")}</p>
-
       ${
-        repoUrl
-          ? `<a href="${repoUrl}" target="_blank" rel="noopener">
-               View on GitHub →
-             </a>`
+        p.repository?.url
+          ? `<a href="${p.repository.url}" target="_blank">View on GitHub →</a>`
           : ""
       }
     </div>
@@ -204,7 +169,7 @@ function renderProjectCard(p) {
 ============================================================ */
 
 function renderEducation() {
-  const section = document.getElementById("education-section");
+  const section = document.getElementById("education");
   const d = getData(section);
   clear(section);
 
@@ -212,45 +177,11 @@ function renderEducation() {
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Education")}</h2>
-
     ${d.records.map(r => `
       <div class="education-item">
-
-        <strong class="education-institution">
-          ${escape(r.institution)}
-        </strong>
-
-        ${
-          r.degree || r.field
-            ? `<div class="education-degree">
-                ${escape(r.degree || "")}
-                ${r.field ? ` — ${escape(r.field)}` : ""}
-              </div>`
-            : ""
-        }
-
-        <div class="education-duration">
-          ${escape(r.start)} – ${escape(r.end)}
-        </div>
-
-        ${
-          r.description
-            ? `<p class="education-description">
-                ${escape(r.description)}
-              </p>`
-            : ""
-        }
-
-        ${
-          Array.isArray(r.highlights) && r.highlights.length
-            ? `<ul class="education-highlights">
-                ${r.highlights.map(h => `
-                  <li>✕ ${escape(h)}</li>
-                `).join("")}
-              </ul>`
-            : ""
-        }
-
+        <strong>${escape(r.institution)}</strong>
+        <div>${escape(r.degree || "")} ${r.field ? "— " + escape(r.field) : ""}</div>
+        <div>${escape(r.start)} – ${escape(r.end)}</div>
       </div>
     `).join("")}
   `;
@@ -261,7 +192,7 @@ function renderEducation() {
 ============================================================ */
 
 function renderContact() {
-  const section = document.getElementById("contact-section");
+  const section = document.getElementById("contact");
   const d = getData(section);
   clear(section);
 
@@ -270,13 +201,9 @@ function renderContact() {
   section.innerHTML = `
     <h2>${escape(d.section.title)}</h2>
     <p>${escape(d.section.description || "")}</p>
-
     ${
       d.primary?.email?.value
-        ? `<a href="mailto:${d.primary.email.value}"
-             class="contact-email">
-             ${escape(d.primary.email.value)}
-           </a>`
+        ? `<a href="mailto:${d.primary.email.value}">${escape(d.primary.email.value)}</a>`
         : ""
     }
   `;
