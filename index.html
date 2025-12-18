@@ -28,8 +28,6 @@
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
-  <!-- Optional OG image -->
-  <!-- <meta property="og:image" content="https://alsopranab.github.io/assets/og-image.png" /> -->
 
   <!-- =====================================================
        FONTS (PERFORMANCE SAFE)
@@ -45,12 +43,14 @@
        STYLES
   ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
-
-  <!-- Optional favicon -->
-  <!-- <link rel="icon" href="/favicon.ico" /> -->
 </head>
 
 <body data-omniverse>
+
+  <!-- =====================================================
+       SHOOTING STARS BACKGROUND (NON-INTERACTIVE)
+  ====================================================== -->
+  <div class="shooting-stars" aria-hidden="true"></div>
 
   <!-- =====================================================
        HEADER (Injected by header.js)
@@ -107,11 +107,6 @@
     ></section>
 
     <!-- CONTACT -->
-    <!-- IMPORTANT:
-         Renderer MUST inject exactly ONE wrapper div:
-         .contact-panel → .contact-grid → left/center/right
-         CSS assumes this structure.
-    -->
     <section
       id="contact-section"
       class="omniverse-section"
@@ -131,23 +126,12 @@
        CORE JS (ORDER IS CRITICAL — DO NOT REORDER)
   ====================================================== -->
 
-  <!-- 1. Bootstrap (emits app:ready) -->
   <script src="assets/js/core/bootstrap.js" defer></script>
-
-  <!-- 2. Data layer -->
   <script src="assets/js/services/data.service.js" defer></script>
-
-  <!-- 3. Layout -->
   <script src="assets/js/layout/header.js" defer></script>
   <script src="assets/js/layout/footer.js" defer></script>
-
-  <!-- 4. Page controllers -->
   <script src="assets/js/pages/home.js" defer></script>
-
-  <!-- 5. Renderer (listens to home:ready) -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
-
-  <!-- 6. Motion & effects -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
   <script src="assets/js/omniverse.godmode.js" defer></script>
 
