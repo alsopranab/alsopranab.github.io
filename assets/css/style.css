@@ -371,3 +371,71 @@ section.omniverse-section > * + * {
     display: none;
   }
 }
+
+/* ============================================================
+   OMNIVERSE PATCH — EXPERIENCE SPACING NORMALIZATION
+   SAFE • ADDITIVE • NO STRUCTURE CHANGE
+============================================================ */
+
+/* Disable global stacking rule ONLY for experience */
+#experience-section > * + * {
+  margin-top: 0 !important;
+}
+
+/* Control spacing ONLY via cards */
+#experience-section .experience-role {
+  margin-top: 2.4rem !important;
+}
+
+/* First card should not float down */
+#experience-section .experience-role:first-of-type {
+  margin-top: 1.4rem !important;
+}
+
+/* ============================================================
+   OMNIVERSE PATCH — GRAPH VISIBILITY (CRITICAL)
+============================================================ */
+
+/* Prevent SVG from being culled by motion system */
+.project-analytics {
+  overflow: visible !important;
+}
+
+/* Lock graph layer above motion transforms */
+.project-graph {
+  position: relative;
+  z-index: 2;
+}
+
+/* Prevent motion system from collapsing SVG */
+.project-graph svg {
+  transform: none !important;
+  opacity: 1 !important;
+}
+
+/* ============================================================
+   OMNIVERSE PATCH — RENDERER IMMUNITY
+============================================================ */
+
+[data-no-render] {
+  contain: layout paint;
+}
+
+[data-no-render] * {
+  pointer-events: auto;
+}
+
+/* ============================================================
+   OMNIVERSE PATCH — GRAPH ANIMATION SAFE MODE
+============================================================ */
+
+.project-graph .graph-line {
+  stroke-dasharray: 800 !important;
+  stroke-dashoffset: 800 !important;
+  animation: draw-line 2.4s ease-out forwards !important;
+}
+
+.project-graph .graph-bar {
+  transform: scaleY(0) !important;
+  animation: bar-rise 1.4s var(--ease-vision) forwards !important;
+}
