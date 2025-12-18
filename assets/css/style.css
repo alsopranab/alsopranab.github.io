@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — CANONICAL STYLE SYSTEM
-   VISUALS ONLY • GODMODE SAFE • PRODUCTION
+   OMNIVERSE — CANONICAL STYLE SYSTEM (FINAL)
+   VISUALS ONLY • GODMODE SAFE • LOCKED
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -145,6 +145,15 @@ section.omniverse-section {
   );
   border: 1px solid var(--border-hairline);
   box-shadow: 0 18px 38px rgba(0,0,0,0.45);
+  transition: transform 420ms var(--ease-vision);
+}
+
+/* ================= FEATURED MEDIA ================= */
+.featured-item img[data-expandable] {
+  width: 100%;
+  display: block;
+  border-radius: 14px;
+  cursor: zoom-in;
 }
 
 /* ================= FOOTER ================= */
@@ -157,10 +166,53 @@ section.omniverse-section {
 }
 
 /* ============================================================
-   STARFIELD — REAL, VISIBLE, SAFE
+   IMAGE VIEWER OVERLAY (LOCKED)
 ============================================================ */
+#image-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+}
 
-/* ---------- STAR DUST ---------- */
+.image-viewer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(3,2,10,0.92);
+}
+
+.image-viewer-panel {
+  position: relative;
+  max-width: min(92vw, 1100px);
+  max-height: 92vh;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.image-viewer-panel img {
+  max-width: 100%;
+  max-height: 92vh;
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+.image-viewer-close {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ============================================================
+   STARFIELD — SAFE & VISIBLE
+============================================================ */
 .starry-bg {
   position: fixed;
   inset: 0;
@@ -183,7 +235,6 @@ section.omniverse-section {
   opacity: 0.6;
 }
 
-/* gentle drift */
 .starry-bg::after {
   content: "";
   position: absolute;
@@ -201,7 +252,6 @@ section.omniverse-section {
   to   { transform: translateY(200px); }
 }
 
-/* ---------- SHOOTING STAR ---------- */
 .shooting-stars {
   position: fixed;
   inset: 0;
@@ -216,7 +266,6 @@ section.omniverse-section {
   left: -40%;
   width: 520px;
   height: 3px;
-
   background: linear-gradient(
     90deg,
     rgba(255,255,255,0),
@@ -225,7 +274,6 @@ section.omniverse-section {
     rgba(255,255,255,0.6),
     rgba(255,255,255,0)
   );
-
   filter: blur(1px);
   opacity: 0;
   transform: rotate(26deg);
@@ -233,23 +281,11 @@ section.omniverse-section {
 }
 
 @keyframes shooting-star {
-  0% {
-    transform: translate(-40vw, -25vh) rotate(26deg);
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  30% {
-    transform: translate(120vw, 75vh) rotate(26deg);
-    opacity: 0.6;
-  }
-  45% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
+  0% { transform: translate(-40vw,-25vh) rotate(26deg); opacity: 0; }
+  12% { opacity: 1; }
+  30% { transform: translate(120vw,75vh) rotate(26deg); opacity: 0.6; }
+  45% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
 /* ================= REDUCED MOTION ================= */
