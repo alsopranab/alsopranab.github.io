@@ -1,11 +1,11 @@
 /**
- * Header Layout Controller (FINAL — HARD FAIL SAFE)
- * ================================================
+ * Header Layout Controller (FINAL — SPA SAFE)
+ * ==========================================
  * - Always renders header + navigation
  * - Enhances with profile.json when available
- * - Never exits early
- * - Resume click compatible
- * - CSS-compatible with omniverse layout
+ * - No hard page reloads
+ * - Resume opens external profile
+ * - Fully compatible with omniverse layout
  */
 
 window.addEventListener("app:ready", async () => {
@@ -17,6 +17,7 @@ window.addEventListener("app:ready", async () => {
   ------------------------- */
   let name = "Pranab Debnath";
   let role = "Data Analyst";
+  let resumeUrl = null;
 
   /* -------------------------
      TRY PROFILE ENRICHMENT
@@ -32,8 +33,11 @@ window.addEventListener("app:ready", async () => {
 
       role =
         profile.identity.headline ||
-        profile.identity.summary ||
         role;
+    }
+
+    if (profile?.resume?.externalProfile) {
+      resumeUrl = profile.resume.externalProfile;
     }
   } catch (e) {
     console.warn("[Header] Using fallback identity");
@@ -51,9 +55,14 @@ window.addEventListener("app:ready", async () => {
       </div>
 
       <nav class="header-nav" aria-label="Primary Navigation">
-        <a href="index.html">Home</a>
-        <a href="stats.html">Stats</a>
-        <a href="#" data-action="resume">Resume</a>
+        <a href="#hero-section">Home</a>
+        <a href="#projects-section">Projects</a>
+        <a href="#contact-section">Contact</a>
+        ${
+          resumeUrl
+            ? `<a href="${resumeUrl}" target="_blank" rel="noopener">Resume</a>`
+            : ""
+        }
       </nav>
 
     </div>
@@ -72,7 +81,6 @@ window.addEventListener("app:ready", async () => {
 /* =========================
    UTIL
 ========================= */
-
 function escapeHTML(str) {
   return typeof str === "string"
     ? str.replace(/[&<>"']/g, c => ({
