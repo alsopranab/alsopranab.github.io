@@ -1635,3 +1635,95 @@ body[data-omniverse]::after,
     display: none;
   }
 }
+
+   /* ============================================================
+   OMNIVERSE — STAR DUST + RARE SHOOTING STAR
+   ADDITIVE ONLY • NO LAYOUT TOUCH
+============================================================ */
+
+/* ---------- STAR DUST (SUBTLE, STATIC) ---------- */
+
+.starry-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1; /* same layer as your background */
+}
+
+.starry-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,0.25), transparent),
+    radial-gradient(1px 1px at 44% 38%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 61% 55%, rgba(255,255,255,0.22), transparent),
+    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,0.28), transparent),
+    radial-gradient(1px 1px at 90% 68%, rgba(255,255,255,0.24), transparent);
+  background-size: 320px 320px;
+  opacity: 0.4;
+}
+
+/* ---------- RARE SHOOTING STAR ---------- */
+
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.shooting-stars::before {
+  content: "";
+  position: absolute;
+  top: -25%;
+  left: -30%;
+  width: 300px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(167,139,250,0.9),
+    rgba(255,255,255,0)
+  );
+  opacity: 0;
+  transform: rotate(25deg);
+  animation: omniverse-shooting-star 10s linear infinite;
+}
+
+/* ---------- ANIMATION ---------- */
+
+@keyframes omniverse-shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(25deg);
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.85;
+  }
+  15% {
+    transform: translateX(160vw) translateY(70vh) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---------- SAFETY ---------- */
+
+.starry-bg,
+.shooting-stars {
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+/* ---------- ACCESSIBILITY ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .starry-bg,
+  .shooting-stars {
+    display: none;
+  }
+}
