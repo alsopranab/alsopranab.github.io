@@ -1,30 +1,22 @@
 /**
- * UI Motion Engine — FINAL IMMUTABLE BUILD
- * ======================================
- * - Canonical section IDs
- * - Header fade + scale (no slide)
- * - Zero scroll-up lag
- * - Safari rubber-band safe
- * - Vision Pro easing compatible
- * - Active nav highlighting (fully sanitized)
+ * UI Motion Engine — FINAL LOCKED STABLE BUILD
+ * ==========================================
+ * - ZERO layout mutation
+ * - ZERO spacing mutation
+ * - ZERO CSS variable writes per frame
+ * - GPU-only transforms
+ * - Safari safe
  */
 
 (() => {
   "use strict";
 
-  /* ================= ENV ================= */
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    return;
-  }
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const header = document.getElementById("site-header");
   const heroSection = document.getElementById("hero-section");
 
-  if (!header || !heroSection) {
-    console.warn("[Motion] header or hero-section missing");
-    return;
-  }
+  if (!header || !heroSection) return;
 
   let heroWrapper = null;
   let headerIdentity = null;
@@ -32,7 +24,7 @@
   let lastScrollY = window.scrollY;
   let ticking = false;
 
-  /* ================= READY GATES ================= */
+  /* ================= READY ================= */
 
   window.addEventListener("header:ready", () => {
     headerIdentity = header.querySelector(".header-identity");
@@ -41,28 +33,28 @@
     headerIdentity.style.opacity = "0";
     headerIdentity.style.transform = "scale(0.96)";
     headerIdentity.style.transition =
-      "opacity 240ms ease, transform 320ms cubic-bezier(0.25,0.8,0.25,1)";
+      "opacity 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1)";
   });
 
   window.addEventListener("home:ready", () => {
     heroWrapper = heroSection.querySelector(".hero-wrapper");
+    if (!heroWrapper) return;
+
+    heroWrapper.style.willChange = "transform";
   });
 
-  /* ================= SCROLL LOOP ================= */
+  /* ================= SCROLL ================= */
 
   window.addEventListener(
     "scroll",
     () => {
       if (ticking) return;
-
       ticking = true;
 
       requestAnimationFrame(() => {
         const y = window.scrollY;
-
-        handleHeaderVisibility(y);
-        handleHeroProgress(y);
-
+        handleHeader(y);
+        handleHero(y);
         lastScrollY = y;
         ticking = false;
       });
@@ -70,13 +62,11 @@
     { passive: true }
   );
 
-  /* ================= HEADER VISIBILITY ================= */
+  /* ================= HEADER ================= */
 
-  function handleHeaderVisibility(y) {
+  function handleHeader(y) {
     const delta = y - lastScrollY;
-
-    // Deadzone eliminates rubber-band jitter
-    if (Math.abs(delta) < 6) return;
+    if (Math.abs(delta) < 8) return;
 
     if (y > lastScrollY && y > 120) {
       header.classList.add("header-hidden");
@@ -85,22 +75,19 @@
     }
   }
 
-  /* ================= HERO PROGRESS ================= */
+  /* ================= HERO ================= */
 
-  function handleHeroProgress(scrollY) {
-    if (!heroWrapper || scrollY < 1) return;
+  function handleHero(y) {
+    if (!heroWrapper) return;
 
-    const heroHeight = heroSection.offsetHeight || 1;
-    const progress = Math.min(scrollY / heroHeight, 1);
+    const clamped = Math.min(y / 400, 1);
 
-    document.documentElement.style.setProperty(
-      "--hero-progress",
-      progress.toFixed(3)
-    );
+    heroWrapper.style.transform =
+      `translate3d(0, ${clamped * -18}px, 0) scale(${1 - clamped * 0.04})`;
 
     if (!headerIdentity) return;
 
-    if (progress > 0.72) {
+    if (clamped > 0.7) {
       headerIdentity.style.opacity = "1";
       headerIdentity.style.transform = "scale(1)";
     } else {
@@ -109,31 +96,30 @@
     }
   }
 
-  /* ================= SECTION REVEAL ================= */
+  /* ================= SECTION REVEAL (SAFE) ================= */
 
   const revealObserver = new IntersectionObserver(
     entries => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("section-visible");
-          revealObserver.unobserve(entry.target);
-        }
-      }
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.style.opacity = "1";
+        entry.target.style.transform = "none";
+        revealObserver.unobserve(entry.target);
+      });
     },
-    {
-      threshold: 0.15,
-      rootMargin: "0px 0px -10% 0px"
-    }
+    { threshold: 0.12 }
   );
 
-  document
-    .querySelectorAll("section.omniverse-section")
-    .forEach(section => revealObserver.observe(section));
+  document.querySelectorAll("section.omniverse-section").forEach(section => {
+    section.style.opacity = "0";
+    section.style.transform = "translateY(12px)";
+    section.style.transition = "opacity 420ms ease, transform 420ms ease";
+    revealObserver.observe(section);
+  });
 })();
 
 /* ======================================================
-   ACTIVE NAV TRACKER — FINAL SAFE VERSION
-   (Filters "#" + non-section actions)
+   ACTIVE NAV TRACKER — KEEP AS IS (SAFE)
 ====================================================== */
 
 window.addEventListener("header:ready", () => {
@@ -141,16 +127,13 @@ window.addEventListener("header:ready", () => {
     document.querySelectorAll(".header-nav a[href^='#']")
   ).filter(link => {
     const href = link.getAttribute("href");
-    return href && href.length > 1; // excludes "#"
+    return href && href.length > 1;
   });
 
   if (!navLinks.length) return;
 
   const sections = navLinks
-    .map(link => {
-      const id = link.getAttribute("href");
-      return document.querySelector(id);
-    })
+    .map(link => document.querySelector(link.getAttribute("href")))
     .filter(Boolean);
 
   if (!sections.length) return;
@@ -159,21 +142,15 @@ window.addEventListener("header:ready", () => {
     entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
-
-        navLinks.forEach(link => link.classList.remove("active"));
-
-        const activeLink = navLinks.find(
-          link => link.getAttribute("href") === `#${entry.target.id}`
+        navLinks.forEach(l => l.classList.remove("active"));
+        const active = navLinks.find(
+          l => l.getAttribute("href") === `#${entry.target.id}`
         );
-
-        if (activeLink) activeLink.classList.add("active");
+        if (active) active.classList.add("active");
       });
     },
-    {
-      rootMargin: "-45% 0px -45% 0px",
-      threshold: 0.01
-    }
+    { rootMargin: "-45% 0px -45% 0px", threshold: 0.01 }
   );
 
-  sections.forEach(section => navObserver.observe(section));
+  sections.forEach(s => navObserver.observe(s));
 });
