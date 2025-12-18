@@ -1,5 +1,6 @@
 /* ============================================================
-   OMNIVERSE — APPLE EDITORIAL (FINAL, MASTER)
+   OMNIVERSE — APPLE EDITORIAL (FINAL, SAFE)
+   Never blank • Animation-ready • Production stable
 ============================================================ */
 
 :root {
@@ -67,20 +68,18 @@ header, footer, main {
   z-index: 1;
 }
 
-/* === SECTION VISIBILITY (CRITICAL FIX) === */
+/* ================= SECTIONS (SAFE VISIBILITY) ================= */
 section.omniverse-section {
   max-width: 1100px;
   margin: 0 auto;
   padding: clamp(4rem, 8vw, 7rem) 1.25rem;
 
-  opacity: 0;
-  transform: translateY(24px);
-
-  transition:
-    opacity 600ms ease,
-    transform 600ms var(--ease-out);
+  /* 🔥 CRITICAL FIX */
+  opacity: 1;
+  transform: none;
 }
 
+/* Animation class (optional, JS-driven) */
 section.omniverse-section.section-visible {
   opacity: 1;
   transform: translateY(0);
@@ -108,7 +107,11 @@ section.omniverse-section.section-visible {
   padding: 22px;
   border-radius: var(--radius-md);
   border: 0.5px solid var(--border-hairline);
-  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.006));
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.02),
+    rgba(255,255,255,0.006)
+  );
 }
 
 /* ================= CONTACT ================= */
@@ -121,20 +124,4 @@ section.omniverse-section.section-visible {
 }
 
 /* ================= MOBILE ================= */
-@media (max-width: 768px) {
-  section.omniverse-section {
-    padding: 3.5rem 1rem;
-  }
-
-  #contact-section {
-    text-align: center;
-  }
-}
-
-/* ================= REDUCED MOTION ================= */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
+@media (max-width: 768px)
