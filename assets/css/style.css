@@ -681,3 +681,67 @@ section.omniverse-section > h2 {
     visibility: visible !important;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — GRAPH & SECTION FORCE VISIBILITY
+   ABSOLUTE OVERRIDE — LAST LINE OF DEFENSE
+============================================================ */
+
+/* 1. Force hero + project sections visible */
+#hero-section,
+#projects-section {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* 2. Disable reveal logic ONLY for these sections */
+#hero-section.is-hidden,
+#projects-section.is-hidden,
+#hero-section:not(.is-visible),
+#projects-section:not(.is-visible) {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* 3. Lock all graphs permanently visible */
+.project-graph,
+.hero-graph,
+.project-graph *,
+.hero-graph * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+}
+
+/* 4. Kill SVG draw-reset from JS */
+.graph-line {
+  stroke-dasharray: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* 5. Kill bar collapse */
+.graph-bar {
+  transform: scaleY(1) !important;
+}
+
+/* 6. Safety: stop omniverse motion from touching graphs */
+[data-omni-reveal] .project-graph,
+[data-omni-reveal] .hero-graph {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* 7. Mobile hard-lock */
+@media (max-width: 768px) {
+  #hero-section,
+  #projects-section,
+  .project-graph,
+  .hero-graph {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+}
