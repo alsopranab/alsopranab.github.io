@@ -21,6 +21,9 @@
   --radius-md: 14px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Motion */
+  --hero-progress: 0;
 }
 
 /* =========================
@@ -106,6 +109,17 @@ section.omniverse-section {
   max-width: 1100px;
   margin: 0 auto;
   padding: clamp(4rem, 8vw, 7rem) 1.25rem;
+
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms var(--ease-out);
+}
+
+section.section-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* =========================
@@ -115,6 +129,12 @@ section.omniverse-section {
   position: sticky;
   top: 16px;
   z-index: 100;
+  transition: transform 360ms var(--ease-out), opacity 240ms ease;
+}
+
+#site-header.header-hidden {
+  transform: translateY(-140%);
+  opacity: 0;
 }
 
 .header-container {
@@ -164,13 +184,20 @@ section.omniverse-section {
 }
 
 /* =========================
-   HERO
+   HERO (MORPH SOURCE)
 ========================= */
 .hero-wrapper {
   max-width: 640px;
   display: flex;
   flex-direction: column;
   gap: 22px;
+
+  transform:
+    translateY(calc(var(--hero-progress) * -48px))
+    scale(calc(1 - var(--hero-progress) * 0.18));
+
+  transform-origin: top left;
+  transition: transform 120ms linear;
 }
 
 .hero-tagline {
@@ -184,7 +211,7 @@ section.omniverse-section {
 }
 
 /* =========================
-   GLASS CARDS (WITH CORNER GLOW)
+   GLASS CARDS (CORNER GLOW)
 ========================= */
 .project-card,
 .education-item,
@@ -204,9 +231,12 @@ section.omniverse-section {
 
   box-shadow:
     0 14px 30px rgba(0,0,0,0.35);
+
+  transition:
+    transform 360ms var(--ease-out),
+    border-color 240ms ease;
 }
 
-/* --- CORNER GLOW ONLY --- */
 .project-card::before,
 .education-item::before,
 .experience-role::before,
@@ -227,7 +257,18 @@ section.omniverse-section {
 }
 
 /* =========================
-   FOOTER (FINAL FIX)
+   CONTACT (CENTERED FIX)
+========================= */
+#contact-section {
+  text-align: left;
+}
+
+#contact-section > * {
+  max-width: 640px;
+}
+
+/* =========================
+   FOOTER (FINAL)
 ========================= */
 #site-footer {
   padding: 56px 20px;
@@ -249,7 +290,7 @@ section.omniverse-section {
 .footer-socials a {
   font-size: 12px;
   letter-spacing: 0.12em;
-  text-transform: uppercase; /* ← FIXED */
+  text-transform: uppercase;
   opacity: 0.75;
 }
 
@@ -271,11 +312,30 @@ section.omniverse-section {
 }
 
 /* =========================
-   MOBILE
+   MOBILE (CRITICAL FIX)
 ========================= */
 @media (max-width: 768px) {
   section.omniverse-section {
     padding: 3.5rem 1rem;
+  }
+
+  .hero-wrapper {
+    transform:
+      translateY(calc(var(--hero-progress) * -28px))
+      scale(calc(1 - var(--hero-progress) * 0.12));
+  }
+
+  h1 {
+    font-size: clamp(28px, 8vw, 42px);
+  }
+
+  .hero-summary {
+    font-size: 14px;
+    max-width: 100%;
+  }
+
+  #contact-section {
+    text-align: center;
   }
 }
 
