@@ -73,7 +73,7 @@
     lastFrame = t;
     STATE.frame++;
 
-    // Pause Godmode when image viewer is open
+    // Pause if image viewer exists
     if (!document.getElementById("image-viewer-overlay")) {
       TASKS.forEach(fn => fn(t));
     }
@@ -116,6 +116,7 @@
 
   if (ENV.pointer && !ENV.isMobile) {
     const ORB_SIZE = 14;
+
     orb = document.createElement("div");
     orb.className = "omni-cursor";
 
@@ -160,15 +161,13 @@
   ============================================================ */
   if (ENV.pointer && orb) {
     document.addEventListener("mouseover", e => {
-      const target = e.target.closest("[data-omni-hover]");
-      if (!target) return;
+      if (!e.target.closest("[data-omni-hover]")) return;
       STATE.hovering = true;
       orb.classList.add("is-hover");
     });
 
     document.addEventListener("mouseout", e => {
-      const target = e.target.closest("[data-omni-hover]");
-      if (!target) return;
+      if (!e.target.closest("[data-omni-hover]")) return;
       STATE.hovering = false;
       orb.classList.remove("is-hover");
     });
@@ -183,7 +182,7 @@
   }
 
   /* ============================================================
-     CARD TILT (SAFE + ANALYTICS AWARE)
+     CARD TILT (GRAPH-SAFE)
   ============================================================ */
   if (!ENV.isMobile) {
     TASKS.add(() => {
@@ -222,11 +221,11 @@
   ============================================================ */
   const revealObserver = new IntersectionObserver(
     entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
         entry.target.classList.add("is-visible");
         revealObserver.unobserve(entry.target);
-      });
+      }
     },
     { threshold: 0.35 }
   );
