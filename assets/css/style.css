@@ -9,6 +9,7 @@
   --bg-deep: #090613;
 
   --accent: #a78bfa;
+  --accent-blue: #60a5fa;
   --accent-glow: rgba(167,139,250,0.35);
 
   --text-main: rgba(255,255,255,0.94);
@@ -128,7 +129,7 @@ section.omniverse-section {
   gap: 22px;
 }
 
-/* ================= CARDS ================= */
+/* ================= CARD BASE ================= */
 .project-card,
 .education-item,
 .experience-role,
@@ -160,26 +161,16 @@ section.omniverse-section {
   }
 }
 
-/* ================= FEATURED IMAGE FIX ================= */
-.featured-item {
-  overflow: hidden;
-}
-
+/* ================= FEATURED IMAGE ================= */
 .featured-item img {
   width: 100%;
   max-height: clamp(220px, 38vw, 420px);
   object-fit: contain;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(167,139,250,0.14),
-    transparent 65%
-  );
   border-radius: 16px;
   padding: 16px;
-  margin-bottom: 20px;
 }
 
-/* ================= EXPERIENCE — FLOWING CONNECTED LINE ================= */
+/* ================= EXPERIENCE FLOW ================= */
 #experience-section {
   position: relative;
 }
@@ -191,12 +182,7 @@ section.omniverse-section {
   top: var(--space-section);
   bottom: var(--space-section);
   width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
+  background: linear-gradient(180deg, transparent, var(--accent), transparent);
   opacity: 0.5;
 }
 
@@ -204,15 +190,11 @@ section.omniverse-section {
   margin-left: 72px;
 }
 
-.experience-role {
-  position: relative;
-}
-
 .experience-role::before {
   content: "";
   position: absolute;
   left: -46px;
-  top: 24px;
+  top: 28px;
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -222,108 +204,132 @@ section.omniverse-section {
     0 0 18px rgba(167,139,250,0.6);
 }
 
-/* Bullet alignment */
-.experience-role ul {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 0;
-}
-
-.experience-role li {
+/* ================= PROJECT ANALYTICS ================= */
+.project-analytics {
   position: relative;
-  padding-left: 1.4em;
-  margin-bottom: 0.65em;
+  overflow: hidden;
+  transform-style: preserve-3d;
 }
 
-.experience-role li::before {
-  content: "•";
+@media (pointer: fine) {
+  .project-analytics {
+    transform: perspective(1200px) rotateX(3deg) rotateY(-2deg);
+  }
+}
+
+.project-analytics::before {
+  content: "";
   position: absolute;
-  left: 0;
-  top: 0.2em;
-  color: rgba(255,255,255,0.65);
+  inset: -30%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(96,165,250,0.18), transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(167,139,250,0.18), transparent 45%);
+  filter: blur(120px);
+  opacity: 0.75;
 }
 
-/* ================= PROJECTS — ANALYTICAL BACKGROUND ================= */
-#projects-section {
+/* ================= GRAPH WRAPPER ================= */
+.project-graph {
   position: relative;
+  height: 200px;
+  margin: 18px 0;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.01)
+  );
+  border: 1px solid rgba(255,255,255,0.08);
   overflow: hidden;
 }
 
-#projects-section::after {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  background-image:
-    radial-gradient(circle at 30% 40%, rgba(59,130,246,0.18), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(167,139,250,0.18), transparent 45%),
-    linear-gradient(
-      115deg,
-      transparent 35%,
-      rgba(255,255,255,0.04),
-      transparent 65%
-    );
-  filter: blur(90px);
-  z-index: -1;
+/* ================= SVG GRAPHS ================= */
+.project-graph svg {
+  width: 100%;
+  height: 100%;
 }
 
-/* ================= PROJECT TECH BADGES ================= */
+/* Grid */
+.graph-grid {
+  stroke: rgba(255,255,255,0.08);
+  stroke-dasharray: 4 6;
+}
+
+/* Line */
+.graph-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 800;
+  stroke-dashoffset: 800;
+  animation: draw-line 2.8s ease-out forwards;
+  filter:
+    drop-shadow(0 0 10px rgba(167,139,250,0.6))
+    drop-shadow(0 0 24px rgba(167,139,250,0.25));
+}
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Bars */
+.graph-bar {
+  fill: linear-gradient(#60a5fa, #a78bfa);
+  rx: 4;
+  transform-origin: bottom;
+  transform: scaleY(0);
+  animation: bar-rise 1.6s var(--ease-vision) forwards;
+}
+
+@keyframes bar-rise {
+  to { transform: scaleY(1); }
+}
+
+/* ================= TECH ICONS ================= */
 .project-tech {
   display: flex;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 18px;
   flex-wrap: wrap;
 }
 
-.project-tech span {
+.project-tech .icon {
+  padding: 7px 12px;
   font-size: 11px;
-  padding: 6px 10px;
   border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid;
+  backdrop-filter: blur(6px);
 }
 
-/* Glow colors */
-.project-tech .python {
+/* Python */
+.icon.python {
   color: #ffd343;
+  border-color: rgba(255,211,67,0.6);
   box-shadow: 0 0 18px rgba(255,211,67,0.45);
 }
 
-.project-tech .sql {
+/* SQL */
+.icon.sql {
   color: #4cc9f0;
+  border-color: rgba(76,201,240,0.6);
   box-shadow: 0 0 18px rgba(76,201,240,0.45);
 }
 
-.project-tech .powerbi {
+/* Power BI */
+.icon.powerbi {
   color: #f2c811;
+  border-color: rgba(242,200,17,0.6);
   box-shadow: 0 0 18px rgba(242,200,17,0.45);
 }
 
-/* ================= CONTACT ================= */
-.contact-panel {
-  max-width: 900px;
-  padding: 56px 48px;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.015)
-  );
-  border: 1px solid var(--border-hairline);
-}
-
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1.2fr 2fr 1.2fr;
-  gap: 48px;
-}
-
-.contact-email a {
-  text-transform: lowercase;
-  letter-spacing: normal;
-  font-size: 13px;
-  opacity: 0.6;
+/* Excel */
+.icon.excel {
+  color: #22c55e;
+  border-color: rgba(34,197,94,0.6);
+  box-shadow: 0 0 18px rgba(34,197,94,0.45);
 }
 
 /* ================= FOOTER ================= */
@@ -334,20 +340,16 @@ section.omniverse-section {
   text-align: center;
 }
 
-/* ================= STARFIELD ================= */
-.starry-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-}
-
+/* ================= BACKGROUND ================= */
+.starry-bg,
 .shooting-stars {
   position: fixed;
   inset: 0;
-  z-index: -1;
   pointer-events: none;
 }
+
+.starry-bg { z-index: -2; }
+.shooting-stars { z-index: -1; }
 
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
@@ -367,8 +369,12 @@ section.omniverse-section {
     left: -34px;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr;
+  .project-analytics {
+    transform: none;
+  }
+
+  .project-graph {
+    height: 160px;
   }
 }
 
