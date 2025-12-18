@@ -6,7 +6,7 @@
  * - Zero scroll-up lag
  * - Safari rubber-band safe
  * - Vision Pro easing compatible
- * - Active nav highlighting (race-condition safe)
+ * - Active nav highlighting (fully sanitized)
  */
 
 (() => {
@@ -36,7 +36,6 @@
 
   window.addEventListener("header:ready", () => {
     headerIdentity = header.querySelector(".header-identity");
-
     if (!headerIdentity) return;
 
     headerIdentity.style.opacity = "0";
@@ -76,7 +75,7 @@
   function handleHeaderVisibility(y) {
     const delta = y - lastScrollY;
 
-    // Deadzone prevents micro jitter
+    // Deadzone eliminates rubber-band jitter
     if (Math.abs(delta) < 6) return;
 
     if (y > lastScrollY && y > 120) {
@@ -134,19 +133,23 @@
 
 /* ======================================================
    ACTIVE NAV TRACKER — FINAL SAFE VERSION
+   (Filters "#" + non-section actions)
 ====================================================== */
 
 window.addEventListener("header:ready", () => {
   const navLinks = Array.from(
     document.querySelectorAll(".header-nav a[href^='#']")
-  );
+  ).filter(link => {
+    const href = link.getAttribute("href");
+    return href && href.length > 1; // excludes "#"
+  });
 
   if (!navLinks.length) return;
 
   const sections = navLinks
     .map(link => {
       const id = link.getAttribute("href");
-      return id ? document.querySelector(id) : null;
+      return document.querySelector(id);
     })
     .filter(Boolean);
 
@@ -159,11 +162,11 @@ window.addEventListener("header:ready", () => {
 
         navLinks.forEach(link => link.classList.remove("active"));
 
-        const active = navLinks.find(
+        const activeLink = navLinks.find(
           link => link.getAttribute("href") === `#${entry.target.id}`
         );
 
-        if (active) active.classList.add("active");
+        if (activeLink) activeLink.classList.add("active");
       });
     },
     {
