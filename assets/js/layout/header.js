@@ -3,8 +3,9 @@
  * =======================================================
  * - Always renders header + navigation
  * - Enhances with profile.json when available
- * - Uses correct section IDs
+ * - Uses canonical section IDs
  * - Resume handled by Resume Controller
+ * - Smooth scroll (SPA-safe)
  * - Fully compatible with omniverse layout
  */
 
@@ -19,7 +20,7 @@ window.addEventListener("app:ready", async () => {
   let role = "Data Analyst";
 
   /* -------------------------
-     TRY PROFILE ENRICHMENT
+     PROFILE ENRICHMENT
   ------------------------- */
   try {
     const profile = await DataService.getProfile();
@@ -39,7 +40,7 @@ window.addEventListener("app:ready", async () => {
   }
 
   /* -------------------------
-     RENDER (ALWAYS)
+     RENDER (CANONICAL IDS)
   ------------------------- */
   headerEl.innerHTML = `
     <div class="header-container">
@@ -50,14 +51,16 @@ window.addEventListener("app:ready", async () => {
       </div>
 
       <nav class="header-nav" aria-label="Primary Navigation">
-        <a href="#hero">Home</a>
-        <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+        <a href="#hero-section" data-nav>Home</a>
+        <a href="#projects-section" data-nav>Projects</a>
+        <a href="#contact-section" data-nav>Contact</a>
         <a href="#" data-action="resume">Resume</a>
       </nav>
 
     </div>
   `;
+
+  initNavBehavior();
 
   /* -------------------------
      LIFECYCLE EVENT
@@ -68,6 +71,29 @@ window.addEventListener("app:ready", async () => {
     })
   );
 });
+
+/* =====================================================
+   NAV BEHAVIOR (SPA SAFE)
+===================================================== */
+
+function initNavBehavior() {
+  document.querySelectorAll("[data-nav]").forEach(link => {
+    link.addEventListener("click", e => {
+      const targetId = link.getAttribute("href");
+      if (!targetId?.startsWith("#")) return;
+
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      e.preventDefault();
+
+      target.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    });
+  });
+}
 
 /* =========================
    UTIL
