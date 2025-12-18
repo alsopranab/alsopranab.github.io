@@ -385,30 +385,6 @@ section.omniverse-section {
   }
 }
 
-/* ============================================================
-   CURSOR — CANONICAL, ZERO-LAG
-============================================================ */
-
-.omni-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 9999;
-
-  background: var(--accent);
-  opacity: 0.85;
-
-  transform: translate3d(-50%, -50%, 0);
-  will-change: transform, opacity;
-
-  transition:
-    opacity 120ms linear,
-    transform 120ms linear;
-}
 
 /* HOVER STATE — SCALE ONLY */
 .omni-cursor.is-hover {
@@ -598,6 +574,117 @@ section.omniverse-section {
   }
 
   #education-section .education-item {
+    text-align: center;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   OMNIVERSE — FINAL STRUCTURE CORRECTIONS
+============================================================ */
+
+/* ================= EXPERIENCE — SINGLE GLOWING LINE ================= */
+#experience-section {
+  position: relative;
+}
+
+.experience-wrapper {
+  position: relative;
+  padding-left: 48px;
+  width: 100%;
+}
+
+.experience-wrapper::before {
+  content: "";
+  position: absolute;
+  left: 16px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--accent),
+    transparent
+  );
+  opacity: 0.5;
+}
+
+/* Cards align to the line */
+.experience-role {
+  margin-left: 20px;
+  text-align: left;
+}
+
+/* Company labels */
+.experience-company {
+  margin: 3rem 0 1rem;
+  font-weight: 500;
+  opacity: 0.85;
+  text-align: left;
+}
+
+/* ================= PROJECTS — ALIGNMENT FIX ================= */
+#projects-section {
+  align-items: center;
+}
+
+#projects-section .project-card {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+/* ================= CONTACT — RESTRUCTURE ================= */
+
+/* Move heading ABOVE the container */
+#contact-section h2,
+#contact-section .contact-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Contact container */
+#contact-section > div {
+  padding: 56px 48px;
+}
+
+/* Grid balance */
+.contact-grid {
+  grid-template-columns: 1fr 2fr 1fr;
+  align-items: start;
+  text-align: left;
+}
+
+/* Middle content fills container */
+.contact-grid p {
+  max-width: none;
+  margin: 0;
+}
+
+/* Email — lowercase, small, calm */
+.contact-grid .email {
+  font-size: 13px;
+  text-transform: lowercase;
+  opacity: 0.6;
+}
+
+/* ================= MOBILE SAFETY ================= */
+@media (max-width: 768px) {
+  .experience-wrapper {
+    padding-left: 0;
+  }
+
+  .experience-wrapper::before {
+    display: none;
+  }
+
+  .experience-role {
+    margin-left: 0;
     text-align: center;
   }
 
