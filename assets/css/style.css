@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — FINAL APPLE LIQUID EDITORIAL
-   Calm • Premium • Mobile-First • Production-Ready
+   OMNIVERSE — FINAL IMMUTABLE BUILD
+   Vision Pro Easing • Safari Tuned • GPU Only
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -20,7 +20,8 @@
   --radius-lg: 22px;
   --radius-md: 16px;
 
-  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Vision Pro curve (Apple internal–style) */
+  --ease-vision: cubic-bezier(0.25, 0.8, 0.25, 1);
 
   --hero-progress: 0;
 }
@@ -35,6 +36,7 @@
 html, body {
   margin: 0;
   padding: 0;
+  overscroll-behavior-y: none; /* Safari rubber-band tuning */
 }
 
 /* ================= BODY ================= */
@@ -44,6 +46,7 @@ body[data-omniverse] {
   min-height: 100vh;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 
   background:
     radial-gradient(900px 520px at 70% -20%, rgba(124,58,237,0.18), transparent),
@@ -64,7 +67,7 @@ h1 {
 
 h2 {
   font-size: clamp(22px, 3vw, 30px);
-  margin-bottom: 42px;
+  margin-bottom: 28px;
 }
 
 p {
@@ -78,56 +81,65 @@ p {
 a {
   color: var(--text-main);
   text-decoration: none;
-  opacity: 0.82;
-  transition: opacity 160ms ease;
+  opacity: 0.78;
+  transition: opacity 180ms ease;
 }
 
 a:hover {
   opacity: 1;
 }
 
-/* ================= NAVBAR ================= */
+/* ============================================================
+   HEADER — FADE + SCALE (NO SLIDE, NO LAG)
+============================================================ */
 #site-header {
   position: sticky;
-  top: 14px;
+  top: 10px;
   z-index: 100;
-  transition: transform 360ms var(--ease-out), opacity 240ms ease;
+
+  transform: scale(1);
+  opacity: 1;
+
+  transition:
+    transform 420ms var(--ease-vision),
+    opacity 260ms ease;
+
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 #site-header.header-hidden {
-  transform: translateY(-140%);
   opacity: 0;
+  transform: scale(0.96);
+  pointer-events: none;
 }
 
+/* Desktop header — flat */
 .header-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 14px 26px;
+  padding: 10px 26px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  border-radius: 999px;
-
-  background: rgba(15,12,32,0.65);
-  backdrop-filter: blur(28px) saturate(1.5);
-
-  box-shadow:
-    0 20px 42px rgba(0,0,0,0.45),
-    inset 0 0 0 0.5px var(--border-hairline);
+  background: transparent;
+  box-shadow: none;
 }
 
+/* Nav */
 .header-nav {
   display: flex;
-  gap: 22px;
+  gap: 28px;
 }
 
 .header-nav a {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  opacity: 0.7;
+  opacity: 0.6;
+  position: relative;
 }
 
 .header-nav a.active {
@@ -135,7 +147,20 @@ a:hover {
   color: var(--accent);
 }
 
-/* ================= SECTIONS ================= */
+.header-nav a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ============================================================
+   SECTIONS
+============================================================ */
 section.omniverse-section {
   max-width: 1100px;
   margin: 0 auto;
@@ -150,11 +175,13 @@ section.omniverse-section {
   gap: 22px;
 
   transform:
-    translateY(calc(var(--hero-progress) * -48px))
-    scale(calc(1 - var(--hero-progress) * 0.18));
+    translateY(calc(var(--hero-progress) * -42px))
+    scale(calc(1 - var(--hero-progress) * 0.14));
+
+  will-change: transform;
 }
 
-/* ================= LIQUID GLASS CARDS ================= */
+/* ================= CARDS ================= */
 .project-card,
 .education-item,
 .experience-role,
@@ -172,13 +199,8 @@ section.omniverse-section {
 
   border: 1px solid var(--border-hairline);
 
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.45);
-
-  transition:
-    transform 320ms var(--ease-out),
-    box-shadow 320ms ease,
-    border-color 240ms ease;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.45);
+  transition: transform 360ms var(--ease-vision);
 }
 
 @media (pointer: fine) {
@@ -186,7 +208,6 @@ section.omniverse-section {
   .education-item:hover,
   .featured-item:hover {
     transform: translateY(-6px);
-    border-color: var(--accent-soft);
     box-shadow:
       0 26px 56px rgba(0,0,0,0.55),
       0 0 32px var(--accent-glow);
@@ -195,8 +216,6 @@ section.omniverse-section {
 
 /* ================= FEATURED MEDIA ================= */
 .featured-item .media-frame {
-  position: relative;
-  width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 16px;
   overflow: hidden;
@@ -204,24 +223,15 @@ section.omniverse-section {
   background: rgba(0,0,0,0.35);
 }
 
-.featured-item .media-frame::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  filter: blur(22px) saturate(1.2);
-  transform: scale(1.1);
-}
-
 .featured-item img {
-  position: relative;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  z-index: 1;
 }
 
-/* ================= CONTACT ================= */
+/* ============================================================
+   CONTACT — FINAL FIX (DESKTOP + MOBILE)
+============================================================ */
 #contact-section {
   display: flex;
   justify-content: center;
@@ -230,10 +240,10 @@ section.omniverse-section {
 #contact-section > div {
   max-width: 720px;
   width: 100%;
-  text-align: center;
   padding: 56px 36px;
-  border-radius: var(--radius-lg);
+  text-align: center;
 
+  border-radius: var(--radius-lg);
   background:
     linear-gradient(
       180deg,
@@ -242,21 +252,19 @@ section.omniverse-section {
     );
 
   border: 1px solid var(--border-hairline);
-
   box-shadow:
     0 28px 64px rgba(0,0,0,0.6),
     0 0 56px rgba(167,139,250,0.18);
 }
 
-#contact-section h2 {
-  margin-bottom: 18px;
-}
-
 #contact-section p {
   margin: 0 auto 20px;
+  max-width: 60ch;
 }
 
-/* ================= FOOTER ================= */
+/* ============================================================
+   FOOTER
+============================================================ */
 #site-footer {
   padding: 72px 20px 56px;
   text-align: center;
@@ -267,11 +275,6 @@ section.omniverse-section {
   flex-direction: column;
   gap: 22px;
   align-items: center;
-}
-
-.footer-email {
-  font-size: 14px;
-  opacity: 0.85;
 }
 
 .footer-socials {
@@ -288,46 +291,42 @@ section.omniverse-section {
   opacity: 0.7;
 }
 
-.footer-meta {
-  font-size: 11px;
-  opacity: 0.45;
-}
-
-/* ================= MOBILE ================= */
+/* ============================================================
+   MOBILE — SAFARI STYLE HEADER
+============================================================ */
 @media (max-width: 768px) {
+  #site-header {
+    top: 8px;
+  }
+
   .header-container {
-    padding: 12px 18px;
+    padding: 10px 14px;
+    border-radius: 999px;
+
+    background: rgba(15,12,32,0.55);
+    backdrop-filter: blur(18px) saturate(1.3);
+
+    box-shadow:
+      0 10px 26px rgba(0,0,0,0.45),
+      inset 0 0 0 0.5px var(--border-hairline);
   }
 
   .header-nav {
-    gap: 14px;
+    gap: 16px;
   }
 
   section.omniverse-section {
     padding: 4rem 1rem;
   }
 
-  h1 {
-    font-size: clamp(28px, 8vw, 42px);
-  }
-
-  p {
-    font-size: 14px;
-  }
-
-  .footer-socials {
-    gap: 14px;
-  }
-
-  .footer-socials a {
-    font-size: 11px;
+  #contact-section > div {
+    padding: 40px 22px;
   }
 }
 
 /* ================= REDUCED MOTION ================= */
 @media (prefers-reduced-motion: reduce) {
   * {
-    animation: none !important;
     transition: none !important;
   }
 }
