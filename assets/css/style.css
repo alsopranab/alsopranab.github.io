@@ -1359,3 +1359,87 @@ body[data-omniverse] {
 @media (prefers-reduced-motion: reduce) {
   .shooting-stars { display: none; }
 }
+
+   /* ============================================================
+   OMNIVERSE — SHOOTING STARS (FINAL • SAFE • NO FLICKER)
+   - CSS ONLY
+   - NO JS
+   - NO CURSOR
+   - NO SCROLL REPAINT
+============================================================ */
+
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1; /* behind content, above gradients */
+  overflow: hidden;
+}
+
+/* Shooting star lines */
+.shooting-stars::before,
+.shooting-stars::after {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: -30%;
+  width: 320px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0),
+    rgba(167,139,250,0.75),
+    rgba(255,255,255,0)
+  );
+  opacity: 0;
+  transform: rotate(25deg);
+  animation: shooting-star 22s linear infinite;
+}
+
+/* Second star — delayed */
+.shooting-stars::after {
+  top: 45%;
+  animation-delay: 11s;
+}
+
+/* Animation */
+@keyframes shooting-star {
+  0% {
+    transform: translateX(0) translateY(0) rotate(25deg);
+    opacity: 0;
+  }
+  6% {
+    opacity: 0.7;
+  }
+  16% {
+    transform: translateX(160vw) translateY(70vh) rotate(25deg);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .shooting-stars {
+    display: none;
+  }
+}
+
+/* ============================================================
+   FLICKER SAFETY PATCH (NON-DESTRUCTIVE)
+============================================================ */
+
+/* Stabilize only background layers */
+body[data-omniverse]::before,
+body[data-omniverse]::after,
+.shooting-stars {
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+/* REMOVE paint isolation that causes scroll flicker */
+.omniverse-section {
+  contain: none !important;
+}
