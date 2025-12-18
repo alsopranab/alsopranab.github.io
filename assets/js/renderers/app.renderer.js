@@ -1,6 +1,6 @@
 /**
- * Unified App Renderer (FINAL — SCHEMA TRUE & HARDENED)
- * ====================================================
+ * Unified App Renderer (FINAL — CANONICAL & HARDENED)
+ * ==================================================
  * - Runs ONLY after home:ready
  * - Reads ONLY dataset.source
  * - Matches real JSON exactly
@@ -23,15 +23,23 @@ window.addEventListener("home:ready", () => {
 ============================================================ */
 
 function renderHero() {
-  const section = document.getElementById("hero");
+  const section = document.getElementById("hero-section");
   const d = getData(section);
   if (!d?.identity) return;
 
   section.innerHTML = `
     <div class="hero-wrapper">
       <h1>${escape(d.identity.fullName || "")}</h1>
-      ${d.identity.headline ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>` : ""}
-      ${d.identity.summary ? `<p class="hero-summary">${escape(d.identity.summary)}</p>` : ""}
+      ${
+        d.identity.headline
+          ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>`
+          : ""
+      }
+      ${
+        d.identity.summary
+          ? `<p class="hero-summary">${escape(d.identity.summary)}</p>`
+          : ""
+      }
     </div>
   `;
 }
@@ -41,7 +49,7 @@ function renderHero() {
 ============================================================ */
 
 function renderExperience() {
-  const section = document.getElementById("experience");
+  const section = document.getElementById("experience-section");
   const d = getData(section);
   if (!Array.isArray(d?.timeline)) return;
 
@@ -79,7 +87,9 @@ function renderRole(role) {
       <span>${start}${end ? " – " + end : ""}</span>
       ${
         Array.isArray(role.responsibilities)
-          ? `<ul>${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}</ul>`
+          ? `<ul>${role.responsibilities
+              .map(r => `<li>${escape(r)}</li>`)
+              .join("")}</ul>`
           : ""
       }
     </div>
@@ -91,7 +101,7 @@ function renderRole(role) {
 ============================================================ */
 
 function renderFeatured() {
-  const section = document.getElementById("featured");
+  const section = document.getElementById("featured-section");
   const d = getData(section);
   if (!Array.isArray(d?.items)) return;
 
@@ -110,7 +120,9 @@ function renderFeaturedItem(item) {
     <div class="featured-item">
       ${
         item.media?.coverImage
-          ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}">`
+          ? `<img src="${item.media.coverImage}" alt="${escape(
+              item.media.alt || ""
+            )}">`
           : ""
       }
       <div>
@@ -126,7 +138,7 @@ function renderFeaturedItem(item) {
 ============================================================ */
 
 function renderProjects() {
-  const section = document.getElementById("projects");
+  const section = document.getElementById("projects-section");
   const d = getData(section);
   if (!Array.isArray(d?.categories)) return;
 
@@ -160,7 +172,9 @@ function renderProjectCard(p) {
       <p>${escape(p.project.summary || "")}</p>
       ${
         p.repository?.url
-          ? `<a href="${p.repository.url}" target="_blank" rel="noopener">View on GitHub →</a>`
+          ? `<a href="${p.repository.url}" target="_blank" rel="noopener">
+              View on GitHub →
+            </a>`
           : ""
       }
     </div>
@@ -172,23 +186,27 @@ function renderProjectCard(p) {
 ============================================================ */
 
 function renderEducation() {
-  const section = document.getElementById("education");
+  const section = document.getElementById("education-section");
   const d = getData(section);
   if (!Array.isArray(d?.records)) return;
 
   section.innerHTML = `
     <h2>${escape(d.section?.title || "Education")}</h2>
-    ${d.records.map(r => `
+    ${d.records
+      .map(
+        r => `
       <div class="education-item">
-        <strong>${escape(r.institution)}</strong>
+        <strong>${escape(r.institution || "")}</strong>
 
         ${
           r.degree || r.field
-            ? `<div>${escape(r.degree || "")}${r.field ? " — " + escape(r.field) : ""}</div>`
+            ? `<div>${escape(r.degree || "")}${
+                r.field ? " — " + escape(r.field) : ""
+              }</div>`
             : ""
         }
 
-        <div>${escape(r.start)} – ${escape(r.end)}</div>
+        <div>${escape(r.start || "")} – ${escape(r.end || "")}</div>
 
         ${
           r.description
@@ -198,11 +216,15 @@ function renderEducation() {
 
         ${
           Array.isArray(r.highlights)
-            ? `<ul>${r.highlights.map(h => `<li>${escape(h)}</li>`).join("")}</ul>`
+            ? `<ul>${r.highlights
+                .map(h => `<li>${escape(h)}</li>`)
+                .join("")}</ul>`
             : ""
         }
       </div>
-    `).join("")}
+    `
+      )
+      .join("")}
   `;
 }
 
@@ -211,7 +233,7 @@ function renderEducation() {
 ============================================================ */
 
 function renderContact() {
-  const section = document.getElementById("contact");
+  const section = document.getElementById("contact-section");
   const d = getData(section);
   if (!d?.section) return;
 
@@ -225,7 +247,9 @@ function renderContact() {
     <p>${escape(d.section.description || "")}</p>
     ${
       d.primary?.email?.value
-        ? `<a href="mailto:${d.primary.email.value}">${escape(d.primary.email.value)}</a>`
+        ? `<a href="mailto:${d.primary.email.value}">
+            ${escape(d.primary.email.value)}
+          </a>`
         : ""
     }
   `;
@@ -247,7 +271,7 @@ function getData(section) {
 function escape(str) {
   return typeof str === "string"
     ? str.replace(/[&<>"']/g, c =>
-        ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c])
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
       )
     : "";
 }
