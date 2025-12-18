@@ -1,6 +1,6 @@
 /* ============================================================
-   OMNIVERSE — APPLE EDITORIAL (FINAL)
-   Calm • Precise • Premium • Retina-safe
+   OMNIVERSE — APPLE EDITORIAL (FINAL, COMPLETE)
+   Calm • Precise • Premium • Liquid Glass • Retina-safe
 ============================================================ */
 
 /* =========================
@@ -15,7 +15,7 @@
   --text-main: rgba(255,255,255,0.94);
   --text-muted: rgba(255,255,255,0.64);
 
-  /* Apple hairline (almost invisible) */
+  /* Ultra subtle Apple hairline */
   --border-hairline: rgba(255,255,255,0.018);
 
   --radius-lg: 18px;
@@ -45,7 +45,6 @@ html {
 body[data-omniverse] {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Apple-style deep background (NO white wash) */
   background:
     radial-gradient(600px 300px at 80% -20%, rgba(124,58,237,0.10), transparent),
     radial-gradient(500px 300px at 10% 120%, rgba(167,139,250,0.08), transparent),
@@ -72,12 +71,17 @@ h1 {
 
 h2 {
   font-size: clamp(22px, 3vw, 30px);
-  margin-bottom: 24px;
+  margin-bottom: 36px;
+}
+
+h3 {
+  font-size: 16px;
 }
 
 p {
   color: var(--text-muted);
   max-width: 60ch;
+  font-size: 15px;
 }
 
 a {
@@ -107,30 +111,69 @@ section.omniverse-section {
 }
 
 /* =========================
-   HEADER
+   HEADER — LIQUID GLASS
 ========================= */
 #site-header {
   position: sticky;
-  top: 0;
+  top: 16px;
   z-index: 100;
-  background: rgba(6,4,14,0.55);
-  backdrop-filter: blur(28px);
-  border-bottom: 0.5px solid var(--border-hairline);
+  background: transparent;
+  border: none;
 }
 
 .header-container {
-  max-width: 1100px;
+  max-width: max-content;
   margin: 0 auto;
-  padding: 16px 20px;
+  padding: 14px 28px;
+
   display: flex;
-  justify-content: center;
-  gap: 40px;
+  align-items: center;
+  gap: 32px;
+
+  border-radius: 999px;
+
+  background: rgba(15, 12, 32, 0.55);
+  backdrop-filter: blur(22px) saturate(1.4);
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35),
+    inset 0 0 0 0.5px var(--border-hairline);
+
+  transition:
+    transform 0.4s var(--ease-out),
+    opacity 0.3s ease;
+}
+
+.header-identity {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.header-name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.header-role {
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.header-nav {
+  display: flex;
+  gap: 22px;
 }
 
 .header-nav a {
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.header-nav a:hover {
+  opacity: 1;
 }
 
 /* =========================
@@ -143,8 +186,23 @@ section.omniverse-section {
   gap: 22px;
 }
 
+.hero-tagline {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-main);
+  opacity: 0.85;
+}
+
+.hero-summary {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  max-width: 58ch;
+}
+
 /* =========================
-   APPLE CONTAINERS
+   APPLE GLASS CONTAINERS
 ========================= */
 .project-card,
 .education-item,
@@ -156,12 +214,15 @@ section.omniverse-section {
   border-radius: var(--radius-md);
   border: 0.5px solid var(--border-hairline);
 
-  /* Subtle Apple glass */
   background: linear-gradient(
     180deg,
     rgba(255,255,255,0.015),
     rgba(255,255,255,0.004)
   );
+
+  transition:
+    transform 0.35s var(--ease-out),
+    border-color 0.35s ease;
 }
 
 /* =========================
@@ -171,6 +232,32 @@ section.omniverse-section {
   display: flex;
   flex-direction: column;
   gap: 36px;
+}
+
+.experience-company h3 {
+  margin-bottom: 8px;
+}
+
+.experience-role strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.experience-role span {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.experience-role ul {
+  margin-top: 10px;
+  padding-left: 18px;
+}
+
+.experience-role li {
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.8;
 }
 
 /* =========================
@@ -209,13 +296,57 @@ section.omniverse-section {
   margin-top: 20px;
 }
 
+.project-card h4 {
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.project-card p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.project-card a {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+.project-card a:hover {
+  opacity: 1;
+}
+
 /* =========================
-   EDUCATION / LICENSES
+   EDUCATION
 ========================= */
 .education-item {
   margin-bottom: 24px;
 }
 
+.education-item strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.education-item span {
+  font-size: 13px;
+  opacity: 0.6;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.education-item p {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================
+   LICENSES
+========================= */
 .licenses-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -241,56 +372,11 @@ section.omniverse-section {
   color: var(--text-muted);
 }
 
-/* =========================
-   MICRO INTERACTION (APPLE SUBTLE)
-========================= */
-@media (pointer: fine) {
-  .project-card:hover,
-  .featured-item:hover,
-  .education-item:hover {
-    transform: translateY(-3px);
-    border-color: rgba(167,139,250,0.12);
-  }
-}
-
-/* =========================
-   MOBILE TUNING
-========================= */
-@media (max-width: 768px) {
-  section.omniverse-section {
-    padding: 3.5rem 1rem;
-  }
-
-  .featured-item {
-    grid-template-columns: 1fr;
-    direction: ltr;
-  }
-
-  .project-card,
-  .education-item,
-  .experience-role {
-    padding: 18px;
-  }
-}
-
-/* =========================
-   REDUCED MOTION
-========================= */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
-/* =========================
-   FOOTER — APPLE CLEAN
-========================= */
-
 .footer-container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 48px 24px 32px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -330,4 +416,51 @@ section.omniverse-section {
   font-size: 11px;
   opacity: 0.45;
   margin-top: 6px;
+}
+
+/* =========================
+   MICRO INTERACTION
+========================= */
+@media (pointer: fine) {
+  .project-card:hover,
+  .featured-item:hover,
+  .education-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(167,139,250,0.12);
+  }
+}
+
+/* =========================
+   MOBILE TUNING
+========================= */
+@media (max-width: 768px) {
+  section.omniverse-section {
+    padding: 3.5rem 1rem;
+  }
+
+  .featured-item {
+    grid-template-columns: 1fr;
+    direction: ltr;
+  }
+
+  .project-card,
+  .education-item,
+  .experience-role {
+    padding: 18px;
+  }
+
+  .header-container {
+    padding: 12px 22px;
+    gap: 22px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
