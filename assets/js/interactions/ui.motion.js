@@ -1,11 +1,11 @@
 /**
- * UI Motion Engine — FINAL LOCKED STABLE BUILD
- * ==========================================
- * - ZERO layout mutation
+ * UI Motion Engine — FINAL LOCKED SAFE BUILD
+ * ========================================
+ * - ZERO section layout mutation
  * - ZERO spacing mutation
- * - ZERO CSS variable writes per frame
  * - GPU-only transforms
- * - Safari safe
+ * - Safari & mobile safe
+ * - Header + hero motion ONLY
  */
 
 (() => {
@@ -95,31 +95,10 @@
       headerIdentity.style.transform = "scale(0.96)";
     }
   }
-
-  /* ================= SECTION REVEAL (SAFE) ================= */
-
-  const revealObserver = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.style.opacity = "1";
-        entry.target.style.transform = "none";
-        revealObserver.unobserve(entry.target);
-      });
-    },
-    { threshold: 0.12 }
-  );
-
-  document.querySelectorAll("section.omniverse-section").forEach(section => {
-    section.style.opacity = "0";
-    section.style.transform = "translateY(12px)";
-    section.style.transition = "opacity 420ms ease, transform 420ms ease";
-    revealObserver.observe(section);
-  });
 })();
 
 /* ======================================================
-   ACTIVE NAV TRACKER — KEEP AS IS (SAFE)
+   ACTIVE NAV TRACKER — FINAL SAFE
 ====================================================== */
 
 window.addEventListener("header:ready", () => {
@@ -142,7 +121,9 @@ window.addEventListener("header:ready", () => {
     entries => {
       entries.forEach(entry => {
         if (!entry.isIntersecting) return;
+
         navLinks.forEach(l => l.classList.remove("active"));
+
         const active = navLinks.find(
           l => l.getAttribute("href") === `#${entry.target.id}`
         );
