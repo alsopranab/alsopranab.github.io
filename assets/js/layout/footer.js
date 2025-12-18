@@ -1,33 +1,30 @@
 /**
- * Footer Layout Controller (FINAL — HARD FAIL SAFE)
- * ================================================
- * - Always renders footer
- * - Enhances with contact.json + social.json when available
- * - Never exits early
- * - Schema-aligned with your data
- * - CSS-compatible with omniverse layout
+ * Footer Layout Controller (FINAL — DEDUP SAFE)
+ * =============================================
+ * - Never duplicates contact email
+ * - Social-first footer (Apple style)
+ * - Hard-fail safe
+ * - Schema aligned
  */
 
 window.addEventListener("app:ready", async () => {
   const footerEl = document.getElementById("site-footer");
   if (!footerEl) return;
 
-  /* -------------------------
-     DEFAULT FALLBACK CONTENT
-  ------------------------- */
-  let email = "career.pranab@gmail.com";
+  let email = null;
   let socials = [];
 
-  /* -------------------------
-     TRY DATA ENRICHMENT
-  ------------------------- */
   try {
     const [contact, socialData] = await Promise.all([
       DataService.getContact(),
       DataService.getSocials()
     ]);
 
-    if (contact?.primary?.email?.value) {
+    // Email ONLY if contact section is not present
+    const contactSectionExists =
+      document.getElementById("contact-section")?.innerHTML?.trim();
+
+    if (!contactSectionExists && contact?.primary?.email?.value) {
       email = contact.primary.email.value;
     }
 
@@ -36,21 +33,24 @@ window.addEventListener("app:ready", async () => {
         .filter(p => p.enabled)
         .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
     }
-  } catch (e) {
-    console.warn("[Footer] Using fallback content");
+  } catch {
+    console.warn("[Footer] Using minimal fallback");
   }
 
-  /* -------------------------
-     RENDER (ALWAYS)
-  ------------------------- */
   footerEl.innerHTML = `
     <div class="footer-container">
 
-      <div class="footer-email">
-        <a href="mailto:${escapeHTML(email)}">
-          ${escapeHTML(email)}
-        </a>
-      </div>
+      ${
+        email
+          ? `
+            <div class="footer-email">
+              <a href="mailto:${escapeHTML(email)}">
+                ${escapeHTML(email)}
+              </a>
+            </div>
+          `
+          : ""
+      }
 
       <div class="footer-socials">
         ${
@@ -75,9 +75,6 @@ window.addEventListener("app:ready", async () => {
     </div>
   `;
 
-  /* -------------------------
-     LIFECYCLE EVENT
-  ------------------------- */
   window.dispatchEvent(
     new CustomEvent("footer:ready", {
       detail: { timestamp: Date.now() }
@@ -88,7 +85,6 @@ window.addEventListener("app:ready", async () => {
 /* =========================
    UTIL
 ========================= */
-
 function escapeHTML(str) {
   return typeof str === "string"
     ? str.replace(/[&<>"']/g, c => ({
