@@ -60,7 +60,7 @@ body[data-omniverse] {
     linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
 }
 
-/* Ambient glow */
+/* ================= AMBIENT GLOW ================= */
 body[data-omniverse]::before,
 body[data-omniverse]::after {
   content: "";
@@ -173,7 +173,6 @@ section.omniverse-section {
 
 section.omniverse-section > h2 {
   margin-bottom: 2.5rem;
-  text-align: left;
 }
 
 section.omniverse-section > :not(h2) {
@@ -187,7 +186,6 @@ section.omniverse-section > :not(h2) {
   flex-direction: column;
   gap: 22px;
   align-items: flex-start;
-  text-align: left;
 }
 
 /* ================= CARDS ================= */
@@ -292,7 +290,6 @@ section.omniverse-section > :not(h2) {
   display: grid;
   grid-template-columns: 1.2fr 2fr 1fr;
   gap: 48px;
-  text-align: left;
 }
 
 .contact-email a {
@@ -312,24 +309,11 @@ section.omniverse-section > :not(h2) {
 
 /* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  section.omniverse-section {
-    align-items: flex-start;
-  }
-
-  section.omniverse-section > h2,
-  section.omniverse-section > * {
-    margin-left: 0;
-    text-align: left;
-  }
-
   #experience-section::before {
     display: none;
   }
 
-  .experience-list {
-    margin-left: 0;
-  }
-
+  .experience-list,
   .contact-panel {
     margin-left: 0;
   }
@@ -340,8 +324,10 @@ section.omniverse-section > :not(h2) {
 }
 
 /* ============================================================
-   STAR DUST + RARE SHOOTING STAR (FINAL)
+   COSMIC BACKGROUND — FINAL & DEDUPED
 ============================================================ */
+
+/* ---------- STAR DUST ---------- */
 
 .starry-bg {
   position: fixed;
@@ -364,84 +350,35 @@ section.omniverse-section > :not(h2) {
   opacity: 0.4;
 }
 
-.shooting-stars {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-}
+/* ---------- MICRO STAR MOTION ---------- */
 
-.shooting-stars::before {
+.starry-bg::after {
   content: "";
   position: absolute;
-  top: -25%;
-  left: -30%;
-  width: 300px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0),
-    rgba(167,139,250,0.9),
-    rgba(255,255,255,0)
-  );
-  opacity: 0;
-  transform: rotate(25deg);
-  animation: omniverse-shooting-star 10s linear infinite;
-}
-
-@keyframes omniverse-shooting-star {
-  0% { opacity: 0; }
-  5% { opacity: 0.85; }
-  15% {
-    transform: translateX(160vw) translateY(70vh) rotate(25deg);
-    opacity: 0;
-  }
-  100% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .starry-bg,
-  .shooting-stars {
-    display: none;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — STAR DUST + RARE SHOOTING STAR
-   ADDITIVE ONLY • DOES NOT TOUCH EXISTING LAYOUT
-============================================================ */
-
-/* ---------- STAR DUST (STATIC, VERY SUBTLE) ---------- */
-
-.starry-bg {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1; /* same background layer you already use */
-}
-
-.starry-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
+  inset: -50%;
   background-image:
-    radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.35), transparent),
-    radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,0.25), transparent),
-    radial-gradient(1px 1px at 44% 38%, rgba(255,255,255,0.3), transparent),
-    radial-gradient(1px 1px at 61% 55%, rgba(255,255,255,0.22), transparent),
-    radial-gradient(1px 1px at 78% 26%, rgba(255,255,255,0.28), transparent),
-    radial-gradient(1px 1px at 90% 68%, rgba(255,255,255,0.24), transparent);
-  background-size: 320px 320px;
-  opacity: 0.4;
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,0.45), transparent),
+    radial-gradient(1px 1px at 18% 78%, rgba(255,255,255,0.35), transparent),
+    radial-gradient(1px 1px at 32% 44%, rgba(255,255,255,0.4), transparent),
+    radial-gradient(1px 1px at 47% 26%, rgba(255,255,255,0.3), transparent),
+    radial-gradient(1px 1px at 63% 62%, rgba(255,255,255,0.38), transparent);
+  background-size: 420px 420px;
+  opacity: 0.25;
+  animation: omniverse-star-drift 120s linear infinite;
 }
 
-/* ---------- RARE SHOOTING STAR (~every 10s) ---------- */
+@keyframes omniverse-star-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(160px); }
+}
+
+/* ---------- SHOOTING STAR ---------- */
 
 .shooting-stars {
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: -1;
+  pointer-events: none;
 }
 
 .shooting-stars::before {
@@ -449,29 +386,35 @@ section.omniverse-section > :not(h2) {
   position: absolute;
   top: -25%;
   left: -30%;
-  width: 300px;
+  width: 380px;
   height: 2px;
   background: linear-gradient(
     90deg,
     rgba(255,255,255,0),
-    rgba(167,139,250,0.9),
+    rgba(255,255,255,0.6),
+    rgba(167,139,250,1),
+    rgba(255,255,255,0.6),
     rgba(255,255,255,0)
   );
+  filter: blur(0.6px);
   opacity: 0;
   transform: rotate(25deg);
-  animation: omniverse-shooting-star 10s linear infinite;
+  animation: omniverse-shooting-star 18s ease-in-out infinite;
 }
 
 @keyframes omniverse-shooting-star {
   0% {
-    transform: translateX(0) translateY(0) rotate(25deg);
+    transform: translateX(-20vw) translateY(-10vh) rotate(25deg);
     opacity: 0;
   }
-  5% {
-    opacity: 0.85;
+  8% {
+    opacity: 0.9;
   }
-  15% {
-    transform: translateX(160vw) translateY(70vh) rotate(25deg);
+  22% {
+    transform: translateX(120vw) translateY(60vh) rotate(25deg);
+    opacity: 0.6;
+  }
+  40% {
     opacity: 0;
   }
   100% {
