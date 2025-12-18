@@ -18,20 +18,13 @@
   <meta name="theme-color" content="#05030c" />
   <meta name="color-scheme" content="dark light" />
 
-  <!-- =====================================================
-       SOCIAL SHARING
-  ====================================================== -->
+  <!-- SOCIAL -->
   <meta property="og:title" content="Pranab Debnath — Data Analyst" />
-  <meta
-    property="og:description"
-    content="Data-driven professional building insights through SQL, Python, and automation."
-  />
+  <meta property="og:description" content="Data-driven professional building insights." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
 
-  <!-- =====================================================
-       FONTS
-  ====================================================== -->
+  <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -39,26 +32,23 @@
     rel="stylesheet"
   />
 
-  <!-- =====================================================
-       STYLES
-  ====================================================== -->
+  <!-- STYLES -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body data-omniverse>
 
   <!-- =====================================================
-       HEADER
+       BACKGROUND LAYERS (REQUIRED)
   ====================================================== -->
-  <header id="site-header" aria-label="Primary Navigation">
-    <!-- injected -->
-  </header>
+  <div class="starry-bg" aria-hidden="true"></div>
+  <div class="shooting-stars" aria-hidden="true"></div>
 
-  <!-- =====================================================
-       MAIN CONTENT
-  ====================================================== -->
+  <!-- HEADER -->
+  <header id="site-header" aria-label="Primary Navigation"></header>
+
+  <!-- MAIN -->
   <main id="page-content" role="main">
-
     <section id="hero-section" class="omniverse-section"></section>
     <section id="experience-section" class="omniverse-section"></section>
     <section id="featured-section" class="omniverse-section"></section>
@@ -66,23 +56,12 @@
     <section id="education-section" class="omniverse-section"></section>
     <section id="licenses-section" class="omniverse-section"></section>
     <section id="contact-section" class="omniverse-section"></section>
-
   </main>
 
-  <!-- =====================================================
-       FOOTER
-  ====================================================== -->
-  <footer id="site-footer" aria-label="Footer">
-    <!-- injected -->
-  </footer>
+  <!-- FOOTER -->
+  <footer id="site-footer" aria-label="Footer"></footer>
 
-  <!-- =====================================================
-       JS — CLEAN & SAFE
-       ❌ NO godmode
-       ❌ NO cursor
-       ❌ NO canvas
-  ====================================================== -->
-
+  <!-- JS -->
   <script src="assets/js/core/bootstrap.js" defer></script>
   <script src="assets/js/services/data.service.js" defer></script>
   <script src="assets/js/layout/header.js" defer></script>
@@ -90,18 +69,12 @@
   <script src="assets/js/pages/home.js" defer></script>
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
-  <!-- SAFE MOTION ONLY (Header + Hero) -->
-  <script src="assets/js/interactions/ui.motion.js" defer></script>
+  <!-- GODMODE -->
+  <script src="assets/js/interactions/godmode.js" defer></script>
 
-  <!-- =====================================================
-       NO-JS FALLBACK
-  ====================================================== -->
   <noscript>
     <style>
-      .omniverse-section {
-        opacity: 1 !important;
-        transform: none !important;
-      }
+      .omniverse-section { opacity: 1 !important; transform: none !important; }
     </style>
   </noscript>
 
