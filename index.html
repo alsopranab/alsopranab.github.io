@@ -50,13 +50,13 @@
 <body data-omniverse>
 
   <!-- =====================================================
-       BACKGROUND
+       BACKGROUND (CSS ONLY)
   ====================================================== -->
   <div class="starry-bg" aria-hidden="true"></div>
   <div class="shooting-stars" aria-hidden="true"></div>
 
   <!-- =====================================================
-       HEADER
+       HEADER (INJECTED)
   ====================================================== -->
   <header id="site-header" aria-label="Primary Navigation"></header>
 
@@ -70,56 +70,65 @@
     <section id="featured-section" class="omniverse-section"></section>
 
     <!-- =====================================================
-         PROJECTS — ADVANCED ANALYTICS CARD
+         PROJECTS — STATIC ADVANCED CARD (RENDERER SAFE)
     ====================================================== -->
     <section id="projects-section" class="omniverse-section">
 
-      <article
-        class="project-card project-analytics"
-        data-omni-hover
-        data-omni-reveal
-      >
-        <header class="project-header">
-          <h3>Revenue Funnel Optimization</h3>
-          <span class="project-type">Analytics • Automation</span>
-        </header>
+      <div data-static>
 
-        <!-- SVG ANALYTICS -->
-        <div class="project-graph" aria-hidden="true">
-          <svg viewBox="0 0 600 220" preserveAspectRatio="none">
-            <!-- Grid -->
-            <line x1="0" y1="180" x2="600" y2="180" class="graph-grid" />
-            <line x1="0" y1="120" x2="600" y2="120" class="graph-grid" />
-            <line x1="0" y1="60"  x2="600" y2="60"  class="graph-grid" />
+        <article
+          class="project-card project-analytics"
+          data-omni-hover
+          data-omni-reveal
+        >
+          <header class="project-header">
+            <h3>Revenue Funnel Optimization</h3>
+            <span class="project-type">Analytics • Automation</span>
+          </header>
 
-            <!-- Bars -->
-            <rect x="60"  y="120" width="40" height="60"  class="graph-bar" />
-            <rect x="160" y="90"  width="40" height="90"  class="graph-bar" />
-            <rect x="260" y="70"  width="40" height="110" class="graph-bar" />
-            <rect x="360" y="40"  width="40" height="140" class="graph-bar" />
-            <rect x="460" y="20"  width="40" height="160" class="graph-bar" />
+          <!-- SVG ANALYTICS -->
+          <div class="project-graph" aria-hidden="true">
+            <svg
+              viewBox="0 0 600 220"
+              preserveAspectRatio="none"
+              role="img"
+              aria-label="Revenue growth analytics chart"
+            >
+              <!-- Grid -->
+              <line x1="0" y1="180" x2="600" y2="180" class="graph-grid" />
+              <line x1="0" y1="120" x2="600" y2="120" class="graph-grid" />
+              <line x1="0" y1="60"  x2="600" y2="60"  class="graph-grid" />
 
-            <!-- Line -->
-            <path
-              d="M 80 130 L 180 100 L 280 85 L 380 55 L 480 35"
-              class="graph-line"
-            />
-          </svg>
-        </div>
+              <!-- Bars -->
+              <rect x="60"  y="120" width="40" height="60"  class="graph-bar" />
+              <rect x="160" y="90"  width="40" height="90"  class="graph-bar" />
+              <rect x="260" y="70"  width="40" height="110" class="graph-bar" />
+              <rect x="360" y="40"  width="40" height="140" class="graph-bar" />
+              <rect x="460" y="20"  width="40" height="160" class="graph-bar" />
 
-        <p class="project-desc">
-          Built an end-to-end analytics pipeline to identify drop-offs,
-          automate KPI reporting, and improve lead-to-conversion efficiency.
-        </p>
+              <!-- Line -->
+              <path
+                d="M 80 130 L 180 100 L 280 85 L 380 55 L 480 35"
+                class="graph-line"
+              />
+            </svg>
+          </div>
 
-        <!-- TECH STACK -->
-        <div class="project-tech">
-          <span class="icon python">Python</span>
-          <span class="icon sql">SQL</span>
-          <span class="icon powerbi">Power BI</span>
-          <span class="icon excel">Excel</span>
-        </div>
-      </article>
+          <p class="project-desc">
+            Built an end-to-end analytics pipeline to identify funnel drop-offs,
+            automate KPI reporting, and improve lead-to-conversion efficiency.
+          </p>
+
+          <div class="project-tech">
+            <span class="icon python">Python</span>
+            <span class="icon sql">SQL</span>
+            <span class="icon powerbi">Power BI</span>
+            <span class="icon excel">Excel</span>
+          </div>
+
+        </article>
+
+      </div>
 
     </section>
 
@@ -130,7 +139,7 @@
   </main>
 
   <!-- =====================================================
-       FOOTER
+       FOOTER (INJECTED)
   ====================================================== -->
   <footer id="site-footer" aria-label="Footer"></footer>
 
@@ -157,12 +166,12 @@
     document.addEventListener("DOMContentLoaded", () => {
       const observer = new IntersectionObserver(
         entries => {
-          entries.forEach(entry => {
+          for (const entry of entries) {
             if (entry.isIntersecting) {
               entry.target.classList.add("is-visible");
               observer.unobserve(entry.target);
             }
-          });
+          }
         },
         { threshold: 0.35 }
       );
