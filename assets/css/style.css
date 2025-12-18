@@ -1,7 +1,6 @@
 /* ============================================================
-   OMNIVERSE — FINAL LOCKED CANONICAL BUILD
-   Apple / Google Production Standard
-   ZERO Flicker • EVEN Rhythm • NAV ONLY
+   OMNIVERSE — REFINED COMFORT BUILD
+   CENTERED • CALM • ZERO STRAIN
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -22,10 +21,9 @@
 
   --ease-vision: cubic-bezier(0.22, 1, 0.36, 1);
 
-  /* SINGLE SOURCE OF SPACING TRUTH */
-  --space-section: clamp(5.5rem, 10vw, 9rem);
-  --space-block: 2.75rem;
-  --space-card: 2.25rem;
+  --space-section: clamp(5rem, 9vw, 8.5rem);
+  --space-block: 2.5rem;
+  --space-card: 2.1rem;
 }
 
 /* ================= RESET ================= */
@@ -52,15 +50,17 @@ body[data-omniverse] {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   background:
     radial-gradient(800px 520px at 70% -10%, rgba(124,58,237,0.14), transparent),
     radial-gradient(700px 480px at 15% 120%, rgba(167,139,250,0.12), transparent),
     linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
 }
 
-/* ============================================================
-   AMBIENT BACKGROUND — ZERO FLICKER (OPACITY ONLY)
-============================================================ */
+/* ================= AMBIENT BACKGROUND ================= */
 body[data-omniverse]::before,
 body[data-omniverse]::after {
   content: "";
@@ -105,11 +105,12 @@ h1, h2, h3 {
   font-weight: 500;
   letter-spacing: -0.025em;
   margin: 0;
+  text-align: center;
 }
 
 h1 {
-  font-size: clamp(34px, 6vw, 58px);
-  line-height: 1.08;
+  font-size: clamp(34px, 6vw, 56px);
+  line-height: 1.1;
 }
 
 h2 {
@@ -122,9 +123,11 @@ p {
   line-height: 1.7;
   color: var(--text-muted);
   max-width: 65ch;
+  margin: 0 auto;
+  text-align: center;
 }
 
-/* ================= LINKS (GLOBAL, ENFORCED) ================= */
+/* ================= LINKS ================= */
 a {
   color: var(--text-main);
   text-decoration: none;
@@ -138,30 +141,25 @@ a:hover {
   opacity: 1;
 }
 
-/* ============================================================
-   HEADER — NAV ONLY (NO NAME, NO ROLE)
-============================================================ */
+/* ================= HEADER ================= */
 #site-header {
   position: sticky;
   top: 10px;
   z-index: 100;
+  width: 100%;
 }
 
 .header-container {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 6px 20px;
+  padding: 8px 20px;
   display: flex;
-  justify-content: flex-end;
-}
-
-.header-identity {
-  display: none !important;
+  justify-content: center;
 }
 
 .header-nav {
   display: flex;
-  gap: 22px;
+  gap: 24px;
 }
 
 .header-nav a {
@@ -174,54 +172,34 @@ a:hover {
   color: var(--accent);
 }
 
-/* ============================================================
-   SECTIONS — EVEN RHYTHM
-============================================================ */
+/* ================= SECTIONS ================= */
 section.omniverse-section {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: var(--space-section) 1.25rem;
+  padding: var(--space-section) 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* AUTO-COLLAPSE EMPTY SECTIONS */
-section.omniverse-section:empty,
-section.omniverse-section:not(:has(*)) {
-  display: none;
-}
-
-/* ============================================================
-   HERO
-============================================================ */
+/* ================= HERO ================= */
 .hero-wrapper {
-  max-width: 640px;
+  max-width: 620px;
   display: flex;
   flex-direction: column;
   gap: 22px;
+  align-items: center;
 }
 
-/* ============================================================
-   EXPERIENCE — COMPANY → ROLE FLOW
-============================================================ */
-.experience-company {
-  margin-top: var(--space-block);
-}
-
-.experience-company:first-child {
-  margin-top: 0;
-}
-
-.experience-role {
-  margin-top: var(--space-card);
-}
-
-/* ============================================================
-   CARDS — CONSISTENT EVERYWHERE
-============================================================ */
+/* ================= CARDS ================= */
 .project-card,
 .education-item,
 .experience-role,
 .featured-item {
-  padding: 26px;
+  width: 100%;
+  max-width: 720px;
+  padding: 28px;
   margin-top: var(--space-card);
   border-radius: var(--radius-md);
   background: linear-gradient(
@@ -231,24 +209,18 @@ section.omniverse-section:not(:has(*)) {
   );
   border: 1px solid var(--border-hairline);
   box-shadow: 0 18px 38px rgba(0,0,0,0.45);
-}
-
-.project-card:first-child,
-.education-item:first-child,
-.experience-role:first-child,
-.featured-item:first-child {
-  margin-top: 0;
+  text-align: center;
 }
 
 @media (pointer: fine) {
   .project-card:hover,
   .education-item:hover,
   .featured-item:hover {
-    transform: translateY(-6px);
-    transition: transform 260ms var(--ease-vision);
+    transform: translateY(-5px);
+    transition: transform 240ms var(--ease-vision);
     box-shadow:
       0 26px 52px rgba(0,0,0,0.55),
-      0 0 28px var(--accent-glow);
+      0 0 26px var(--accent-glow);
   }
 }
 
@@ -258,13 +230,12 @@ section.omniverse-section:not(:has(*)) {
   max-height: 420px;
   object-fit: cover;
   border-radius: 14px;
+  margin-bottom: 18px;
 }
 
-/* ============================================================
-   CONTACT — STABLE GRID
-============================================================ */
+/* ================= CONTACT ================= */
 #contact-section > div {
-  max-width: 1100px;
+  max-width: 900px;
   padding: 64px 48px;
   border-radius: var(--radius-lg);
   background: linear-gradient(
@@ -273,18 +244,38 @@ section.omniverse-section:not(:has(*)) {
     rgba(255,255,255,0.02)
   );
   border: 1px solid var(--border-hairline);
+  margin: 0 auto;
 }
 
 .contact-grid {
   display: grid;
-  grid-template-columns: 1.1fr 2fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 48px;
+  text-align: center;
 }
 
-/* ============================================================
-   FOOTER — FINAL, FIXED
-============================================================ */
+.contact-grid h3,
+.contact-grid span,
+.contact-grid a:not(.email) {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+/* EMAIL — LOWERCASE, SOFTER */
+.contact-grid .email {
+  text-transform: lowercase;
+  letter-spacing: normal;
+  font-size: 14px;
+  opacity: 0.7;
+  display: block;
+  margin-top: 12px;
+}
+
+/* ================= FOOTER ================= */
 #site-footer {
+  width: 100%;
   margin-top: var(--space-section);
   padding: 56px 20px;
   border-top: 1px solid var(--border-hairline);
@@ -300,7 +291,7 @@ section.omniverse-section:not(:has(*)) {
 
 .footer-socials {
   display: flex;
-  gap: 24px;
+  gap: 26px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -310,26 +301,26 @@ section.omniverse-section:not(:has(*)) {
   opacity: 0.75;
 }
 
-/* ============================================================
-   MOBILE — CLEAN & COMPACT
-============================================================ */
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
-  .header-container {
-    padding: 4px 12px;
-  }
-
-  .header-nav a {
-    font-size: 10px;
+  h1 {
+    font-size: clamp(30px, 8vw, 42px);
   }
 
   section.omniverse-section {
-    padding: 4.5rem 1rem;
+    padding: 4.25rem 1rem;
+  }
+
+  .project-card,
+  .education-item,
+  .experience-role,
+  .featured-item {
+    padding: 22px;
   }
 
   .contact-grid {
     grid-template-columns: 1fr;
-    gap: 28px;
-    text-align: center;
+    gap: 32px;
   }
 
   .featured-item img {
