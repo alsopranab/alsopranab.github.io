@@ -3,86 +3,33 @@
     "id": "education",
     "title": "Education",
     "subtitle": "Academic background and formal learning",
-    "displayOrder": 4,
     "visibility": "public"
   },
 
-  "timeline": [
+  "records": [
     {
-      "id": "edu-01",
-      "institution": {
-        "name": "Rajiv Gandhi University Of Health & Sciences",
-        "type": "University",
-        "location": {
-          "city": "Bangalore",
-          "state": "Karnataka",
-          "country": "India"
-        },
-        "logo": "assets/images/education/university-logo.png",
-        "website": "http://www.rguhs.ac.in/"
-      },
+      "institution": "Rajiv Gandhi University of Health Sciences",
+      "degree": "Bachelor of Science (Medical)",
+      "field": "Medical Sciences",
+      "location": "Bangalore, Karnataka, India",
 
-      "program": {
-        "level": "Bachelor",
-        "degree": "Bachelor of Science",
-        "field": "Medical",
-        "specialization": "PMHNP",
-        "mode": "Full-time"
-      },
+      "start": "2019",
+      "end": "2023",
 
-      "duration": {
-        "start": {
-          "year": 2019,
-          "month": 10
-        },
-        "end": {
-          "year": 2023,
-          "month": 10
-        },
-        "status": "Completed"
-      },
+      "description": "Developed a strong foundation in medical sciences, patient care, psychology, and clinical decision-making. Gained exposure to healthcare data systems, ethical practices, and the growing role of digital technology in modern healthcare.",
 
-      "performance": {
-        "gradingSystem": "CGPA",
-        "score": "8.2",
-        "scale": "10",
-        "honors": []
-      },
-
-      "coursework": [
-    "Anatomy and Physiology",
-    "Medical-Surgical Nursing (MHN)",
-    "Psychology",
-    "Pharmacology",
-    "Fundamentals of Nursing (FoN)"
-  ],
-
-  "projects": [
-    {
-      "title": "Final Year Project",
-      "description": "A research study on the ethical challenges and practical implications of using Artificial Intelligence and Electronic Health Records (EHRs) in day-to-day nursing practice.",
-      "technologies": ["Electronic Health Records (EHR)", "Healthcare Data Systems"]
-    }
-  ],
-
-  "activities": [
-    "Clinical case studies and academic research",
-    "Peer mentoring and collaborative learning",
-    "Participation in healthcare seminars and technical workshops"
-  ],
-
-  "description": "Developed a strong foundation in nursing sciences, patient care, and clinical decision-making, with exposure to healthcare data, ethical practices, and the growing role of digital systems in modern nursing.",
-
-      "meta": {
-        "importance": "primary",
-        "lastUpdated": "2025-01-01"
-      }
+      "highlights": [
+        "Anatomy and Physiology",
+        "Psychology",
+        "Pharmacology",
+        "Fundamentals of Nursing",
+        "Medical-Surgical Nursing"
+      ]
     }
   ],
 
   "meta": {
-    "version": "1.0.0",
-    "schema": "education.timeline.v1",
-    "maintainedBy": "self"
+    "schema": "education.records.v1",
+    "lastUpdated": "2025-01-01"
   }
 }
