@@ -28,9 +28,11 @@
   />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://alsopranab.github.io/" />
+  <!-- Optional but recommended -->
+  <!-- <meta property="og:image" content="https://alsopranab.github.io/assets/og-image.png" /> -->
 
   <!-- =====================================================
-       FONTS
+       FONTS (Preloaded for performance)
   ====================================================== -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -43,6 +45,9 @@
        STYLES
   ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
+
+  <!-- Optional favicon -->
+  <!-- <link rel="icon" href="/favicon.ico" /> -->
 </head>
 
 <body data-omniverse>
@@ -100,6 +105,10 @@
     ></section>
 
     <!-- CONTACT -->
+    <!-- NOTE:
+         Renderer should inject a single wrapper div inside this section
+         (e.g. .contact-panel) — CSS already handles layout.
+    -->
     <section
       id="contact-section"
       class="omniverse-section"
@@ -114,8 +123,7 @@
   <footer id="site-footer" aria-label="Footer"></footer>
 
   <!-- =====================================================
-       CORE JS (ORDER IS CRITICAL)
-       DO NOT REORDER
+       CORE JS (ORDER IS CRITICAL — DO NOT REORDER)
   ====================================================== -->
 
   <!-- 1. Bootstrap (emits app:ready) -->
@@ -131,12 +139,19 @@
   <!-- 4. Page controllers -->
   <script src="assets/js/pages/home.js" defer></script>
 
-  <!-- 5. Renderer (listens to home:ready) -->
+  <!-- 5. Renderer -->
   <script src="assets/js/renderers/app.renderer.js" defer></script>
 
   <!-- 6. Motion & effects -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
   <script src="assets/js/omniverse.godmode.js" defer></script>
+
+  <!-- Fallback for no JS -->
+  <noscript>
+    <style>
+      .omniverse-section { opacity: 1 !important; transform: none !important; }
+    </style>
+  </noscript>
 
 </body>
 </html>
