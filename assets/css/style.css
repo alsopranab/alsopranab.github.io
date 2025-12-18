@@ -124,4 +124,20 @@ section.omniverse-section.section-visible {
 }
 
 /* ================= MOBILE ================= */
-@media (max-width: 768px)
+@media (max-width: 768px) {
+  section.omniverse-section {
+    padding: 3.5rem 1rem;
+  }
+
+  #contact-section {
+    text-align: center;
+  }
+}
+
+/* ================= REDUCED MOTION ================= */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
