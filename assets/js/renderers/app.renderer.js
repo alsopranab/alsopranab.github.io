@@ -292,3 +292,60 @@ function escape(str) {
       )
     : "";
 }
+/* ============================================================
+   IMAGE VIEWER — SAFE, GLOBAL, IMMUTABLE
+============================================================ */
+
+window.addEventListener("home:ready", () => {
+  document.body.addEventListener("click", e => {
+    const img = e.target.closest("img[data-expandable]");
+    if (!img) return;
+
+    openImageViewer(img.src, img.alt || "");
+  });
+});
+
+function openImageViewer(src, alt) {
+  // Prevent duplicate overlays
+  if (document.getElementById("image-viewer-overlay")) return;
+
+  const overlay = document.createElement("div");
+  overlay.id = "image-viewer-overlay";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+
+  overlay.innerHTML = `
+    <div class="image-viewer-backdrop"></div>
+    <div class="image-viewer-panel">
+      <button class="image-viewer-close" aria-label="Close image">×</button>
+      <img src="${src}" alt="${escape(alt)}">
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = "hidden";
+
+  overlay.addEventListener("click", e => {
+    if (
+      e.target.classList.contains("image-viewer-backdrop") ||
+      e.target.classList.contains("image-viewer-close")
+    ) {
+      closeImageViewer();
+    }
+  });
+
+  window.addEventListener("keydown", onImageViewerKey);
+}
+
+function closeImageViewer() {
+  const overlay = document.getElementById("image-viewer-overlay");
+  if (!overlay) return;
+
+  overlay.remove();
+  document.body.style.overflow = "";
+  window.removeEventListener("keydown", onImageViewerKey);
+}
+
+function onImageViewerKey(e) {
+  if (e.key === "Escape") closeImageViewer();
+}
