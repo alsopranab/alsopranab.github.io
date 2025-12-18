@@ -1,10 +1,10 @@
 /**
- * Footer Layout Controller (FINAL — DEDUP SAFE)
- * =============================================
+ * Footer Layout Controller (FINAL — IMMUTABLE & DEDUP SAFE)
+ * ========================================================
  * - Never duplicates contact email
- * - Social-first footer (Apple style)
+ * - Social-first Apple-style footer
+ * - Canonical IDs only
  * - Hard-fail safe
- * - Schema aligned
  */
 
 window.addEventListener("app:ready", async () => {
@@ -21,22 +21,26 @@ window.addEventListener("app:ready", async () => {
     ]);
 
     /* ================= CONTACT DEDUP ================= */
-    const contactSectionExists =
-      document.getElementById("contact")?.innerHTML?.trim(); // ✅ FIXED ID
 
-    if (!contactSectionExists && contact?.primary?.email?.value) {
+    const contactRendered =
+      document.getElementById("contact-section")?.innerHTML?.trim();
+
+    if (!contactRendered && contact?.primary?.email?.value) {
       email = contact.primary.email.value;
     }
 
     /* ================= SOCIALS ================= */
+
     if (Array.isArray(socialData?.profiles)) {
       socials = socialData.profiles
-        .filter(p => p.enabled)
+        .filter(p => p.enabled && p.url)
         .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
     }
   } catch (err) {
-    console.warn("[Footer] Using minimal fallback", err);
+    console.warn("[Footer] Fallback mode enabled", err);
   }
+
+  /* ================= RENDER ================= */
 
   footerEl.innerHTML = `
     <div class="footer-container">
@@ -59,13 +63,17 @@ window.addEventListener("app:ready", async () => {
             ? socials
                 .map(
                   s => `
-                    <a href="${s.url}" target="_blank" rel="noopener">
-                      ${escapeHTML(s.platform)}
+                    <a
+                      href="${s.url}"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      ${escapeHTML(formatPlatform(s.platform))}
                     </a>
                   `
                 )
                 .join("")
-            : `<span class="footer-muted">Social links coming soon</span>`
+            : ""
         }
       </div>
 
@@ -84,6 +92,7 @@ window.addEventListener("app:ready", async () => {
 });
 
 /* ================= UTIL ================= */
+
 function escapeHTML(str) {
   return typeof str === "string"
     ? str.replace(/[&<>"']/g, c => ({
@@ -94,4 +103,14 @@ function escapeHTML(str) {
         "'": "&#39;"
       })[c])
     : "";
+}
+
+function formatPlatform(name) {
+  if (!name) return "";
+  return name
+    .replace(/github/i, "GitHub")
+    .replace(/linkedin/i, "LinkedIn")
+    .replace(/leetcode/i, "LeetCode")
+    .replace(/hackerrank/i, "HackerRank")
+    .replace(/instagram/i, "Instagram");
 }
