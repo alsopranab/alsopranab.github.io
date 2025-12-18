@@ -1,38 +1,58 @@
 /**
- * UI Motion Engine — FINAL (CANONICAL & SAFE)
+ * UI Motion Engine — FINAL (CANONICAL, STABLE, PRODUCTION)
+ * ======================================================
+ * - Uses canonical section IDs
+ * - Waits for header + home render
+ * - Motion-safe (reduced-motion aware)
+ * - Smooth, non-jittery behavior
+ * - Mobile friendly
  */
 
 (() => {
+  "use strict";
+
+  /* ================= ENV ================= */
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (reduceMotion) return;
+
   const header = document.getElementById("site-header");
-  const heroSection = document.getElementById("hero"); // ✅ FIXED ID
+  const heroSection = document.getElementById("hero-section");
 
   if (!header || !heroSection) {
-    console.warn("[Motion] header or hero missing");
+    console.warn("[Motion] header or hero-section missing");
     return;
   }
 
   let heroWrapper = null;
   let headerIdentity = null;
+
   let lastY = window.scrollY;
   let ticking = false;
 
-  /* ================= HEADER READY ================= */
-  window.addEventListener("header:ready", () => {
-    heroWrapper = heroSection.querySelector(".hero-wrapper");
-    headerIdentity = header.querySelector(".header-identity");
+  /* ================= READY GATES ================= */
 
-    if (!heroWrapper || !headerIdentity) {
-      console.warn("[Motion] heroWrapper or headerIdentity missing");
-      return;
-    }
+  window.addEventListener("header:ready", bindHeaderIdentity);
+  window.addEventListener("home:ready", bindHeroWrapper);
+
+  function bindHeaderIdentity() {
+    headerIdentity = header.querySelector(".header-identity");
+    if (!headerIdentity) return;
 
     headerIdentity.style.opacity = "0";
     headerIdentity.style.transform = "translateY(6px) scale(0.96)";
     headerIdentity.style.transition =
       "opacity 260ms ease, transform 260ms ease";
-  });
+  }
+
+  function bindHeroWrapper() {
+    heroWrapper = heroSection.querySelector(".hero-wrapper");
+  }
 
   /* ================= SCROLL LOOP ================= */
+
   window.addEventListener(
     "scroll",
     () => {
@@ -50,11 +70,24 @@
     { passive: true }
   );
 
+  /* ================= HEADER AUTO HIDE ================= */
+
   function handleHeaderAutoHide(y) {
-    if (y > lastY && y > 120) header.classList.add("header-hidden");
-    else header.classList.remove("header-hidden");
+    const delta = y - lastY;
+
+    // Deadzone prevents jitter
+    if (Math.abs(delta) < 6) return;
+
+    if (y > lastY && y > 120) {
+      header.classList.add("header-hidden");
+    } else {
+      header.classList.remove("header-hidden");
+    }
+
     lastY = y;
   }
+
+  /* ================= HERO MORPH ================= */
 
   function handleHeroMorph(scrollY) {
     if (!heroWrapper || !headerIdentity) return;
@@ -67,7 +100,7 @@
       progress.toFixed(3)
     );
 
-    if (progress > 0.75) {
+    if (progress > 0.72) {
       headerIdentity.style.opacity = "1";
       headerIdentity.style.transform = "translateY(0) scale(1)";
     } else {
@@ -77,14 +110,15 @@
   }
 
   /* ================= SECTION REVEAL ================= */
+
   const revealObserver = new IntersectionObserver(
     entries => {
-      entries.forEach(entry => {
+      for (const entry of entries) {
         if (entry.isIntersecting) {
           entry.target.classList.add("section-visible");
           revealObserver.unobserve(entry.target);
         }
-      });
+      }
     },
     { threshold: 0.15 }
   );
