@@ -1,12 +1,11 @@
 /**
- * Header Layout Controller (FINAL — SPA & CONTROLLER SAFE)
- * =======================================================
- * - Always renders header + navigation
- * - Enhances with profile.json when available
- * - Uses canonical section IDs
- * - Resume handled by Resume Controller
- * - Smooth scroll (SPA-safe)
- * - Fully compatible with omniverse layout
+ * Header Layout Controller (FINAL — LOCKED & STABLE)
+ * =================================================
+ * - Renders header with NAME ONLY (no role)
+ * - Uppercase navigation (desktop + mobile)
+ * - Fixed structure to prevent layout shift
+ * - SPA-safe smooth scrolling
+ * - Omniverse & motion compatible
  */
 
 window.addEventListener("app:ready", async () => {
@@ -14,13 +13,12 @@ window.addEventListener("app:ready", async () => {
   if (!headerEl) return;
 
   /* -------------------------
-     DEFAULT FALLBACK CONTENT
+     DEFAULT IDENTITY
   ------------------------- */
   let name = "Pranab Debnath";
-  let role = "Data Analyst";
 
   /* -------------------------
-     PROFILE ENRICHMENT
+     PROFILE ENRICHMENT (NAME ONLY)
   ------------------------- */
   try {
     const profile = await DataService.getProfile();
@@ -30,31 +28,26 @@ window.addEventListener("app:ready", async () => {
         profile.identity.preferredName ||
         profile.identity.fullName ||
         name;
-
-      role =
-        profile.identity.headline ||
-        role;
     }
   } catch {
-    console.warn("[Header] Using fallback identity");
+    console.warn("[Header] Using fallback name");
   }
 
   /* -------------------------
-     RENDER (CANONICAL IDS)
+     RENDER (LOCKED STRUCTURE)
   ------------------------- */
   headerEl.innerHTML = `
     <div class="header-container">
 
       <div class="header-identity">
         <div class="header-name">${escapeHTML(name)}</div>
-        <div class="header-role">${escapeHTML(role)}</div>
       </div>
 
       <nav class="header-nav" aria-label="Primary Navigation">
-        <a href="#hero-section" data-nav>Home</a>
-        <a href="#projects-section" data-nav>Projects</a>
-        <a href="#contact-section" data-nav>Contact</a>
-        <a href="#" data-action="resume">Resume</a>
+        <a href="#hero-section" data-nav>HOME</a>
+        <a href="#projects-section" data-nav>PROJECTS</a>
+        <a href="#contact-section" data-nav>CONTACT</a>
+        <a href="#" data-action="resume">RESUME</a>
       </nav>
 
     </div>
@@ -73,14 +66,13 @@ window.addEventListener("app:ready", async () => {
 });
 
 /* =====================================================
-   NAV BEHAVIOR (SPA SAFE)
+   NAV BEHAVIOR (SPA SAFE, NO LAYOUT SHIFT)
 ===================================================== */
-
 function initNavBehavior() {
   document.querySelectorAll("[data-nav]").forEach(link => {
     link.addEventListener("click", e => {
       const targetId = link.getAttribute("href");
-      if (!targetId?.startsWith("#")) return;
+      if (!targetId || !targetId.startsWith("#")) return;
 
       const target = document.querySelector(targetId);
       if (!target) return;
