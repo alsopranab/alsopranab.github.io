@@ -335,3 +335,52 @@ section.omniverse-section {
     animation: none !important;
   }
 }
+
+/* ============================================================
+   OMNIVERSE — COMFORT PATCH (NON-DESTRUCTIVE)
+============================================================ */
+
+/* HERO — SOFT CENTER WITHOUT FLATTENING */
+.hero-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CONTACT — CENTER THE BLOCK, NOT THE CONTENT FLOW */
+#contact-section > div {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* CONTACT GRID — KEEP STRUCTURE, IMPROVE READABILITY */
+.contact-grid {
+  align-items: center;
+}
+
+/* CONTACT TEXT RULES */
+.contact-grid h3,
+.contact-grid span,
+.contact-grid a:not(.email) {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* EMAIL — LOWERCASE, QUIET, LAST */
+.contact-grid .email {
+  text-transform: lowercase;
+  letter-spacing: normal;
+  opacity: 0.7;
+  display: block;
+  margin-top: 14px;
+}
+
+/* MOBILE — ONLY WHAT IS NECESSARY */
+@media (max-width: 768px) {
+  .hero-wrapper {
+    text-align: center;
+  }
+
+  .contact-grid {
+    text-align: center;
+  }
+}
