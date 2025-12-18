@@ -1,14 +1,13 @@
 /**
- * Resume Redirect Controller (FINAL — USER INITIATED)
- * ===================================================
- * Responsibilities:
- * - Runs ONLY on explicit user action
- * - Loads profile data safely
- * - Resolves resume destination (LinkedIn-first)
+ * Resume Redirect Controller (FINAL — SCHEMA TRUE & SAFE)
+ * ======================================================
+ * - Runs ONLY on explicit user click
+ * - Reads real profile.json schema
+ * - Supports LinkedIn-first strategy
  * - Prevents redirect loops
- * - Emits lifecycle events for analytics
+ * - Emits lifecycle events
  *
- * This controller MUST NOT auto-run on app lifecycle.
+ * NEVER auto-runs on page load.
  */
 
 (function initResumeController() {
@@ -36,6 +35,7 @@ async function ResumeController() {
 
   if (!profile) {
     fail("Profile data unavailable");
+    console.groupEnd();
     return;
   }
 
@@ -45,7 +45,8 @@ async function ResumeController() {
   const resumeTarget = resolveResumeTarget(profile);
 
   if (!resumeTarget) {
-    fail("No resume destination configured");
+    fail("No valid resume destination configured");
+    console.groupEnd();
     return;
   }
 
@@ -54,6 +55,7 @@ async function ResumeController() {
   ========================= */
   if (isRedirectLoop(resumeTarget.url)) {
     fail("Redirect loop detected");
+    console.groupEnd();
     return;
   }
 
@@ -80,16 +82,23 @@ async function ResumeController() {
 }
 
 /* ============================================================
-   PROVIDER RESOLUTION (SCHEMA-ALIGNED)
+   PROVIDER RESOLUTION (REAL SCHEMA)
 ============================================================ */
-function resolveResumeTarget(profile) {
-  const linkedin =
-    profile?.identity?.links?.linkedin;
 
-  if (isValidUrl(linkedin)) {
+function resolveResumeTarget(profile) {
+  const resume = profile?.resume;
+
+  if (!resume || resume.strategy !== "external") {
+    return null;
+  }
+
+  if (
+    resume.provider === "linkedin" &&
+    isValidUrl(resume.externalProfile)
+  ) {
     return {
       provider: "linkedin",
-      url: linkedin
+      url: resume.externalProfile
     };
   }
 
@@ -99,6 +108,7 @@ function resolveResumeTarget(profile) {
 /* ============================================================
    SAFETY UTILITIES
 ============================================================ */
+
 function isValidUrl(url) {
   try {
     new URL(url);
@@ -113,6 +123,7 @@ function isRedirectLoop(targetUrl) {
 }
 
 function performRedirect(url) {
+  // replace() prevents back-button loops
   window.location.replace(url);
 }
 
