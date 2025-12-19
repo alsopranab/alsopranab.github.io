@@ -1,11 +1,11 @@
 /**
- * UI Motion Engine — FINAL LOCKED SAFE BUILD
- * ========================================
- * - ZERO section layout mutation
- * - ZERO spacing mutation
+ * UI Motion Engine — FINAL PRODUCTION BUILD
+ * =======================================
+ * - Uses app:ready ONLY
+ * - Never aborts if header is missing
+ * - Hero motion auto-binds when rendered
  * - GPU-only transforms
- * - Safari & mobile safe
- * - Header + hero motion ONLY
+ * - Mobile + Safari safe
  */
 
 (() => {
@@ -14,39 +14,56 @@
   // Respect reduced motion
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-  const header = document.getElementById("site-header");
-  const heroSection = document.getElementById("hero-section");
-
-  if (!header || !heroSection) return;
-
-  let heroWrapper = null;
+  let header = null;
   let headerIdentity = null;
+  let heroWrapper = null;
 
   let lastScrollY = window.scrollY;
   let ticking = false;
 
-  /* ================= HEADER READY ================= */
+  /* =====================================================
+     BOOTSTRAP — SINGLE ENTRY POINT
+  ===================================================== */
 
-  window.addEventListener("header:ready", () => {
-    headerIdentity = header.querySelector(".header-identity");
-    if (!headerIdentity) return;
+  window.addEventListener("app:ready", () => {
+    header = document.getElementById("site-header");
 
-    headerIdentity.style.opacity = "0";
-    headerIdentity.style.transform = "scale(0.96)";
-    headerIdentity.style.transition =
-      "opacity 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1)";
+    if (header) {
+      headerIdentity = header.querySelector(".header-identity");
+
+      if (headerIdentity) {
+        headerIdentity.style.opacity = "0";
+        headerIdentity.style.transform = "scale(0.96)";
+        headerIdentity.style.transition =
+          "opacity 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1)";
+      }
+    }
+
+    bindHeroWrapper();
   });
 
-  /* ================= HOME READY ================= */
+  /* =====================================================
+     HERO BINDING (SAFE, RETRY)
+  ===================================================== */
 
-  window.addEventListener("home:ready", () => {
+  function bindHeroWrapper() {
+    const heroSection = document.getElementById("hero-section");
+    if (!heroSection) return;
+
     heroWrapper = heroSection.querySelector(".hero-wrapper");
-    if (!heroWrapper) return;
 
-    heroWrapper.style.willChange = "transform";
-  });
+    if (heroWrapper) {
+      heroWrapper.style.willChange = "transform";
+      return;
+    }
 
-  /* ================= SCROLL HANDLER ================= */
+    // Retry once renderer finishes
+    requestAnimationFrame(bindHeroWrapper);
+  }
+
+  /* =====================================================
+     SCROLL HANDLER
+  ===================================================== */
 
   window.addEventListener(
     "scroll",
@@ -56,8 +73,10 @@
 
       requestAnimationFrame(() => {
         const y = window.scrollY;
+
         handleHeader(y);
         handleHero(y);
+
         lastScrollY = y;
         ticking = false;
       });
@@ -65,9 +84,13 @@
     { passive: true }
   );
 
-  /* ================= HEADER MOTION ================= */
+  /* =====================================================
+     HEADER MOTION (SAFE OPTIONAL)
+  ===================================================== */
 
   function handleHeader(y) {
+    if (!header) return;
+
     const delta = y - lastScrollY;
     if (Math.abs(delta) < 8) return;
 
@@ -78,7 +101,9 @@
     }
   }
 
-  /* ================= HERO MOTION ================= */
+  /* =====================================================
+     HERO MOTION
+  ===================================================== */
 
   function handleHero(y) {
     if (!heroWrapper) return;
@@ -101,10 +126,10 @@
 })();
 
 /* ======================================================
-   ACTIVE NAV TRACKER — FINAL SAFE
+   ACTIVE NAV TRACKER — SAFE & OPTIONAL
 ====================================================== */
 
-window.addEventListener("header:ready", () => {
+window.addEventListener("app:ready", () => {
   const navLinks = Array.from(
     document.querySelectorAll(".header-nav a[href^='#']")
   ).filter(link => {
@@ -120,10 +145,10 @@ window.addEventListener("header:ready", () => {
 
   if (!sections.length) return;
 
-  const navObserver = new IntersectionObserver(
+  const observer = new IntersectionObserver(
     entries => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
 
         navLinks.forEach(l => l.classList.remove("active"));
 
@@ -132,7 +157,7 @@ window.addEventListener("header:ready", () => {
         );
 
         if (active) active.classList.add("active");
-      }
+      });
     },
     {
       rootMargin: "-45% 0px -45% 0px",
@@ -140,5 +165,5 @@ window.addEventListener("header:ready", () => {
     }
   );
 
-  sections.forEach(section => navObserver.observe(section));
+  sections.forEach(section => observer.observe(section));
 });
