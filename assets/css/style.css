@@ -762,3 +762,79 @@ footer {
   text-transform: uppercase;
   color: rgba(255,255,255,.7);
 }
+
+/* ================= PROJECT INTELLIGENCE ================= */
+
+#project-intelligence-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 8rem 2rem;
+}
+
+.intel-shell {
+  padding: 3.2rem;
+  border-radius: 36px;
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 90px 200px rgba(0,0,0,.9);
+}
+
+.intel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 2.5rem;
+}
+
+.intel-header h3 {
+  font-weight: 500;
+  margin: 0;
+}
+
+.intel-meta {
+  font-size: 13px;
+  opacity: .7;
+}
+
+.intel-timeline {
+  display: grid;
+  gap: 14px;
+}
+
+.intel-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 32px;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+}
+
+.intel-row i {
+  display: block;
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #fff, transparent);
+}
+
+.intel-divider {
+  height: 1px;
+  background: rgba(255,255,255,.12);
+  margin: 2.5rem 0;
+}
+
+.intel-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  gap: 2rem;
+}
+
+.intel-categories strong {
+  font-size: 26px;
+}
+
+.intel-categories span {
+  display: block;
+  font-size: 12px;
+  opacity: .7;
+}
