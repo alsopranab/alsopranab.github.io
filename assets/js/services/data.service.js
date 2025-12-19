@@ -1,63 +1,23 @@
-/**
- * Centralized Data Service (FINAL — PRODUCTION LOCKED)
- * ===================================================
- * - GitHub Pages safe (subfolder aware)
- * - Absolute-path resilient
- * - Memory + session cache
- * - In-flight deduplication
- * - Schema-safe outputs
- * - Fail-open (never crashes UI)
- * - Debuggable without noise
- */
-
-const DataService = (() => {
+(function (window) {
   "use strict";
-
-  /* =========================
-     CONFIGURATION
-  ========================= */
-
   const FETCH_TIMEOUT = 8000;
   const ENABLE_SESSION_CACHE = true;
-  const DEBUG = location.hostname === "localhost";
+  const DEBUG = true; // TEMPORARILY TRUE — need disable later
 
-  /* =========================
-     BASE PATH RESOLUTION
-     (GitHub Pages SAFE)
-  ========================= */
 
-  const BASE_PATH = (() => {
-    const { origin, pathname } = window.location;
 
-    // Strip filename if present
-    const base =
-      pathname.endsWith(".html")
-        ? pathname.replace(/\/[^/]*$/, "/")
-        : pathname.endsWith("/")
-        ? pathname
-        : pathname + "/";
+  const BASE_PATH = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, "")}/assets/data/`;
 
-    return `${origin}${base}assets/data/`;
-  })();
-
-  /* =========================
-     INTERNAL STATE
-  ========================= */
 
   const memoryCache = Object.create(null);
   const inFlight = Object.create(null);
 
-  /* =========================
-     LOGGING
-  ========================= */
+
 
   const log = (...a) => DEBUG && console.log("[DataService]", ...a);
   const warn = (...a) => console.warn("[DataService]", ...a);
   const error = (...a) => console.error("[DataService]", ...a);
 
-  /* =========================
-     UTILITIES
-  ========================= */
 
   const withTimeout = (promise, ms) =>
     new Promise((resolve, reject) => {
@@ -76,9 +36,6 @@ const DataService = (() => {
 
   const sessionKey = file => `DS::${file}`;
 
-  /* =========================
-     SCHEMA NORMALIZERS
-  ========================= */
 
   function normalizeSocial(data) {
     if (!Array.isArray(data?.profiles)) {
@@ -93,9 +50,6 @@ const DataService = (() => {
     };
   }
 
-  /* =========================
-     NETWORK
-  ========================= */
 
   async function fetchJSON(file) {
     const url = `${BASE_PATH}${file}`;
@@ -107,21 +61,16 @@ const DataService = (() => {
     );
 
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status} (${file})`);
+      throw new Error(`HTTP ${res.status} – ${file}`);
     }
 
     return res.json();
   }
 
-  /* =========================
-     LOAD LOGIC
-  ========================= */
 
   async function load(file) {
-    // Memory cache
     if (memoryCache[file]) return memoryCache[file];
 
-    // Session cache
     if (ENABLE_SESSION_CACHE) {
       const cached = sessionStorage.getItem(sessionKey(file));
       if (cached) {
@@ -135,7 +84,6 @@ const DataService = (() => {
       }
     }
 
-    // In-flight dedupe
     if (inFlight[file]) return inFlight[file];
 
     const request = (async () => {
@@ -154,10 +102,7 @@ const DataService = (() => {
         memoryCache[file] = data;
 
         if (ENABLE_SESSION_CACHE) {
-          sessionStorage.setItem(
-            sessionKey(file),
-            JSON.stringify(data)
-          );
+          sessionStorage.setItem(sessionKey(file), JSON.stringify(data));
         }
 
         log("Loaded:", file);
@@ -174,11 +119,7 @@ const DataService = (() => {
     return request;
   }
 
-  /* =========================
-     PUBLIC API (IMMUTABLE)
-  ========================= */
-
-  return Object.freeze({
+  window.DataService = Object.freeze({
     getProfile:    () => load("profile.json"),
     getExperience: () => load("experience.json"),
     getEducation:  () => load("education.json"),
@@ -206,4 +147,5 @@ const DataService = (() => {
       inflight: Object.keys(inFlight)
     })
   });
-})();
+
+})(window);
