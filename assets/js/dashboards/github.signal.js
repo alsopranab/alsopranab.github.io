@@ -1,105 +1,186 @@
+/**
+ * GitHub Engineering Signal — FINAL PRODUCTION BUILD
+ * =================================================
+ * • Single source of truth
+ * • Lazy-loaded (IntersectionObserver)
+ * • Session cached (rate-limit safe)
+ * • Motion-safe (reduced motion respected)
+ * • Zero dependency on layout order
+ * • Silent fallback
+ */
+
 (() => {
   "use strict";
 
   const USERNAME = "alsopranab";
-  const TARGET = document.getElementById("github-dashboard");
+  const CACHE_KEY = "GH_SIGNAL_V1";
+  const CACHE_TTL = 30 * 60 * 1000; // 30 min
 
-  if (!TARGET) return;
+  const prefersReducedMotion =
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* =======================
-     BUILD SHELL
-  ======================= */
+  /* ===============================
+     APP READY
+  =============================== */
+  window.addEventListener("app:ready", () => {
+    const host = document.getElementById("github-dashboard");
+    if (!host) return;
 
-  TARGET.innerHTML = `
-    <div class="github-signal-shell" data-reveal data-hover>
-      <div class="signal-header">
-        <h3>Engineering Signal</h3>
-        <div class="signal-status">LIVE · GitHub</div>
+    observe(host);
+  });
+
+  /* ===============================
+     VISIBILITY GATE
+  =============================== */
+  function observe(el) {
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          io.disconnect();
+          init(el);
+        });
+      },
+      { threshold: 0.35 }
+    );
+
+    io.observe(el);
+  }
+
+  /* ===============================
+     INIT
+  =============================== */
+  async function init(host) {
+    host.innerHTML = buildShell();
+
+    const data = await getGitHubData();
+    if (!data) {
+      renderFallback(host);
+      return;
+    }
+
+    renderMetrics(data);
+    renderLanguages(data.languages);
+    renderHeat(data.repos);
+    drawWave(host.querySelector(".signal-wave"), data.activity);
+  }
+
+  /* ===============================
+     SHELL
+  =============================== */
+  function buildShell() {
+    return `
+      <div class="github-signal-shell" data-reveal data-hover>
+        <header class="signal-header">
+          <h3>Engineering Signal</h3>
+          <span class="signal-status">LIVE · GitHub</span>
+        </header>
+
+        <canvas class="signal-wave"></canvas>
+
+        <div class="signal-metrics">
+          <div><strong id="gh-repos">—</strong><span>Repositories</span></div>
+          <div><strong id="gh-commits">—</strong><span>Commits (est.)</span></div>
+          <div><strong id="gh-years">—</strong><span>Active Years</span></div>
+        </div>
+
+        <div class="signal-divider"></div>
+
+        <div class="signal-caption">Contribution Density</div>
+        <div class="signal-heat" id="gh-heat"></div>
+
+        <div class="signal-divider"></div>
+
+        <div class="signal-caption">Primary Languages</div>
+        <div class="signal-langs" id="gh-langs"></div>
       </div>
+    `;
+  }
 
-      <canvas class="signal-wave"></canvas>
+  /* ===============================
+     DATA (CACHED)
+  =============================== */
+  async function getGitHubData() {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (Date.now() - parsed.t < CACHE_TTL) {
+          return parsed.d;
+        }
+      } catch {}
+    }
 
-      <div class="signal-metrics">
-        <div><strong id="gh-repos">—</strong><span>Repositories</span></div>
-        <div><strong id="gh-commits">—</strong><span>Commits (est.)</span></div>
-        <div><strong id="gh-years">—</strong><span>Active Years</span></div>
-      </div>
+    try {
+      const [profileRes, reposRes] = await Promise.all([
+        fetch(`https://api.github.com/users/${USERNAME}`),
+        fetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100`)
+      ]);
 
-      <div class="signal-divider"></div>
+      if (!profileRes.ok || !reposRes.ok) return null;
 
-      <div class="signal-caption">Contribution Density</div>
-      <div class="signal-heat" id="gh-heat"></div>
+      const profile = await profileRes.json();
+      const repos = await reposRes.json();
 
-      <div class="signal-divider"></div>
+      const languages = {};
+      repos.forEach(r => {
+        if (!r.language) return;
+        languages[r.language] = (languages[r.language] || 0) + 1;
+      });
 
-      <div class="signal-caption">Primary Languages</div>
-      <div class="signal-langs" id="gh-langs"></div>
-    </div>
-  `;
+      const activity = repos
+        .map(r => new Date(r.updated_at).getTime())
+        .map(t => Math.max(0, 30 - Math.floor((Date.now() - t) / 86400000)));
 
-  /* =======================
-     FETCH DATA
-  ======================= */
+      const payload = {
+        repos: repos.length,
+        years:
+          new Date().getFullYear() -
+          new Date(profile.created_at).getFullYear(),
+        commits: repos.length * 120,
+        languages,
+        activity
+      };
 
-  Promise.all([
-    fetch(`https://api.github.com/users/${USERNAME}`),
-    fetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100`)
-  ])
-    .then(r => Promise.all(r.map(x => x.json())))
-    .then(([profile, repos]) => {
-      renderMetrics(profile, repos);
-      renderLanguages(repos);
-      renderHeat(repos);
-      renderWave(repos.length);
-    })
-    .catch(() => {
-      renderFallback();
-    });
+      sessionStorage.setItem(
+        CACHE_KEY,
+        JSON.stringify({ t: Date.now(), d: payload })
+      );
 
-  /* =======================
-     METRICS
-  ======================= */
+      return payload;
+    } catch {
+      return null;
+    }
+  }
 
-  function renderMetrics(profile, repos) {
-    document.getElementById("gh-repos").textContent = repos.length;
-    document.getElementById("gh-years").textContent =
-      new Date().getFullYear() - new Date(profile.created_at).getFullYear();
-
-    // Approx commit signal
+  /* ===============================
+     RENDER
+  =============================== */
+  function renderMetrics(data) {
+    document.getElementById("gh-repos").textContent = data.repos;
+    document.getElementById("gh-years").textContent = data.years;
     document.getElementById("gh-commits").textContent =
-      repos.length * 120 + "+";
+      data.commits.toLocaleString() + "+";
   }
 
-  /* =======================
-     LANG FLOW
-  ======================= */
-
-  function renderLanguages(repos) {
-    const map = {};
-    repos.forEach(r => {
-      if (!r.language) return;
-      map[r.language] = (map[r.language] || 0) + 1;
-    });
-
-    const sorted = Object.entries(map)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
-
+  function renderLanguages(languages) {
     const wrap = document.getElementById("gh-langs");
-    sorted.forEach(([lang]) => {
-      const el = document.createElement("span");
-      el.innerHTML = `${lang}<i></i>`;
-      wrap.appendChild(el);
-    });
+    Object.entries(languages)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .forEach(([lang, count]) => {
+        const el = document.createElement("span");
+        el.innerHTML = `${lang}<i style="width:${Math.min(
+          100,
+          count * 16
+        )}%"></i>`;
+        wrap.appendChild(el);
+      });
   }
 
-  /* =======================
-     HEAT MAP (ABSTRACT)
-  ======================= */
-
-  function renderHeat(repos) {
+  function renderHeat(repoCount) {
     const heat = document.getElementById("gh-heat");
-    const density = Math.min(160, repos.length * 4);
+    const density = Math.min(156, repoCount * 4);
 
     for (let i = 0; i < 156; i++) {
       const d = document.createElement("div");
@@ -108,53 +189,53 @@
     }
   }
 
-  /* =======================
-     SIGNAL WAVE
-  ======================= */
+  /* ===============================
+     WAVE (GPU SAFE)
+  =============================== */
+  function drawWave(canvas, activity) {
+    if (!canvas) return;
 
-  function renderWave(intensity) {
-    const c = document.querySelector(".signal-wave");
-    const ctx = c.getContext("2d");
-
-    function resize() {
-      c.width = c.offsetWidth;
-      c.height = c.offsetHeight;
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-
+    const ctx = canvas.getContext("2d");
+    let w, h, raf;
     let t = 0;
 
+    function resize() {
+      const dpr = window.devicePixelRatio || 1;
+      w = canvas.width = canvas.offsetWidth * dpr;
+      h = canvas.height = 120 * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
     function draw() {
-      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.clearRect(0, 0, w, h);
       ctx.beginPath();
 
-      for (let x = 0; x < c.width; x++) {
-        const y =
-          c.height / 2 +
-          Math.sin(x * 0.02 + t) *
-            Math.min(24, intensity);
+      activity.forEach((v, i) => {
+        const x = (i / (activity.length - 1)) * canvas.offsetWidth;
+        const y = 60 + Math.sin(i * 0.6 + t) * (v * 0.6);
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      });
 
-        ctx.lineTo(x, y);
-      }
-
-      ctx.strokeStyle = "rgba(255,255,255,.45)";
+      ctx.strokeStyle = "rgba(255,255,255,0.75)";
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      t += 0.03;
-      requestAnimationFrame(draw);
+      if (!prefersReducedMotion) {
+        t += 0.015;
+        raf = requestAnimationFrame(draw);
+      }
     }
 
+    resize();
     draw();
+    window.addEventListener("resize", resize);
   }
 
-  /* =======================
+  /* ===============================
      FALLBACK
-  ======================= */
-
-  function renderFallback() {
-    TARGET.querySelector(".signal-status").textContent = "STATIC MODE";
+  =============================== */
+  function renderFallback(host) {
+    const status = host.querySelector(".signal-status");
+    if (status) status.textContent = "STATIC MODE";
   }
 })();
