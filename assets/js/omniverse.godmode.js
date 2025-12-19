@@ -24,6 +24,7 @@
         : false
   };
 
+  // Respect reduced motion fully
   if (ENV.reduceMotion) return;
 
   /* ============================================================
@@ -73,7 +74,7 @@
     lastFrame = t;
     STATE.frame++;
 
-    // Pause if image viewer exists
+    // Pause motion while image viewer is open
     if (!document.getElementById("image-viewer-overlay")) {
       TASKS.forEach(fn => fn(t));
     }
@@ -194,6 +195,7 @@
 
       for (const el of CARDS) {
         const r = el.getBoundingClientRect();
+
         if (r.bottom < 0 || r.top > VIEW.h) {
           el.style.transform = "";
           continue;
@@ -235,16 +237,3 @@
     .forEach(el => revealObserver.observe(el));
 
 })();
-/* ============================================================
-   GRAPH SAFETY OVERRIDE — DO NOT REVEAL DATA VISUALS
-============================================================ */
-
-document
-  .querySelectorAll(
-    ".project-graph, .hero-graph, svg, svg *"
-  )
-  .forEach(el => {
-    el.classList.add("is-visible");
-    el.style.opacity = "1";
-    el.style.transform = "none";
-  });
