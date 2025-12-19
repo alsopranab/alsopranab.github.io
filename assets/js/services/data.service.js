@@ -1,43 +1,51 @@
 /**
- * Centralized Data Service (FINAL — LOCKED & SCHEMA SAFE)
- * ======================================================
- * - GitHub Pages safe
+ * Centralized Data Service (FINAL — PRODUCTION LOCKED)
+ * ===================================================
+ * - GitHub Pages safe (subfolder aware)
  * - Absolute-path resilient
  * - Memory + session cache
  * - In-flight deduplication
- * - Canonical schema output
+ * - Schema-safe outputs
  * - Fail-open (never crashes UI)
+ * - Debuggable without noise
  */
 
 const DataService = (() => {
+  "use strict";
+
   /* =========================
      CONFIGURATION
   ========================= */
 
-  const BASE_PATH = (() => {
-    const path = window.location.pathname;
-
-    // Root or direct HTML access
-    if (path === "/" || path.endsWith(".html")) {
-      return "/assets/data/";
-    }
-
-    // Sub-paths (GitHub Pages)
-    return path.replace(/\/[^/]*$/, "/assets/data/");
-  })();
-
   const FETCH_TIMEOUT = 8000;
   const ENABLE_SESSION_CACHE = true;
-
-  // Disable noisy logs in production
   const DEBUG = location.hostname === "localhost";
+
+  /* =========================
+     BASE PATH RESOLUTION
+     (GitHub Pages SAFE)
+  ========================= */
+
+  const BASE_PATH = (() => {
+    const { origin, pathname } = window.location;
+
+    // Strip filename if present
+    const base =
+      pathname.endsWith(".html")
+        ? pathname.replace(/\/[^/]*$/, "/")
+        : pathname.endsWith("/")
+        ? pathname
+        : pathname + "/";
+
+    return `${origin}${base}assets/data/`;
+  })();
 
   /* =========================
      INTERNAL STATE
   ========================= */
 
   const memoryCache = Object.create(null);
-  const inFlightRequests = Object.create(null);
+  const inFlight = Object.create(null);
 
   /* =========================
      LOGGING
@@ -45,7 +53,7 @@ const DataService = (() => {
 
   const log = (...a) => DEBUG && console.log("[DataService]", ...a);
   const warn = (...a) => console.warn("[DataService]", ...a);
-  const err  = (...a) => console.error("[DataService]", ...a);
+  const error = (...a) => console.error("[DataService]", ...a);
 
   /* =========================
      UTILITIES
@@ -55,12 +63,18 @@ const DataService = (() => {
     new Promise((resolve, reject) => {
       const t = setTimeout(() => reject(new Error("Timeout")), ms);
       promise.then(
-        r => { clearTimeout(t); resolve(r); },
-        e => { clearTimeout(t); reject(e); }
+        v => {
+          clearTimeout(t);
+          resolve(v);
+        },
+        e => {
+          clearTimeout(t);
+          reject(e);
+        }
       );
     });
 
-  const sessionKey = file => `DataService::${file}`;
+  const sessionKey = file => `DS::${file}`;
 
   /* =========================
      SCHEMA NORMALIZERS
@@ -68,7 +82,7 @@ const DataService = (() => {
 
   function normalizeSocial(data) {
     if (!Array.isArray(data?.profiles)) {
-      warn("social.json malformed — returning empty profiles");
+      warn("social.json malformed — fallback used");
       return { profiles: [] };
     }
 
@@ -80,7 +94,7 @@ const DataService = (() => {
   }
 
   /* =========================
-     CORE FETCH
+     NETWORK
   ========================= */
 
   async function fetchJSON(file) {
@@ -93,27 +107,27 @@ const DataService = (() => {
     );
 
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status} → ${url}`);
+      throw new Error(`HTTP ${res.status} (${file})`);
     }
 
     return res.json();
   }
 
-  async function loadJSON(file) {
-    /* ---- Memory cache ---- */
-    if (memoryCache[file]) {
-      log("Memory hit:", file);
-      return memoryCache[file];
-    }
+  /* =========================
+     LOAD LOGIC
+  ========================= */
 
-    /* ---- Session cache ---- */
+  async function load(file) {
+    // Memory cache
+    if (memoryCache[file]) return memoryCache[file];
+
+    // Session cache
     if (ENABLE_SESSION_CACHE) {
       const cached = sessionStorage.getItem(sessionKey(file));
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
           memoryCache[file] = parsed;
-          log("Session hit:", file);
           return parsed;
         } catch {
           sessionStorage.removeItem(sessionKey(file));
@@ -121,18 +135,18 @@ const DataService = (() => {
       }
     }
 
-    /* ---- In-flight dedupe ---- */
-    if (inFlightRequests[file]) {
-      return inFlightRequests[file];
-    }
+    // In-flight dedupe
+    if (inFlight[file]) return inFlight[file];
 
-    /* ---- Network fetch ---- */
     const request = (async () => {
       try {
         let data = await fetchJSON(file);
-        if (!data) return null;
 
-        // Canonical schema lock
+        if (!data || typeof data !== "object") {
+          warn(`${file} returned invalid JSON`);
+          return {};
+        }
+
         if (file === "social.json") {
           data = normalizeSocial(data);
         }
@@ -149,50 +163,47 @@ const DataService = (() => {
         log("Loaded:", file);
         return data;
       } catch (e) {
-        err(`Failed loading ${file}`, e);
-        return null;
+        error(`Failed loading ${file}`, e);
+        return {};
       } finally {
-        delete inFlightRequests[file];
+        delete inFlight[file];
       }
     })();
 
-    inFlightRequests[file] = request;
+    inFlight[file] = request;
     return request;
   }
 
   /* =========================
-     PUBLIC API (LOCKED)
+     PUBLIC API (IMMUTABLE)
   ========================= */
 
   return Object.freeze({
-    getProfile:    () => loadJSON("profile.json"),
-    getExperience: () => loadJSON("experience.json"),
-    getEducation:  () => loadJSON("education.json"),
-    getProjects:   () => loadJSON("projects.json"),
-    getFeatured:   () => loadJSON("featured.json"),
-    getLicenses:   () => loadJSON("licenses.json"),
-    getContact:    () => loadJSON("contact.json"),
-    getSocials:    () => loadJSON("social.json"),
+    getProfile:    () => load("profile.json"),
+    getExperience: () => load("experience.json"),
+    getEducation:  () => load("education.json"),
+    getProjects:   () => load("projects.json"),
+    getFeatured:   () => load("featured.json"),
+    getLicenses:   () => load("licenses.json"),
+    getContact:    () => load("contact.json"),
+    getSocials:    () => load("social.json"),
 
-    preloadAll: async () => {
-      log("Preloading all JSON…");
-      await Promise.allSettled([
-        loadJSON("profile.json"),
-        loadJSON("experience.json"),
-        loadJSON("education.json"),
-        loadJSON("projects.json"),
-        loadJSON("featured.json"),
-        loadJSON("licenses.json"),
-        loadJSON("contact.json"),
-        loadJSON("social.json")
-      ]);
-      log("Preload complete");
-    },
+    preloadAll: () =>
+      Promise.allSettled([
+        load("profile.json"),
+        load("experience.json"),
+        load("education.json"),
+        load("projects.json"),
+        load("featured.json"),
+        load("licenses.json"),
+        load("contact.json"),
+        load("social.json")
+      ]),
 
     debugSnapshot: () => ({
       basePath: BASE_PATH,
-      memoryCache: Object.keys(memoryCache),
-      inFlight: Object.keys(inFlightRequests)
+      memory: Object.keys(memoryCache),
+      inflight: Object.keys(inFlight)
     })
   });
 })();
