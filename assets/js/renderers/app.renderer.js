@@ -6,6 +6,7 @@
  * - Matches CSS layout contracts exactly
  * - Zero duplication (footer-safe)
  * - Never breaks on partial data
+ * - Preserves static hero dashboard
  */
 
 window.addEventListener("home:ready", () => {
@@ -20,7 +21,7 @@ window.addEventListener("home:ready", () => {
 });
 
 /* ============================================================
-   HERO
+   HERO — HYBRID (STATIC + DYNAMIC SAFE)
 ============================================================ */
 
 function renderHero() {
@@ -28,20 +29,27 @@ function renderHero() {
   const d = getData(section);
   if (!d?.identity) return;
 
-  section.innerHTML = `
-    <div class="hero-wrapper">
-      <h1>${escape(d.identity.fullName || "")}</h1>
-      ${
-        d.identity.headline
-          ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>`
-          : ""
-      }
-      ${
-        d.identity.summary
-          ? `<p class="hero-summary">${escape(d.identity.summary)}</p>`
-          : ""
-      }
-    </div>
+  let wrapper = section.querySelector(".hero-wrapper");
+
+  // Create wrapper if missing, never replace section
+  if (!wrapper) {
+    wrapper = document.createElement("div");
+    wrapper.className = "hero-wrapper";
+    section.prepend(wrapper);
+  }
+
+  wrapper.innerHTML = `
+    <h1>${escape(d.identity.fullName || "")}</h1>
+    ${
+      d.identity.headline
+        ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>`
+        : ""
+    }
+    ${
+      d.identity.summary
+        ? `<p class="hero-summary">${escape(d.identity.summary)}</p>`
+        : ""
+    }
   `;
 }
 
@@ -226,7 +234,7 @@ function renderEducationItem(r) {
 }
 
 /* ============================================================
-   CONTACT — FINAL & CSS-COMPATIBLE
+   CONTACT
 ============================================================ */
 
 function renderContact() {
@@ -292,6 +300,7 @@ function escape(str) {
       )
     : "";
 }
+
 /* ============================================================
    IMAGE VIEWER — SAFE, GLOBAL, IMMUTABLE
 ============================================================ */
@@ -306,7 +315,6 @@ window.addEventListener("home:ready", () => {
 });
 
 function openImageViewer(src, alt) {
-  // Prevent duplicate overlays
   if (document.getElementById("image-viewer-overlay")) return;
 
   const overlay = document.createElement("div");
