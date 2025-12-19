@@ -51,31 +51,31 @@ body {
   inset:0;
   pointer-events:none;
 }
-
 #stars { z-index:-3; }
 #shooting-stars { z-index:-2; }
 
-/* HERO */
-.hero {
+/* SECTIONS */
+section {
   max-width:1100px;
   margin:0 auto;
-  padding:10rem 2rem 6rem;
+  padding:8rem 2rem;
 }
 
-.hero h1 {
+/* HERO */
+#hero-section h1 {
   font-size:clamp(42px,6vw,64px);
   font-weight:500;
   letter-spacing:-.035em;
   margin:0;
 }
 
-.hero .tagline {
+.hero-tagline {
   margin-top:1.4rem;
   color:var(--violet);
   font-weight:500;
 }
 
-.hero p {
+.hero-summary {
   margin-top:1.4rem;
   max-width:60ch;
   color:var(--text-muted);
@@ -88,7 +88,6 @@ body {
   border-radius:32px;
   position:relative;
   overflow:hidden;
-
   background:
     radial-gradient(
       140% 120% at 12% 8%,
@@ -96,25 +95,12 @@ body {
       rgba(255,255,255,.08) 38%,
       rgba(9,6,19,.90) 78%
     );
-
   backdrop-filter:blur(28px) saturate(160%);
   box-shadow:
     0 80px 180px rgba(0,0,0,.95),
     inset 0 1px 0 rgba(255,255,255,.25);
-
-  transition:transform 900ms var(--ease), box-shadow 900ms var(--ease);
 }
 
-@media (hover:hover) {
-  .dashboard:hover {
-    transform:translateY(-10px) scale(1.01);
-    box-shadow:
-      0 120px 240px rgba(0,0,0,1),
-      0 0 90px var(--violet-glow);
-  }
-}
-
-/* Dashboard glow */
 .dashboard::after {
   content:"";
   position:absolute;
@@ -156,7 +142,7 @@ body {
   color:var(--violet);
 }
 
-/* GRAPH PLACEHOLDER */
+/* GRAPH */
 .graph {
   height:260px;
   border-radius:20px;
@@ -189,14 +175,18 @@ footer {
 <canvas id="stars"></canvas>
 <svg id="shooting-stars"></svg>
 
-<main class="hero">
-  <h1>Pranab Debnath</h1>
-  <div class="tagline">Data • Analytics • Automation</div>
-  <p>
-    I design analytical systems that turn raw data into strategic,
-    data-driven decisions with precision and clarity.
-  </p>
+<!-- HERO -->
+<section id="hero-section">
+  <div class="hero-wrapper">
+    <h1>Pranab Debnath</h1>
+    <p class="hero-tagline">Data • Analytics • Automation</p>
+    <p class="hero-summary">
+      I design analytical systems that turn raw data into strategic,
+      data-driven decisions with precision and clarity.
+    </p>
+  </div>
 
+  <!-- STATIC DASHBOARD (PRESERVED) -->
   <div class="dashboard">
     <div class="kpis">
       <div class="kpi"><span>Revenue</span><strong>₹4.8M</strong></div>
@@ -205,14 +195,40 @@ footer {
     </div>
     <div class="graph"></div>
   </div>
-</main>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience-section" data-source=""></section>
+
+<!-- FEATURED -->
+<section id="featured-section" data-source=""></section>
+
+<!-- PROJECTS -->
+<section id="projects-section" data-source=""></section>
+
+<!-- EDUCATION -->
+<section id="education-section" data-source=""></section>
+
+<!-- CONTACT -->
+<section id="contact-section" data-source=""></section>
 
 <footer>© Pranab Debnath</footer>
 
+<!-- =========================================================
+     BOOTSTRAP (UNCHANGED)
+========================================================= -->
+<script src="assets/js/core/bootstrap.js"></script>
+
+<!-- =========================================================
+     RENDERER (FINAL)
+========================================================= -->
+<script src="assets/js/renderers/app.renderer.js"></script>
+
+<!-- =========================================================
+     COSMIC BACKGROUND
+========================================================= -->
 <script>
-/* =========================================================
-   STARS (Canvas)
-========================================================= */
+/* STARS */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
 let stars=[];
@@ -247,9 +263,7 @@ resizeStars();
 drawStars();
 addEventListener("resize",resizeStars);
 
-/* =========================================================
-   SHOOTING STARS (SVG)
-========================================================= */
+/* SHOOTING STARS */
 const svg=document.getElementById("shooting-stars");
 svg.innerHTML=`
 <defs>
@@ -264,7 +278,6 @@ function shoot(){
   let x=Math.random()*innerWidth;
   let y=-100;
   const angle=45+Math.random()*20;
-
   r.setAttribute("x",x);
   r.setAttribute("y",y);
   r.setAttribute("width",140);
@@ -282,7 +295,6 @@ function shoot(){
     else r.remove();
   }
   anim();
-
   setTimeout(shoot,2000+Math.random()*4000);
 }
 shoot();
