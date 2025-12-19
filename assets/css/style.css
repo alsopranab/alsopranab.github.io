@@ -878,3 +878,18 @@ section.omniverse-section > h2 {
   width: 100%;
   display: block;
 }
+
+/* ============================================================
+   CRITICAL FIX — GRAPH VISIBILITY (FINAL)
+============================================================ */
+
+/* Push glow BEHIND content */
+.project-analytics::before {
+  z-index: 0 !important;
+}
+
+/* Pull actual card content ABOVE glow */
+.project-analytics > * {
+  position: relative;
+  z-index: 1;
+}
