@@ -11,6 +11,7 @@
 (() => {
   "use strict";
 
+  // Respect reduced motion
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const header = document.getElementById("site-header");
@@ -24,7 +25,7 @@
   let lastScrollY = window.scrollY;
   let ticking = false;
 
-  /* ================= READY ================= */
+  /* ================= HEADER READY ================= */
 
   window.addEventListener("header:ready", () => {
     headerIdentity = header.querySelector(".header-identity");
@@ -36,6 +37,8 @@
       "opacity 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1)";
   });
 
+  /* ================= HOME READY ================= */
+
   window.addEventListener("home:ready", () => {
     heroWrapper = heroSection.querySelector(".hero-wrapper");
     if (!heroWrapper) return;
@@ -43,7 +46,7 @@
     heroWrapper.style.willChange = "transform";
   });
 
-  /* ================= SCROLL ================= */
+  /* ================= SCROLL HANDLER ================= */
 
   window.addEventListener(
     "scroll",
@@ -62,7 +65,7 @@
     { passive: true }
   );
 
-  /* ================= HEADER ================= */
+  /* ================= HEADER MOTION ================= */
 
   function handleHeader(y) {
     const delta = y - lastScrollY;
@@ -75,7 +78,7 @@
     }
   }
 
-  /* ================= HERO ================= */
+  /* ================= HERO MOTION ================= */
 
   function handleHero(y) {
     if (!heroWrapper) return;
@@ -119,19 +122,23 @@ window.addEventListener("header:ready", () => {
 
   const navObserver = new IntersectionObserver(
     entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
 
         navLinks.forEach(l => l.classList.remove("active"));
 
         const active = navLinks.find(
           l => l.getAttribute("href") === `#${entry.target.id}`
         );
+
         if (active) active.classList.add("active");
-      });
+      }
     },
-    { rootMargin: "-45% 0px -45% 0px", threshold: 0.01 }
+    {
+      rootMargin: "-45% 0px -45% 0px",
+      threshold: 0.01
+    }
   );
 
-  sections.forEach(s => navObserver.observe(s));
+  sections.forEach(section => navObserver.observe(section));
 });
