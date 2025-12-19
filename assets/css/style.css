@@ -825,3 +825,56 @@ section.omniverse-section > h2 {
   }
 }
 
+/* ============================================================
+   HARD VISIBILITY OVERRIDE — GRAPH SAFE
+============================================================ */
+
+#hero-section,
+#projects-section {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ============================================================
+   Z-INDEX CORRECTION — DASHBOARD & GRAPHS
+============================================================ */
+
+#hero-section,
+#projects-section,
+.hero-dashboard,
+.hero-graph,
+.project-graph {
+  position: relative;
+  z-index: 5;
+}
+
+.starry-bg {
+  z-index: -3;
+}
+
+.shooting-stars {
+  z-index: -2;
+}
+
+/* ============================================================
+   SVG HARD FORCE (LAST RESORT, SAFE)
+============================================================ */
+
+.hero-graph svg,
+.project-graph svg,
+.hero-graph svg *,
+.project-graph svg * {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+/* ============================================================
+   HERO GRAPH SIZE GUARANTEE
+============================================================ */
+
+.hero-graph {
+  min-height: 220px;
+  width: 100%;
+  display: block;
+}
