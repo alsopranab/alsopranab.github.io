@@ -1,3 +1,24 @@
+/**
+ * Unified App Renderer — FINAL PRODUCTION BUILD
+ * ============================================
+ * - Safe top-to-bottom rendering
+ * - JSON-driven (data-source only)
+ * - No layout mutation
+ * - Fail-safe (never blanks page)
+ * - Lighthouse friendly
+ */
+
+/* ============================================================
+   EVENT BRIDGE (CRITICAL)
+============================================================ */
+
+window.addEventListener("app:ready", () => {
+  window.dispatchEvent(new CustomEvent("home:ready"));
+});
+
+/* ============================================================
+   ENTRY POINT
+============================================================ */
 
 window.addEventListener("home:ready", () => {
   renderHero();
@@ -8,6 +29,9 @@ window.addEventListener("home:ready", () => {
   renderContact();
 });
 
+/* ============================================================
+   HERO
+============================================================ */
 
 function renderHero() {
   const section = document.getElementById("hero-section");
@@ -18,7 +42,7 @@ function renderHero() {
   if (!wrapper) {
     wrapper = document.createElement("div");
     wrapper.className = "hero-wrapper";
-    section.prepend(wrapper);
+    section.appendChild(wrapper);
   }
 
   wrapper.innerHTML = `
@@ -28,6 +52,9 @@ function renderHero() {
   `;
 }
 
+/* ============================================================
+   EXPERIENCE
+============================================================ */
 
 function renderExperience() {
   const section = document.getElementById("experience-section");
@@ -44,7 +71,11 @@ function renderExperience() {
   }
 
   list.innerHTML = d.timeline
-    .flatMap(org => Array.isArray(org.roles) ? org.roles.map(role => renderRole(role, org.organization)) : [])
+    .flatMap(org =>
+      Array.isArray(org.roles)
+        ? org.roles.map(role => renderRole(role, org.organization))
+        : []
+    )
     .join("");
 }
 
@@ -64,13 +95,18 @@ function renderRole(role, org) {
         ${org?.name ? escape(org.name) + " · " : ""}
         ${start}${end ? " – " + end : ""}
       </div>
-      ${Array.isArray(role.responsibilities)
-        ? `<ul>${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}</ul>`
-        : ""}
+      ${
+        Array.isArray(role.responsibilities)
+          ? `<ul>${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}</ul>`
+          : ""
+      }
     </div>
   `;
 }
 
+/* ============================================================
+   FEATURED
+============================================================ */
 
 function renderFeatured() {
   const section = document.getElementById("featured-section");
@@ -94,19 +130,20 @@ function renderFeaturedItem(item) {
 
   return `
     <div class="featured-item" data-omni-reveal>
-      ${item.media?.coverImage
-        ? `<img
-            src="${item.media.coverImage}"
-            alt="${escape(item.media.alt || "")}"
-            data-expandable
-          >`
-        : ""}
+      ${
+        item.media?.coverImage
+          ? `<img src="${item.media.coverImage}" alt="${escape(item.media.alt || "")}" data-expandable>`
+          : ""
+      }
       <h3>${escape(item.project.name || "")}</h3>
       <p>${escape(item.project.description || "")}</p>
     </div>
   `;
 }
 
+/* ============================================================
+   PROJECTS
+============================================================ */
 
 function renderProjects() {
   const section = document.getElementById("projects-section");
@@ -141,14 +178,18 @@ function renderProjectCard(p) {
     <div class="project-card" data-omni-reveal>
       <h4>${escape(p.project.name || "")}</h4>
       <p>${escape(p.project.summary || "")}</p>
-      ${p.repository?.url
-        ? `<a href="${p.repository.url}" target="_blank" rel="noopener">
-            View on GitHub →
-          </a>`
-        : ""}
+      ${
+        p.repository?.url
+          ? `<a href="${p.repository.url}" target="_blank" rel="noopener">View on GitHub →</a>`
+          : ""
+      }
     </div>
   `;
 }
+
+/* ============================================================
+   EDUCATION
+============================================================ */
 
 function renderEducation() {
   const section = document.getElementById("education-section");
@@ -167,14 +208,20 @@ function renderEducation() {
       ${r.degree || r.field ? `<div>${escape(r.degree || "")}${r.field ? " — " + escape(r.field) : ""}</div>` : ""}
       <div>${escape(r.start || "")} – ${escape(r.end || "")}</div>
       ${r.description ? `<p>${escape(r.description)}</p>` : ""}
-      ${Array.isArray(r.highlights)
-        ? `<ul>${r.highlights.map(h => `<li>${escape(h)}</li>`).join("")}</ul>`
-        : ""}
+      ${
+        Array.isArray(r.highlights)
+          ? `<ul>${r.highlights.map(h => `<li>${escape(h)}</li>`).join("")}</ul>`
+          : ""
+      }
     `;
 
     section.appendChild(item);
   });
 }
+
+/* ============================================================
+   CONTACT
+============================================================ */
 
 function renderContact() {
   const section = document.getElementById("contact-section");
@@ -186,24 +233,29 @@ function renderContact() {
       <h2>${escape(d.section.title || "Contact")}</h2>
       ${d.section.subtitle ? `<div class="contact-tagline">${escape(d.section.subtitle)}</div>` : ""}
       ${d.section.description ? `<p>${escape(d.section.description)}</p>` : ""}
-      ${d.primary?.email?.value
-        ? `<a class="contact-email" href="mailto:${escape(d.primary.email.value)}">
-            ${escape(d.primary.email.value)}
-          </a>`
-        : ""}
-      ${Array.isArray(d.socials)
-        ? `<div class="contact-socials">
-            ${d.socials
-              .filter(s => s.enabled !== false)
-              .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
-              .map(s => `<a href="${s.url}" target="_blank" rel="noopener">${escape(s.name)}</a>`)
-              .join("")}
-          </div>`
-        : ""}
+      ${
+        d.primary?.email?.value
+          ? `<a class="contact-email" href="mailto:${escape(d.primary.email.value)}">${escape(d.primary.email.value)}</a>`
+          : ""
+      }
+      ${
+        Array.isArray(d.socials)
+          ? `<div class="contact-socials">
+              ${d.socials
+                .filter(s => s.enabled !== false)
+                .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
+                .map(s => `<a href="${s.url}" target="_blank" rel="noopener">${escape(s.name)}</a>`)
+                .join("")}
+            </div>`
+          : ""
+      }
     </div>
   `;
 }
 
+/* ============================================================
+   HELPERS
+============================================================ */
 
 function ensureHeading(section, text) {
   let h = section.querySelector(":scope > h2");
@@ -230,6 +282,10 @@ function escape(str) {
       )
     : "";
 }
+
+/* ============================================================
+   IMAGE VIEWER
+============================================================ */
 
 window.addEventListener("home:ready", () => {
   document.body.addEventListener("click", e => {
