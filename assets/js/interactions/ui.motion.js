@@ -1,70 +1,59 @@
-/**
- * UI Motion Engine — FINAL PRODUCTION BUILD
- * =======================================
- * - Uses app:ready ONLY
- * - Never aborts if header is missing
- * - Hero motion auto-binds when rendered
- * - GPU-only transforms
- * - Mobile + Safari safe
- */
 
 (() => {
   "use strict";
 
-  // Respect reduced motion
+  /* =======================
+     ACCESSIBILITY
+  ======================= */
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+  let heroWrapper = null;
   let header = null;
   let headerIdentity = null;
-  let heroWrapper = null;
 
   let lastScrollY = window.scrollY;
   let ticking = false;
 
-  /* =====================================================
-     BOOTSTRAP — SINGLE ENTRY POINT
-  ===================================================== */
-
+  /* =======================
+     APP READY
+  ======================= */
   window.addEventListener("app:ready", () => {
     header = document.getElementById("site-header");
-
     if (header) {
       headerIdentity = header.querySelector(".header-identity");
-
       if (headerIdentity) {
         headerIdentity.style.opacity = "0";
         headerIdentity.style.transform = "scale(0.96)";
         headerIdentity.style.transition =
-          "opacity 240ms ease, transform 320ms cubic-bezier(0.22,1,0.36,1)";
+          "opacity 240ms ease, transform 320ms cubic-bezier(.22,1,.36,1)";
       }
     }
 
-    bindHeroWrapper();
+    bindHero();
+    initReveal();
+    initParallax();
+    initStars();
   });
 
-  /* =====================================================
-     HERO BINDING (SAFE, RETRY)
-  ===================================================== */
+  /* =======================
+     HERO MOTION
+  ======================= */
+  function bindHero() {
+    const hero = document.getElementById("hero-section");
+    if (!hero) return;
 
-  function bindHeroWrapper() {
-    const heroSection = document.getElementById("hero-section");
-    if (!heroSection) return;
-
-    heroWrapper = heroSection.querySelector(".hero-wrapper");
-
-    if (heroWrapper) {
-      heroWrapper.style.willChange = "transform";
+    heroWrapper = hero.querySelector(".hero-wrapper");
+    if (!heroWrapper) {
+      requestAnimationFrame(bindHero);
       return;
     }
 
-    // Retry once renderer finishes
-    requestAnimationFrame(bindHeroWrapper);
+    heroWrapper.style.willChange = "transform";
   }
 
-  /* =====================================================
-     SCROLL HANDLER
-  ===================================================== */
-
+  /* =======================
+     SCROLL LOOP (SAFE)
+  ======================= */
   window.addEventListener(
     "scroll",
     () => {
@@ -84,38 +73,26 @@
     { passive: true }
   );
 
-  /* =====================================================
-     HEADER MOTION (SAFE OPTIONAL)
-  ===================================================== */
-
   function handleHeader(y) {
     if (!header) return;
 
-    const delta = y - lastScrollY;
-    if (Math.abs(delta) < 8) return;
-
-    if (y > lastScrollY && y > 120) {
+    if (y > lastScrollY && y > 140) {
       header.classList.add("header-hidden");
     } else {
       header.classList.remove("header-hidden");
     }
   }
 
-  /* =====================================================
-     HERO MOTION
-  ===================================================== */
-
   function handleHero(y) {
     if (!heroWrapper) return;
 
-    const clamped = Math.min(y / 400, 1);
-
+    const p = Math.min(y / 420, 1);
     heroWrapper.style.transform =
-      `translate3d(0, ${clamped * -18}px, 0) scale(${1 - clamped * 0.04})`;
+      `translate3d(0, ${-18 * p}px, 0) scale(${1 - p * 0.04})`;
 
     if (!headerIdentity) return;
 
-    if (clamped > 0.7) {
+    if (p > 0.7) {
       headerIdentity.style.opacity = "1";
       headerIdentity.style.transform = "scale(1)";
     } else {
@@ -123,47 +100,106 @@
       headerIdentity.style.transform = "scale(0.96)";
     }
   }
-})();
 
-/* ======================================================
-   ACTIVE NAV TRACKER — SAFE & OPTIONAL
-====================================================== */
+  /* =======================
+     REVEAL ENGINE
+  ======================= */
+  function initReveal() {
+    const items = document.querySelectorAll("[data-reveal]");
+    if (!items.length) return;
 
-window.addEventListener("app:ready", () => {
-  const navLinks = Array.from(
-    document.querySelectorAll(".header-nav a[href^='#']")
-  ).filter(link => {
-    const href = link.getAttribute("href");
-    return href && href.length > 1;
-  });
+    items.forEach(el => {
+      el.style.opacity = "0";
+      el.style.transform = "translate3d(0, 18px, 0)";
+      el.style.transition =
+        "opacity 900ms cubic-bezier(.22,1,.36,1), transform 900ms cubic-bezier(.22,1,.36,1)";
+    });
 
-  if (!navLinks.length) return;
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
 
-  const sections = navLinks
-    .map(link => document.querySelector(link.getAttribute("href")))
-    .filter(Boolean);
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translate3d(0,0,0)";
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 }
+    );
 
-  if (!sections.length) return;
+    items.forEach(el => io.observe(el));
+  }
 
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
+  /* =======================
+     PARALLAX (LIGHT)
+  ======================= */
+  function initParallax() {
+    const layers = [...document.querySelectorAll("[data-parallax]")];
+    if (!layers.length) return;
 
-        navLinks.forEach(l => l.classList.remove("active"));
+    window.addEventListener(
+      "scroll",
+      () => {
+        const y = window.scrollY;
+        layers.forEach(el => {
+          const d = parseFloat(el.dataset.parallax) || 0.05;
+          el.style.transform = `translate3d(0, ${y * d}px, 0)`;
+        });
+      },
+      { passive: true }
+    );
+  }
 
-        const active = navLinks.find(
-          l => l.getAttribute("href") === `#${entry.target.id}`
-        );
+  /* =======================
+     STARFIELD (DEPTH SAFE)
+  ======================= */
+  function initStars() {
+    const canvas = document.getElementById("stars");
+    if (!canvas) return;
 
-        if (active) active.classList.add("active");
-      });
-    },
-    {
-      rootMargin: "-45% 0px -45% 0px",
-      threshold: 0.01
+    const ctx = canvas.getContext("2d");
+    let w, h;
+
+    const layers = [
+      { count: 100, speed: 0.03, size: 1 },
+      { count: 60, speed: 0.06, size: 1.4 },
+      { count: 30, speed: 0.1, size: 2 }
+    ];
+
+    let stars = [];
+
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+
+      stars = layers.flatMap(l =>
+        Array.from({ length: l.count }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: l.size,
+          s: l.speed
+        }))
+      );
     }
-  );
 
-  sections.forEach(section => observer.observe(section));
-});
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      const scrollY = window.scrollY;
+
+      stars.forEach(star => {
+        const y = (star.y + scrollY * star.s) % h;
+        ctx.beginPath();
+        ctx.arc(star.x, y, star.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,.55)";
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+
+    resize();
+    draw();
+    window.addEventListener("resize", resize);
+  }
+})();
