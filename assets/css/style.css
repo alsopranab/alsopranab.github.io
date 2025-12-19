@@ -701,3 +701,64 @@ footer {
     height: 120px;
   }
 }
+/* ======================================================
+   GITHUB ACTIVITY SIGNAL — STEP 3
+====================================================== */
+
+.signal-heat {
+  display: grid;
+  grid-template-columns: repeat(26, 1fr);
+  gap: 6px;
+  margin-top: 2.6rem;
+}
+
+.signal-dot {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.signal-dot.active {
+  background: rgba(255,255,255,.18);
+  box-shadow:
+    0 0 14px rgba(255,255,255,.25),
+    inset 0 0 6px rgba(255,255,255,.25);
+}
+
+.signal-dot::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(circle, rgba(255,255,255,.45), transparent 60%);
+  opacity: 0;
+  transition: opacity .6s ease;
+}
+
+.signal-dot.active::after {
+  opacity: .55;
+}
+
+/* Flow divider */
+.signal-divider {
+  height: 1px;
+  margin: 3rem 0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.35),
+      transparent
+    );
+}
+
+/* Pulse label */
+.signal-caption {
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.7);
+}
