@@ -101,18 +101,6 @@ section {
     inset 0 1px 0 rgba(255,255,255,.25);
 }
 
-.dashboard::after {
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(167,139,250,.35), transparent 55%),
-    radial-gradient(circle at 70% 60%, rgba(96,165,250,.25), transparent 60%);
-  filter:blur(180px);
-  opacity:.6;
-  pointer-events:none;
-}
-
 /* KPIs */
 .kpis {
   display:grid;
@@ -152,7 +140,6 @@ section {
       rgba(255,255,255,.08),
       rgba(255,255,255,.015)
     );
-  box-shadow:inset 0 0 60px rgba(255,255,255,.05);
 }
 
 /* FOOTER */
@@ -160,11 +147,6 @@ footer {
   padding:6rem 2rem;
   text-align:center;
   color:rgba(255,255,255,.4);
-}
-
-/* REDUCED MOTION */
-@media (prefers-reduced-motion:reduce) {
-  * { animation:none !important; transition:none !important; }
 }
 </style>
 </head>
@@ -186,7 +168,6 @@ footer {
     </p>
   </div>
 
-  <!-- STATIC DASHBOARD (PRESERVED) -->
   <div class="dashboard">
     <div class="kpis">
       <div class="kpi"><span>Revenue</span><strong>₹4.8M</strong></div>
@@ -197,108 +178,29 @@ footer {
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section id="experience-section" data-source=""></section>
-
-<!-- FEATURED -->
-<section id="featured-section" data-source=""></section>
-
-<!-- PROJECTS -->
-<section id="projects-section" data-source=""></section>
-
-<!-- EDUCATION -->
-<section id="education-section" data-source=""></section>
-
-<!-- CONTACT -->
-<section id="contact-section" data-source=""></section>
+<!-- DYNAMIC SECTIONS -->
+<section id="experience-section"></section>
+<section id="featured-section"></section>
+<section id="projects-section"></section>
+<section id="education-section"></section>
+<section id="contact-section"></section>
 
 <footer>© Pranab Debnath</footer>
 
 <!-- =========================================================
-     BOOTSTRAP (UNCHANGED)
+     DATA SERVICE (MUST LOAD FIRST)
 ========================================================= -->
-<script src="assets/js/core/bootstrap.js"></script>
+<script src="./assets/js/services/data.service.js"></script>
 
 <!-- =========================================================
-     RENDERER (FINAL)
+     BOOTSTRAP
 ========================================================= -->
-<script src="assets/js/renderers/app.renderer.js"></script>
+<script src="./assets/js/core/bootstrap.js"></script>
 
 <!-- =========================================================
-     COSMIC BACKGROUND
+     APP RENDERER
 ========================================================= -->
-<script>
-/* STARS */
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
-let stars=[];
-const density=0.00015;
-
-function resizeStars(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-  const count=Math.floor(innerWidth*innerHeight*density);
-  stars=Array.from({length:count},()=>({
-    x:Math.random()*innerWidth,
-    y:Math.random()*innerHeight,
-    r:Math.random()*.8+.4,
-    o:Math.random()*.5+.4,
-    t:Math.random()*.8+.4
-  }));
-}
-
-function drawStars(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${s.o})`;
-    ctx.fill();
-    s.o=.5+Math.abs(Math.sin(Date.now()*.001/s.t)*.5);
-  });
-  requestAnimationFrame(drawStars);
-}
-
-resizeStars();
-drawStars();
-addEventListener("resize",resizeStars);
-
-/* SHOOTING STARS */
-const svg=document.getElementById("shooting-stars");
-svg.innerHTML=`
-<defs>
-  <linearGradient id="trail">
-    <stop offset="0%" stop-color="rgba(96,165,250,0)" />
-    <stop offset="100%" stop-color="#a78bfa" />
-  </linearGradient>
-</defs>`;
-
-function shoot(){
-  const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
-  let x=Math.random()*innerWidth;
-  let y=-100;
-  const angle=45+Math.random()*20;
-  r.setAttribute("x",x);
-  r.setAttribute("y",y);
-  r.setAttribute("width",140);
-  r.setAttribute("height",1.2);
-  r.setAttribute("fill","url(#trail)");
-  r.setAttribute("transform",`rotate(${angle} ${x} ${y})`);
-  svg.appendChild(r);
-
-  let d=0;
-  function anim(){
-    d+=18;
-    r.setAttribute("x",x-d);
-    r.setAttribute("y",y+d);
-    if(d<innerWidth*1.2) requestAnimationFrame(anim);
-    else r.remove();
-  }
-  anim();
-  setTimeout(shoot,2000+Math.random()*4000);
-}
-shoot();
-</script>
+<script src="./assets/js/renderers/app.renderer.js"></script>
 
 </body>
 </html>
