@@ -1,184 +1,231 @@
 /* ============================================================
-   OMNIVERSE — CANONICAL VISUAL SYSTEM (CLEAN & STABLE)
+   OMNIVERSE — PRODUCTION CSS (FINAL)
+   ---------------------------------
+   Philosophy:
+   - Apple-grade restraint
+   - Dark + violet tech elegance
+   - Motion is felt, not flashy
+   - GPU-only transforms
+   - Scroll storytelling without pinning
+   - Human-readable, future-safe
 ============================================================ */
 
-/* ================= ROOT ================= */
+
+/* ============================================================
+   1. ROOT DESIGN SYSTEM
+   ------------------------------------------------------------
+   All colors, spacing, motion curves live here.
+   Change here → entire site updates.
+============================================================ */
+
 :root {
+  /* ---------- Background ---------- */
   --bg-main: #05030c;
   --bg-deep: #090613;
+  --bg-card: rgba(255, 255, 255, 0.04);
+  --bg-glass: rgba(255, 255, 255, 0.06);
 
-  --accent: #a78bfa;
-  --accent-blue: #60a5fa;
-  --accent-glow: rgba(167,139,250,0.35);
+  /* ---------- Accent ---------- */
+  --violet: #a78bfa;
+  --violet-blue: #60a5fa;
+  --violet-soft: rgba(167, 139, 250, 0.35);
+  --violet-glow: rgba(167, 139, 250, 0.22);
 
-  --text-main: rgba(255,255,255,0.94);
-  --text-muted: rgba(255,255,255,0.62);
+  /* ---------- Text ---------- */
+  --text-main: rgba(255, 255, 255, 0.96);
+  --text-muted: rgba(255, 255, 255, 0.62);
+  --text-faint: rgba(255, 255, 255, 0.42);
 
-  --border-hairline: rgba(255,255,255,0.1);
+  /* ---------- Borders ---------- */
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
 
-  --radius-lg: 22px;
-  --radius-md: 16px;
+  /* ---------- Radius ---------- */
+  --r-xl: 30px;
+  --r-lg: 22px;
+  --r-md: 16px;
+  --r-sm: 12px;
 
-  --ease-vision: cubic-bezier(0.22, 1, 0.36, 1);
+  /* ---------- Motion ---------- */
+  /* Apple-like easing */
+  --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --space-section: clamp(5.5rem, 9vw, 9rem);
+  /* Framer-style spring feel */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---------- Spacing ---------- */
+  --space-section: clamp(5rem, 9vw, 9.5rem);
+  --space-block: 3.2rem;
 }
 
-/* ================= RESET ================= */
+
+/* ============================================================
+   2. GLOBAL RESET & PERFORMANCE SAFETY
+============================================================ */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
+html {
+  scroll-behavior: smooth;
 }
 
-/* ================= BODY ================= */
-body[data-omniverse] {
+body {
+  margin: 0;
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-main);
-  min-height: 100vh;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 
+  /* Cinematic background */
   background:
-    radial-gradient(900px 600px at 70% -10%, rgba(124,58,237,0.16), transparent),
-    radial-gradient(700px 520px at 15% 120%, rgba(167,139,250,0.14), transparent),
+    radial-gradient(900px 600px at 70% -10%, rgba(124, 58, 237, 0.16), transparent),
+    radial-gradient(700px 520px at 15% 120%, rgba(167, 139, 250, 0.14), transparent),
     linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
 }
 
-/* ================= TYPOGRAPHY ================= */
-h1, h2, h3 {
+/* Lighthouse tuning */
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+[data-omni-reveal],
+.dashboard-frame,
+.hero-dashboard-shell {
+  will-change: transform, opacity;
+}
+
+
+/* ============================================================
+   3. TYPOGRAPHY — APPLE-LIKE HIERARCHY
+============================================================ */
+
+h1 {
+  font-size: clamp(40px, 6vw, 64px);
   font-weight: 500;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.035em;
+  line-height: 1.04;
   margin: 0;
 }
 
-h1 {
-  font-size: clamp(36px, 6vw, 58px);
-  line-height: 1.08;
+h2 {
+  font-size: clamp(26px, 3vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  margin: 0 0 2.6rem;
 }
 
-h2 {
-  font-size: clamp(24px, 3vw, 30px);
+h3 {
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 p {
   font-size: 15px;
   line-height: 1.75;
   color: var(--text-muted);
-  max-width: 65ch;
+  max-width: 70ch;
 }
 
-/* ================= LINKS ================= */
-a {
-  color: var(--text-main);
-  text-decoration: none;
-  opacity: 0.75;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 11px;
-}
 
-a:hover,
-a.active {
-  opacity: 1;
-  color: var(--accent);
-}
+/* ============================================================
+   4. SECTION LAYOUT (SCROLL RHYTHM)
+============================================================ */
 
-/* ================= HEADER ================= */
-#site-header {
-  position: sticky;
-  top: 10px;
-  z-index: 100;
-}
-
-.header-container {
-  max-width: 1100px;
+.omniverse-section {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 12px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.header-nav {
-  display: flex;
-  gap: 26px;
-}
-
-/* ================= SECTIONS ================= */
-section.omniverse-section {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: var(--space-section) 1.5rem;
+  padding: var(--space-section) 2rem;
   position: relative;
 }
 
-/* ================= HERO ================= */
-#hero-section {
-  max-width: none;
-  width: 100%;
-  padding-left: clamp(1.5rem, 6vw, 6rem);
-  padding-right: clamp(1.5rem, 6vw, 6rem);
-  position: relative;
-  z-index: 2;
-}
 
-#hero-section > * + * {
-  margin-top: 3.5rem;
-}
+/* ============================================================
+   5. HERO — INTRO TEXT
+============================================================ */
 
 .hero-wrapper {
-  max-width: 640px;
+  max-width: 680px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 1.9rem;
 }
 
-/* ================= HERO DASHBOARD ================= */
+.hero-tagline {
+  color: var(--violet);
+  font-weight: 500;
+}
+
+.hero-summary {
+  font-size: 16px;
+}
+
+
+/* ============================================================
+   6. HERO DASHBOARD — GLASS + BREATHING GLOW
+============================================================ */
+
 .hero-dashboard-shell {
+  margin-top: 4.5rem;
+  padding: 3.8rem 3.2rem;
+  border-radius: var(--r-xl);
   position: relative;
-  width: 100%;
-  padding: 3.5rem 3rem;
-  border-radius: 28px;
+  overflow: hidden;
+  backdrop-filter: blur(18px);
+
   background:
     linear-gradient(
       180deg,
-      rgba(167,139,250,0.08),
-      rgba(9,6,19,0.85)
+      rgba(167, 139, 250, 0.08),
+      rgba(9, 6, 19, 0.92)
     );
-  border: 1px solid rgba(167,139,250,0.18);
-  overflow: hidden;
-  z-index: 3;
+
+  border: 1px solid rgba(167, 139, 250, 0.18);
+
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.65),
+    inset 0 0 80px rgba(167, 139, 250, 0.08);
 }
 
-/* Glow */
+/* Breathing glow — subtle, premium */
 .hero-dashboard-glow {
   position: absolute;
   inset: -40%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(167,139,250,0.35), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(96,165,250,0.28), transparent 45%);
-  filter: blur(160px);
-  opacity: 0.75;
   pointer-events: none;
-  z-index: 0;
+  opacity: 0.7;
+
+  background:
+    radial-gradient(circle at 30% 40%, rgba(167, 139, 250, 0.35), transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(96, 165, 250, 0.28), transparent 45%);
+
+  filter: blur(180px);
+  animation: glow-breathe 8s ease-in-out infinite;
 }
 
-/* Grid */
+@keyframes glow-breathe {
+  0%   { opacity: 0.55; transform: scale(1); }
+  50%  { opacity: 0.85; transform: scale(1.05); }
+  100% { opacity: 0.55; transform: scale(1); }
+}
+
+
+/* ============================================================
+   7. DASHBOARD GRID + KPI PANELS
+============================================================ */
+
 .hero-dashboard-grid {
-  position: relative;
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 3rem;
-  z-index: 1;
+  grid-template-columns: 240px 1fr;
+  gap: 3.4rem;
+  position: relative;
 }
 
-/* KPI Panel */
 .kpi-panel {
   display: flex;
   flex-direction: column;
@@ -186,163 +233,147 @@ section.omniverse-section {
 }
 
 .kpi-box {
-  padding: 1.4rem 1.6rem;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  padding: 1.5rem 1.7rem;
+  border-radius: var(--r-md);
+  background: var(--bg-glass);
+  border: 1px solid var(--border-soft);
+
   box-shadow:
-    0 10px 26px rgba(0,0,0,0.45),
-    0 0 18px rgba(167,139,250,0.22);
+    0 12px 30px rgba(0, 0, 0, 0.55),
+    0 0 24px var(--violet-soft);
+
+  transition: transform 600ms var(--ease-spring);
+}
+
+.kpi-box:hover {
+  transform: translateY(-4px);
 }
 
 .kpi-label {
   font-size: 11px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-faint);
 }
 
 .kpi-value {
-  display: block;
-  margin-top: 6px;
   font-size: 22px;
+  margin-top: 6px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--violet);
 }
 
-/* ================= GRAPHS ================= */
-.dashboard-main {
-  width: 100%;
-}
+
+/* ============================================================
+   8. SVG / CANVAS DASHBOARD GRAPH STYLING
+============================================================ */
 
 .dashboard-chart {
-  height: 280px;
-  border-radius: 18px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.05),
-      rgba(255,255,255,0.015)
-    );
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow:
-    0 20px 50px rgba(0,0,0,0.6),
-    0 0 40px rgba(167,139,250,0.25);
-}
-
-.hero-graph,
-.project-graph {
-  width: 100%;
-  display: block;
+  height: 300px;
+  border-radius: var(--r-lg);
+  position: relative;
   overflow: hidden;
-  border-radius: 18px;
-}
 
-.hero-graph {
-  height: 220px;
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.04),
-      rgba(255,255,255,0.015)
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.015)
     );
-  border: 1px solid rgba(255,255,255,0.08);
+
+  border: 1px solid var(--border-soft);
 }
 
-.project-graph {
-  height: 180px;
-  margin: 1.8rem 0 2.2rem;
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(255,255,255,0.09);
-}
-
-.hero-graph svg,
-.project-graph svg {
+/* SVG safety */
+.dashboard-chart svg {
   width: 100%;
   height: 100%;
-  display: block;
-}
-
-/* SVG styling */
-.graph-grid {
-  stroke: rgba(255,255,255,0.1);
-  stroke-dasharray: 4 6;
 }
 
 .graph-line {
   fill: none;
-  stroke: var(--accent);
+  stroke: var(--violet);
   stroke-width: 3;
   stroke-linecap: round;
+  filter:
+    drop-shadow(0 0 12px rgba(167, 139, 250, 0.6));
 }
 
 .graph-bar {
-  fill: var(--accent-blue);
+  fill: var(--violet-blue);
   rx: 4;
+  opacity: 0.9;
 }
 
-/* ================= PROJECT CARDS ================= */
-.project-card {
-  max-width: 740px;
-  padding: 32px;
-  border-radius: var(--radius-md);
+
+/* ============================================================
+   9. PROJECT DASHBOARD SEQUENCE
+   Scroll-pin illusion without pinning
+============================================================ */
+
+.dashboard-sequence {
+  display: flex;
+  flex-direction: column;
+  gap: 4.5rem;
+}
+
+/* Illusion: slow exit, fast entry */
+.dashboard-frame {
+  padding: 3.2rem;
+  border-radius: var(--r-xl);
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,0.055),
-      rgba(255,255,255,0.018)
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.02)
     );
-  border: 1px solid var(--border-hairline);
-  box-shadow: 0 20px 42px rgba(0,0,0,0.48);
+
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+
+  opacity: 0;
+  transform: translateY(70px) scale(0.98);
+
+  transition:
+    transform 900ms var(--ease-apple),
+    opacity 900ms var(--ease-apple);
 }
 
-/* ================= TECH TAGS ================= */
-.project-tech {
-  display: flex;
-  gap: 14px;
-  margin-top: 22px;
-  flex-wrap: wrap;
+.dashboard-frame.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
-.project-tech .icon {
-  padding: 8px 14px;
-  font-size: 11px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  border: 1px solid;
-  backdrop-filter: blur(6px);
+.dashboard-frame:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.75),
+    0 0 40px var(--violet-glow);
 }
 
-/* ================= IMAGE CONTAINER (UNTOUCHED) ================= */
-.featured-item img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-  border-radius: 14px;
-  margin-bottom: 1.6rem;
+
+/* ============================================================
+   10. GENERIC SCROLL REVEAL
+============================================================ */
+
+[data-omni-reveal] {
+  opacity: 0;
+  transform: translateY(50px);
 }
 
-/* ================= FOOTER ================= */
-#site-footer {
-  margin-top: var(--space-section);
-  padding: 64px 20px;
-  border-top: 1px solid var(--border-hairline);
-  text-align: center;
+[data-omni-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 900ms var(--ease-apple),
+    transform 900ms var(--ease-apple);
 }
 
-/* ================= BACKGROUND ================= */
-.starry-bg,
-.shooting-stars {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-}
 
-.starry-bg { z-index: -3; }
-.shooting-stars { z-index: -2; }
+/* ============================================================
+   11. MOBILE OPTIMIZATION — BUTTER SMOOTH
+============================================================ */
 
-/* ================= MOBILE ================= */
 @media (max-width: 900px) {
   .hero-dashboard-grid {
     grid-template-columns: 1fr;
@@ -362,22 +393,32 @@ section.omniverse-section {
   }
 }
 
-@media (max-width: 768px) {
-  .hero-graph {
-    height: 160px;
+@media (max-width: 600px) {
+  .omniverse-section {
+    padding: 4.6rem 1.3rem;
   }
 
-  .project-graph {
-    height: 140px;
-  }
-}
-
-@media (max-width: 520px) {
   .hero-dashboard-shell {
-    padding: 2.2rem 1.6rem;
+    padding: 2.4rem 1.8rem;
   }
 
   .kpi-box {
     flex: 1 1 100%;
+  }
+
+  .dashboard-frame {
+    padding: 2.2rem;
+  }
+}
+
+
+/* ============================================================
+   12. REDUCED MOTION — ACCESSIBILITY
+============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
