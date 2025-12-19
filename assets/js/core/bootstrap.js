@@ -1,19 +1,9 @@
-/**
- * Bootstrap Controller (FINAL — SINGLE SOURCE OF TRUTH)
- * =====================================================
- * - Runs once DOM is ready
- * - Emits app:ready exactly once
- * - Nothing else should use DOMContentLoaded
- */
-
 document.addEventListener("DOMContentLoaded", () => {
   console.log("[Bootstrap] DOM ready");
 
-  window.dispatchEvent(
-    new CustomEvent("app:ready", {
-      detail: { timestamp: Date.now() }
-    })
-  );
+  window.dispatchEvent(new Event("app:ready"));
+  window.dispatchEvent(new Event("home:ready"));
+  window.dispatchEvent(new Event("header:ready"));
 
-  console.log("[Bootstrap] app:ready dispatched");
+  console.log("[Bootstrap] Events dispatched");
 });
