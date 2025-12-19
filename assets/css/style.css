@@ -1,66 +1,50 @@
 /* ============================================================
-   OMNIVERSE — PRODUCTION CSS (FINAL)
-   ---------------------------------
+   OMNIVERSE — PRODUCTION CSS (MASTER)
+   ------------------------------------------------------------
    Philosophy:
-   - Apple-grade restraint
-   - Dark + violet tech elegance
-   - Motion is felt, not flashy
-   - GPU-only transforms
-   - Scroll storytelling without pinning
-   - Human-readable, future-safe
+   • Apple-grade restraint
+   • Liquid glass, not glass boxes
+   • Depth via light, not borders
+   • Motion is felt, never loud
+   • GPU-safe, future-proof
 ============================================================ */
 
 
 /* ============================================================
    1. ROOT DESIGN SYSTEM
-   ------------------------------------------------------------
-   All colors, spacing, motion curves live here.
-   Change here → entire site updates.
 ============================================================ */
 
 :root {
-  /* ---------- Background ---------- */
+  /* Core space */
   --bg-main: #05030c;
   --bg-deep: #090613;
-  --bg-card: rgba(255, 255, 255, 0.04);
-  --bg-glass: rgba(255, 255, 255, 0.06);
 
-  /* ---------- Accent ---------- */
+  /* Accent spectrum */
   --violet: #a78bfa;
   --violet-blue: #60a5fa;
-  --violet-soft: rgba(167, 139, 250, 0.35);
-  --violet-glow: rgba(167, 139, 250, 0.22);
+  --violet-glow: rgba(167,139,250,0.32);
 
-  /* ---------- Text ---------- */
-  --text-main: rgba(255, 255, 255, 0.96);
-  --text-muted: rgba(255, 255, 255, 0.62);
-  --text-faint: rgba(255, 255, 255, 0.42);
+  /* Text */
+  --text-main: rgba(255,255,255,0.96);
+  --text-muted: rgba(255,255,255,0.62);
+  --text-faint: rgba(255,255,255,0.42);
 
-  /* ---------- Borders ---------- */
-  --border-soft: rgba(255, 255, 255, 0.08);
-  --border-strong: rgba(255, 255, 255, 0.14);
-
-  /* ---------- Radius ---------- */
-  --r-xl: 30px;
+  /* Radii */
+  --r-xl: 32px;
   --r-lg: 22px;
   --r-md: 16px;
-  --r-sm: 12px;
 
-  /* ---------- Motion ---------- */
-  /* Apple-like easing */
+  /* Motion */
   --ease-apple: cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Framer-style spring feel */
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* ---------- Spacing ---------- */
-  --space-section: clamp(5rem, 9vw, 9.5rem);
-  --space-block: 3.2rem;
+  /* Layout */
+  --space-section: clamp(5.5rem, 9vw, 9rem);
 }
 
 
 /* ============================================================
-   2. GLOBAL RESET & PERFORMANCE SAFETY
+   2. GLOBAL RESET & PERFORMANCE
 ============================================================ */
 
 *,
@@ -80,36 +64,28 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 
-  /* Cinematic background */
   background:
-    radial-gradient(900px 600px at 70% -10%, rgba(124, 58, 237, 0.16), transparent),
-    radial-gradient(700px 520px at 15% 120%, rgba(167, 139, 250, 0.14), transparent),
+    radial-gradient(900px 600px at 70% -10%, rgba(124,58,237,0.18), transparent),
+    radial-gradient(700px 520px at 15% 120%, rgba(167,139,250,0.14), transparent),
     linear-gradient(180deg, #04020a, var(--bg-deep) 55%, #04020a);
 }
 
-/* Lighthouse tuning */
 img,
 svg {
   display: block;
   max-width: 100%;
 }
 
-[data-omni-reveal],
-.dashboard-frame,
-.hero-dashboard-shell {
-  will-change: transform, opacity;
-}
-
 
 /* ============================================================
-   3. TYPOGRAPHY — APPLE-LIKE HIERARCHY
+   3. TYPOGRAPHY — APPLE RHYTHM
 ============================================================ */
 
 h1 {
   font-size: clamp(40px, 6vw, 64px);
   font-weight: 500;
   letter-spacing: -0.035em;
-  line-height: 1.04;
+  line-height: 1.05;
   margin: 0;
 }
 
@@ -117,25 +93,19 @@ h2 {
   font-size: clamp(26px, 3vw, 34px);
   font-weight: 500;
   letter-spacing: -0.025em;
-  margin: 0 0 2.6rem;
-}
-
-h3 {
-  font-size: 18px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
+  margin-bottom: 3rem;
 }
 
 p {
   font-size: 15px;
   line-height: 1.75;
   color: var(--text-muted);
-  max-width: 70ch;
+  max-width: 68ch;
 }
 
 
 /* ============================================================
-   4. SECTION LAYOUT (SCROLL RHYTHM)
+   4. SECTION LAYOUT
 ============================================================ */
 
 .omniverse-section {
@@ -147,14 +117,14 @@ p {
 
 
 /* ============================================================
-   5. HERO — INTRO TEXT
+   5. HERO TEXT
 ============================================================ */
 
 .hero-wrapper {
   max-width: 680px;
   display: flex;
   flex-direction: column;
-  gap: 1.9rem;
+  gap: 1.8rem;
 }
 
 .hero-tagline {
@@ -162,68 +132,87 @@ p {
   font-weight: 500;
 }
 
-.hero-summary {
-  font-size: 16px;
-}
-
 
 /* ============================================================
-   6. HERO DASHBOARD — GLASS + BREATHING GLOW
+   6. HERO DASHBOARD — TRUE LIQUID GLASS
 ============================================================ */
 
 .hero-dashboard-shell {
-  margin-top: 4.5rem;
-  padding: 3.8rem 3.2rem;
+  margin-top: 4.8rem;
+  padding: 3.6rem 3.4rem;
   border-radius: var(--r-xl);
   position: relative;
   overflow: hidden;
-  backdrop-filter: blur(18px);
 
+  /* Liquid base */
   background:
-    linear-gradient(
-      180deg,
-      rgba(167, 139, 250, 0.08),
-      rgba(9, 6, 19, 0.92)
+    radial-gradient(
+      140% 120% at 12% 8%,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.06) 38%,
+      rgba(9,6,19,0.88) 78%
     );
 
-  border: 1px solid rgba(167, 139, 250, 0.18);
+  backdrop-filter: blur(26px) saturate(150%);
 
   box-shadow:
-    0 40px 90px rgba(0, 0, 0, 0.65),
-    inset 0 0 80px rgba(167, 139, 250, 0.08);
+    0 60px 140px rgba(0,0,0,0.78);
+
+  transition:
+    transform 900ms var(--ease-apple),
+    box-shadow 900ms var(--ease-apple);
 }
 
-/* Breathing glow — subtle, premium */
-.hero-dashboard-glow {
+/* Edge refraction */
+.hero-dashboard-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      140deg,
+      rgba(255,255,255,0.55),
+      transparent 38%,
+      transparent 62%,
+      rgba(167,139,250,0.45)
+    );
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* Ambient glow */
+.hero-dashboard-shell::after {
+  content: "";
   position: absolute;
   inset: -40%;
-  pointer-events: none;
-  opacity: 0.7;
-
   background:
-    radial-gradient(circle at 30% 40%, rgba(167, 139, 250, 0.35), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(96, 165, 250, 0.28), transparent 45%);
-
+    radial-gradient(circle at 30% 35%, rgba(167,139,250,0.35), transparent 55%),
+    radial-gradient(circle at 70% 65%, rgba(96,165,250,0.22), transparent 60%);
   filter: blur(180px);
-  animation: glow-breathe 8s ease-in-out infinite;
+  opacity: 0.6;
+  pointer-events: none;
 }
 
-@keyframes glow-breathe {
-  0%   { opacity: 0.55; transform: scale(1); }
-  50%  { opacity: 0.85; transform: scale(1.05); }
-  100% { opacity: 0.55; transform: scale(1); }
+@media (hover: hover) and (pointer: fine) {
+  .hero-dashboard-shell:hover {
+    transform: translateY(-10px);
+    box-shadow:
+      0 90px 180px rgba(0,0,0,0.9),
+      0 0 60px var(--violet-glow);
+  }
 }
 
 
 /* ============================================================
-   7. DASHBOARD GRID + KPI PANELS
+   7. DASHBOARD GRID + KPI
 ============================================================ */
 
 .hero-dashboard-grid {
+  position: relative;
   display: grid;
   grid-template-columns: 240px 1fr;
-  gap: 3.4rem;
-  position: relative;
+  gap: 3.2rem;
 }
 
 .kpi-panel {
@@ -233,16 +222,22 @@ p {
 }
 
 .kpi-box {
-  padding: 1.5rem 1.7rem;
-  border-radius: var(--r-md);
-  background: var(--bg-glass);
-  border: 1px solid var(--border-soft);
+  padding: 1.4rem 1.6rem;
+  border-radius: 18px;
 
+  background:
+    radial-gradient(
+      120% 120% at 20% 0%,
+      rgba(255,255,255,0.18),
+      rgba(255,255,255,0.04),
+      rgba(12,9,28,0.9)
+    );
+
+  backdrop-filter: blur(14px);
   box-shadow:
-    0 12px 30px rgba(0, 0, 0, 0.55),
-    0 0 24px var(--violet-soft);
+    0 22px 50px rgba(0,0,0,0.6);
 
-  transition: transform 600ms var(--ease-spring);
+  transition: transform 500ms var(--ease-spring);
 }
 
 .kpi-box:hover {
@@ -265,95 +260,69 @@ p {
 
 
 /* ============================================================
-   8. SVG / CANVAS DASHBOARD GRAPH STYLING
+   8. DASHBOARD GRAPH SURFACE
 ============================================================ */
 
 .dashboard-chart {
-  height: 300px;
+  height: 280px;
   border-radius: var(--r-lg);
-  position: relative;
-  overflow: hidden;
 
   background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.05),
-      rgba(255, 255, 255, 0.015)
+    radial-gradient(
+      140% 100% at 50% 0%,
+      rgba(167,139,250,0.24),
+      rgba(255,255,255,0.04) 40%,
+      rgba(9,6,19,0.9) 80%
     );
 
-  border: 1px solid var(--border-soft);
-}
-
-/* SVG safety */
-.dashboard-chart svg {
-  width: 100%;
-  height: 100%;
-}
-
-.graph-line {
-  fill: none;
-  stroke: var(--violet);
-  stroke-width: 3;
-  stroke-linecap: round;
-  filter:
-    drop-shadow(0 0 12px rgba(167, 139, 250, 0.6));
-}
-
-.graph-bar {
-  fill: var(--violet-blue);
-  rx: 4;
-  opacity: 0.9;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 30px 80px rgba(0,0,0,0.75);
 }
 
 
 /* ============================================================
-   9. PROJECT DASHBOARD SEQUENCE
-   Scroll-pin illusion without pinning
+   9. PROJECT DASHBOARD STORY
 ============================================================ */
 
 .dashboard-sequence {
   display: flex;
   flex-direction: column;
-  gap: 4.5rem;
+  gap: 7rem;
 }
 
-/* Illusion: slow exit, fast entry */
 .dashboard-frame {
-  padding: 3.2rem;
+  padding: 3.6rem;
   border-radius: var(--r-xl);
+
   background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.06),
-      rgba(255, 255, 255, 0.02)
+    radial-gradient(
+      140% 120% at 18% 6%,
+      rgba(255,255,255,0.22),
+      rgba(255,255,255,0.05),
+      rgba(9,6,19,0.9)
     );
 
-  border: 1px solid var(--border-soft);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 70px 160px rgba(0,0,0,0.82);
 
   opacity: 0;
-  transform: translateY(70px) scale(0.98);
+  transform: translateY(80px);
 
   transition:
-    transform 900ms var(--ease-apple),
-    opacity 900ms var(--ease-apple);
+    opacity 900ms var(--ease-apple),
+    transform 900ms var(--ease-apple);
 }
 
 .dashboard-frame.is-visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-.dashboard-frame:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow:
-    0 40px 100px rgba(0, 0, 0, 0.75),
-    0 0 40px var(--violet-glow);
+  transform: translateY(0);
 }
 
 
 /* ============================================================
-   10. GENERIC SCROLL REVEAL
+   10. SCROLL REVEAL
 ============================================================ */
 
 [data-omni-reveal] {
@@ -371,21 +340,34 @@ p {
 
 
 /* ============================================================
-   11. MOBILE OPTIMIZATION — BUTTER SMOOTH
+   11. COSMIC BACKGROUND
+============================================================ */
+
+.starry-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  background:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.22), transparent),
+    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.16), transparent),
+    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.14), transparent);
+  background-size: 1200px 800px;
+  animation: star-drift 160s linear infinite;
+}
+
+@keyframes star-drift {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-600px); }
+}
+
+
+/* ============================================================
+   12. MOBILE
 ============================================================ */
 
 @media (max-width: 900px) {
   .hero-dashboard-grid {
     grid-template-columns: 1fr;
-  }
-
-  .kpi-panel {
-    flex-direction: row;
-    flex-wrap: wrap;
-  }
-
-  .kpi-box {
-    flex: 1 1 calc(50% - 1rem);
   }
 
   .dashboard-chart {
@@ -401,315 +383,16 @@ p {
   .hero-dashboard-shell {
     padding: 2.4rem 1.8rem;
   }
-
-  .kpi-box {
-    flex: 1 1 100%;
-  }
-
-  .dashboard-frame {
-    padding: 2.2rem;
-  }
 }
 
 
 /* ============================================================
-   12. REDUCED MOTION — ACCESSIBILITY
+   13. REDUCED MOTION
 ============================================================ */
 
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
-  }
-}
-/* ============================================================
-   OMNIVERSE — LIQUID GLASS EXTENSIONS
-   Premium / Futuristic / Apple Pro Feel
-============================================================ */
-
-
-/* ============================================================
-   COSMIC BACKGROUND SYSTEM
-   Subtle, slow, never distracting
-============================================================ */
-
-.starry-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  background:
-    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.25), transparent),
-    radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,.18), transparent),
-    radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,.15), transparent);
-  background-size: 1200px 800px;
-  animation: star-drift 160s linear infinite;
-}
-
-@keyframes star-drift {
-  from { transform: translateY(0); }
-  to   { transform: translateY(-600px); }
-}
-
-/* Shooting star — once every ~12s */
-.shooting-stars::before {
-  content: "";
-  position: fixed;
-  top: -20%;
-  left: 120%;
-  width: 2px;
-  height: 140px;
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.9),
-    rgba(167,139,250,0.4),
-    transparent
-  );
-  opacity: 0;
-  transform: rotate(-35deg);
-  animation: shooting-star 14s ease-in-out infinite;
-}
-
-@keyframes shooting-star {
-  0%, 70% {
-    opacity: 0;
-    transform: translate(0,0) rotate(-35deg);
-  }
-  72% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 0;
-    transform: translate(-140vw, 140vh) rotate(-35deg);
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-
-/* ============================================================
-   LIQUID GLASS SURFACES
-   Core illusion: light + blur + depth
-============================================================ */
-
-.hero-dashboard-stage {
-  position: relative;
-  margin-top: 6rem;
-  perspective: 1400px;
-}
-
-.dashboard-depth {
-  position: absolute;
-  inset: -20%;
-  background:
-    radial-gradient(circle at 50% 20%, rgba(167,139,250,0.25), transparent 60%);
-  filter: blur(120px);
-  opacity: 0.6;
-  z-index: 0;
-}
-
-/* Main floating surface */
-.dashboard-surface {
-  position: relative;
-  z-index: 1;
-  border-radius: 32px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.12),
-      rgba(255,255,255,0.03)
-    );
-
-  backdrop-filter: blur(22px) saturate(140%);
-  box-shadow:
-    0 60px 140px rgba(0,0,0,0.75),
-    inset 0 1px 0 rgba(255,255,255,0.25);
-
-  transform-style: preserve-3d;
-  transition:
-    transform 900ms var(--ease-apple),
-    box-shadow 900ms var(--ease-apple);
-}
-
-/* Light sweep */
-.dashboard-sheen {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      120deg,
-      transparent 30%,
-      rgba(255,255,255,0.25),
-      transparent 70%
-    );
-  opacity: 0.35;
-  mix-blend-mode: overlay;
-  pointer-events: none;
-  animation: sheen-pass 10s ease-in-out infinite;
-}
-
-@keyframes sheen-pass {
-  0%, 100% { transform: translateX(-100%); }
-  50% { transform: translateX(100%); }
-}
-
-
-/* ============================================================
-   DASHBOARD TOP BAR
-============================================================ */
-
-.dashboard-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2.2rem 2.6rem;
-}
-
-.dashboard-eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-}
-
-.dashboard-controls .pill {
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  color: var(--text-muted);
-  transition: all 400ms var(--ease-spring);
-}
-
-.dashboard-controls .pill.active {
-  background: rgba(255,255,255,0.25);
-  color: var(--bg-main);
-}
-
-
-/* ============================================================
-   DASHBOARD BODY
-============================================================ */
-
-.dashboard-body {
-  padding: 2.6rem;
-}
-
-.kpi-strip {
-  margin-bottom: 2.4rem;
-}
-
-.kpi em.positive {
-  font-style: normal;
-  font-size: 13px;
-  color: #4ade80;
-}
-
-
-/* ============================================================
-   GRAPH CANVAS
-============================================================ */
-
-.graph-canvas {
-  height: 280px;
-  border-radius: 22px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.06),
-      rgba(255,255,255,0.01)
-    );
-  position: relative;
-  overflow: hidden;
-}
-
-
-/* ============================================================
-   PROJECT DASHBOARD — PREMIUM FLOATING FRAMES
-============================================================ */
-
-.dashboard-story {
-  padding-top: 10rem;
-}
-
-.dashboard-rail {
-  display: grid;
-  gap: 7rem;
-}
-
-.dashboard-frame.premium {
-  perspective: 1400px;
-}
-
-.frame-surface {
-  position: relative;
-  padding: 3.6rem;
-  border-radius: 34px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,0.1),
-      rgba(255,255,255,0.02)
-    );
-
-  backdrop-filter: blur(20px);
-  box-shadow:
-    0 80px 160px rgba(0,0,0,0.75);
-
-  transform: translateY(80px) scale(0.96);
-  opacity: 0;
-
-  transition:
-    transform 900ms var(--ease-apple),
-    opacity 900ms var(--ease-apple);
-}
-
-.dashboard-frame.is-visible .frame-surface {
-  transform: translateY(0) scale(1);
-  opacity: 1;
-}
-
-/* Glow halo */
-.frame-glow {
-  position: absolute;
-  inset: -30%;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(167,139,250,0.3), transparent 60%);
-  filter: blur(140px);
-  opacity: 0.5;
-  z-index: -1;
-}
-
-
-/* ============================================================
-   MICRO-MOTION — FRAMER STYLE
-============================================================ */
-
-.dashboard-surface:hover,
-.frame-surface:hover {
-  transform: translateY(-10px) scale(1.01);
-}
-
-.dashboard-surface:hover {
-  box-shadow:
-    0 80px 180px rgba(0,0,0,0.85),
-    0 0 60px var(--violet-glow);
-}
-
-
-/* ============================================================
-   MOBILE REFINEMENT
-============================================================ */
-
-@media (max-width: 768px) {
-  .dashboard-topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .graph-canvas {
-    height: 200px;
   }
 }
