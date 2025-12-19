@@ -1,10 +1,11 @@
 /* ============================================================
-   OMNIVERSE — FINAL PRODUCTION CSS
+   OMNIVERSE — APPLE-GRADE LIQUID GLASS (LOCKED)
    ------------------------------------------------------------
-   • Works with your CURRENT HTML
-   • No missing selectors
-   • Liquid glass, Apple-grade
-   • Zero layout breakage
+   • Pure white typography
+   • Perfect container alignment
+   • Curved journey connector line
+   • Liquid glass everywhere
+   • Mobile + desktop parity
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -12,13 +13,20 @@
   --bg-main:#05030c;
   --bg-deep:#090613;
 
-  --violet:#a78bfa;
-  --violet-blue:#60a5fa;
-  --violet-glow:rgba(167,139,250,.35);
+  --white-100:rgba(255,255,255,.96);
+  --white-80:rgba(255,255,255,.80);
+  --white-60:rgba(255,255,255,.60);
+  --white-40:rgba(255,255,255,.40);
 
-  --text-main:rgba(255,255,255,.96);
-  --text-muted:rgba(255,255,255,.65);
-  --text-faint:rgba(255,255,255,.42);
+  --glass-strong:rgba(255,255,255,.10);
+  --glass-soft:rgba(255,255,255,.06);
+  --border-soft:rgba(255,255,255,.12);
+
+  --glow:rgba(255,255,255,.18);
+
+  --radius-lg:32px;
+  --radius-md:22px;
+  --radius-sm:16px;
 
   --ease:cubic-bezier(.22,1,.36,1);
 }
@@ -37,14 +45,14 @@ html,body {
 
 body {
   font-family:Inter,system-ui,-apple-system,sans-serif;
-  color:var(--text-main);
+  color:var(--white-100);
   min-height:100vh;
   overflow-x:hidden;
   -webkit-font-smoothing:antialiased;
 
   background:
-    radial-gradient(900px 600px at 70% -10%, rgba(124,58,237,.20), transparent),
-    radial-gradient(700px 520px at 15% 120%, rgba(167,139,250,.18), transparent),
+    radial-gradient(900px 600px at 70% -10%, rgba(255,255,255,.10), transparent),
+    radial-gradient(700px 520px at 15% 120%, rgba(255,255,255,.08), transparent),
     linear-gradient(180deg,#04020a,var(--bg-deep) 55%,#04020a);
 }
 
@@ -64,12 +72,41 @@ img,svg {
 #stars { z-index:-3; }
 #shooting-stars { z-index:-2; }
 
-/* ================= HERO ================= */
-.hero {
+/* ================= SECTION WRAPPER ================= */
+section {
   max-width:1100px;
   margin:0 auto;
-  padding:10rem 2rem 6rem;
+  padding:8rem 2rem;
   position:relative;
+}
+
+/* ================= CURVED JOURNEY LINE ================= */
+section::before {
+  content:"";
+  position:absolute;
+  left:50%;
+  top:-120px;
+  width:2px;
+  height:140px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(255,255,255,.55),
+      rgba(255,255,255,.05) 70%,
+      transparent
+    );
+  filter:blur(1px);
+  opacity:.45;
+  transform:translateX(-50%) rotate(6deg);
+}
+
+section:first-of-type::before {
+  display:none;
+}
+
+/* ================= HERO ================= */
+.hero {
+  padding:10rem 2rem 6rem;
 }
 
 .hero h1 {
@@ -81,14 +118,14 @@ img,svg {
 
 .hero .tagline {
   margin-top:1.4rem;
-  color:var(--violet);
   font-weight:500;
+  color:var(--white-80);
 }
 
 .hero p {
   margin-top:1.4rem;
   max-width:60ch;
-  color:var(--text-muted);
+  color:var(--white-60);
   line-height:1.75;
 }
 
@@ -96,22 +133,21 @@ img,svg {
 .dashboard {
   margin-top:4.5rem;
   padding:3.6rem;
-  border-radius:32px;
+  border-radius:var(--radius-lg);
   position:relative;
   overflow:hidden;
 
   background:
-    radial-gradient(
-      140% 120% at 12% 8%,
-      rgba(255,255,255,.25),
-      rgba(255,255,255,.08) 38%,
-      rgba(9,6,19,.90) 78%
+    linear-gradient(
+      180deg,
+      var(--glass-strong),
+      var(--glass-soft)
     );
 
-  backdrop-filter:blur(28px) saturate(160%);
+  backdrop-filter:blur(32px) saturate(160%);
   box-shadow:
-    0 80px 180px rgba(0,0,0,.95),
-    inset 0 1px 0 rgba(255,255,255,.25);
+    0 90px 200px rgba(0,0,0,.95),
+    inset 0 1px 0 rgba(255,255,255,.18);
 
   transition:
     transform 900ms var(--ease),
@@ -127,12 +163,12 @@ img,svg {
   background:
     linear-gradient(
       140deg,
-      rgba(255,255,255,.6),
-      transparent 38%,
-      transparent 62%,
-      rgba(167,139,250,.45)
+      rgba(255,255,255,.65),
+      transparent 40%,
+      transparent 60%,
+      rgba(255,255,255,.35)
     );
-  opacity:.18;
+  opacity:.14;
   pointer-events:none;
 }
 
@@ -142,8 +178,8 @@ img,svg {
   position:absolute;
   inset:-40%;
   background:
-    radial-gradient(circle at 30% 40%, rgba(167,139,250,.35), transparent 55%),
-    radial-gradient(circle at 70% 60%, rgba(96,165,250,.25), transparent 60%);
+    radial-gradient(circle at 30% 40%, var(--glow), transparent 55%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,.12), transparent 60%);
   filter:blur(180px);
   opacity:.6;
   pointer-events:none;
@@ -151,70 +187,75 @@ img,svg {
 
 @media (hover:hover) {
   .dashboard:hover {
-    transform:translateY(-10px) scale(1.01);
+    transform:translateY(-10px);
     box-shadow:
-      0 120px 240px rgba(0,0,0,1),
-      0 0 90px var(--violet-glow);
+      0 130px 260px rgba(0,0,0,1),
+      0 0 120px rgba(255,255,255,.22);
   }
 }
 
-/* ================= KPI ================= */
+/* ================= KPI GRID ================= */
 .kpis {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:2rem;
-  margin-bottom:2.5rem;
+  margin-bottom:3rem;
 }
 
 .kpi {
-  padding:1.4rem 1.6rem;
-  border-radius:18px;
-  background:rgba(255,255,255,.06);
-  box-shadow:0 16px 36px rgba(0,0,0,.6);
+  padding:1.6rem;
+  border-radius:var(--radius-md);
+  background:var(--glass-soft);
+  border:1px solid var(--border-soft);
+  text-align:left;
 }
 
 .kpi span {
   font-size:11px;
   letter-spacing:.14em;
   text-transform:uppercase;
-  color:var(--text-faint);
+  color:var(--white-40);
 }
 
 .kpi strong {
   display:block;
-  margin-top:.5rem;
-  font-size:22px;
-  color:var(--violet);
+  margin-top:.6rem;
+  font-size:24px;
   font-weight:600;
+  color:var(--white-100);
 }
 
-/* ================= GRAPH ================= */
+/* ================= GRAPH CONTAINER ================= */
+.graph,
+canvas {
+  border-radius:var(--radius-md);
+}
+
 .graph {
   height:260px;
-  border-radius:20px;
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,.08),
-      rgba(255,255,255,.015)
+      rgba(255,255,255,.09),
+      rgba(255,255,255,.02)
     );
   box-shadow:
-    inset 0 0 60px rgba(255,255,255,.05),
-    0 30px 80px rgba(0,0,0,.75);
+    inset 0 0 70px rgba(255,255,255,.06),
+    0 40px 90px rgba(0,0,0,.85);
 }
 
 /* ================= FOOTER ================= */
 footer {
   padding:6rem 2rem;
   text-align:center;
-  color:rgba(255,255,255,.4);
+  color:var(--white-40);
   font-size:13px;
 }
 
 /* ================= MOBILE ================= */
 @media (max-width:900px) {
-  .hero {
-    padding:7rem 1.6rem 4rem;
+  section {
+    padding:6rem 1.6rem;
   }
 
   .dashboard {
@@ -227,8 +268,8 @@ footer {
 }
 
 @media (max-width:600px) {
-  .hero {
-    padding:6rem 1.3rem 3.5rem;
+  section {
+    padding:5rem 1.3rem;
   }
 
   .dashboard {
