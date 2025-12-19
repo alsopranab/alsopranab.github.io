@@ -284,3 +284,158 @@ footer {
     transition:none !important;
   }
 }
+
+/* ============================================================
+   EXPERIENCE — LIQUID TIMELINE SYSTEM
+   ------------------------------------------------------------
+   • Glass containers
+   • Curved journey line
+   • Perfect alignment
+   • Apple-grade motion
+============================================================ */
+
+/* SECTION HEADER */
+#experience-section {
+  position: relative;
+}
+
+#experience-section h2 {
+  font-size: 26px;
+  font-weight: 500;
+  margin-bottom: 4rem;
+}
+
+/* VERTICAL JOURNEY LINE */
+#experience-section::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 120px;
+  bottom: 80px;
+  width: 2px;
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(255,255,255,.45),
+      rgba(255,255,255,.25),
+      transparent
+    );
+  filter: blur(.4px);
+  opacity: .55;
+}
+
+/* EXPERIENCE CARD */
+.experience-role {
+  position: relative;
+  margin-left: 64px;
+  margin-bottom: 3.2rem;
+
+  padding: 2.2rem 2.4rem;
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.10),
+      rgba(255,255,255,.04)
+    );
+
+  backdrop-filter: blur(28px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.12);
+
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.85),
+    inset 0 1px 0 rgba(255,255,255,.18);
+
+  transition:
+    transform 800ms var(--ease),
+    box-shadow 800ms var(--ease);
+}
+
+/* GLOW NODE */
+.experience-role::before {
+  content: "";
+  position: absolute;
+  left: -46px;
+  top: 36px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: white;
+  box-shadow:
+    0 0 0 6px rgba(255,255,255,.08),
+    0 0 22px rgba(255,255,255,.45);
+}
+
+/* CURVED CONNECTOR */
+.experience-role::after {
+  content: "";
+  position: absolute;
+  left: -34px;
+  top: 42px;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,.55),
+    transparent
+  );
+}
+
+/* HOVER — LIFT */
+@media (hover:hover) {
+  .experience-role:hover {
+    transform: translateY(-6px);
+    box-shadow:
+      0 70px 180px rgba(0,0,0,.95),
+      0 0 80px rgba(255,255,255,.18);
+  }
+}
+
+/* ROLE TITLE */
+.experience-role strong {
+  font-size: 18px;
+  font-weight: 600;
+  display: block;
+}
+
+/* META */
+.experience-meta {
+  margin-top: .4rem;
+  font-size: 14px;
+  color: rgba(255,255,255,.65);
+}
+
+/* BULLETS */
+.experience-role ul {
+  margin-top: 1.4rem;
+  padding-left: 1.2rem;
+}
+
+.experience-role li {
+  margin-bottom: .65rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,.82);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 720px) {
+  #experience-section::before {
+    left: 10px;
+  }
+
+  .experience-role {
+    margin-left: 38px;
+    padding: 1.8rem;
+  }
+
+  .experience-role::before {
+    left: -32px;
+  }
+
+  .experience-role::after {
+    left: -22px;
+    width: 18px;
+  }
+}
