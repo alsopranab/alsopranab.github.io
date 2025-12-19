@@ -1,160 +1,202 @@
-<main id="page-content">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pranab Debnath — Data Analyst</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+
+<body data-omniverse>
+
+  <!-- BACKGROUND -->
+  <div class="starry-bg"></div>
+  <div class="shooting-stars"></div>
+
+  <!-- HEADER -->
+  <header id="site-header"></header>
 
   <!-- =====================================================
-       HERO — NAME & ABOUT (APPLE-STYLE INTRO)
+       MAIN CONTENT
   ====================================================== -->
-  <section id="hero-section" class="omniverse-section">
-    <div class="hero-wrapper">
-      <h1>Pranab Debnath</h1>
-      <p class="hero-tagline">
-        Data Analyst • Automation • Data-Driven Decisions
-      </p>
-      <p class="hero-summary">
-        I design analytical systems that turn raw data into
-        strategic clarity using SQL, Python, and automation.
-      </p>
-    </div>
+  <main id="page-content">
 
-    <!-- PRIMARY DASHBOARD (IMAGE 1 INSPIRED) -->
-    <div class="hero-dashboard-shell" data-no-render>
-      <div class="hero-dashboard-glow"></div>
+    <!-- =====================================================
+         HERO — NAME & ABOUT + PRIMARY DASHBOARD
+    ====================================================== -->
+    <section id="hero-section" class="omniverse-section">
 
-      <div class="hero-dashboard-grid">
-        <!-- KPI PANEL -->
-        <aside class="kpi-panel">
-          <div class="kpi-box">
-            <span class="kpi-label">Revenue</span>
-            <strong class="kpi-value">₹4.8M</strong>
-          </div>
-          <div class="kpi-box">
-            <span class="kpi-label">Growth</span>
-            <strong class="kpi-value">+32%</strong>
-          </div>
-          <div class="kpi-box">
-            <span class="kpi-label">Conversion</span>
-            <strong class="kpi-value">5.4%</strong>
-          </div>
-        </aside>
+      <div class="hero-wrapper">
+        <h1>Pranab Debnath</h1>
+        <p class="hero-tagline">
+          Data Analyst • SQL • Python • Automation
+        </p>
+        <p class="hero-summary">
+          I design analytical systems that transform raw data
+          into strategic decisions using automation and insight.
+        </p>
+      </div>
 
-        <!-- MAIN GRAPH -->
-        <div class="dashboard-main">
-          <div class="dashboard-chart hero-graph">
-            <!-- SVG / Canvas Graph -->
+      <!-- HERO DASHBOARD (IMAGE 1 INSPIRED) -->
+      <div class="hero-dashboard-shell" data-no-render>
+        <div class="hero-dashboard-glow"></div>
+
+        <div class="hero-dashboard-grid">
+
+          <!-- KPI PANEL -->
+          <aside class="kpi-panel">
+            <div class="kpi-box">
+              <span class="kpi-label">Revenue</span>
+              <strong class="kpi-value">₹4.8M</strong>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-label">Growth</span>
+              <strong class="kpi-value">+32%</strong>
+            </div>
+            <div class="kpi-box">
+              <span class="kpi-label">Conversion</span>
+              <strong class="kpi-value">5.4%</strong>
+            </div>
+          </aside>
+
+          <!-- MAIN GRAPH -->
+          <div class="dashboard-main">
+            <div class="dashboard-chart hero-graph">
+              <!-- SVG / CANVAS GRAPH -->
+            </div>
           </div>
+
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- =====================================================
-       EXPERIENCE — TEXTUAL STORY
-  ====================================================== -->
-  <section id="experience-section" class="omniverse-section" data-omni-reveal>
-    <h2>Experience</h2>
-    <div class="experience-list">
-      <!-- Rendered roles -->
-    </div>
-  </section>
-
-  <!-- =====================================================
-       PROJECT DASHBOARD STORY (IMAGE 2 INSPIRED)
-       SAME CONTAINER, DIFFERENT DASHBOARDS ON SCROLL
-  ====================================================== -->
-  <section
-    id="dashboard-projects-section"
-    class="omniverse-section dashboard-sequence"
-  >
-
-    <h2>Projects</h2>
-
-    <!-- DASHBOARD 1 -->
-    <article class="dashboard-frame" data-omni-reveal>
-      <header class="dashboard-header">
-        <h3>Revenue Funnel Optimization</h3>
-        <span>Analytics • Automation</span>
-      </header>
-
-      <div class="dashboard-visual">
-        <!-- Dashboard UI (fake but premium) -->
+    <!-- =====================================================
+         EXPERIENCE
+    ====================================================== -->
+    <section id="experience-section" class="omniverse-section" data-omni-reveal>
+      <h2>Experience</h2>
+      <div class="experience-list">
+        <!-- Rendered by app.renderer.js -->
       </div>
+    </section>
 
-      <p class="dashboard-desc">
-        Identified funnel leakage, automated KPI tracking,
-        and improved conversion velocity by 15%.
-      </p>
-    </article>
+    <!-- =====================================================
+         DASHBOARD PROJECTS — SCROLL STORY (IMAGE 2 INSPIRED)
+    ====================================================== -->
+    <section
+      id="dashboard-projects-section"
+      class="omniverse-section dashboard-sequence"
+    >
+      <h2>Projects</h2>
 
-    <!-- DASHBOARD 2 -->
-    <article class="dashboard-frame" data-omni-reveal>
-      <header class="dashboard-header">
-        <h3>Sales Performance Intelligence</h3>
-        <span>SQL • Power BI</span>
-      </header>
+      <!-- DASHBOARD 1 -->
+      <article class="dashboard-frame" data-omni-reveal>
+        <header class="dashboard-header">
+          <h3>Revenue Funnel Optimization</h3>
+          <span>Analytics • Automation</span>
+        </header>
 
-      <div class="dashboard-visual">
-        <!-- Another dashboard UI -->
+        <div class="dashboard-visual">
+          <!-- Fake premium dashboard UI -->
+        </div>
+
+        <p class="dashboard-desc">
+          Identified funnel leakage and improved conversion
+          velocity through KPI automation.
+        </p>
+      </article>
+
+      <!-- DASHBOARD 2 -->
+      <article class="dashboard-frame" data-omni-reveal>
+        <header class="dashboard-header">
+          <h3>Sales Performance Intelligence</h3>
+          <span>SQL • Power BI</span>
+        </header>
+
+        <div class="dashboard-visual">
+          <!-- Executive analytics UI -->
+        </div>
+
+        <p class="dashboard-desc">
+          Built executive dashboards with cohort analysis
+          and predictive insights.
+        </p>
+      </article>
+
+      <!-- DASHBOARD 3 -->
+      <article class="dashboard-frame" data-omni-reveal>
+        <header class="dashboard-header">
+          <h3>Automation Control Center</h3>
+          <span>Python • Workflow</span>
+        </header>
+
+        <div class="dashboard-visual">
+          <!-- Automation workflow UI -->
+        </div>
+
+        <p class="dashboard-desc">
+          Reduced manual reporting effort by 70%
+          using automated pipelines.
+        </p>
+      </article>
+
+    </section>
+
+    <!-- =====================================================
+         FEATURED ACHIEVEMENTS
+    ====================================================== -->
+    <section id="featured-section" class="omniverse-section" data-omni-reveal>
+      <h2>Featured Achievements</h2>
+      <div class="featured-list">
+        <!-- Cards -->
       </div>
+    </section>
 
-      <p class="dashboard-desc">
-        Built executive dashboards with cohort analysis
-        and predictive insights.
-      </p>
-    </article>
+    <!-- =====================================================
+         EDUCATION
+    ====================================================== -->
+    <section id="education-section" class="omniverse-section" data-omni-reveal>
+      <h2>Education</h2>
+      <!-- Education items -->
+    </section>
 
-    <!-- DASHBOARD 3 -->
-    <article class="dashboard-frame" data-omni-reveal>
-      <header class="dashboard-header">
-        <h3>Automation Control Center</h3>
-        <span>Python • Workflow</span>
-      </header>
+    <!-- =====================================================
+         CERTIFICATIONS & LICENSES
+    ====================================================== -->
+    <section id="licenses-section" class="omniverse-section" data-omni-reveal>
+      <h2>Certifications & Licenses</h2>
+      <!-- Certifications -->
+    </section>
 
-      <div class="dashboard-visual">
-        <!-- Workflow / automation visual -->
-      </div>
+    <!-- =====================================================
+         CONTACT
+    ====================================================== -->
+    <section id="contact-section" class="omniverse-section">
+      <!-- Contact panel rendered by JS -->
+    </section>
 
-      <p class="dashboard-desc">
-        Reduced manual reporting effort by 70%
-        through automated pipelines.
-      </p>
-    </article>
+  </main>
 
-  </section>
+  <!-- FOOTER -->
+  <footer id="site-footer">
+    © Pranab Debnath
+  </footer>
 
-  <!-- =====================================================
-       FEATURED ACHIEVEMENTS
-  ====================================================== -->
-  <section id="featured-section" class="omniverse-section" data-omni-reveal>
-    <h2>Featured Achievements</h2>
-    <div class="featured-list">
-      <!-- Cards -->
-    </div>
-  </section>
+  <!-- SCRIPTS -->
+  <script src="assets/js/core/bootstrap.js" defer></script>
+  <script src="assets/js/services/data.service.js" defer></script>
+  <script src="assets/js/layout/header.js" defer></script>
+  <script src="assets/js/layout/footer.js" defer></script>
+  <script src="assets/js/renderers/app.renderer.js" defer></script>
+  <script src="assets/js/omniverse.godmode.js" defer></script>
+  <script src="assets/js/interactions/ui.motion.js" defer></script>
 
-  <!-- =====================================================
-       EDUCATION
-  ====================================================== -->
-  <section id="education-section" class="omniverse-section" data-omni-reveal>
-    <h2>Education</h2>
-    <!-- Education items -->
-  </section>
-
-  <!-- =====================================================
-       CERTIFICATIONS & LICENSES
-  ====================================================== -->
-  <section id="licenses-section" class="omniverse-section" data-omni-reveal>
-    <h2>Certifications & Licenses</h2>
-    <!-- Certificates -->
-  </section>
-
-  <!-- =====================================================
-       CONTACT
-  ====================================================== -->
-  <section id="contact-section" class="omniverse-section">
-    <!-- Contact panel -->
-  </section>
-
-</main>
-
-<footer id="site-footer">
-  © Pranab Debnath
-</footer>
+</body>
+</html>
