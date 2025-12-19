@@ -439,3 +439,65 @@ footer {
     width: 18px;
   }
 }
+
+/* ============================================================
+   SCROLL REVEAL — APPLE STYLE
+============================================================ */
+
+[data-omni-reveal] {
+  opacity: 0;
+  transform: translateY(26px) scale(.985);
+  transition:
+    opacity 900ms var(--ease),
+    transform 900ms var(--ease);
+  will-change: transform, opacity;
+}
+
+[data-omni-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* stagger */
+[data-omni-reveal]:nth-child(2) { transition-delay: 120ms; }
+[data-omni-reveal]:nth-child(3) { transition-delay: 200ms; }
+[data-omni-reveal]:nth-child(4) { transition-delay: 280ms; }
+[data-parallax] {
+  transform: translateY(0);
+  transition: transform 120ms linear;
+  will-change: transform;
+}
+/* ============================================================
+   GLASS CHART CONTAINER
+============================================================ */
+
+.chart-glass {
+  position: relative;
+  padding: 2rem;
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,.12),
+      rgba(255,255,255,.04)
+    );
+
+  backdrop-filter: blur(26px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.14);
+
+  box-shadow:
+    0 40px 120px rgba(0,0,0,.85),
+    inset 0 1px 0 rgba(255,255,255,.22);
+}
+
+.chart-glass::after {
+  content:"";
+  position:absolute;
+  inset:-30%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(255,255,255,.25), transparent 60%);
+  filter: blur(120px);
+  opacity:.4;
+  pointer-events:none;
+}
