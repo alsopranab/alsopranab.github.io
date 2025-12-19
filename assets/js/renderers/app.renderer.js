@@ -1,17 +1,5 @@
-/**
- * Unified App Renderer (FINAL — CANONICAL & IMMUTABLE)
- * ==================================================
- * - Runs ONLY after home:ready
- * - Reads ONLY dataset.source
- * - Matches CSS layout contracts exactly
- * - Zero duplication (footer-safe)
- * - Never breaks on partial data
- * - Preserves static hero dashboard
- */
 
 window.addEventListener("home:ready", () => {
-  console.log("[Renderer] home:ready received");
-
   renderHero();
   renderExperience();
   renderFeatured();
@@ -20,9 +8,6 @@ window.addEventListener("home:ready", () => {
   renderContact();
 });
 
-/* ============================================================
-   HERO — HYBRID (STATIC + DYNAMIC SAFE)
-============================================================ */
 
 function renderHero() {
   const section = document.getElementById("hero-section");
@@ -30,8 +15,6 @@ function renderHero() {
   if (!d?.identity) return;
 
   let wrapper = section.querySelector(".hero-wrapper");
-
-  // Create wrapper if missing, never replace section
   if (!wrapper) {
     wrapper = document.createElement("div");
     wrapper.className = "hero-wrapper";
@@ -40,48 +23,32 @@ function renderHero() {
 
   wrapper.innerHTML = `
     <h1>${escape(d.identity.fullName || "")}</h1>
-    ${
-      d.identity.headline
-        ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>`
-        : ""
-    }
-    ${
-      d.identity.summary
-        ? `<p class="hero-summary">${escape(d.identity.summary)}</p>`
-        : ""
-    }
+    ${d.identity.headline ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>` : ""}
+    ${d.identity.summary ? `<p class="hero-summary">${escape(d.identity.summary)}</p>` : ""}
   `;
 }
 
-/* ============================================================
-   EXPERIENCE
-============================================================ */
 
 function renderExperience() {
   const section = document.getElementById("experience-section");
   const d = getData(section);
   if (!Array.isArray(d?.timeline)) return;
 
-  section.innerHTML = `
-    <h2>${escape(d.section?.title || "Experience")}</h2>
-    <div class="experience-list">
-      ${d.timeline.map(renderOrganization).join("")}
-    </div>
-  `;
+  ensureHeading(section, d.section?.title || "Experience");
+
+  let list = section.querySelector(".experience-list");
+  if (!list) {
+    list = document.createElement("div");
+    list.className = "experience-list";
+    section.appendChild(list);
+  }
+
+  list.innerHTML = d.timeline
+    .flatMap(org => Array.isArray(org.roles) ? org.roles.map(role => renderRole(role, org.organization)) : [])
+    .join("");
 }
 
-function renderOrganization(org) {
-  if (!org?.organization) return "";
-
-  return `
-    <div class="experience-company">
-      <h3>${escape(org.organization.name || "")}</h3>
-      ${Array.isArray(org.roles) ? org.roles.map(renderRole).join("") : ""}
-    </div>
-  `;
-}
-
-function renderRole(role) {
+function renderRole(role, org) {
   if (!role) return "";
 
   const start = role.duration?.start?.year || "";
@@ -91,151 +58,123 @@ function renderRole(role) {
       : role.duration?.end?.year || "";
 
   return `
-    <div class="experience-role">
+    <div class="experience-role" data-omni-reveal>
       <strong>${escape(role.title || "")}</strong>
-      <span>${start}${end ? " – " + end : ""}</span>
-      ${
-        Array.isArray(role.responsibilities)
-          ? `<ul>${role.responsibilities
-              .map(r => `<li>${escape(r)}</li>`)
-              .join("")}</ul>`
-          : ""
-      }
+      <div class="experience-meta">
+        ${org?.name ? escape(org.name) + " · " : ""}
+        ${start}${end ? " – " + end : ""}
+      </div>
+      ${Array.isArray(role.responsibilities)
+        ? `<ul>${role.responsibilities.map(r => `<li>${escape(r)}</li>`).join("")}</ul>`
+        : ""}
     </div>
   `;
 }
 
-/* ============================================================
-   FEATURED
-============================================================ */
 
 function renderFeatured() {
   const section = document.getElementById("featured-section");
   const d = getData(section);
   if (!Array.isArray(d?.items)) return;
 
-  section.innerHTML = `
-    <h2>${escape(d.section?.title || "Featured")}</h2>
-    <div class="featured-list">
-      ${d.items.map(renderFeaturedItem).join("")}
-    </div>
-  `;
+  ensureHeading(section, d.section?.title || "Featured");
+
+  let list = section.querySelector(".featured-list");
+  if (!list) {
+    list = document.createElement("div");
+    list.className = "featured-list";
+    section.appendChild(list);
+  }
+
+  list.innerHTML = d.items.map(renderFeaturedItem).join("");
 }
 
 function renderFeaturedItem(item) {
   if (!item?.project) return "";
 
   return `
-    <div class="featured-item">
-      ${
-        item.media?.coverImage
-          ? `
-            <div class="media-frame">
-              <img src="${item.media.coverImage}" alt="${escape(
-                item.media.alt || ""
-              )}">
-            </div>
-          `
-          : ""
-      }
-      <div>
-        <h3>${escape(item.project.name || "")}</h3>
-        <p>${escape(item.project.description || "")}</p>
-      </div>
+    <div class="featured-item" data-omni-reveal>
+      ${item.media?.coverImage
+        ? `<img
+            src="${item.media.coverImage}"
+            alt="${escape(item.media.alt || "")}"
+            data-expandable
+          >`
+        : ""}
+      <h3>${escape(item.project.name || "")}</h3>
+      <p>${escape(item.project.description || "")}</p>
     </div>
   `;
 }
 
-/* ============================================================
-   PROJECTS
-============================================================ */
 
 function renderProjects() {
   const section = document.getElementById("projects-section");
   const d = getData(section);
   if (!Array.isArray(d?.categories)) return;
 
-  const categories = [...d.categories].sort(
+  ensureHeading(section, d.section?.title || "Projects");
+
+  const ordered = [...d.categories].sort(
     (a, b) => (a.priority ?? 99) - (b.priority ?? 99)
   );
 
-  section.innerHTML = `
-    <h2>${escape(d.section?.title || "Projects")}</h2>
-    ${categories.map(renderProjectCategory).join("")}
-  `;
-}
+  ordered.forEach(cat => {
+    if (!Array.isArray(cat.projects)) return;
 
-function renderProjectCategory(category) {
-  if (!Array.isArray(category.projects)) return "";
+    const block = document.createElement("div");
+    block.className = "project-category";
 
-  return `
-    <div class="project-category">
-      <h3>${escape(category.label || "")}</h3>
-      ${category.projects.map(renderProjectCard).join("")}
-    </div>
-  `;
+    block.innerHTML = `
+      <div class="project-category-title">${escape(cat.label || "")}</div>
+      ${cat.projects.map(renderProjectCard).join("")}
+    `;
+
+    section.appendChild(block);
+  });
 }
 
 function renderProjectCard(p) {
   if (!p?.project) return "";
 
   return `
-    <div class="project-card">
+    <div class="project-card" data-omni-reveal>
       <h4>${escape(p.project.name || "")}</h4>
       <p>${escape(p.project.summary || "")}</p>
-      ${
-        p.repository?.url
-          ? `<a href="${p.repository.url}" target="_blank" rel="noopener">
-              View on GitHub →
-            </a>`
-          : ""
-      }
+      ${p.repository?.url
+        ? `<a href="${p.repository.url}" target="_blank" rel="noopener">
+            View on GitHub →
+          </a>`
+        : ""}
     </div>
   `;
 }
-
-/* ============================================================
-   EDUCATION
-============================================================ */
 
 function renderEducation() {
   const section = document.getElementById("education-section");
   const d = getData(section);
   if (!Array.isArray(d?.records)) return;
 
-  section.innerHTML = `
-    <h2>${escape(d.section?.title || "Education")}</h2>
-    ${d.records.map(renderEducationItem).join("")}
-  `;
-}
+  ensureHeading(section, d.section?.title || "Education");
 
-function renderEducationItem(r) {
-  return `
-    <div class="education-item">
+  d.records.forEach(r => {
+    const item = document.createElement("div");
+    item.className = "education-item";
+    item.setAttribute("data-omni-reveal", "");
+
+    item.innerHTML = `
       <strong>${escape(r.institution || "")}</strong>
-      ${
-        r.degree || r.field
-          ? `<div>${escape(r.degree || "")}${
-              r.field ? " — " + escape(r.field) : ""
-            }</div>`
-          : ""
-      }
+      ${r.degree || r.field ? `<div>${escape(r.degree || "")}${r.field ? " — " + escape(r.field) : ""}</div>` : ""}
       <div>${escape(r.start || "")} – ${escape(r.end || "")}</div>
       ${r.description ? `<p>${escape(r.description)}</p>` : ""}
-      ${
-        Array.isArray(r.highlights)
-          ? `<ul>${r.highlights
-              .map(h => `<li>${escape(h)}</li>`)
-              .join("")}</ul>`
-          : ""
-      }
-    </div>
-  `;
-}
+      ${Array.isArray(r.highlights)
+        ? `<ul>${r.highlights.map(h => `<li>${escape(h)}</li>`).join("")}</ul>`
+        : ""}
+    `;
 
-/* ============================================================
-   CONTACT
-============================================================ */
+    section.appendChild(item);
+  });
+}
 
 function renderContact() {
   const section = document.getElementById("contact-section");
@@ -244,45 +183,36 @@ function renderContact() {
 
   section.innerHTML = `
     <div class="contact-panel">
-      <div class="contact-grid">
-
-        <div>
-          <h2>${escape(d.section.title || "Contact")}</h2>
-          ${
-            d.section.subtitle
-              ? `<div class="contact-tagline">
-                  ${escape(d.section.subtitle)}
-                </div>`
-              : ""
-          }
-        </div>
-
-        <div class="contact-description">
-          ${
-            d.section.description
-              ? `<p>${escape(d.section.description)}</p>`
-              : ""
-          }
-        </div>
-
-        <div class="contact-email">
-          ${
-            d.primary?.email?.value
-              ? `<a href="mailto:${escape(d.primary.email.value)}">
-                  ${escape(d.primary.email.value)}
-                </a>`
-              : ""
-          }
-        </div>
-
-      </div>
+      <h2>${escape(d.section.title || "Contact")}</h2>
+      ${d.section.subtitle ? `<div class="contact-tagline">${escape(d.section.subtitle)}</div>` : ""}
+      ${d.section.description ? `<p>${escape(d.section.description)}</p>` : ""}
+      ${d.primary?.email?.value
+        ? `<a class="contact-email" href="mailto:${escape(d.primary.email.value)}">
+            ${escape(d.primary.email.value)}
+          </a>`
+        : ""}
+      ${Array.isArray(d.socials)
+        ? `<div class="contact-socials">
+            ${d.socials
+              .filter(s => s.enabled !== false)
+              .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
+              .map(s => `<a href="${s.url}" target="_blank" rel="noopener">${escape(s.name)}</a>`)
+              .join("")}
+          </div>`
+        : ""}
     </div>
   `;
 }
 
-/* ============================================================
-   HELPERS
-============================================================ */
+
+function ensureHeading(section, text) {
+  let h = section.querySelector(":scope > h2");
+  if (!h) {
+    h = document.createElement("h2");
+    section.prepend(h);
+  }
+  h.textContent = text;
+}
 
 function getData(section) {
   if (!section?.dataset?.source) return null;
@@ -301,15 +231,10 @@ function escape(str) {
     : "";
 }
 
-/* ============================================================
-   IMAGE VIEWER — SAFE, GLOBAL, IMMUTABLE
-============================================================ */
-
 window.addEventListener("home:ready", () => {
   document.body.addEventListener("click", e => {
     const img = e.target.closest("img[data-expandable]");
     if (!img) return;
-
     openImageViewer(img.src, img.alt || "");
   });
 });
@@ -319,13 +244,10 @@ function openImageViewer(src, alt) {
 
   const overlay = document.createElement("div");
   overlay.id = "image-viewer-overlay";
-  overlay.setAttribute("role", "dialog");
-  overlay.setAttribute("aria-modal", "true");
-
   overlay.innerHTML = `
     <div class="image-viewer-backdrop"></div>
     <div class="image-viewer-panel">
-      <button class="image-viewer-close" aria-label="Close image">×</button>
+      <button class="image-viewer-close" aria-label="Close">×</button>
       <img src="${src}" alt="${escape(alt)}">
     </div>
   `;
@@ -337,9 +259,7 @@ function openImageViewer(src, alt) {
     if (
       e.target.classList.contains("image-viewer-backdrop") ||
       e.target.classList.contains("image-viewer-close")
-    ) {
-      closeImageViewer();
-    }
+    ) closeImageViewer();
   });
 
   window.addEventListener("keydown", onImageViewerKey);
@@ -348,7 +268,6 @@ function openImageViewer(src, alt) {
 function closeImageViewer() {
   const overlay = document.getElementById("image-viewer-overlay");
   if (!overlay) return;
-
   overlay.remove();
   document.body.style.overflow = "";
   window.removeEventListener("keydown", onImageViewerKey);
