@@ -328,3 +328,55 @@ footer {
     transition:none !important;
   }
 }
+/* ============================================================
+   RESTORE VIOLET IDENTITY — FINAL
+   ------------------------------------------------------------
+   • White primary text
+   • Violet accents restored
+   • Apple-grade hierarchy
+============================================================ */
+
+/* PRIMARY TEXT */
+body,
+h1, h2, h3, h4, h5, h6,
+strong {
+  color: rgba(255,255,255,.96);
+}
+
+/* SECONDARY / MUTED TEXT */
+p,
+.hero-summary,
+.experience-meta,
+footer,
+.kpi span,
+.panel p {
+  color: rgba(255,255,255,.68);
+}
+
+/* VIOLET ACCENTS (BACK ❤️) */
+.hero-tagline,
+.kpi strong,
+.panel h4,
+.signal-caption,
+.signal-header h3,
+.signal-status,
+.intel-header h3 {
+  color: #a78bfa;
+}
+
+/* LINKS */
+a {
+  color: #a78bfa;
+  text-decoration: none;
+}
+a:hover {
+  text-shadow: 0 0 12px rgba(167,139,250,.6);
+}
+
+/* SUBTLE GLOW ON IMPORTANT TEXT */
+.hero h1,
+.kpi strong {
+  text-shadow:
+    0 0 18px rgba(167,139,250,.25);
+}
+
