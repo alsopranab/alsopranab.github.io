@@ -71,53 +71,77 @@
     }
   }
 
-  function drawConstellation(canvas, ctx, rings) {
-    let w, h, t = 0;
+function drawConstellation(canvas, ctx, rings) {
+  let w, h;
+  let t = 0;
+  let scrollY = window.scrollY;
 
-    function resize() {
-      const dpr = devicePixelRatio || 1;
-      w = canvas.width = canvas.offsetWidth * dpr;
-      h = canvas.height = 360 * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    function frame() {
-      ctx.clearRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-
-      for (let i = 1; i <= rings; i++) {
-        const r = i * 34;
-        ctx.beginPath();
-
-        for (let a = 0; a < Math.PI * 2; a += 0.03) {
-          const noise = Math.sin(a * 6 + t + i) * 2;
-          const x = cx + Math.cos(a) * (r + noise);
-          const y = cy + Math.sin(a) * (r + noise);
-          a === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-        }
-
-        ctx.strokeStyle = `rgba(255,255,255,${0.08 + i * 0.05})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-
-      // Core glow
-      ctx.beginPath();
-      ctx.arc(cx, cy, 6, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255,255,255,.9)";
-      ctx.fill();
-
-      if (!prefersReducedMotion) {
-        t += 0.004;
-        requestAnimationFrame(frame);
-      }
-    }
-
-    frame();
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    w = canvas.width = canvas.offsetWidth * dpr;
+    h = canvas.height = 360 * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
-})();
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  window.addEventListener(
+    "scroll",
+    () => (scrollY = window.scrollY),
+    { passive: true }
+  );
+
+  function frame() {
+    ctx.clearRect(0, 0, w, h);
+
+    const cx = w / 2;
+    const cy = h / 2 + scrollY * 0.02; // subtle parallax
+
+    // BACK ORBITS (soft, blurred)
+    for (let i = rings; i >= 1; i--) {
+      const radius = i * 36;
+      ctx.beginPath();
+
+      for (let a = 0; a <= Math.PI * 2; a += 0.035) {
+        const distortion =
+          Math.sin(a * 5 + t * 0.6 + i) * 2.2;
+
+        const x = cx + Math.cos(a) * (radius + distortion);
+        const y = cy + Math.sin(a) * (radius + distortion);
+
+        a === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+
+      ctx.strokeStyle = `rgba(255,255,255,${0.04 + i * 0.015})`;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // CORE GLOW
+    const glow = ctx.createRadialGradient(
+      cx,
+      cy,
+      0,
+      cx,
+      cy,
+      24
+    );
+    glow.addColorStop(0, "rgba(255,255,255,.9)");
+    glow.addColorStop(0.4, "rgba(255,255,255,.35)");
+    glow.addColorStop(1, "rgba(255,255,255,0)");
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, 18, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      t += 0.0035; // slow, calm
+      requestAnimationFrame(frame);
+    }
+  }
+
+  frame();
+}
+
