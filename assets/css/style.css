@@ -838,3 +838,33 @@ footer {
   font-size: 12px;
   opacity: .7;
 }
+
+/* ===============================
+   CONSTELLATION POLISH
+=============================== */
+
+.constellation-shell {
+  position: relative;
+  overflow: hidden;
+}
+
+.constellation-shell::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(circle at 50% 40%,
+      rgba(255,255,255,.08),
+      transparent 60%);
+  filter: blur(120px);
+  pointer-events: none;
+}
+
+.constellation-header h3 {
+  letter-spacing: -0.02em;
+}
+
+.constellation-canvas {
+  margin-top: 1.2rem;
+  filter: drop-shadow(0 0 22px rgba(255,255,255,.15));
+}
