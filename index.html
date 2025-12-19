@@ -11,21 +11,15 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* =========================================================
-   OMNIVERSE — FINAL PRODUCTION CSS
-========================================================= */
-
 :root {
   --bg-main:#05030c;
   --bg-deep:#090613;
-
   --violet:#a78bfa;
   --violet-blue:#60a5fa;
-  --violet-glow:rgba(167,139,250,.35);
-
   --text-main:rgba(255,255,255,.96);
   --text-muted:rgba(255,255,255,.65);
-
+  --glass:rgba(255,255,255,.06);
+  --border:rgba(255,255,255,.08);
   --ease:cubic-bezier(.22,1,.36,1);
 }
 
@@ -34,117 +28,142 @@
 html,body { margin:0; padding:0; }
 
 body {
-  font-family:Inter,system-ui,-apple-system,sans-serif;
+  font-family:Inter,system-ui,sans-serif;
   color:var(--text-main);
-  min-height:100vh;
-  overflow-x:hidden;
   background:
     radial-gradient(900px 600px at 70% -10%, rgba(124,58,237,.20), transparent),
     radial-gradient(700px 520px at 15% 120%, rgba(167,139,250,.18), transparent),
-    linear-gradient(180deg,#04020a,var(--bg-deep) 55%,#04020a);
+    linear-gradient(180deg,#04020a,var(--bg-deep));
 }
 
-/* STAR LAYERS */
-#stars,
-#shooting-stars {
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-#stars { z-index:-3; }
-#shooting-stars { z-index:-2; }
-
-/* SECTIONS */
+/* SECTION */
 section {
-  max-width:1100px;
-  margin:0 auto;
-  padding:8rem 2rem;
+  max-width:1200px;
+  margin:auto;
+  padding:7rem 2rem;
 }
 
 /* HERO */
 #hero-section h1 {
   font-size:clamp(42px,6vw,64px);
   font-weight:500;
-  letter-spacing:-.035em;
-  margin:0;
 }
 
 .hero-tagline {
-  margin-top:1.4rem;
+  margin-top:1.2rem;
   color:var(--violet);
-  font-weight:500;
 }
 
 .hero-summary {
-  margin-top:1.4rem;
+  margin-top:1.2rem;
   max-width:60ch;
   color:var(--text-muted);
 }
 
-/* DASHBOARD */
-.dashboard {
-  margin-top:4.5rem;
-  padding:3.6rem;
-  border-radius:32px;
-  position:relative;
-  overflow:hidden;
-  background:
-    radial-gradient(
-      140% 120% at 12% 8%,
-      rgba(255,255,255,.25),
-      rgba(255,255,255,.08) 38%,
-      rgba(9,6,19,.90) 78%
-    );
-  backdrop-filter:blur(28px) saturate(160%);
-  box-shadow:
-    0 80px 180px rgba(0,0,0,.95),
-    inset 0 1px 0 rgba(255,255,255,.25);
+/* ===========================
+   ANALYTICS DASHBOARD
+=========================== */
+
+#analytics-dashboard {
+  padding-top:4rem;
 }
 
-/* KPIs */
-.kpis {
+.dashboard-shell {
+  padding:3.2rem;
+  border-radius:36px;
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.10),
+    rgba(255,255,255,.03)
+  );
+  backdrop-filter:blur(30px) saturate(160%);
+  box-shadow:0 80px 200px rgba(0,0,0,.9);
+}
+
+/* KPI ROW */
+
+.kpi-grid {
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:2rem;
-  margin-bottom:2.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.8rem;
+  margin-bottom:3rem;
 }
 
-.kpi {
-  padding:1.4rem 1.6rem;
-  border-radius:18px;
-  background:rgba(255,255,255,.05);
-  box-shadow:0 16px 36px rgba(0,0,0,.6);
+.kpi-card {
+  padding:1.6rem;
+  border-radius:22px;
+  background:var(--glass);
+  border:1px solid var(--border);
 }
 
-.kpi span {
+.kpi-card span {
   font-size:11px;
-  letter-spacing:.14em;
   text-transform:uppercase;
-  color:rgba(255,255,255,.45);
+  letter-spacing:.12em;
+  color:var(--text-muted);
 }
 
-.kpi strong {
+.kpi-card strong {
   display:block;
-  margin-top:.5rem;
-  font-size:22px;
-  color:var(--violet);
+  font-size:28px;
+  margin-top:.4rem;
 }
 
-/* GRAPH */
-.graph {
-  height:260px;
-  border-radius:20px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.08),
-      rgba(255,255,255,.015)
-    );
+/* GRID */
+
+.dashboard-grid {
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  gap:2rem;
+}
+
+.panel {
+  padding:2rem;
+  border-radius:26px;
+  background:var(--glass);
+  border:1px solid var(--border);
+}
+
+.panel h4 {
+  margin:0 0 1rem;
+  font-weight:500;
+}
+
+/* FUNNEL */
+
+.funnel-bar {
+  height:36px;
+  border-radius:18px;
+  margin-top:12px;
+  background:linear-gradient(90deg,var(--violet),var(--violet-blue));
+  display:flex;
+  align-items:center;
+  padding-left:14px;
+  font-size:13px;
+  animation:grow 1.2s var(--ease);
+}
+
+@keyframes grow { from { width:0 } }
+
+/* BARS */
+
+.bar {
+  margin-top:14px;
+}
+
+.bar span { font-size:13px; }
+
+.bar i {
+  display:block;
+  height:6px;
+  border-radius:6px;
+  margin-top:6px;
+  background:linear-gradient(90deg,var(--violet),transparent);
 }
 
 /* FOOTER */
 footer {
-  padding:6rem 2rem;
+  padding:5rem 2rem;
   text-align:center;
   color:rgba(255,255,255,.4);
 }
@@ -153,32 +172,53 @@ footer {
 
 <body>
 
-<!-- BACKGROUND -->
-<canvas id="stars"></canvas>
-<svg id="shooting-stars"></svg>
-
 <!-- HERO -->
 <section id="hero-section">
-  <div class="hero-wrapper">
-    <h1>Pranab Debnath</h1>
-    <p class="hero-tagline">Data • Analytics • Automation</p>
-    <p class="hero-summary">
-      I design analytical systems that turn raw data into strategic,
-      data-driven decisions with precision and clarity.
-    </p>
-  </div>
+  <h1>Pranab Debnath</h1>
+  <p class="hero-tagline">Data • Analytics • Automation</p>
+  <p class="hero-summary">
+    I design analytical systems that turn raw data into strategic,
+    data-driven decisions with precision and clarity.
+  </p>
+</section>
 
-  <div class="dashboard">
-    <div class="kpis">
-      <div class="kpi"><span>Revenue</span><strong>₹4.8M</strong></div>
-      <div class="kpi"><span>Growth</span><strong>+32%</strong></div>
-      <div class="kpi"><span>Conversion</span><strong>5.4%</strong></div>
+<!-- DASHBOARD -->
+<section id="analytics-dashboard">
+  <div class="dashboard-shell">
+
+    <div class="kpi-grid">
+      <div class="kpi-card"><span>Uptime</span><strong>▲ Up</strong></div>
+      <div class="kpi-card"><span>Sessions</span><strong>10.2K</strong></div>
+      <div class="kpi-card"><span>Abandonment</span><strong>75%</strong></div>
+      <div class="kpi-card"><span>Conversion</span><strong>3.3%</strong></div>
     </div>
-    <div class="graph"></div>
+
+    <div class="dashboard-grid">
+      <div class="panel">
+        <h4>Sessions Timeline</h4>
+        <canvas id="timeline" height="160"></canvas>
+      </div>
+
+      <div class="panel">
+        <h4>Conversion Funnel</h4>
+        <div class="funnel-bar" style="width:100%">Homepage</div>
+        <div class="funnel-bar" style="width:72%">Product</div>
+        <div class="funnel-bar" style="width:46%">Checkout</div>
+        <div class="funnel-bar" style="width:21%">Payment</div>
+      </div>
+
+      <div class="panel" style="grid-column:1/-1">
+        <h4>Top Pages</h4>
+        <div class="bar"><span>Homepage</span><i style="width:90%"></i></div>
+        <div class="bar"><span>Shoes</span><i style="width:60%"></i></div>
+        <div class="bar"><span>Coats</span><i style="width:52%"></i></div>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- DYNAMIC SECTIONS -->
+<!-- DYNAMIC CONTENT -->
 <section id="experience-section"></section>
 <section id="featured-section"></section>
 <section id="projects-section"></section>
@@ -187,20 +227,25 @@ footer {
 
 <footer>© Pranab Debnath</footer>
 
-<!-- =========================================================
-     DATA SERVICE (MUST LOAD FIRST)
-========================================================= -->
 <script src="/assets/js/services/data.service.js"></script>
-
-<!-- =========================================================
-     BOOTSTRAP
-========================================================= -->
 <script src="/assets/js/core/bootstrap.js"></script>
-
-<!-- =========================================================
-     APP RENDERER
-========================================================= -->
 <script src="/assets/js/renderers/app.renderer.js"></script>
+
+<script>
+/* SIMPLE TIMELINE GRAPH */
+const c = document.getElementById("timeline");
+const ctx = c.getContext("2d");
+const data = [60,65,62,70,55,48,52];
+ctx.strokeStyle="#a78bfa";
+ctx.lineWidth=3;
+ctx.beginPath();
+data.forEach((v,i)=>{
+  const x=i*(c.width/(data.length-1));
+  const y=c.height-(v/100*c.height);
+  i?ctx.lineTo(x,y):ctx.moveTo(x,y);
+});
+ctx.stroke();
+</script>
 
 </body>
 </html>
