@@ -1,11 +1,6 @@
 /* ============================================================
-   OMNIVERSE — APPLE-GRADE LIQUID GLASS (LOCKED)
-   ------------------------------------------------------------
-   • Pure white typography
-   • Perfect container alignment
-   • Curved journey connector line
-   • Liquid glass everywhere
-   • Mobile + desktop parity
+   OMNIVERSE — FINAL PRODUCTION CSS (LOCKED)
+   Apple-grade Liquid Glass System
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -18,14 +13,13 @@
   --white-60:rgba(255,255,255,.60);
   --white-40:rgba(255,255,255,.40);
 
-  --glass-strong:rgba(255,255,255,.10);
+  --glass-strong:rgba(255,255,255,.12);
   --glass-soft:rgba(255,255,255,.06);
-  --border-soft:rgba(255,255,255,.12);
+  --border-soft:rgba(255,255,255,.14);
 
-  --glow:rgba(255,255,255,.18);
-
+  --radius-xl:40px;
   --radius-lg:32px;
-  --radius-md:22px;
+  --radius-md:24px;
   --radius-sm:16px;
 
   --ease:cubic-bezier(.22,1,.36,1);
@@ -46,33 +40,25 @@ html,body {
 body {
   font-family:Inter,system-ui,-apple-system,sans-serif;
   color:var(--white-100);
-  min-height:100vh;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-
   background:
     radial-gradient(900px 600px at 70% -10%, rgba(255,255,255,.10), transparent),
     radial-gradient(700px 520px at 15% 120%, rgba(255,255,255,.08), transparent),
     linear-gradient(180deg,#04020a,var(--bg-deep) 55%,#04020a);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
 }
 
-img,svg {
-  display:block;
-  max-width:100%;
-}
-
-/* ================= COSMIC BACKGROUND ================= */
+/* ================= BACKGROUND ================= */
 #stars,
 #shooting-stars {
   position:fixed;
   inset:0;
   pointer-events:none;
 }
-
 #stars { z-index:-3; }
 #shooting-stars { z-index:-2; }
 
-/* ================= SECTION WRAPPER ================= */
+/* ================= SECTION SYSTEM ================= */
 section {
   max-width:1100px;
   margin:0 auto;
@@ -80,33 +66,69 @@ section {
   position:relative;
 }
 
-/* ================= CURVED JOURNEY LINE ================= */
-section::before {
+/* curved connector */
+section:not(:first-of-type)::before {
   content:"";
   position:absolute;
   left:50%;
   top:-120px;
   width:2px;
   height:140px;
+  transform:translateX(-50%);
   background:
-    radial-gradient(
-      ellipse at center,
-      rgba(255,255,255,.55),
-      rgba(255,255,255,.05) 70%,
+    linear-gradient(
+      180deg,
+      transparent,
+      rgba(255,255,255,.45),
       transparent
     );
-  filter:blur(1px);
-  opacity:.45;
-  transform:translateX(-50%) rotate(6deg);
+  opacity:.4;
 }
 
-section:first-of-type::before {
-  display:none;
+/* ================= GLASS CONTAINER (UNIFIED) ================= */
+.glass-box {
+  padding:3rem;
+  border-radius:var(--radius-lg);
+  background:
+    linear-gradient(
+      180deg,
+      var(--glass-strong),
+      var(--glass-soft)
+    );
+  backdrop-filter:blur(32px) saturate(160%);
+  border:1px solid var(--border-soft);
+  box-shadow:
+    0 80px 200px rgba(0,0,0,.95),
+    inset 0 1px 0 rgba(255,255,255,.18);
+  position:relative;
+  overflow:hidden;
+}
+
+/* liquid refraction */
+.glass-box::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,255,255,.55),
+      transparent 38%,
+      transparent 62%,
+      rgba(255,255,255,.25)
+    );
+  opacity:.12;
+  pointer-events:none;
 }
 
 /* ================= HERO ================= */
 .hero {
   padding:10rem 2rem 6rem;
+}
+
+.hero .glass-box {
+  padding:4rem;
 }
 
 .hero h1 {
@@ -125,76 +147,20 @@ section:first-of-type::before {
 .hero p {
   margin-top:1.4rem;
   max-width:60ch;
-  color:var(--white-60);
   line-height:1.75;
+  color:var(--white-60);
 }
 
-/* ================= LIQUID DASHBOARD ================= */
+/* ================= DASHBOARDS ================= */
 .dashboard {
-  margin-top:4.5rem;
+  margin-top:4rem;
+}
+
+.dashboard .glass-box {
   padding:3.6rem;
-  border-radius:var(--radius-lg);
-  position:relative;
-  overflow:hidden;
-
-  background:
-    linear-gradient(
-      180deg,
-      var(--glass-strong),
-      var(--glass-soft)
-    );
-
-  backdrop-filter:blur(32px) saturate(160%);
-  box-shadow:
-    0 90px 200px rgba(0,0,0,.95),
-    inset 0 1px 0 rgba(255,255,255,.18);
-
-  transition:
-    transform 900ms var(--ease),
-    box-shadow 900ms var(--ease);
 }
 
-/* Refraction edge */
-.dashboard::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:
-    linear-gradient(
-      140deg,
-      rgba(255,255,255,.65),
-      transparent 40%,
-      transparent 60%,
-      rgba(255,255,255,.35)
-    );
-  opacity:.14;
-  pointer-events:none;
-}
-
-/* Ambient glow */
-.dashboard::after {
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:
-    radial-gradient(circle at 30% 40%, var(--glow), transparent 55%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,.12), transparent 60%);
-  filter:blur(180px);
-  opacity:.6;
-  pointer-events:none;
-}
-
-@media (hover:hover) {
-  .dashboard:hover {
-    transform:translateY(-10px);
-    box-shadow:
-      0 130px 260px rgba(0,0,0,1),
-      0 0 120px rgba(255,255,255,.22);
-  }
-}
-
-/* ================= KPI GRID ================= */
+/* KPI GRID */
 .kpis {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -207,12 +173,11 @@ section:first-of-type::before {
   border-radius:var(--radius-md);
   background:var(--glass-soft);
   border:1px solid var(--border-soft);
-  text-align:left;
 }
 
 .kpi span {
   font-size:11px;
-  letter-spacing:.14em;
+  letter-spacing:.16em;
   text-transform:uppercase;
   color:var(--white-40);
 }
@@ -220,36 +185,111 @@ section:first-of-type::before {
 .kpi strong {
   display:block;
   margin-top:.6rem;
-  font-size:24px;
+  font-size:26px;
   font-weight:600;
   color:var(--white-100);
 }
 
-/* ================= GRAPH CONTAINER ================= */
-.graph,
-canvas {
+/* ================= CHART CONTAINERS ================= */
+.chart-glass {
+  padding:2.2rem;
   border-radius:var(--radius-md);
-}
-
-.graph {
-  height:260px;
   background:
     linear-gradient(
       180deg,
-      rgba(255,255,255,.09),
-      rgba(255,255,255,.02)
+      rgba(255,255,255,.12),
+      rgba(255,255,255,.04)
     );
+  backdrop-filter:blur(28px) saturate(160%);
+  border:1px solid var(--border-soft);
   box-shadow:
     inset 0 0 70px rgba(255,255,255,.06),
     0 40px 90px rgba(0,0,0,.85);
+}
+
+canvas {
+  width:100% !important;
+  height:auto !important;
+  display:block;
+}
+
+/* ================= TEXT SECTIONS (IMPORTANT) ================= */
+.text-section .glass-box {
+  padding:3.4rem;
+}
+
+.text-section h2 {
+  font-size:28px;
+  font-weight:500;
+  margin-bottom:2.4rem;
+}
+
+.text-section p,
+.text-section li {
+  font-size:15px;
+  line-height:1.75;
+  color:var(--white-80);
+}
+
+/* ================= EXPERIENCE ================= */
+.experience-role {
+  margin-bottom:3rem;
+}
+
+.experience-role .glass-box {
+  padding:2.6rem;
+}
+
+.experience-role strong {
+  font-size:18px;
+  font-weight:600;
+}
+
+.experience-meta {
+  margin-top:.4rem;
+  font-size:14px;
+  color:var(--white-60);
+}
+
+.experience-role ul {
+  margin-top:1.4rem;
+  padding-left:1.2rem;
+}
+
+.experience-role li {
+  margin-bottom:.6rem;
+}
+
+/* ================= GITHUB DASHBOARD ================= */
+#github-dashboard {
+  margin-top:6rem;
+}
+
+.github-signal-shell {
+  border-radius:var(--radius-xl);
+}
+
+/* ================= REVEAL ================= */
+[data-omni-reveal] {
+  opacity:0;
+  transform:translateY(24px);
+  transition:
+    opacity 900ms var(--ease),
+    transform 900ms var(--ease);
+  will-change:opacity,transform;
+}
+
+[data-omni-reveal].is-visible {
+  opacity:1;
+  transform:translateY(0);
 }
 
 /* ================= FOOTER ================= */
 footer {
   padding:6rem 2rem;
   text-align:center;
-  color:var(--white-40);
   font-size:13px;
+  color:var(--white-40);
 }
 
 /* ================= MOBILE ================= */
@@ -258,12 +298,12 @@ footer {
     padding:6rem 1.6rem;
   }
 
-  .dashboard {
-    padding:2.6rem;
+  .glass-box {
+    padding:2.4rem;
   }
 
-  .graph {
-    height:220px;
+  .hero {
+    padding:7rem 1.6rem 4rem;
   }
 }
 
@@ -272,8 +312,12 @@ footer {
     padding:5rem 1.3rem;
   }
 
-  .dashboard {
-    padding:2.2rem 1.8rem;
+  .glass-box {
+    padding:2rem 1.8rem;
+  }
+
+  h1 {
+    font-size:38px;
   }
 }
 
@@ -283,588 +327,4 @@ footer {
     animation:none !important;
     transition:none !important;
   }
-}
-
-/* ============================================================
-   EXPERIENCE — LIQUID TIMELINE SYSTEM
-   ------------------------------------------------------------
-   • Glass containers
-   • Curved journey line
-   • Perfect alignment
-   • Apple-grade motion
-============================================================ */
-
-/* SECTION HEADER */
-#experience-section {
-  position: relative;
-}
-
-#experience-section h2 {
-  font-size: 26px;
-  font-weight: 500;
-  margin-bottom: 4rem;
-}
-
-/* VERTICAL JOURNEY LINE */
-#experience-section::before {
-  content: "";
-  position: absolute;
-  left: 18px;
-  top: 120px;
-  bottom: 80px;
-  width: 2px;
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(255,255,255,.45),
-      rgba(255,255,255,.25),
-      transparent
-    );
-  filter: blur(.4px);
-  opacity: .55;
-}
-
-/* EXPERIENCE CARD */
-.experience-role {
-  position: relative;
-  margin-left: 64px;
-  margin-bottom: 3.2rem;
-
-  padding: 2.2rem 2.4rem;
-  border-radius: 26px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.10),
-      rgba(255,255,255,.04)
-    );
-
-  backdrop-filter: blur(28px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.12);
-
-  box-shadow:
-    0 40px 120px rgba(0,0,0,.85),
-    inset 0 1px 0 rgba(255,255,255,.18);
-
-  transition:
-    transform 800ms var(--ease),
-    box-shadow 800ms var(--ease);
-}
-
-/* GLOW NODE */
-.experience-role::before {
-  content: "";
-  position: absolute;
-  left: -46px;
-  top: 36px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: white;
-  box-shadow:
-    0 0 0 6px rgba(255,255,255,.08),
-    0 0 22px rgba(255,255,255,.45);
-}
-
-/* CURVED CONNECTOR */
-.experience-role::after {
-  content: "";
-  position: absolute;
-  left: -34px;
-  top: 42px;
-  width: 28px;
-  height: 2px;
-  background: linear-gradient(
-    90deg,
-    rgba(255,255,255,.55),
-    transparent
-  );
-}
-
-/* HOVER — LIFT */
-@media (hover:hover) {
-  .experience-role:hover {
-    transform: translateY(-6px);
-    box-shadow:
-      0 70px 180px rgba(0,0,0,.95),
-      0 0 80px rgba(255,255,255,.18);
-  }
-}
-
-/* ROLE TITLE */
-.experience-role strong {
-  font-size: 18px;
-  font-weight: 600;
-  display: block;
-}
-
-/* META */
-.experience-meta {
-  margin-top: .4rem;
-  font-size: 14px;
-  color: rgba(255,255,255,.65);
-}
-
-/* BULLETS */
-.experience-role ul {
-  margin-top: 1.4rem;
-  padding-left: 1.2rem;
-}
-
-.experience-role li {
-  margin-bottom: .65rem;
-  line-height: 1.65;
-  color: rgba(255,255,255,.82);
-}
-
-/* ================= MOBILE ================= */
-@media (max-width: 720px) {
-  #experience-section::before {
-    left: 10px;
-  }
-
-  .experience-role {
-    margin-left: 38px;
-    padding: 1.8rem;
-  }
-
-  .experience-role::before {
-    left: -32px;
-  }
-
-  .experience-role::after {
-    left: -22px;
-    width: 18px;
-  }
-}
-
-/* ============================================================
-   SCROLL REVEAL — APPLE STYLE
-============================================================ */
-
-[data-omni-reveal] {
-  opacity: 0;
-  transform: translateY(26px) scale(.985);
-  transition:
-    opacity 900ms var(--ease),
-    transform 900ms var(--ease);
-  will-change: transform, opacity;
-}
-
-[data-omni-reveal].is-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-}
-
-/* stagger */
-[data-omni-reveal]:nth-child(2) { transition-delay: 120ms; }
-[data-omni-reveal]:nth-child(3) { transition-delay: 200ms; }
-[data-omni-reveal]:nth-child(4) { transition-delay: 280ms; }
-[data-parallax] {
-  transform: translateY(0);
-  transition: transform 120ms linear;
-  will-change: transform;
-}
-/* ============================================================
-   GLASS CHART CONTAINER
-============================================================ */
-
-.chart-glass {
-  position: relative;
-  padding: 2rem;
-  border-radius: 26px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.12),
-      rgba(255,255,255,.04)
-    );
-
-  backdrop-filter: blur(26px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.14);
-
-  box-shadow:
-    0 40px 120px rgba(0,0,0,.85),
-    inset 0 1px 0 rgba(255,255,255,.22);
-}
-
-.chart-glass::after {
-  content:"";
-  position:absolute;
-  inset:-30%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(255,255,255,.25), transparent 60%);
-  filter: blur(120px);
-  opacity:.4;
-  pointer-events:none;
-}
-
-/* ======================================================
-   GITHUB SIGNAL DASHBOARD — VISUAL IDENTITY
-====================================================== */
-
-#github-dashboard {
-  position: relative;
-  margin-top: 6rem;
-}
-
-/* Shell */
-.github-signal-shell {
-  position: relative;
-  padding: 3.2rem;
-  border-radius: 40px;
-
-  background:
-    radial-gradient(
-      140% 120% at 15% 10%,
-      rgba(255,255,255,.18),
-      rgba(255,255,255,.04) 42%,
-      rgba(9,6,19,.94)
-    );
-
-  backdrop-filter: blur(32px) saturate(160%);
-  box-shadow:
-    0 120px 260px rgba(0,0,0,.95),
-    inset 0 1px 0 rgba(255,255,255,.25);
-
-  overflow: hidden;
-  isolation: isolate;
-}
-
-/* Liquid refraction edge */
-.github-signal-shell::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background:
-    linear-gradient(
-      135deg,
-      rgba(255,255,255,.55),
-      transparent 38%,
-      transparent 62%,
-      rgba(255,255,255,.25)
-    );
-  opacity: .16;
-  pointer-events: none;
-}
-
-/* Ambient flow */
-.github-signal-shell::after {
-  content: "";
-  position: absolute;
-  inset: -45%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(255,255,255,.18), transparent 55%),
-    radial-gradient(circle at 70% 60%, rgba(255,255,255,.12), transparent 60%);
-  filter: blur(180px);
-  opacity: .55;
-  pointer-events: none;
-}
-
-/* ================= HEADER ================= */
-
-.signal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2.2rem;
-}
-
-.signal-header h3 {
-  font-size: 14px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  font-weight: 500;
-  color: #fff;
-}
-
-.signal-status {
-  font-size: 11px;
-  letter-spacing: .12em;
-  padding: 6px 14px;
-  border-radius: 999px;
-  color: #fff;
-
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.18);
-}
-
-/* ================= WAVE ================= */
-
-.signal-wave {
-  width: 100%;
-  height: 140px;
-  margin-bottom: 2.6rem;
-}
-
-/* ================= METRICS ================= */
-
-.signal-metrics {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap: 2rem;
-  margin-bottom: 2.8rem;
-}
-
-.signal-metrics div {
-  padding: 1.6rem;
-  border-radius: 22px;
-
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-}
-
-.signal-metrics strong {
-  display: block;
-  font-size: 28px;
-  font-weight: 600;
-  color: #fff;
-}
-
-.signal-metrics span {
-  font-size: 11px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.65);
-}
-
-/* ================= LANG FLOW ================= */
-
-.signal-langs {
-  display: grid;
-  gap: 1.1rem;
-}
-
-.signal-langs span {
-  position: relative;
-  padding: 10px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  letter-spacing: .08em;
-  color: #fff;
-
-  background: rgba(255,255,255,.05);
-  border: 1px solid rgba(255,255,255,.14);
-  overflow: hidden;
-}
-
-/* Flow line */
-.signal-langs span i {
-  position: absolute;
-  inset: 0;
-  width: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255,255,255,.35),
-      rgba(255,255,255,.12),
-      transparent
-    );
-  z-index: 0;
-  animation: langFlow 2.2s cubic-bezier(.22,1,.36,1) forwards;
-}
-
-.signal-langs span {
-  z-index: 1;
-}
-
-/* ================= MOTION ================= */
-
-@keyframes langFlow {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-/* ================= HOVER ================= */
-
-@media (hover:hover) {
-  .github-signal-shell:hover {
-    transform: translateY(-10px) scale(1.01);
-    box-shadow:
-      0 160px 320px rgba(0,0,0,1),
-      0 0 120px rgba(255,255,255,.12);
-  }
-}
-
-/* ================= MOBILE ================= */
-
-@media (max-width: 900px) {
-  .github-signal-shell {
-    padding: 2.6rem 2.2rem;
-  }
-
-  .signal-wave {
-    height: 120px;
-  }
-}
-/* ======================================================
-   GITHUB ACTIVITY SIGNAL — STEP 3
-====================================================== */
-
-.signal-heat {
-  display: grid;
-  grid-template-columns: repeat(26, 1fr);
-  gap: 6px;
-  margin-top: 2.6rem;
-}
-
-.signal-dot {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 6px;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.12);
-  position: relative;
-  overflow: hidden;
-}
-
-.signal-dot.active {
-  background: rgba(255,255,255,.18);
-  box-shadow:
-    0 0 14px rgba(255,255,255,.25),
-    inset 0 0 6px rgba(255,255,255,.25);
-}
-
-.signal-dot::after {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background: radial-gradient(circle, rgba(255,255,255,.45), transparent 60%);
-  opacity: 0;
-  transition: opacity .6s ease;
-}
-
-.signal-dot.active::after {
-  opacity: .55;
-}
-
-/* Flow divider */
-.signal-divider {
-  height: 1px;
-  margin: 3rem 0;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,.35),
-      transparent
-    );
-}
-
-/* Pulse label */
-.signal-caption {
-  font-size: 11px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.7);
-}
-
-/* ================= PROJECT INTELLIGENCE ================= */
-
-#project-intelligence-section {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 8rem 2rem;
-}
-
-.intel-shell {
-  padding: 3.2rem;
-  border-radius: 36px;
-  background: rgba(255,255,255,.06);
-  backdrop-filter: blur(28px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: 0 90px 200px rgba(0,0,0,.9);
-}
-
-.intel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 2.5rem;
-}
-
-.intel-header h3 {
-  font-weight: 500;
-  margin: 0;
-}
-
-.intel-meta {
-  font-size: 13px;
-  opacity: .7;
-}
-
-.intel-timeline {
-  display: grid;
-  gap: 14px;
-}
-
-.intel-row {
-  display: grid;
-  grid-template-columns: 64px 1fr 32px;
-  align-items: center;
-  gap: 14px;
-  font-size: 13px;
-}
-
-.intel-row i {
-  display: block;
-  height: 6px;
-  border-radius: 6px;
-  background: linear-gradient(90deg, #fff, transparent);
-}
-
-.intel-divider {
-  height: 1px;
-  background: rgba(255,255,255,.12);
-  margin: 2.5rem 0;
-}
-
-.intel-categories {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
-  gap: 2rem;
-}
-
-.intel-categories strong {
-  font-size: 26px;
-}
-
-.intel-categories span {
-  display: block;
-  font-size: 12px;
-  opacity: .7;
-}
-
-/* ===============================
-   CONSTELLATION POLISH
-=============================== */
-
-.constellation-shell {
-  position: relative;
-  overflow: hidden;
-}
-
-.constellation-shell::after {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background:
-    radial-gradient(circle at 50% 40%,
-      rgba(255,255,255,.08),
-      transparent 60%);
-  filter: blur(120px);
-  pointer-events: none;
-}
-
-.constellation-header h3 {
-  letter-spacing: -0.02em;
-}
-
-.constellation-canvas {
-  margin-top: 1.2rem;
-  filter: drop-shadow(0 0 22px rgba(255,255,255,.15));
 }
