@@ -10,309 +10,227 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
-<style>
-:root {
-  --bg-main:#05030c;
-  --bg-deep:#090613;
-  --violet:#a78bfa;
-  --violet-blue:#60a5fa;
-  --text-main:rgba(255,255,255,.96);
-  --text-muted:rgba(255,255,255,.65);
-  --glass:rgba(255,255,255,.06);
-  --border:rgba(255,255,255,.10);
-  --ease:cubic-bezier(.22,1,.36,1);
-}
-
-/* RESET */
-* { box-sizing:border-box; }
-html,body { margin:0; padding:0; }
-
-body {
-  font-family:Inter,system-ui,sans-serif;
-  color:var(--text-main);
-  background:
-    radial-gradient(900px 600px at 70% -10%, rgba(124,58,237,.20), transparent),
-    radial-gradient(700px 520px at 15% 120%, rgba(167,139,250,.18), transparent),
-    linear-gradient(180deg,#04020a,var(--bg-deep));
-  overflow-x:hidden;
-}
-
-/* STAR BACKGROUND */
-#stars {
-  position:fixed;
-  inset:0;
-  z-index:-2;
-}
-
-/* SECTION */
-section {
-  max-width:1200px;
-  margin:auto;
-  padding:7rem 2rem;
-}
-
-/* HERO */
-#hero-section h1 {
-  font-size:clamp(42px,6vw,64px);
-  font-weight:500;
-  letter-spacing:-.035em;
-}
-
-.hero-tagline {
-  margin-top:1.2rem;
-  color:var(--violet);
-}
-
-.hero-summary {
-  margin-top:1.2rem;
-  max-width:60ch;
-  color:var(--text-muted);
-}
-
-/* ===========================
-   DASHBOARD (SHARED STYLE)
-=========================== */
-
-.dashboard {
-  margin-top:3rem;
-}
-
-.dashboard-shell {
-  padding:3.4rem;
-  border-radius:38px;
-  background:
-    radial-gradient(140% 120% at 12% 8%,
-      rgba(255,255,255,.22),
-      rgba(255,255,255,.06) 42%,
-      rgba(9,6,19,.92));
-  backdrop-filter:blur(30px) saturate(160%);
-  box-shadow:
-    0 100px 220px rgba(0,0,0,.92),
-    inset 0 1px 0 rgba(255,255,255,.18);
-  transition:transform .7s var(--ease);
-}
-
-.dashboard-shell:hover {
-  transform:translateY(-8px);
-}
-
-/* KPIs */
-.kpi-grid {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:2rem;
-  margin-bottom:3rem;
-}
-
-.kpi {
-  padding:1.7rem;
-  border-radius:22px;
-  background:var(--glass);
-  border:1px solid var(--border);
-  transition:transform .4s var(--ease);
-}
-
-.kpi:hover {
-  transform:translateY(-6px);
-}
-
-.kpi span {
-  font-size:11px;
-  text-transform:uppercase;
-  letter-spacing:.14em;
-  color:var(--text-muted);
-}
-
-.kpi strong {
-  display:block;
-  margin-top:.4rem;
-  font-size:28px;
-  color:var(--violet);
-}
-
-/* GRID */
-.grid {
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:2.5rem;
-}
-
-.panel {
-  padding:2.2rem;
-  border-radius:26px;
-  background:var(--glass);
-  border:1px solid var(--border);
-}
-
-.panel h4 {
-  margin:0 0 1rem;
-  font-weight:500;
-}
-
-/* FUNNEL */
-.funnel {
-  height:36px;
-  border-radius:18px;
-  margin-top:12px;
-  background:linear-gradient(90deg,var(--violet),var(--violet-blue));
-  display:flex;
-  align-items:center;
-  padding-left:14px;
-  font-size:13px;
-  animation:grow 1.2s var(--ease);
-}
-
-@keyframes grow { from { width:0 } }
-
-/* BARS */
-.bar {
-  margin-top:14px;
-}
-
-.bar span { font-size:13px; }
-
-.bar i {
-  display:block;
-  height:6px;
-  border-radius:6px;
-  margin-top:6px;
-  background:linear-gradient(90deg,var(--violet),transparent);
-}
-
-/* FOOTER */
-footer {
-  padding:5rem 2rem;
-  text-align:center;
-  color:rgba(255,255,255,.4);
-}
-</style>
+<!-- FINAL CSS -->
+<link rel="stylesheet" href="/assets/css/omniverse.css">
 </head>
 
 <body>
 
+<!-- BACKGROUND -->
 <canvas id="stars"></canvas>
 
-<!-- HERO -->
-<section id="hero-section">
-  <h1>Pranab Debnath</h1>
-  <p class="hero-tagline">Data • Analytics • Automation</p>
-  <p class="hero-summary">
-    I design analytical systems that turn raw data into strategic,
-    data-driven decisions with precision and clarity.
-  </p>
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero-section">
+  <div class="glass-box" data-omni-reveal>
+    <h1>Pranab Debnath</h1>
+    <div class="tagline">Data • Analytics • Automation</div>
+    <p>
+      I design analytical systems that transform raw data into
+      precise, decision-grade intelligence through automation,
+      structure, and clarity.
+    </p>
+  </div>
 </section>
 
-<!-- DASHBOARD 1 — INTRO -->
-<section class="dashboard">
-  <div class="dashboard-shell">
+<!-- ================= DASHBOARD 1 — SYSTEM OVERVIEW ================= -->
+<section class="dashboard" id="analytics-dashboard">
+  <div class="glass-box" data-omni-reveal>
 
-    <div class="kpi-grid">
-      <div class="kpi"><span>Sessions</span><strong>10.2K</strong></div>
-      <div class="kpi"><span>Conversion</span><strong>3.3%</strong></div>
-      <div class="kpi"><span>Drop-off</span><strong>−28%</strong></div>
-      <div class="kpi"><span>Uptime</span><strong>99.9%</strong></div>
+    <div class="kpis">
+      <div class="kpi">
+        <span>Sessions</span>
+        <strong>10.2K</strong>
+      </div>
+      <div class="kpi">
+        <span>Conversion</span>
+        <strong>3.3%</strong>
+      </div>
+      <div class="kpi">
+        <span>Drop-off</span>
+        <strong>−28%</strong>
+      </div>
+      <div class="kpi">
+        <span>Uptime</span>
+        <strong>99.9%</strong>
+      </div>
     </div>
 
-    <div class="grid">
-      <div class="panel">
-        <h4>Engagement Trend</h4>
-        <canvas id="trend1" height="160"></canvas>
-      </div>
-
-      <div class="panel">
-        <h4>Conversion Funnel</h4>
-        <div class="funnel" style="width:100%">Visits</div>
-        <div class="funnel" style="width:68%">Leads</div>
-        <div class="funnel" style="width:42%">Qualified</div>
-        <div class="funnel" style="width:18%">Converted</div>
-      </div>
+    <div class="chart-glass" data-parallax="0.03">
+      <canvas id="trend1" height="180"></canvas>
     </div>
 
   </div>
 </section>
 
-<!-- DYNAMIC -->
-<section id="experience-section"></section>
-<section id="featured-section"></section>
+<!-- ================= EXPERIENCE ================= -->
+<section id="experience-section" class="text-section">
+  <div class="glass-box" data-omni-reveal>
+    <h2>Experience</h2>
 
-<!-- DASHBOARD 2 — PROOF -->
-<section class="dashboard">
-  <div class="dashboard-shell">
-
-    <div class="kpi-grid">
-      <div class="kpi"><span>Total Projects</span><strong>24+</strong></div>
-      <div class="kpi"><span>SQL-Heavy</span><strong>60%</strong></div>
-      <div class="kpi"><span>Automation</span><strong>30%</strong></div>
-      <div class="kpi"><span>Dashboards</span><strong>10+</strong></div>
+    <div class="experience-role">
+      <strong>Senior Account Manager — MagicBricks</strong>
+      <div class="experience-meta">Analytics · Revenue · Automation</div>
+      <ul>
+        <li>Built internal performance dashboards and KPI systems</li>
+        <li>Improved monthly conversion rates by double digits</li>
+        <li>Automated reporting workflows using structured data models</li>
+      </ul>
     </div>
 
-    <div class="grid">
-      <div class="panel">
-        <h4>Project Activity</h4>
-        <canvas id="trend2" height="160"></canvas>
-      </div>
+    <div class="experience-role">
+      <strong>Senior Account Manager — NoBroker</strong>
+      <div class="experience-meta">Sales Analytics · Leadership</div>
+      <ul>
+        <li>Led revenue analysis for NRI segment</li>
+        <li>Achieved sustained 15% MoM growth</li>
+        <li>Trained teams on data-driven decision making</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-      <div class="panel">
-        <h4>Category Breakdown</h4>
-        <div class="bar"><span>SQL</span><i style="width:80%"></i></div>
-        <div class="bar"><span>Python</span><i style="width:60%"></i></div>
-        <div class="bar"><span>Automation</span><i style="width:45%"></i></div>
+<!-- ================= FEATURED ================= -->
+<section id="featured-section" class="text-section">
+  <div class="glass-box" data-omni-reveal>
+    <h2>Focus Areas</h2>
+    <p>
+      My work centers around analytical architecture, automation systems,
+      business intelligence dashboards, and structured data workflows that
+      scale across teams and products.
+    </p>
+  </div>
+</section>
+
+<!-- ================= DASHBOARD 2 — PROJECT INTELLIGENCE ================= -->
+<section class="dashboard" id="project-intelligence-section">
+  <div class="glass-box" data-omni-reveal>
+
+    <div class="kpis">
+      <div class="kpi">
+        <span>Total Projects</span>
+        <strong>24+</strong>
       </div>
+      <div class="kpi">
+        <span>SQL-Heavy</span>
+        <strong>60%</strong>
+      </div>
+      <div class="kpi">
+        <span>Automation</span>
+        <strong>30%</strong>
+      </div>
+      <div class="kpi">
+        <span>Dashboards</span>
+        <strong>10+</strong>
+      </div>
+    </div>
+
+    <div class="chart-glass" data-parallax="0.04">
+      <canvas id="trend2" height="180"></canvas>
     </div>
 
   </div>
 </section>
 
-<!-- DYNAMIC -->
-<section id="projects-section"></section>
-<section id="education-section"></section>
-<section id="contact-section"></section>
+<!-- ================= GITHUB SIGNAL ================= -->
+<section id="github-dashboard"></section>
 
-<footer>© Pranab Debnath</footer>
+<!-- ================= PROJECTS ================= -->
+<section id="projects-section" class="text-section">
+  <div class="glass-box" data-omni-reveal>
+    <h2>Projects</h2>
+    <p>
+      A collection of analytical systems, dashboards, and automation
+      pipelines designed for real-world operational impact.
+    </p>
+  </div>
+</section>
 
-<!-- CORE -->
+<!-- ================= EDUCATION ================= -->
+<section id="education-section" class="text-section">
+  <div class="glass-box" data-omni-reveal>
+    <h2>Education</h2>
+    <p>
+      Bachelor’s Degree · Statistics & Analytics  
+      Foundation in data modeling, probability, and applied analysis.
+    </p>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact-section" class="text-section">
+  <div class="glass-box" data-omni-reveal>
+    <h2>Contact</h2>
+    <p>
+      Open to analytical roles, consulting engagements,
+      and high-impact data projects.
+    </p>
+  </div>
+</section>
+
+<footer>
+  © Pranab Debnath
+</footer>
+
+<!-- ================= CORE SCRIPTS ================= -->
 <script src="/assets/js/services/data.service.js"></script>
 <script src="/assets/js/core/bootstrap.js"></script>
 <script src="/assets/js/renderers/app.renderer.js"></script>
 
+<!-- ================= STARFIELD ================= -->
 <script>
-/* STAR BACKGROUND */
-const canvas=document.getElementById("stars"),ctx=canvas.getContext("2d");
-let stars=[];
-function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
-  stars=Array.from({length:innerWidth*innerHeight*0.00015},()=>({
-    x:Math.random()*innerWidth,
-    y:Math.random()*innerHeight,
-    r:Math.random()*1.2,
-    o:Math.random()
-  }));
-}
-function draw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${s.o})`;
-    ctx.fill();
-    s.o+= (Math.random()-.5)*0.01;
-  });
-  requestAnimationFrame(draw);
-}
-resize(); draw(); addEventListener("resize",resize);
+(() => {
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
 
-/* SIMPLE LINE GRAPHS */
-function drawLine(id,data){
-  const c=document.getElementById(id),x=c.getContext("2d");
-  x.strokeStyle="#a78bfa"; x.lineWidth=3; x.beginPath();
-  data.forEach((v,i)=>{
-    const px=i*(c.width/(data.length-1));
-    const py=c.height-(v/100*c.height);
-    i?x.lineTo(px,py):x.moveTo(px,py);
+  function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    stars = Array.from({ length: innerWidth * innerHeight * 0.00015 }, () => ({
+      x: Math.random() * innerWidth,
+      y: Math.random() * innerHeight,
+      r: Math.random() * 1.2,
+      o: Math.random()
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s => {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.o})`;
+      ctx.fill();
+      s.o += (Math.random() - .5) * 0.01;
+    });
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  draw();
+  addEventListener("resize", resize);
+})();
+</script>
+
+<!-- ================= CHARTS ================= -->
+<script>
+function drawLine(id, data) {
+  const c = document.getElementById(id);
+  const ctx = c.getContext("2d");
+  ctx.clearRect(0,0,c.width,c.height);
+  ctx.strokeStyle = "rgba(255,255,255,.85)";
+  ctx.lineWidth = 2.5;
+  ctx.beginPath();
+
+  data.forEach((v,i) => {
+    const x = i * (c.width / (data.length - 1));
+    const y = c.height - (v / 100) * c.height;
+    i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
   });
-  x.stroke();
+
+  ctx.stroke();
 }
+
 drawLine("trend1",[60,70,65,75,62,68,74]);
 drawLine("trend2",[30,45,40,60,55,70,65]);
 </script>
