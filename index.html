@@ -10,10 +10,8 @@
 
   <title>Pranab Debnath — Data Analyst</title>
 
-  <meta
-    name="description"
-    content="Pranab Debnath is a Data Analyst focused on SQL, Python, automation, and data-driven decision making."
-  />
+  <meta name="description"
+        content="Pranab Debnath is a Data Analyst focused on SQL, Python, automation, and data-driven decision making." />
   <meta name="author" content="Pranab Debnath" />
   <meta name="theme-color" content="#05030c" />
   <meta name="color-scheme" content="dark light" />
@@ -27,10 +25,7 @@
   <!-- FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- FAVICON -->
   <link rel="icon" href="assets/favicon.ico" />
@@ -42,37 +37,34 @@
 <body data-omniverse>
 
   <!-- BACKGROUND -->
-  <div class="starry-bg" aria-hidden="true"></div>
-  <div class="shooting-stars" aria-hidden="true"></div>
+  <div class="starry-bg"></div>
+  <div class="shooting-stars"></div>
 
   <!-- HEADER -->
-  <header id="site-header" aria-label="Primary Navigation"></header>
+  <header id="site-header"></header>
 
   <!-- MAIN -->
-  <main id="page-content" role="main">
+  <main id="page-content">
 
     <!-- =====================================================
-         HERO SECTION — FULL WIDTH DASHBOARD
+         HERO — FULL WIDTH DASHBOARD
     ====================================================== -->
     <section id="hero-section" class="omniverse-section">
 
       <div class="hero-wrapper">
         <h1>Pranab Debnath</h1>
-        <p>
-          Data Analyst focused on SQL, Python, automation,
-          and data-driven decision making.
-        </p>
+        <p>Data Analyst focused on SQL, Python, automation, and data-driven decision making.</p>
       </div>
 
-      <!-- ================= HERO DASHBOARD (FULL WIDTH) ================= -->
+      <!-- DASHBOARD -->
       <div data-static class="hero-dashboard-shell">
 
         <div class="hero-dashboard-glow"></div>
 
         <div class="hero-dashboard-grid">
 
-          <!-- LEFT KPI PANEL -->
-          <aside class="dashboard-panel kpi-panel">
+          <!-- KPI PANEL -->
+          <aside class="kpi-panel">
             <div class="kpi-box">
               <span class="kpi-label">Revenue</span>
               <strong class="kpi-value">₹4.8M</strong>
@@ -87,46 +79,38 @@
             </div>
           </aside>
 
-          <!-- MAIN CHART -->
-          <section class="dashboard-main">
+          <!-- MAIN GRAPH -->
+          <div class="dashboard-main">
 
             <div class="dashboard-chart project-graph hero-graph">
               <svg viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet">
 
                 <!-- GRID -->
-                <line x1="0" y1="250" x2="1000" y2="250" class="graph-grid"/>
-                <line x1="0" y1="180" x2="1000" y2="180" class="graph-grid"/>
-                <line x1="0" y1="110" x2="1000" y2="110" class="graph-grid"/>
+                <line x1="0" y1="250" x2="1000" y2="250" stroke="rgba(255,255,255,0.1)" />
+                <line x1="0" y1="180" x2="1000" y2="180" stroke="rgba(255,255,255,0.1)" />
+                <line x1="0" y1="110" x2="1000" y2="110" stroke="rgba(255,255,255,0.1)" />
 
                 <!-- BARS -->
-                <rect x="100" y="160" width="40" height="90" class="graph-bar"/>
-                <rect x="220" y="140" width="40" height="110" class="graph-bar"/>
-                <rect x="340" y="120" width="40" height="130" class="graph-bar"/>
-                <rect x="460" y="90"  width="40" height="160" class="graph-bar"/>
-                <rect x="580" y="70"  width="40" height="180" class="graph-bar"/>
-                <rect x="700" y="50"  width="40" height="200" class="graph-bar"/>
+                <rect x="100" y="160" width="40" height="90" fill="#a78bfa" />
+                <rect x="220" y="140" width="40" height="110" fill="#a78bfa" />
+                <rect x="340" y="120" width="40" height="130" fill="#a78bfa" />
+                <rect x="460" y="90"  width="40" height="160" fill="#a78bfa" />
+                <rect x="580" y="70"  width="40" height="180" fill="#a78bfa" />
+                <rect x="700" y="50"  width="40" height="200" fill="#a78bfa" />
 
                 <!-- LINE -->
                 <path
-                  d="M120 170
-                     L240 150
-                     L360 135
-                     L480 100
-                     L600 80
-                     L720 60
-                     L840 45"
-                  class="graph-line"
-                />
-
+                  d="M120 170 L240 150 L360 135 L480 100 L600 80 L720 60 L840 45"
+                  stroke="#a78bfa"
+                  stroke-width="3"
+                  fill="none"
+                  vector-effect="non-scaling-stroke" />
               </svg>
             </div>
 
-          </section>
-
+          </div>
         </div>
       </div>
-      <!-- ================= END HERO DASHBOARD ================= -->
-
     </section>
 
     <!-- EXPERIENCE -->
@@ -136,11 +120,10 @@
     <section id="featured-section" class="omniverse-section"></section>
 
     <!-- =====================================================
-         PROJECTS — ANALYTICS CARDS
+         PROJECTS
     ====================================================== -->
     <section id="projects-section" class="omniverse-section">
 
-      <!-- PROJECT 1 -->
       <article class="project-card project-analytics" data-omni-hover data-omni-reveal>
 
         <header class="project-header">
@@ -151,26 +134,27 @@
         <div class="project-graph">
           <svg viewBox="0 0 600 220" preserveAspectRatio="xMidYMid meet">
 
-            <line x1="0" y1="180" x2="600" y2="180" class="graph-grid"/>
-            <line x1="0" y1="120" x2="600" y2="120" class="graph-grid"/>
-            <line x1="0" y1="60"  x2="600" y2="60"  class="graph-grid"/>
+            <line x1="0" y1="180" x2="600" y2="180" stroke="rgba(255,255,255,0.1)" />
+            <line x1="0" y1="120" x2="600" y2="120" stroke="rgba(255,255,255,0.1)" />
+            <line x1="0" y1="60"  x2="600" y2="60"  stroke="rgba(255,255,255,0.1)" />
 
-            <rect x="80"  y="120" width="36" height="60"  class="graph-bar"/>
-            <rect x="170" y="95"  width="36" height="85"  class="graph-bar"/>
-            <rect x="260" y="70"  width="36" height="110" class="graph-bar"/>
-            <rect x="350" y="45"  width="36" height="135" class="graph-bar"/>
-            <rect x="440" y="25"  width="36" height="155" class="graph-bar"/>
+            <rect x="80"  y="120" width="36" height="60"  fill="#60a5fa" />
+            <rect x="170" y="95"  width="36" height="85"  fill="#60a5fa" />
+            <rect x="260" y="70"  width="36" height="110" fill="#60a5fa" />
+            <rect x="350" y="45"  width="36" height="135" fill="#60a5fa" />
+            <rect x="440" y="25"  width="36" height="155" fill="#60a5fa" />
 
             <path
               d="M98 130 L188 108 L278 88 L368 60 L458 42"
-              class="graph-line"
-            />
+              stroke="#a78bfa"
+              stroke-width="3"
+              fill="none"
+              vector-effect="non-scaling-stroke" />
           </svg>
         </div>
 
         <p class="project-desc">
-          End-to-end KPI pipeline to identify funnel leakage,
-          automate reporting, and boost conversion velocity.
+          End-to-end KPI pipeline to identify funnel leakage, automate reporting, and boost conversion velocity.
         </p>
 
         <div class="project-tech">
@@ -181,10 +165,9 @@
         </div>
 
       </article>
-
     </section>
 
-    <!-- EDUCATION / LICENSES / CONTACT -->
+    <!-- OTHER SECTIONS -->
     <section id="education-section" class="omniverse-section"></section>
     <section id="licenses-section" class="omniverse-section"></section>
     <section id="contact-section" class="omniverse-section"></section>
@@ -192,7 +175,7 @@
   </main>
 
   <!-- FOOTER -->
-  <footer id="site-footer" aria-label="Footer"></footer>
+  <footer id="site-footer"></footer>
 
   <!-- CORE JS -->
   <script src="assets/js/core/bootstrap.js" defer></script>
@@ -207,29 +190,6 @@
 
   <!-- UI MOTION -->
   <script src="assets/js/interactions/ui.motion.js" defer></script>
-
-  <!-- SCROLL REVEAL -->
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.35 });
-
-      document.querySelectorAll("[data-omni-reveal]").forEach(el => observer.observe(el));
-    });
-  </script>
-
-  <!-- NO JS -->
-  <noscript>
-    <style>
-      .omniverse-section { opacity: 1 !important; transform: none !important; }
-    </style>
-  </noscript>
 
 </body>
 </html>
