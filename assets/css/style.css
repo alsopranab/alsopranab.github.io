@@ -1,6 +1,5 @@
 /* ============================================================
-   OMNIVERSE — CANONICAL VISUAL SYSTEM (FINAL LOCKED)
-   EDITORIAL • ANALYTICAL • STABLE • GRAPH SAFE
+   OMNIVERSE — CANONICAL VISUAL SYSTEM (CLEAN & STABLE)
 ============================================================ */
 
 /* ================= ROOT ================= */
@@ -23,8 +22,6 @@
   --ease-vision: cubic-bezier(0.22, 1, 0.36, 1);
 
   --space-section: clamp(5.5rem, 9vw, 9rem);
-  --space-block: 3rem;
-  --space-card: 2.6rem;
 }
 
 /* ================= RESET ================= */
@@ -121,16 +118,20 @@ section.omniverse-section {
   position: relative;
 }
 
-/* section spacing rhythm */
-section.omniverse-section > h2 {
-  margin-bottom: 3.4rem;
-}
-
-section.omniverse-section > * + * {
-  margin-top: 2.8rem;
-}
-
 /* ================= HERO ================= */
+#hero-section {
+  max-width: none;
+  width: 100%;
+  padding-left: clamp(1.5rem, 6vw, 6rem);
+  padding-right: clamp(1.5rem, 6vw, 6rem);
+  position: relative;
+  z-index: 2;
+}
+
+#hero-section > * + * {
+  margin-top: 3.5rem;
+}
+
 .hero-wrapper {
   max-width: 640px;
   display: flex;
@@ -138,340 +139,24 @@ section.omniverse-section > * + * {
   gap: 24px;
 }
 
-/* HERO GRAPH */
-.hero-graph {
-  height: 220px;
-  margin-top: 2.8rem;
-  border-radius: 18px;
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.04),
-    rgba(255,255,255,0.015)
-  );
-  border: 1px solid rgba(255,255,255,0.08);
-  overflow: hidden;
-}
-
-/* ================= CARD BASE ================= */
-.project-card,
-.education-item,
-.experience-role,
-.featured-item {
-  width: 100%;
-  max-width: 740px;
-  padding: 32px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(
-    180deg,
-    rgba(255,255,255,0.055),
-    rgba(255,255,255,0.018)
-  );
-  border: 1px solid var(--border-hairline);
-  box-shadow: 0 20px 42px rgba(0,0,0,0.48);
-  transition: transform 260ms var(--ease-vision),
-              box-shadow 260ms var(--ease-vision);
-}
-
-@media (pointer: fine) {
-  .project-card:hover,
-  .education-item:hover,
-  .featured-item:hover {
-    transform: translateY(-6px);
-    box-shadow:
-      0 28px 56px rgba(0,0,0,0.6),
-      0 0 32px var(--accent-glow);
-  }
-}
-
-/* ================= EXPERIENCE SPINE ================= */
-#experience-section {
-  position: relative;
-}
-
-#experience-section::before {
-  content: "";
-  position: absolute;
-  left: 22px;
-  top: var(--space-section);
-  bottom: var(--space-section);
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    var(--accent),
-    transparent
-  );
-  opacity: 0.45;
-}
-
-.experience-list {
-  margin-left: 72px;
-}
-
-.experience-role {
-  position: relative;
-  text-align: left;
-}
-
-.experience-role::before {
-  content: "";
-  position: absolute;
-  left: -46px;
-  top: 30px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow:
-    0 0 0 6px rgba(167,139,250,0.15),
-    0 0 18px rgba(167,139,250,0.6);
-}
-
-/* ================= PROJECT ANALYTICS ================= */
-.project-analytics {
-  position: relative;
-  overflow: hidden;
-}
-
-.project-analytics::before {
-  content: "";
-  position: absolute;
-  inset: -35%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(96,165,250,0.18), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(167,139,250,0.18), transparent 45%);
-  filter: blur(130px);
-  opacity: 0.75;
-}
-
-/* ================= GRAPH ================= */
-.project-graph {
-  height: 160px;
-  margin: 20px 0 26px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.045);
-  border: 1px solid rgba(255,255,255,0.09);
-  overflow: hidden;
-}
-
-.project-graph svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* Grid */
-.graph-grid {
-  stroke: rgba(255,255,255,0.1);
-  stroke-dasharray: 4 6;
-}
-
-/* Line */
-.graph-line {
-  fill: none;
-  stroke: var(--accent);
-  stroke-width: 2.6;
-  stroke-linecap: round;
-  filter:
-    drop-shadow(0 0 10px rgba(167,139,250,0.65))
-    drop-shadow(0 0 26px rgba(167,139,250,0.3));
-}
-
-/* Bars */
-.graph-bar {
-  fill: var(--accent-blue);
-  rx: 4;
-}
-
-/* ================= TECH ================= */
-.project-tech {
-  display: flex;
-  gap: 14px;
-  margin-top: 22px;
-  flex-wrap: wrap;
-}
-
-.project-tech .icon {
-  padding: 8px 14px;
-  font-size: 11px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  border: 1px solid;
-  backdrop-filter: blur(6px);
-}
-
-/* ================= IMAGE HOLDER FIX ================= */
-.featured-item img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: contain;
-  border-radius: 14px;
-  margin-bottom: 1.6rem;
-}
-
-/* ================= FOOTER ================= */
-#site-footer {
-  margin-top: var(--space-section);
-  padding: 64px 20px;
-  border-top: 1px solid var(--border-hairline);
-  text-align: center;
-}
-
-/* ================= BACKGROUND ================= */
-.starry-bg,
-.shooting-stars {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-}
-
-.starry-bg { z-index: -2; }
-.shooting-stars { z-index: -1; }
-
-/* ================= MOBILE ================= */
-@media (max-width: 768px) {
-
-  section.omniverse-section {
-    padding: 4.8rem 1.2rem;
-  }
-
-  section.omniverse-section > h2 {
-    margin-bottom: 2.8rem;
-  }
-
-  section.omniverse-section > * + * {
-    margin-top: 2.4rem;
-  }
-
-  #experience-section::before {
-    display: none;
-  }
-
-  .experience-list {
-    margin-left: 0;
-  }
-
-  .hero-graph {
-    height: 140px;
-  }
-
-  .project-graph {
-    height: 120px;
-  }
-
-  .featured-item img {
-    max-height: 200px;
-  }
-}
-
-/* ================= REDUCED MOTION ================= */
-@media (prefers-reduced-motion: reduce) {
-  .starry-bg,
-  .shooting-stars {
-    display: none;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE PATCH — EXPERIENCE SPACING NORMALIZATION
-   SAFE • ADDITIVE • NO STRUCTURE CHANGE
-============================================================ */
-
-/* Disable global stacking rule ONLY for experience */
-#experience-section > * + * {
-  margin-top: 0 !important;
-}
-
-/* Control spacing ONLY via cards */
-#experience-section .experience-role {
-  margin-top: 2.4rem !important;
-}
-
-/* First card should not float down */
-#experience-section .experience-role:first-of-type {
-  margin-top: 1.4rem !important;
-}
-
-/* ============================================================
-   OMNIVERSE PATCH — GRAPH VISIBILITY (CRITICAL)
-============================================================ */
-
-/* Prevent SVG from being culled by motion system */
-.project-analytics {
-  overflow: visible !important;
-}
-
-/* Lock graph layer above motion transforms */
-.project-graph {
-  position: relative;
-  z-index: 2;
-}
-
-/* Prevent motion system from collapsing SVG */
-.project-graph svg {
-  transform: none !important;
-  opacity: 1 !important;
-}
-
-/* ============================================================
-   OMNIVERSE PATCH — RENDERER IMMUNITY
-============================================================ */
-
-[data-no-render] {
-  contain: layout paint;
-}
-
-[data-no-render] * {
-  pointer-events: auto;
-}
-
-/* ============================================================
-   OMNIVERSE PATCH — GRAPH ANIMATION SAFE MODE
-============================================================ */
-
-.project-graph .graph-line {
-  stroke-dasharray: 800 !important;
-  stroke-dashoffset: 800 !important;
-  animation: draw-line 2.4s ease-out forwards !important;
-}
-
-.project-graph .graph-bar {
-  transform: scaleY(0) !important;
-  animation: bar-rise 1.4s var(--ease-vision) forwards !important;
-}
-
-/* ============================================================
-   OMNIVERSE — HERO DASHBOARD EXTENSION (SAFE APPEND)
-   DOES NOT MODIFY EXISTING RULES
-============================================================ */
-
-/* ---------- HERO FULL WIDTH OVERRIDE ---------- */
-#hero-section {
-  max-width: 100% !important;
-  padding-left: clamp(1.5rem, 6vw, 6rem);
-  padding-right: clamp(1.5rem, 6vw, 6rem);
-}
-
-/* ---------- HERO DASHBOARD SHELL ---------- */
+/* ================= HERO DASHBOARD ================= */
 .hero-dashboard-shell {
   position: relative;
   width: 100%;
-  margin-top: 4.5rem;
   padding: 3.5rem 3rem;
   border-radius: 28px;
-
   background:
     linear-gradient(
       180deg,
       rgba(167,139,250,0.08),
       rgba(9,6,19,0.85)
     );
-
   border: 1px solid rgba(167,139,250,0.18);
   overflow: hidden;
+  z-index: 3;
 }
 
-/* Glow layer */
+/* Glow */
 .hero-dashboard-glow {
   position: absolute;
   inset: -40%;
@@ -481,18 +166,19 @@ section.omniverse-section > * + * {
   filter: blur(160px);
   opacity: 0.75;
   pointer-events: none;
+  z-index: 0;
 }
 
-/* ---------- DASHBOARD GRID ---------- */
+/* Grid */
 .hero-dashboard-grid {
   position: relative;
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 3rem;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* ---------- KPI PANEL ---------- */
+/* KPI Panel */
 .kpi-panel {
   display: flex;
   flex-direction: column;
@@ -524,7 +210,7 @@ section.omniverse-section > * + * {
   color: var(--accent);
 }
 
-/* ---------- DASHBOARD MAIN GRAPH ---------- */
+/* ================= GRAPHS ================= */
 .dashboard-main {
   width: 100%;
 }
@@ -544,50 +230,119 @@ section.omniverse-section > * + * {
     0 0 40px rgba(167,139,250,0.25);
 }
 
-/* ---------- GRAPH VISIBILITY HARD FIX ---------- */
-/* Prevent 0.5s disappear bug */
-.graph-bar,
-.graph-line {
-  animation-fill-mode: forwards !important;
-  opacity: 1 !important;
+.hero-graph,
+.project-graph {
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  border-radius: 18px;
 }
 
-/* Bars always visible */
-.graph-bar {
-  transform: scaleY(1) !important;
+.hero-graph {
+  height: 220px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.04),
+      rgba(255,255,255,0.015)
+    );
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Line always drawn */
-.graph-line {
-  stroke-dasharray: none !important;
-  stroke-dashoffset: 0 !important;
-}
-
-/* ---------- SECTION SPACING FIX (GLOBAL) ---------- */
-section.omniverse-section {
-  margin-bottom: clamp(5rem, 9vw, 8rem);
-}
-
-/* Space between heading and content */
-section.omniverse-section > h2 {
-  margin-bottom: 3.4rem !important;
-}
-
-/* Space between stacked cards */
-.project-card + .project-card,
-.education-item + .education-item,
-.featured-item + .featured-item,
-.experience-role + .experience-role {
-  margin-top: 3.2rem;
-}
-
-/* ---------- PROJECT GRAPH SIZE FIX ---------- */
 .project-graph {
   height: 180px;
   margin: 1.8rem 0 2.2rem;
+  background: rgba(255,255,255,0.045);
+  border: 1px solid rgba(255,255,255,0.09);
 }
 
-/* ---------- MOBILE SAFETY ---------- */
+.hero-graph svg,
+.project-graph svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* SVG styling */
+.graph-grid {
+  stroke: rgba(255,255,255,0.1);
+  stroke-dasharray: 4 6;
+}
+
+.graph-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.graph-bar {
+  fill: var(--accent-blue);
+  rx: 4;
+}
+
+/* ================= PROJECT CARDS ================= */
+.project-card {
+  max-width: 740px;
+  padding: 32px;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.055),
+      rgba(255,255,255,0.018)
+    );
+  border: 1px solid var(--border-hairline);
+  box-shadow: 0 20px 42px rgba(0,0,0,0.48);
+}
+
+/* ================= TECH TAGS ================= */
+.project-tech {
+  display: flex;
+  gap: 14px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+.project-tech .icon {
+  padding: 8px 14px;
+  font-size: 11px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border: 1px solid;
+  backdrop-filter: blur(6px);
+}
+
+/* ================= IMAGE CONTAINER (UNTOUCHED) ================= */
+.featured-item img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 14px;
+  margin-bottom: 1.6rem;
+}
+
+/* ================= FOOTER ================= */
+#site-footer {
+  margin-top: var(--space-section);
+  padding: 64px 20px;
+  border-top: 1px solid var(--border-hairline);
+  text-align: center;
+}
+
+/* ================= BACKGROUND ================= */
+.starry-bg,
+.shooting-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.starry-bg { z-index: -3; }
+.shooting-stars { z-index: -2; }
+
+/* ================= MOBILE ================= */
 @media (max-width: 900px) {
   .hero-dashboard-grid {
     grid-template-columns: 1fr;
@@ -607,215 +362,7 @@ section.omniverse-section > h2 {
   }
 }
 
-@media (max-width: 520px) {
-  .hero-dashboard-shell {
-    padding: 2.2rem 1.6rem;
-  }
-
-  .dashboard-chart {
-    height: 180px;
-  }
-
-  .kpi-box {
-    flex: 1 1 100%;
-  }
-
-  .project-graph {
-    height: 140px;
-  }
-}
-
-/* ============================================================
-   GRAPH VISIBILITY LOCK — CRITICAL FIX
-   Prevents JS / Observer / Motion systems from hiding SVG
-============================================================ */
-
-/* Hard-lock all analytics graphs */
-.project-graph,
-.project-graph *,
-.hero-graph,
-.hero-graph * {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-  will-change: auto !important;
-}
-
-/* Disable reveal animations ONLY for graphs */
-.project-graph,
-.hero-graph {
-  animation: none !important;
-  transition: none !important;
-}
-
-/* Stop IntersectionObserver from hiding SVG children */
-.project-graph svg,
-.hero-graph svg {
-  display: block !important;
-  opacity: 1 !important;
-}
-
-/* Ensure SVG paths are always drawn */
-.graph-line {
-  stroke-dasharray: none !important;
-  stroke-dashoffset: 0 !important;
-}
-
-/* Ensure bars never collapse */
-.graph-bar {
-  transform: scaleY(1) !important;
-}
-
-/* Prevent motion scripts from resetting */
-[data-omni-reveal] .project-graph,
-[data-omni-reveal] .hero-graph {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* Mobile safety */
 @media (max-width: 768px) {
-  .project-graph,
-  .hero-graph {
-    opacity: 1 !important;
-    visibility: visible !important;
-  }
-}
-
-/* ============================================================
-   OMNIVERSE — GRAPH & SECTION FORCE VISIBILITY
-   ABSOLUTE OVERRIDE — LAST LINE OF DEFENSE
-============================================================ */
-
-/* 1. Force hero + project sections visible */
-#hero-section,
-#projects-section {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-}
-
-/* 2. Disable reveal logic ONLY for these sections */
-#hero-section.is-hidden,
-#projects-section.is-hidden,
-#hero-section:not(.is-visible),
-#projects-section:not(.is-visible) {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* 3. Lock all graphs permanently visible */
-.project-graph,
-.hero-graph,
-.project-graph *,
-.hero-graph * {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-  animation: none !important;
-  transition: none !important;
-}
-
-/* 4. Kill SVG draw-reset from JS */
-.graph-line {
-  stroke-dasharray: none !important;
-  stroke-dashoffset: 0 !important;
-}
-
-/* 5. Kill bar collapse */
-.graph-bar {
-  transform: scaleY(1) !important;
-}
-
-/* 6. Safety: stop omniverse motion from touching graphs */
-[data-omni-reveal] .project-graph,
-[data-omni-reveal] .hero-graph {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* 7. Mobile hard-lock */
-@media (max-width: 768px) {
-  #hero-section,
-  #projects-section,
-  .project-graph,
-  .hero-graph {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: none !important;
-  }
-}
-
-/* ============================================================
-   HERO DASHBOARD — FULL WIDTH OVERRIDE (SAFE)
-============================================================ */
-
-#hero-section {
-  max-width: none !important;
-  width: 100%;
-  padding-left: clamp(1.5rem, 4vw, 4rem);
-  padding-right: clamp(1.5rem, 4vw, 4rem);
-}
-
-.hero-dashboard,
-.hero-graph {
-  width: 100%;
-  max-width: none;
-}
-
-/* ============================================================
-   HERO DASHBOARD — VISUAL CONTAINER
-============================================================ */
-
-.hero-dashboard {
-  margin-top: 3.5rem;
-  padding: 2.8rem;
-  border-radius: 22px;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(167,139,250,0.08),
-      rgba(255,255,255,0.02)
-    );
-
-  border: 1px solid rgba(255,255,255,0.12);
-
-  box-shadow:
-    0 40px 80px rgba(0,0,0,0.65),
-    inset 0 0 60px rgba(167,139,250,0.08);
-
-  backdrop-filter: blur(14px);
-}
-
-/* ============================================================
-   GRAPH VISUAL BOOST — READABILITY
-============================================================ */
-
-.hero-graph,
-.project-graph {
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(167,139,250,0.18),
-      transparent 60%
-    );
-}
-
-.graph-line {
-  stroke-width: 3.2;
-}
-
-.graph-bar {
-  fill: var(--accent);
-  opacity: 0.9;
-}
-
-@media (max-width: 768px) {
-  .hero-dashboard {
-    padding: 1.8rem;
-  }
-
   .hero-graph {
     height: 160px;
   }
@@ -825,71 +372,12 @@ section.omniverse-section > h2 {
   }
 }
 
-/* ============================================================
-   HARD VISIBILITY OVERRIDE — GRAPH SAFE
-============================================================ */
+@media (max-width: 520px) {
+  .hero-dashboard-shell {
+    padding: 2.2rem 1.6rem;
+  }
 
-#hero-section,
-#projects-section {
-  opacity: 1 !important;
-  transform: none !important;
-}
-
-/* ============================================================
-   Z-INDEX CORRECTION — DASHBOARD & GRAPHS
-============================================================ */
-
-#hero-section,
-#projects-section,
-.hero-dashboard,
-.hero-graph,
-.project-graph {
-  position: relative;
-  z-index: 5;
-}
-
-.starry-bg {
-  z-index: -3;
-}
-
-.shooting-stars {
-  z-index: -2;
-}
-
-/* ============================================================
-   SVG HARD FORCE (LAST RESORT, SAFE)
-============================================================ */
-
-.hero-graph svg,
-.project-graph svg,
-.hero-graph svg *,
-.project-graph svg * {
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: none !important;
-}
-
-/* ============================================================
-   HERO GRAPH SIZE GUARANTEE
-============================================================ */
-
-.hero-graph {
-  min-height: 220px;
-  width: 100%;
-  display: block;
-}
-
-/* ============================================================
-   CRITICAL FIX — GRAPH VISIBILITY (FINAL)
-============================================================ */
-
-/* Push glow BEHIND content */
-.project-analytics::before {
-  z-index: 0 !important;
-}
-
-/* Pull actual card content ABOVE glow */
-.project-analytics > * {
-  position: relative;
-  z-index: 1;
+  .kpi-box {
+    flex: 1 1 100%;
+  }
 }
