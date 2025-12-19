@@ -1,15 +1,5 @@
-/**
- * Unified App Renderer — PRODUCTION
- * - DataService-driven
- * - Deterministic startup
- * - Fail-safe rendering
- * - No hidden HTML dependencies
- */
-
 (function () {
   "use strict";
-
-// Entrypoint
 
   document.addEventListener("DOMContentLoaded", async () => {
     try {
@@ -30,7 +20,6 @@
     bindImageViewer();
   }
 
-// hero
   async function renderHero() {
     const section = document.getElementById("hero-section");
     if (!section) return;
@@ -46,8 +35,6 @@
       </div>
     `;
   }
-
-// Experience
 
   async function renderExperience() {
     const section = document.getElementById("experience-section");
@@ -67,9 +54,10 @@
 
   function renderRole(role, org) {
     const start = role.duration?.start?.year || "";
-    const end = role.duration?.end?.status === "present"
-      ? "Present"
-      : role.duration?.end?.year || "";
+    const end =
+      role.duration?.end?.status === "present"
+        ? "Present"
+        : role.duration?.end?.year || "";
 
     return `
       <div class="experience-role" data-omni-reveal>
@@ -85,8 +73,6 @@
       </div>
     `;
   }
-
-// Featured
 
   async function renderFeatured() {
     const section = document.getElementById("featured-section");
@@ -117,8 +103,6 @@
       </div>
     `;
   }
-
-// Projects
 
   async function renderProjects() {
     const section = document.getElementById("projects-section");
@@ -155,8 +139,6 @@
     `;
   }
 
-// Education
-
   async function renderEducation() {
     const section = document.getElementById("education-section");
     if (!section) return;
@@ -177,8 +159,6 @@
       `;
     });
   }
-   
-// Contacts
 
   async function renderContact() {
     const section = document.getElementById("contact-section");
@@ -193,14 +173,12 @@
         <p>${escape(d.section.description || "")}</p>
         ${
           d.primary?.email?.value
-            ? `<a href="mailto:${d.primary.email.value}">${escape(d.primary.email.value)}</a>`
+            ? `<a href="mailto:${escape(d.primary.email.value)}">${escape(d.primary.email.value)}</a>`
             : ""
         }
       </div>
     `;
   }
-
-//Helpers
 
   function ensureHeading(section, text) {
     if (!section.querySelector("h2")) {
@@ -217,8 +195,6 @@
         )
       : "";
   }
-   
-//ImageViewer
 
   function bindImageViewer() {
     document.body.addEventListener("click", e => {
@@ -245,12 +221,13 @@
     document.body.style.overflow = "hidden";
 
     overlay.addEventListener("click", e => {
-      if (e.target.classList.contains("image-viewer-backdrop") ||
-          e.target.classList.contains("image-viewer-close")) {
+      if (
+        e.target.classList.contains("image-viewer-backdrop") ||
+        e.target.classList.contains("image-viewer-close")
+      ) {
         overlay.remove();
         document.body.style.overflow = "";
       }
     });
   }
-
 })();
