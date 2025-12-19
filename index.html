@@ -5,36 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Pranab Debnath — Omniverse</title>
 
-<!-- Fonts -->
+<!-- Font -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-
 /* ============================================================
-   OMNIVERSE — SINGLE FILE BUILD (CANONICAL)
-   Apple-grade • Liquid Glass • Cosmic Motion
+   OMNIVERSE — SINGLE FILE BUILD (FINAL)
 ============================================================ */
 
-/* ================= ROOT ================= */
 :root {
   --bg-main:#05030c;
   --bg-deep:#090613;
-
   --violet:#a78bfa;
   --violet-blue:#60a5fa;
   --violet-glow:rgba(167,139,250,.35);
-
   --text-main:rgba(255,255,255,.96);
   --text-muted:rgba(255,255,255,.62);
   --text-faint:rgba(255,255,255,.42);
-
   --ease:cubic-bezier(.22,1,.36,1);
   --radius-xl:32px;
 }
 
-/* ================= RESET ================= */
 *,
 *::before,
 *::after { box-sizing:border-box; }
@@ -49,38 +42,33 @@ body {
   color:var(--text-main);
   min-height:100vh;
   overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-
   background:
     radial-gradient(900px 600px at 70% -10%, rgba(124,58,237,.18), transparent),
     radial-gradient(700px 520px at 15% 120%, rgba(167,139,250,.14), transparent),
     linear-gradient(180deg,#04020a,var(--bg-deep) 55%,#04020a);
 }
 
-/* ================= COSMIC BACKGROUND ================= */
-#stars,
-#shooting-stars {
+/* Cosmic layers */
+#cosmic-stars,
+#cosmic-shooting {
   position:fixed;
   inset:0;
   pointer-events:none;
 }
+#cosmic-stars { z-index:-3; }
+#cosmic-shooting { z-index:-2; }
 
-#stars { z-index:-3; }
-#shooting-stars { z-index:-2; }
+/* Layout */
+section {
+  max-width:1200px;
+  margin:0 auto;
+  padding:clamp(6rem,10vw,10rem) 2rem;
+}
 
-/* ================= TYPOGRAPHY ================= */
 h1 {
   font-size:clamp(42px,6vw,64px);
   font-weight:500;
   letter-spacing:-.035em;
-  line-height:1.04;
-  margin:0;
-}
-
-h2 {
-  font-size:clamp(26px,3vw,34px);
-  font-weight:500;
-  margin:0 0 3rem;
 }
 
 p {
@@ -90,37 +78,20 @@ p {
   max-width:68ch;
 }
 
-/* ================= LAYOUT ================= */
-section {
-  max-width:1200px;
-  margin:0 auto;
-  padding:clamp(6rem,10vw,10rem) 2rem;
-}
-
-/* ================= HERO ================= */
 .hero {
   padding-top:12rem;
 }
 
 .hero-tagline {
+  margin-top:1.2rem;
   color:var(--violet);
   font-weight:500;
-  margin-top:1.2rem;
 }
 
-.hero-summary {
-  margin-top:1.6rem;
-  font-size:16px;
-}
-
-/* ================= LIQUID DASHBOARD ================= */
 .dashboard {
   margin-top:5rem;
   padding:3.8rem;
   border-radius:var(--radius-xl);
-  position:relative;
-  overflow:hidden;
-
   background:
     radial-gradient(
       140% 120% at 12% 8%,
@@ -128,55 +99,12 @@ section {
       rgba(255,255,255,.06) 38%,
       rgba(9,6,19,.88) 78%
     );
-
   backdrop-filter:blur(28px) saturate(150%);
   box-shadow:
     0 80px 180px rgba(0,0,0,.9),
     inset 0 1px 0 rgba(255,255,255,.25);
-
-  transition:transform 900ms var(--ease), box-shadow 900ms var(--ease);
 }
 
-@media (hover:hover) {
-  .dashboard:hover {
-    transform:translateY(-10px) scale(1.01);
-    box-shadow:
-      0 110px 220px rgba(0,0,0,.95),
-      0 0 80px var(--violet-glow);
-  }
-}
-
-/* Glass edge refraction */
-.dashboard::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:linear-gradient(
-    140deg,
-    rgba(255,255,255,.65),
-    transparent 40%,
-    transparent 60%,
-    rgba(167,139,250,.6)
-  );
-  opacity:.18;
-  pointer-events:none;
-}
-
-/* Internal glow */
-.dashboard::after {
-  content:"";
-  position:absolute;
-  inset:-40%;
-  background:
-    radial-gradient(circle at 30% 40%, rgba(167,139,250,.35), transparent 55%),
-    radial-gradient(circle at 70% 60%, rgba(96,165,250,.25), transparent 60%);
-  filter:blur(180px);
-  opacity:.6;
-  pointer-events:none;
-}
-
-/* ================= KPI STRIP ================= */
 .kpis {
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
@@ -188,201 +116,153 @@ section {
   padding:1.4rem 1.6rem;
   border-radius:18px;
   background:rgba(255,255,255,.05);
-  box-shadow:0 16px 36px rgba(0,0,0,.55);
 }
 
-.kpi span {
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  color:var(--text-faint);
-}
-
-.kpi strong {
-  display:block;
-  margin-top:.5rem;
-  font-size:22px;
-  color:var(--violet);
-}
-
-/* ================= GRAPH ================= */
 .graph {
   height:280px;
   border-radius:20px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.06),
-      rgba(255,255,255,.015)
-    );
-  box-shadow:inset 0 0 60px rgba(255,255,255,.04);
+  background:linear-gradient(
+    180deg,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.015)
+  );
 }
 
-/* ================= PROJECT SECTIONS ================= */
 .project {
   margin-top:6rem;
   opacity:0;
   transform:translateY(60px);
   transition:all 900ms var(--ease);
 }
-
 .project.is-visible {
   opacity:1;
   transform:none;
 }
 
-.project-card {
-  padding:3.2rem;
-  border-radius:28px;
-  background:rgba(255,255,255,.04);
-  box-shadow:0 40px 90px rgba(0,0,0,.65);
-}
-
-/* ================= FOOTER ================= */
 footer {
   padding:6rem 2rem;
   text-align:center;
   color:var(--text-faint);
 }
-
-/* ================= REDUCED MOTION ================= */
-@media (prefers-reduced-motion:reduce) {
-  * {
-    animation:none !important;
-    transition:none !important;
-  }
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- Cosmic background -->
-<canvas id="stars"></canvas>
-<svg id="shooting-stars"></svg>
+<!-- Cosmic Background -->
+<canvas id="cosmic-stars"></canvas>
+<svg id="cosmic-shooting"></svg>
 
 <main>
+  <section class="hero">
+    <h1>Pranab Debnath</h1>
+    <div class="hero-tagline">Data • Analytics • Automation</div>
+    <p>I design analytical systems that turn raw data into strategic decisions.</p>
 
-<section class="hero">
-  <h1>Pranab Debnath</h1>
-  <div class="hero-tagline">Data • Analytics • Automation</div>
-  <p class="hero-summary">
-    I design analytical systems that turn raw data into strategic
-    decision-making engines with precision and clarity.
-  </p>
-
-  <div class="dashboard">
-    <div class="kpis">
-      <div class="kpi"><span>Revenue</span><strong>₹4.8M</strong></div>
-      <div class="kpi"><span>Growth</span><strong>+32%</strong></div>
-      <div class="kpi"><span>Conversion</span><strong>5.4%</strong></div>
+    <div class="dashboard">
+      <div class="kpis">
+        <div class="kpi"><span>Revenue</span><strong>₹4.8M</strong></div>
+        <div class="kpi"><span>Growth</span><strong>+32%</strong></div>
+        <div class="kpi"><span>Conversion</span><strong>5.4%</strong></div>
+      </div>
+      <div class="graph"></div>
     </div>
-    <div class="graph"></div>
-  </div>
-</section>
+  </section>
 
-<section class="project">
-  <div class="project-card">
+  <section class="project">
     <h2>Projects</h2>
-    <p>Scroll-based dashboard storytelling with premium motion.</p>
-  </div>
-</section>
-
+    <p>Scroll-based dashboard storytelling.</p>
+  </section>
 </main>
 
-<footer>
-  © Pranab Debnath
-</footer>
+<footer>© Pranab Debnath</footer>
 
+<!-- ============================================================
+     OMNIVERSE RUNTIME — SINGLE CONTROLLER
+============================================================ -->
 <script>
-/* ============================================================
-   STAR FIELD — CANVAS (PORTED FROM YOUR REACT CODE)
-============================================================ */
+(() => {
+  "use strict";
 
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-let stars = [];
-const density = 0.00015;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-function resizeStars() {
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
-  const count = Math.floor(innerWidth * innerHeight * density);
-  stars = Array.from({length:count}, () => ({
-    x:Math.random()*innerWidth,
-    y:Math.random()*innerHeight,
-    r:Math.random()*.8+.4,
-    o:Math.random()*.5+.4,
-    t:Math.random()*.8+.4
-  }));
-}
+  /* ---------- STAR FIELD ---------- */
+  const canvas = document.getElementById("cosmic-stars");
+  const ctx = canvas.getContext("2d");
+  let stars = [];
+  const density = 0.00015;
 
-function drawStars() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle=`rgba(255,255,255,${s.o})`;
-    ctx.fill();
-    s.o=.5+Math.abs(Math.sin(Date.now()*.001/s.t)*.5);
-  });
-  requestAnimationFrame(drawStars);
-}
-
-resizeStars();
-drawStars();
-addEventListener("resize",resizeStars);
-
-/* ============================================================
-   SHOOTING STARS — SVG (PORTED CLEAN)
-============================================================ */
-
-const svg = document.getElementById("shooting-stars");
-svg.innerHTML = `
-<defs>
-  <linearGradient id="trail">
-    <stop offset="0%" stop-color="rgba(96,165,250,0)" />
-    <stop offset="100%" stop-color="#a78bfa" />
-  </linearGradient>
-</defs>`;
-
-function shoot() {
-  const r = document.createElementNS("http://www.w3.org/2000/svg","rect");
-  let x=Math.random()*innerWidth;
-  let y=-100;
-  const angle=45+Math.random()*20;
-  r.setAttribute("x",x);
-  r.setAttribute("y",y);
-  r.setAttribute("width",140);
-  r.setAttribute("height",1.2);
-  r.setAttribute("fill","url(#trail)");
-  r.setAttribute("transform",`rotate(${angle} ${x} ${y})`);
-  svg.appendChild(r);
-
-  let d=0;
-  function anim(){
-    d+=18;
-    r.setAttribute("x",x-d);
-    r.setAttribute("y",y+d);
-    if(d<innerWidth*1.2) requestAnimationFrame(anim);
-    else r.remove();
+  function resize() {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    stars = Array.from(
+      { length: innerWidth * innerHeight * density },
+      () => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        r: Math.random() * 0.8 + 0.4,
+        t: Math.random() * 0.8 + 0.4
+      })
+    );
   }
-  anim();
-  setTimeout(shoot,2000+Math.random()*4000);
-}
-shoot();
 
-/* ============================================================
-   SCROLL REVEAL
-============================================================ */
-const io=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting) e.target.classList.add("is-visible");
-  });
-},{threshold:.2});
+  function drawStars() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    const time = Date.now() * 0.001;
+    stars.forEach(s => {
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${0.5 + Math.sin(time/s.t)*0.3})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
 
-document.querySelectorAll(".project").forEach(el=>io.observe(el));
+  resize();
+  drawStars();
+  addEventListener("resize", resize);
+
+  /* ---------- SHOOTING STAR ---------- */
+  const svg = document.getElementById("cosmic-shooting");
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="trail">
+        <stop offset="0%" stop-color="rgba(96,165,250,0)" />
+        <stop offset="100%" stop-color="#a78bfa" />
+      </linearGradient>
+    </defs>
+  `;
+
+  function shoot() {
+    const r = document.createElementNS("http://www.w3.org/2000/svg","rect");
+    let x = Math.random() * innerWidth;
+    let y = -100;
+    r.setAttribute("width",140);
+    r.setAttribute("height",1.2);
+    r.setAttribute("fill","url(#trail)");
+    svg.appendChild(r);
+
+    let d = 0;
+    function anim() {
+      d += 18;
+      r.setAttribute("x", x - d);
+      r.setAttribute("y", y + d);
+      if (d < innerWidth * 1.3) requestAnimationFrame(anim);
+      else r.remove();
+    }
+    anim();
+    setTimeout(shoot, 2000 + Math.random() * 4000);
+  }
+  shoot();
+
+  /* ---------- SCROLL REVEAL ---------- */
+  const io = new IntersectionObserver(e =>
+    e.forEach(x => x.isIntersecting && x.target.classList.add("is-visible")),
+    { threshold: 0.2 }
+  );
+  document.querySelectorAll(".project").forEach(el => io.observe(el));
+
+})();
 </script>
 
 </body>
