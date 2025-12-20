@@ -1,3 +1,6 @@
+import React from "react";
+import CodeViewer from "./CodeViewer"; 
+
 function Projects() {
     const [activeCode, setActiveCode] = React.useState(null);
     const [projects, setProjects] = React.useState([]);
@@ -5,17 +8,17 @@ function Projects() {
     const resolveIcon = ({ name = "", desc = "", code = "" }) => {
         const text = `${name} ${desc} ${code}`.toLowerCase();
 
-        if (text.includes("sql") || text.includes("query") || text.includes("database"))
+        if (text.includes("sql") || text.includes("database") || text.includes("query"))
             return "database";
         if (text.includes("etl") || text.includes("automation") || text.includes("pipeline"))
             return "activity";
         if (text.includes("analysis") || text.includes("analytics") || text.includes("eda"))
             return "bar-chart";
-        if (text.includes("model") || text.includes("prediction") || text.includes("ml"))
+        if (text.includes("model") || text.includes("ml") || text.includes("prediction"))
             return "users";
         if (text.includes("sentiment") || text.includes("nlp"))
             return "message-circle";
-        if (text.includes("api") || text.includes("script") || text.includes("javascript"))
+        if (text.includes("api") || text.includes("javascript"))
             return "code";
 
         return "folder";
@@ -29,11 +32,14 @@ function Projects() {
                 );
                 const repos = await repoRes.json();
 
+                // 🔒 HARD GUARD
+                if (!Array.isArray(repos)) return;
+
                 const supportedExt = ["js", "py", "sql", "ipynb"];
 
                 const allProjects = await Promise.all(
                     repos
-                        .filter(repo => !repo.fork)
+                        .filter(repo => repo && !repo.fork)
                         .map(async repo => {
                             let codeSnippet = "";
                             let fileName = "";
@@ -45,7 +51,6 @@ function Projects() {
                                 );
                                 const contents = await contentRes.json();
 
-                                // 🔒 CRASH FIX
                                 if (!Array.isArray(contents)) return null;
 
                                 const codeFile = contents.find(
@@ -56,17 +61,16 @@ function Projects() {
                                         )
                                 );
 
-                                if (codeFile?.download_url) {
-                                    const rawRes = await fetch(codeFile.download_url);
-                                    codeSnippet = await rawRes.text();
-                                    fileName = codeFile.name;
-                                    lang = fileName.split(".").pop();
-                                }
+                                if (!codeFile?.download_url) return null;
+
+                                const rawRes = await fetch(codeFile.download_url);
+                                codeSnippet = await rawRes.text();
+
+                                fileName = codeFile.name;
+                                lang = fileName.split(".").pop();
                             } catch {
                                 return null;
                             }
-
-                            if (!codeSnippet) return null;
 
                             return {
                                 title: repo.name,
@@ -94,7 +98,7 @@ function Projects() {
 
                 setProjects(bestFour);
             } catch (err) {
-                console.error("Failed to load projects", err);
+                console.error("Projects fetch failed:", err);
             }
         };
 
@@ -109,7 +113,10 @@ function Projects() {
 
             <div className="grid lg:grid-cols-2 gap-8">
                 {projects.map((project, idx) => (
-                    <div key={idx} className="card flex flex-col">
+                    <div
+                        key={idx}
+                        className="card group hover:-translate-y-2 transition-transform duration-300 flex flex-col"
+                    >
                         <div className="flex justify-between items-start mb-6">
                             <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700">
                                 <div className={`icon-${project.icon} text-2xl`} />
@@ -120,15 +127,16 @@ function Projects() {
                                     onClick={() =>
                                         setActiveCode(activeCode === idx ? null : idx)
                                     }
-                                    className="text-xs px-3 py-1.5 rounded-full bg-slate-800"
+                                    className="text-xs px-3 py-1.5 rounded-full bg-slate-800 text-slate-300"
                                 >
-                                    View Code
+                                    {activeCode === idx ? "Hide Code" : "View Code"}
                                 </button>
 
                                 <a
                                     href={`https://github.com/alsopranab/${project.title}`}
                                     target="_blank"
-                                    className="text-xs px-3 py-1.5 rounded-full bg-slate-800"
+                                    rel="noreferrer"
+                                    className="text-xs px-3 py-1.5 rounded-full bg-slate-800 text-slate-300"
                                 >
                                     Repo
                                 </a>
@@ -145,9 +153,22 @@ function Projects() {
                                 title={project.file}
                             />
                         )}
+
+                        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
+                            {project.tags.map(tag => (
+                                <span
+                                    key={tag}
+                                    className="text-xs px-3 py-1 rounded-full bg-violet-500/10 text-violet-200"
+                                >
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>
         </section>
     );
 }
+
+export default Projects;
