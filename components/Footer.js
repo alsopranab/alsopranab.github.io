@@ -17,10 +17,10 @@ function Footer() {
                     </a>
                 </div>
                 <p className="text-slate-500 text-sm">
-                    &copy; {new Date().getFullYear()} Data Analyst Portfolio. Built with React & Tailwind.
+                    &copy; {new Date().getFullYear()} Data Analyst Portfolio. By PRANAB DEBNATH.
                 </p>
                 <p className="text-slate-600 text-xs mt-2">
-                    Designed for high-performance and scalability.
+                    A personal portfolio focused on continuous learning and real-world problem solving.
                 </p>
             </div>
         </footer>
