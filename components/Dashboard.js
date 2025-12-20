@@ -92,7 +92,7 @@ function Dashboard() {
                     </div>
                     <div className="card border-l-4 border-l-[var(--accent)]">
                         <div className="text-slate-400 text-sm uppercase tracking-wider mb-1">Automated Workflows</div>
-                        <div className="text-3xl font-bold text-white">100+ TB</div>
+                        <div className="text-3xl font-bold text-white">75+</div>
                     </div>
                     <div className="card border-l-4 border-l-blue-500">
                         <div className="text-slate-400 text-sm uppercase tracking-wider mb-1">Dashboards Built</div>
