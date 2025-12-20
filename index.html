@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- =====================================================
+       META
+  ====================================================== -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Pranab Debnath · Data Analyst</title>
 
-  <!-- Typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- =====================================================
+       TYPOGRAPHY
+  ====================================================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
 
-  <!-- Core Styles -->
+  <!-- =====================================================
+       CORE STYLES
+  ====================================================== -->
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body>
 
   <!-- =====================================================
-       BACKGROUND
+       COSMIC BACKGROUND (CANVAS)
   ====================================================== -->
-  <canvas id="stars"></canvas>
+  <canvas id="stars" aria-hidden="true"></canvas>
 
   <!-- =====================================================
-       HERO
+       HERO (DATA-DRIVEN)
   ====================================================== -->
   <section id="hero-section" class="hero">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       DASHBOARD 1 · SYSTEM OVERVIEW (STATIC KPI)
-       Purpose: instant credibility
+       DASHBOARD · SYSTEM OVERVIEW (STATIC VISUAL)
+       Purpose: credibility, not data binding
   ====================================================== -->
   <section id="analytics-dashboard" class="dashboard">
     <div class="glass-box">
@@ -46,22 +53,22 @@
       </div>
 
       <div class="chart-glass" data-parallax="0.03">
-        <canvas id="trend1" height="180"></canvas>
+        <canvas id="trend1" height="180" aria-hidden="true"></canvas>
       </div>
 
     </div>
   </section>
 
   <!-- =====================================================
-       EXPERIENCE
+       EXPERIENCE (DATA-DRIVEN)
   ====================================================== -->
   <section id="experience-section" class="text-section">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       DASHBOARD 2 · PROJECT INTELLIGENCE (DYNAMIC)
-       Purpose: depth & scale
+       DASHBOARD · PROJECT INTELLIGENCE (VISUAL DEPTH)
+       Purpose: scale & systems thinking
   ====================================================== -->
   <section id="project-intelligence-section" class="dashboard">
     <div class="glass-box">
@@ -74,48 +81,46 @@
       </div>
 
       <div class="chart-glass" data-parallax="0.04">
-        <canvas id="trend2" height="180"></canvas>
+        <canvas id="trend2" height="180" aria-hidden="true"></canvas>
       </div>
 
     </div>
   </section>
 
   <!-- =====================================================
-       PROJECTS
+       PROJECTS (DATA-DRIVEN)
   ====================================================== -->
   <section id="projects-section" class="text-section">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       EDUCATION
+       EDUCATION (DATA-DRIVEN)
   ====================================================== -->
   <section id="education-section" class="text-section">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       CONTACT
+       CONTACT (DATA-DRIVEN)
   ====================================================== -->
   <section id="contact-section" class="text-section">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       FOOTER
+       FOOTER (SOCIALS + META)
   ====================================================== -->
-  <footer id="site-footer">
-    © Pranab Debnath
-  </footer>
+  <footer id="site-footer"></footer>
 
   <!-- =====================================================
-       CORE SCRIPTS (LOCKED ORDER)
+       CORE SCRIPTS (LOCKED ORDER — DO NOT TOUCH)
   ====================================================== -->
   <script src="assets/js/services/data.service.js"></script>
   <script src="assets/js/renderers/app.renderer.js"></script>
 
   <!-- =====================================================
-       BACKGROUND STARS
+       BACKGROUND STARS (VISUAL ONLY)
   ====================================================== -->
   <script>
     (() => {
@@ -156,7 +161,7 @@
   </script>
 
   <!-- =====================================================
-       DASHBOARD DEMO CHARTS
+       DEMO CHARTS (STATIC, SAFE)
   ====================================================== -->
   <script>
     function drawLine(id, data) {
