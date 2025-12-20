@@ -1,9 +1,9 @@
 function About() {
     const skills = [
         { category: "Analytics", items: ["Statistical Analysis", "A/B Testing", "Predictive Modeling", "KPI Tracking"] },
-        { category: "Data Viz", items: ["Tableau", "Power BI", "Looker", "D3.js"] },
-        { category: "Databases", items: ["PostgreSQL", "MySQL", "MongoDB", "BigQuery"] },
-        { category: "Tools & Code", items: ["Python (Pandas, NumPy)", "R", "Git", "Jupyter"] },
+        { category: "Data Viz", items: ["Looker Studio", "Power BI", "Excel Dashboard", "D3.js"] },
+        { category: "Databases & SQL", items: ["PostgreSQL(Basics)", "MySQL", "DataBricks SQL", "BigQuery"] },
+        { category: "Tools & Automation", items: ["Python (Pandas, NumPy, Matplotlib)", "Google App Scripts", "CRM", "Jupyter"] },
     ];
 
     return (
