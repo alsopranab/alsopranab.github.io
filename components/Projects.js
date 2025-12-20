@@ -1,174 +1,184 @@
 import React from "react";
-import CodeViewer from "./CodeViewer"; 
+import CodeViewer from "./CodeViewer";
 
 function Projects() {
-    const [activeCode, setActiveCode] = React.useState(null);
-    const [projects, setProjects] = React.useState([]);
+  const [activeCode, setActiveCode] = React.useState(null);
 
-    const resolveIcon = ({ name = "", desc = "", code = "" }) => {
-        const text = `${name} ${desc} ${code}`.toLowerCase();
+  const projects = [
+    {
+      title: "Uber-Data-Analysis",
+      desc: "Python-based EDA of Uber trip data to analyze ride patterns, demand trends, service categories, and fare behavior.",
+      tags: ["Python", "Matplotlib", "Numpy"],
+      icon: "shopping-cart",
+      codeSnippet: `
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
 
-        if (text.includes("sql") || text.includes("database") || text.includes("query"))
-            return "database";
-        if (text.includes("etl") || text.includes("automation") || text.includes("pipeline"))
-            return "activity";
-        if (text.includes("analysis") || text.includes("analytics") || text.includes("eda"))
-            return "bar-chart";
-        if (text.includes("model") || text.includes("ml") || text.includes("prediction"))
-            return "users";
-        if (text.includes("sentiment") || text.includes("nlp"))
-            return "message-circle";
-        if (text.includes("api") || text.includes("javascript"))
-            return "code";
+dataset = pd.read_csv("UberDataset.csv")
 
-        return "folder";
-    };
+dataset['PURPOSE'].fillna("NOT", inplace=True)
+dataset['START_DATE'] = pd.to_datetime(dataset['START_DATE'], errors='coerce')
+dataset['END_DATE'] = pd.to_datetime(dataset['END_DATE'], errors='coerce')
 
-    React.useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const repoRes = await fetch(
-                    "https://api.github.com/users/alsopranab/repos?per_page=100"
-                );
-                const repos = await repoRes.json();
+dataset['hour'] = dataset['START_DATE'].dt.hour
+dataset['day-night'] = pd.cut(
+    dataset['hour'],
+    bins=[0,10,15,19,24],
+    labels=['Morning','Afternoon','Evening','Night'],
+    right=False
+)
 
-                // 🔒 HARD GUARD
-                if (!Array.isArray(repos)) return;
+dataset.dropna(inplace=True)
+dataset.drop_duplicates(inplace=True)
 
-                const supportedExt = ["js", "py", "sql", "ipynb"];
+sns.countplot(x='CATEGORY', data=dataset)
+sns.countplot(x='PURPOSE', data=dataset)
+plt.show()
+      `,
+      lang: "python",
+      file: "uber_analysis.py"
+    },
 
-                const allProjects = await Promise.all(
-                    repos
-                        .filter(repo => repo && !repo.fork)
-                        .map(async repo => {
-                            let codeSnippet = "";
-                            let fileName = "";
-                            let lang = "text";
+    {
+      title: "DynamicReport-ETL",
+      desc: "Automated XLSB → CSV → Google Sheets ETL pipeline using Apps Script.",
+      tags: ["Apps Script", "ETL", "Automation"],
+      icon: "users",
+      codeSnippet: `
+function xlsbWebendlinkgenerator() {
+  const folderId = "FOLDER_ID";
+  const folder = DriveApp.getFolderById(folderId);
+  const query = 'subject:"Lead assign vs connectivity report" has:attachment';
 
-                            try {
-                                const contentRes = await fetch(
-                                    `https://api.github.com/repos/alsopranab/${repo.name}/contents`
-                                );
-                                const contents = await contentRes.json();
+  const threads = GmailApp.search(query, 0, 5);
+  if (!threads.length) return;
 
-                                if (!Array.isArray(contents)) return null;
+  const msg = threads[0].getMessages().pop();
+  const attachments = msg.getAttachments();
 
-                                const codeFile = contents.find(
-                                    item =>
-                                        item.type === "file" &&
-                                        supportedExt.includes(
-                                            item.name.split(".").pop()
-                                        )
-                                );
+  attachments.forEach(att => {
+    if (att.getName().endsWith(".xlsb")) {
+      const file = folder.createFile(att);
+      file.setSharing(
+        DriveApp.Access.ANYONE_WITH_LINK,
+        DriveApp.Permission.VIEW
+      );
+    }
+  });
+}
+      `,
+      lang: "javascript",
+      file: "etl.gs"
+    },
 
-                                if (!codeFile?.download_url) return null;
+    {
+      title: "Social Media Sentiment Analysis",
+      desc: "NLP pipeline to analyze tweet sentiment during product launches.",
+      tags: ["NLP", "API", "JavaScript"],
+      icon: "message-circle",
+      codeSnippet: `
+const analyzeSentiment = async (text) => {
+  const res = await fetch("https://api.sentiment.io/analyze", {
+    method: "POST",
+    body: JSON.stringify({ text })
+  });
+  return res.json();
+};
 
-                                const rawRes = await fetch(codeFile.download_url);
-                                codeSnippet = await rawRes.text();
+tweets.forEach(async tweet => {
+  const score = await analyzeSentiment(tweet.content);
+  console.log(score);
+});
+      `,
+      lang: "javascript",
+      file: "sentiment.js"
+    }
+  ];
 
-                                fileName = codeFile.name;
-                                lang = fileName.split(".").pop();
-                            } catch {
-                                return null;
-                            }
+  return (
+    <section
+      id="projects"
+      className="section-padding"
+      data-name="projects"
+      data-file="components/Projects.js"
+    >
+      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+        <span className="text-[var(--primary)]">02.</span> Featured Projects
+      </h2>
 
-                            return {
-                                title: repo.name,
-                                desc:
-                                    repo.description ||
-                                    "Project focused on analytics and automation.",
-                                tags: repo.language ? [repo.language] : ["Project"],
-                                icon: resolveIcon({
-                                    name: repo.name,
-                                    desc: repo.description,
-                                    code: codeSnippet
-                                }),
-                                codeSnippet,
-                                lang,
-                                file: fileName,
-                                updated: repo.updated_at
-                            };
-                        })
-                );
+      <div className="grid lg:grid-cols-2 gap-8">
+        {projects.map((project, idx) => (
+          <div
+            key={idx}
+            className="card group hover:-translate-y-2 transition-transform duration-300 flex flex-col"
+          >
+            <div className="flex justify-between items-start mb-6">
+              <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700 group-hover:border-[var(--primary)] group-hover:text-[var(--primary)] transition-colors">
+                <div className={`icon-${project.icon} text-2xl`} />
+              </div>
 
-                const bestFour = allProjects
-                    .filter(Boolean)
-                    .sort((a, b) => new Date(b.updated) - new Date(a.updated))
-                    .slice(0, 4);
-
-                setProjects(bestFour);
-            } catch (err) {
-                console.error("Projects fetch failed:", err);
-            }
-        };
-
-        fetchProjects();
-    }, []);
-
-    return (
-        <section id="projects" className="section-padding">
-            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-                <span className="text-[var(--primary)]">02.</span> Featured Projects
-            </h2>
-
-            <div className="grid lg:grid-cols-2 gap-8">
-                {projects.map((project, idx) => (
-                    <div
-                        key={idx}
-                        className="card group hover:-translate-y-2 transition-transform duration-300 flex flex-col"
-                    >
-                        <div className="flex justify-between items-start mb-6">
-                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700">
-                                <div className={`icon-${project.icon} text-2xl`} />
-                            </div>
-
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() =>
-                                        setActiveCode(activeCode === idx ? null : idx)
-                                    }
-                                    className="text-xs px-3 py-1.5 rounded-full bg-slate-800 text-slate-300"
-                                >
-                                    {activeCode === idx ? "Hide Code" : "View Code"}
-                                </button>
-
-                                <a
-                                    href={`https://github.com/alsopranab/${project.title}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="text-xs px-3 py-1.5 rounded-full bg-slate-800 text-slate-300"
-                                >
-                                    Repo
-                                </a>
-                            </div>
-                        </div>
-
-                        <h3 className="text-xl font-bold mb-3">{project.title}</h3>
-                        <p className="text-slate-400 mb-6">{project.desc}</p>
-
-                        {activeCode === idx && (
-                            <CodeViewer
-                                code={project.codeSnippet}
-                                language={project.lang}
-                                title={project.file}
-                            />
-                        )}
-
-                        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
-                            {project.tags.map(tag => (
-                                <span
-                                    key={tag}
-                                    className="text-xs px-3 py-1 rounded-full bg-violet-500/10 text-violet-200"
-                                >
-                                    {tag}
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                ))}
+              <button
+                onClick={() =>
+                  setActiveCode(activeCode === idx ? null : idx)
+                }
+                className={`text-xs flex items-center gap-1 px-3 py-1.5 rounded-full transition-all ${
+                  activeCode === idx
+                    ? "bg-[var(--primary)] text-white"
+                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                }`}
+              >
+                <div className="icon-code text-sm" />
+                {activeCode === idx ? "Hide Code" : "View Code"}
+              </button>
             </div>
-        </section>
-    );
+
+            <h3 className="text-xl font-bold mb-3 group-hover:text-[var(--primary)] transition-colors">
+              {project.title}
+            </h3>
+
+            <p className="text-[var(--text-muted)] mb-6">
+              {project.desc}
+            </p>
+
+            {activeCode === idx && (
+              <div className="mb-6 animate-fade-in-up">
+                <CodeViewer
+                  code={project.codeSnippet}
+                  language={project.lang}
+                  title={project.file}
+                />
+              </div>
+            )}
+
+            <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
+              {project.tags.map(tag => (
+                <span
+                  key={tag}
+                  className="text-xs font-medium text-violet-200 bg-violet-500/10 px-3 py-1.5 rounded-full border border-violet-500/20"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="text-center mt-12">
+        <a
+          href="https://github.com/alsopranab"
+          target="_blank"
+          rel="noreferrer"
+          className="btn btn-outline inline-flex items-center gap-2 group"
+        >
+          View Full Project Archive
+          <div className="icon-arrow-right group-hover:translate-x-1 transition-transform" />
+        </a>
+      </div>
+    </section>
+  );
 }
 
 export default Projects;
