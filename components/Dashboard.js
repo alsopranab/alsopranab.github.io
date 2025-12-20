@@ -13,10 +13,10 @@ function Dashboard() {
             const newChart1 = new window.ChartJS(ctx1, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Python', 'SQL', 'Excel', 'BI Tools'],
+                    labels: ['Python', 'SQL', 'Excel', 'BI Tools', 'Js. Scripts', 'Advance Formulas', 'VBA & Macros'],
                     datasets: [{
-                        data: [20, 30, 40, 10],
-                        backgroundColor: ['#06b6d4', '#8b5cf6', '#3b82f6', '#cbd5e1'],
+                        data: [12.2, 14.4, 27.8, 12.2, 6.7, 16.7, 10],
+                        backgroundColor: ['#06b6d4', '#8b5cf6', '#3b82f6', '#cbd5e1', '#8b5cf6', '#a78bfa', '#c7d2fe'],
                         borderWidth: 0
                     }]
                 },
