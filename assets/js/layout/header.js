@@ -10,7 +10,29 @@
  * - Omniverse & motion compatible
  */
 
-window.addEventListener("app:ready", () => {
+let HEADER_INITIALIZED = false;
+
+function bootHeader() {
+  if (HEADER_INITIALIZED) return;
+  HEADER_INITIALIZED = true;
+
+  HeaderController();
+}
+
+/* Primary trigger */
+window.addEventListener("app:ready", bootHeader);
+
+/* Safety fallback */
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    if (!HEADER_INITIALIZED) {
+      console.warn("[Header] app:ready not detected, falling back");
+      bootHeader();
+    }
+  }, 0);
+});
+
+function HeaderController() {
   const headerEl = document.getElementById("site-header");
   if (!headerEl) return;
 
@@ -40,12 +62,16 @@ window.addEventListener("app:ready", () => {
       detail: { timestamp: Date.now() }
     })
   );
-});
+}
 
 /* =====================================================
-   NAV BEHAVIOR (SPA SAFE)
+   NAV BEHAVIOR (SPA SAFE & MOTION AWARE)
 ===================================================== */
 function initNavBehavior() {
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
   document.querySelectorAll("[data-nav]").forEach(link => {
     link.addEventListener("click", e => {
       const targetId = link.getAttribute("href");
@@ -56,10 +82,14 @@ function initNavBehavior() {
 
       e.preventDefault();
 
-      target.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+      if (reduceMotion) {
+        target.scrollIntoView({ block: "start" });
+      } else {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
     });
   });
 }
