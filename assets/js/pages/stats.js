@@ -3,15 +3,21 @@
  * ======================================================
  * - Runs ONLY on stats page
  * - Matches real JSON structures
- * - Attaches clean dataset.source
+ * - Attaches data safely (non-serial)
  * - Never crashes rendering
+ * - Emits stats:ready exactly once
  */
+
+let STATS_INITIALIZED = false;
 
 /* ============================================================
    ENTRY POINT (PAGE SAFE)
 ============================================================ */
 document.addEventListener("DOMContentLoaded", () => {
+  if (STATS_INITIALIZED) return;
   if (!document.getElementById("stats-overview-section")) return;
+
+  STATS_INITIALIZED = true;
 
   StatsPageController().catch(err => {
     console.error("[StatsPage] Fatal initialization error", err);
@@ -46,7 +52,7 @@ async function StatsPageController() {
     normalizeResults(results);
 
   /* =========================
-     DATA NORMALIZATION
+     DATA NORMALIZATION + ATTACH
   ========================= */
   attach(sections.overview, normalizeOverview(profileData));
   attach(sections.competitive, normalizeCompetitive(socialData));
@@ -70,10 +76,6 @@ async function StatsPageController() {
    NORMALIZERS (SCHEMA TRUE)
 ============================================================ */
 
-/**
- * OVERVIEW
- * profile.json → identity
- */
 function normalizeOverview(profileData) {
   if (!profileData?.identity) return null;
 
@@ -82,26 +84,19 @@ function normalizeOverview(profileData) {
       profileData.identity.preferredName ||
       profileData.identity.fullName ||
       "",
-
     headline: profileData.identity.headline || "",
-
     summary: profileData.identity.summary || "",
-
     location: profileData.identity.location
       ? `${profileData.identity.location.city}, ${profileData.identity.location.country}`
       : ""
   };
 }
 
-/**
- * COMPETITIVE
- * social.json → profiles[]
- */
 function normalizeCompetitive(socialData) {
   if (!Array.isArray(socialData?.profiles)) return null;
 
   return socialData.profiles
-    .filter(p => p.enabled)
+    .filter(p => p.enabled !== false)
     .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
     .map(p => ({
       id: p.id,
@@ -111,10 +106,6 @@ function normalizeCompetitive(socialData) {
     }));
 }
 
-/**
- * REPOSITORIES
- * projects.json → categories[]
- */
 function normalizeRepositories(projectsData) {
   if (!Array.isArray(projectsData?.categories)) return null;
 
@@ -135,15 +126,11 @@ function normalizeRepositories(projectsData) {
     }));
 }
 
-/**
- * CONTRIBUTIONS
- * Derived from GitHub profile
- */
 function normalizeContributions(socialData) {
   if (!Array.isArray(socialData?.profiles)) return null;
 
   const github = socialData.profiles.find(
-    p => p.enabled && p.id === "github"
+    p => p.enabled !== false && p.id === "github"
   );
 
   return github
@@ -178,8 +165,14 @@ function normalizeResults(results) {
 
 function attach(section, data) {
   if (!section || !data) return;
+
   try {
-    section.dataset.source = JSON.stringify(data);
+    Object.defineProperty(section, "__data__", {
+      value: data,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
   } catch (err) {
     console.error("[StatsPage] Failed to attach data", err);
   }
