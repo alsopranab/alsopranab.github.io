@@ -1,29 +1,36 @@
 /**
  * Resume Redirect Controller (FINAL — SAFE & USER-DRIVEN)
  * ======================================================
- * - Runs only on explicit user click
- * - Reads real profile.json schema
- * - Opens resume in new tab
+ * - Guaranteed user-initiated open
+ * - Async-safe (no popup blocking)
+ * - Schema-true
  * - No redirect loops
  * - Emits lifecycle events
  */
 
 (function initResumeController() {
-  document.addEventListener("click", async (e) => {
+  document.addEventListener("click", (e) => {
     const trigger = e.target.closest("[data-action='resume']");
     if (!trigger) return;
 
     e.preventDefault();
 
-    try {
-      await ResumeController();
-    } catch (err) {
-      console.error("[Resume] Fatal error", err);
+    // 🔑 MUST open synchronously
+    const popup = window.open("", "_blank", "noopener,noreferrer");
+
+    if (!popup) {
+      console.warn("[Resume] Popup blocked by browser");
+      return;
     }
+
+    ResumeController(popup).catch(err => {
+      console.error("[Resume] Fatal error", err);
+      try { popup.close(); } catch {}
+    });
   });
 })();
 
-async function ResumeController() {
+async function ResumeController(popupWindow) {
   console.group("[Resume] Initialization");
 
   /* =========================
@@ -31,8 +38,9 @@ async function ResumeController() {
   ========================= */
   const profile = await DataService.getProfile();
 
-  if (!profile) {
-    fail("Profile data unavailable");
+  if (!profile?.resume) {
+    fail("Profile resume section unavailable");
+    popupWindow.close();
     console.groupEnd();
     return;
   }
@@ -44,6 +52,7 @@ async function ResumeController() {
 
   if (!resumeTarget) {
     fail("No valid resume destination configured");
+    popupWindow.close();
     console.groupEnd();
     return;
   }
@@ -65,9 +74,9 @@ async function ResumeController() {
   console.groupEnd();
 
   /* =========================
-     OPEN (USER EXPECTATION SAFE)
+     NAVIGATE EXISTING TAB
   ========================= */
-  openResume(resumeTarget.url);
+  popupWindow.location.href = resumeTarget.url;
 }
 
 /* =================================================
@@ -98,10 +107,6 @@ function isValidUrl(url) {
   } catch {
     return false;
   }
-}
-
-function openResume(url) {
-  window.open(url, "_blank", "noopener,noreferrer");
 }
 
 function fail(reason) {
