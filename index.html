@@ -1,239 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pranab Debnath • Data Analyst</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pranab Debnath · Data Analyst</title>
 
-<!-- Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-<!-- FINAL CSS -->
-<link rel="stylesheet" href="/assets/css/style.css">
+  <!-- Core Styles -->
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
-<canvas id="stars"></canvas>
+  <!-- =====================================================
+       BACKGROUND
+  ====================================================== -->
+  <canvas id="stars"></canvas>
 
-<!-- ================= HERO ================= -->
-<section class="hero" id="hero-section">
-  <div class="glass-box" data-omni-reveal>
-    <h1>Pranab Debnath</h1>
-    <div class="tagline">Data • Analytics • Automation</div>
-    <p>
-      I design analytical systems that transform raw data into
-      precise, decision-grade intelligence through automation,
-      structure, and clarity.
-    </p>
-  </div>
-</section>
+  <!-- =====================================================
+       HERO
+  ====================================================== -->
+  <section id="hero-section" class="hero">
+    <div class="glass-box"></div>
+  </section>
 
-<!-- ================= DASHBOARD 1 — SYSTEM OVERVIEW ================= -->
-<section class="dashboard" id="analytics-dashboard">
-  <div class="glass-box" data-omni-reveal>
+  <!-- =====================================================
+       DASHBOARD 1 · SYSTEM OVERVIEW (STATIC KPI)
+       Purpose: instant credibility
+  ====================================================== -->
+  <section id="analytics-dashboard" class="dashboard">
+    <div class="glass-box">
 
-    <div class="kpis">
-      <div class="kpi">
-        <span>Sessions</span>
-        <strong>10.2K</strong>
+      <div class="kpis">
+        <div class="kpi"><span>Sessions</span><strong>10.2K</strong></div>
+        <div class="kpi"><span>Conversion</span><strong>3.3%</strong></div>
+        <div class="kpi"><span>Drop-off</span><strong>−28%</strong></div>
+        <div class="kpi"><span>Uptime</span><strong>99.9%</strong></div>
       </div>
-      <div class="kpi">
-        <span>Conversion</span>
-        <strong>3.3%</strong>
+
+      <div class="chart-glass" data-parallax="0.03">
+        <canvas id="trend1" height="180"></canvas>
       </div>
-      <div class="kpi">
-        <span>Drop-off</span>
-        <strong>−28%</strong>
-      </div>
-      <div class="kpi">
-        <span>Uptime</span>
-        <strong>99.9%</strong>
-      </div>
+
     </div>
+  </section>
 
-    <div class="chart-glass" data-parallax="0.03">
-      <canvas id="trend1" height="180"></canvas>
-    </div>
+  <!-- =====================================================
+       EXPERIENCE
+  ====================================================== -->
+  <section id="experience-section" class="text-section">
+    <div class="glass-box"></div>
+  </section>
 
-  </div>
-</section>
+  <!-- =====================================================
+       DASHBOARD 2 · PROJECT INTELLIGENCE (DYNAMIC)
+       Purpose: depth & scale
+  ====================================================== -->
+  <section id="project-intelligence-section" class="dashboard">
+    <div class="glass-box">
 
-<!-- ================= EXPERIENCE ================= -->
-<section id="experience-section" class="text-section">
-  <div class="glass-box" data-omni-reveal>
-    <h2>Experience</h2>
-
-    <div class="experience-role">
-      <strong>Senior Account Manager — MagicBricks</strong>
-      <div class="experience-meta">Analytics · Revenue · Automation</div>
-      <ul>
-        <li>Built internal performance dashboards and KPI systems</li>
-        <li>Improved monthly conversion rates by double digits</li>
-        <li>Automated reporting workflows using structured data models</li>
-      </ul>
-    </div>
-
-    <div class="experience-role">
-      <strong>Senior Account Manager — NoBroker</strong>
-      <div class="experience-meta">Sales Analytics · Leadership</div>
-      <ul>
-        <li>Led revenue analysis for NRI segment</li>
-        <li>Achieved sustained 15% MoM growth</li>
-        <li>Trained teams on data-driven decision making</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ================= FEATURED ================= -->
-<section id="featured-section" class="text-section">
-  <div class="glass-box" data-omni-reveal>
-    <h2>Focus Areas</h2>
-    <p>
-      My work centers around analytical architecture, automation systems,
-      business intelligence dashboards, and structured data workflows that
-      scale across teams and products.
-    </p>
-  </div>
-</section>
-
-<!-- ================= DASHBOARD 2 — PROJECT INTELLIGENCE ================= -->
-<section class="dashboard" id="project-intelligence-section">
-  <div class="glass-box" data-omni-reveal>
-
-    <div class="kpis">
-      <div class="kpi">
-        <span>Total Projects</span>
-        <strong>24+</strong>
+      <div class="kpis">
+        <div class="kpi"><span>Total Projects</span><strong>—</strong></div>
+        <div class="kpi"><span>SQL-Heavy</span><strong>—</strong></div>
+        <div class="kpi"><span>Automation</span><strong>—</strong></div>
+        <div class="kpi"><span>Dashboards</span><strong>—</strong></div>
       </div>
-      <div class="kpi">
-        <span>SQL-Heavy</span>
-        <strong>60%</strong>
+
+      <div class="chart-glass" data-parallax="0.04">
+        <canvas id="trend2" height="180"></canvas>
       </div>
-      <div class="kpi">
-        <span>Automation</span>
-        <strong>30%</strong>
-      </div>
-      <div class="kpi">
-        <span>Dashboards</span>
-        <strong>10+</strong>
-      </div>
+
     </div>
+  </section>
 
-    <div class="chart-glass" data-parallax="0.04">
-      <canvas id="trend2" height="180"></canvas>
-    </div>
+  <!-- =====================================================
+       PROJECTS
+  ====================================================== -->
+  <section id="projects-section" class="text-section">
+    <div class="glass-box"></div>
+  </section>
 
-  </div>
-</section>
+  <!-- =====================================================
+       EDUCATION
+  ====================================================== -->
+  <section id="education-section" class="text-section">
+    <div class="glass-box"></div>
+  </section>
 
-<!-- ================= GITHUB SIGNAL ================= -->
-<section id="github-dashboard"></section>
+  <!-- =====================================================
+       CONTACT
+  ====================================================== -->
+  <section id="contact-section" class="text-section">
+    <div class="glass-box"></div>
+  </section>
 
-<!-- ================= PROJECTS ================= -->
-<section id="projects-section" class="text-section">
-  <div class="glass-box" data-omni-reveal>
-    <h2>Projects</h2>
-    <p>
-      A collection of analytical systems, dashboards, and automation
-      pipelines designed for real-world operational impact.
-    </p>
-  </div>
-</section>
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
+  <footer id="site-footer">
+    © Pranab Debnath
+  </footer>
 
-<!-- ================= EDUCATION ================= -->
-<section id="education-section" class="text-section">
-  <div class="glass-box" data-omni-reveal>
-    <h2>Education</h2>
-    <p>
-      Bachelor’s Degree · Statistics & Analytics  
-      Foundation in data modeling, probability, and applied analysis.
-    </p>
-  </div>
-</section>
+  <!-- =====================================================
+       CORE SCRIPTS (LOCKED ORDER)
+  ====================================================== -->
+  <script src="assets/js/services/data.service.js"></script>
+  <script src="assets/js/renderers/app.renderer.js"></script>
 
-<!-- ================= CONTACT ================= -->
-<section id="contact-section" class="text-section">
-  <div class="glass-box" data-omni-reveal>
-    <h2>Contact</h2>
-    <p>
-      Open to analytical roles, consulting engagements,
-      and high-impact data projects.
-    </p>
-  </div>
-</section>
+  <!-- =====================================================
+       BACKGROUND STARS
+  ====================================================== -->
+  <script>
+    (() => {
+      const canvas = document.getElementById("stars");
+      const ctx = canvas.getContext("2d");
+      let stars = [];
 
-<footer>
-  © Pranab Debnath
-</footer>
+      function resize() {
+        canvas.width = innerWidth;
+        canvas.height = innerHeight;
+        stars = Array.from(
+          { length: innerWidth * innerHeight * 0.00015 },
+          () => ({
+            x: Math.random() * innerWidth,
+            y: Math.random() * innerHeight,
+            r: Math.random() * 1.2,
+            o: Math.random()
+          })
+        );
+      }
 
-<!-- ================= CORE SCRIPTS ================= -->
-<script src="/assets/js/services/data.service.js"></script>
-<script src="/assets/js/core/bootstrap.js"></script>
-<script src="/assets/js/renderers/app.renderer.js"></script>
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,255,255,${s.o})`;
+          ctx.fill();
+          s.o += (Math.random() - 0.5) * 0.01;
+        });
+        requestAnimationFrame(draw);
+      }
 
-<!-- ================= STARFIELD ================= -->
-<script>
-(() => {
-  const canvas = document.getElementById("stars");
-  const ctx = canvas.getContext("2d");
-  let stars = [];
+      resize();
+      draw();
+      addEventListener("resize", resize);
+    })();
+  </script>
 
-  function resize() {
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-    stars = Array.from({ length: innerWidth * innerHeight * 0.00015 }, () => ({
-      x: Math.random() * innerWidth,
-      y: Math.random() * innerHeight,
-      r: Math.random() * 1.2,
-      o: Math.random()
-    }));
-  }
-
-  function draw() {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    stars.forEach(s => {
+  <!-- =====================================================
+       DASHBOARD DEMO CHARTS
+  ====================================================== -->
+  <script>
+    function drawLine(id, data) {
+      const c = document.getElementById(id);
+      if (!c) return;
+      const ctx = c.getContext("2d");
+      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.strokeStyle = "rgba(255,255,255,.85)";
+      ctx.lineWidth = 2.5;
       ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${s.o})`;
-      ctx.fill();
-      s.o += (Math.random() - .5) * 0.01;
-    });
-    requestAnimationFrame(draw);
-  }
 
-  resize();
-  draw();
-  addEventListener("resize", resize);
-})();
-</script>
+      data.forEach((v, i) => {
+        const x = i * (c.width / (data.length - 1));
+        const y = c.height - (v / 100) * c.height;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      });
 
-<!-- ================= CHARTS ================= -->
-<script>
-function drawLine(id, data) {
-  const c = document.getElementById(id);
-  const ctx = c.getContext("2d");
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.strokeStyle = "rgba(255,255,255,.85)";
-  ctx.lineWidth = 2.5;
-  ctx.beginPath();
+      ctx.stroke();
+    }
 
-  data.forEach((v,i) => {
-    const x = i * (c.width / (data.length - 1));
-    const y = c.height - (v / 100) * c.height;
-    i ? ctx.lineTo(x,y) : ctx.moveTo(x,y);
-  });
-
-  ctx.stroke();
-}
-
-drawLine("trend1",[60,70,65,75,62,68,74]);
-drawLine("trend2",[30,45,40,60,55,70,65]);
-</script>
+    drawLine("trend1", [60, 70, 65, 75, 62, 68, 74]);
+    drawLine("trend2", [30, 45, 40, 60, 55, 70, 65]);
+  </script>
 
 </body>
 </html>
