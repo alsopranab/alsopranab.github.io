@@ -3,7 +3,7 @@ function Profiles() {
         {
             name: "HackerRank",
             url: "https://www.hackerrank.com/profile/alsopranab",
-            stat: "Global Rank #1",
+            stat: "HackerRank Global Rank #1",
             subtext: "in SQL (Dec 3)",
             icon: "code",
             color: "text-green-400",
