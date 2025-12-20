@@ -24,7 +24,7 @@ function Header() {
                 <div className="flex justify-between items-center h-[var(--nav-height)]">
                     <div className="flex-shrink-0 flex items-center">
                         <a href="#" className="text-2xl font-bold tracking-tighter text-white">
-                            DATA<span className="text-[var(--accent)]">.DEV</span>
+                            PRA<span className="text-[var(--accent)]">.NAB</span>
                         </a>
                     </div>
                     
