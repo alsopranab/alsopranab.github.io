@@ -15,13 +15,13 @@ function About() {
                     </h2>
                     <div className="space-y-4 text-[var(--text-muted)] text-lg leading-relaxed">
                         <p>
-                            Hello! I'm a passionate Data Analyst with a strong technical background. My journey began in software engineering, where I discovered my love for uncovering patterns in complex datasets.
+                            Hello! I'm a Data Analyst with a strong interest in turning raw data into meaningful business insights. My experience comes from working closely with sales, operations, and performance-driven teams, where data plays a key role in decision-making.
                         </p>
                         <p>
-                            Today, I leverage code and visualization tools to tell compelling stories with data. I don't just extract numbers; I provide the context and strategy that drives business decisions.
+                            I use SQL, Python, Excel, and visualization tools to analyze trends, track KPIs, and build clear, actionable reports. My focus is not just on numbers, but on explaining what the data means and how it can be used to improve outcomes.
                         </p>
                         <p>
-                            Whether it's optimizing marketing funnels, predicting customer churn, or building automated reporting pipelines, I thrive on solving difficult problems.
+                            From performance analysis and process automation to structured reporting and exploratory data analysis, I enjoy solving real-world business problems with a practical, ownership-driven approach.
                         </p>
                     </div>
                 </div>
