@@ -1,24 +1,30 @@
-function Experience() {
-    const experiences = [
-        {
-            role: "Senior Data Analyst",
-            company: "Tech Solutions Inc.",
-            period: "2023 - Present",
-            desc: "Leading data strategy and automation initiatives."
-        },
-        {
-            role: "Data Analyst",
-            company: "Global Data Corp",
-            period: "2021 - 2023",
-            desc: "Optimized ETL pipelines and reporting dashboards."
-        },
-        {
-            role: "Operations Specialist",
-            company: "Previous Org",
-            period: "2019 - 2021",
-            desc: "Streamlined operations with analytical mindset and automation."
-        }
-    ];
+const experiences = [
+    {
+        role: "Operations Data Analyst",
+        company: "MagicBricks",
+        period: "Jan 2025 – Present",
+        desc: "Built automated reporting pipelines using SQL, Python, Google Apps Script, and Power Automate. Performed in-depth EDA on agent performance, lead funnels, schedule rates, and user behavior. Developed KPI dashboards, unified CRM and dialer data, improved data accuracy, and delivered insights that enhanced operational efficiency and conversion outcomes."
+    },
+    {
+        role: "Account Manager",
+        company: "MagicBricks",
+        period: "Oct 2024 – Dec 2024",
+        desc: "Handled client requirements, ensured timely resolution, and supported operational teams through data-backed reporting and performance tracking to improve customer satisfaction and repeat interactions."
+    },
+    {
+        role: "Unit Head",
+        company: "NoBroker",
+        period: "Jun 2024 – Oct 2024",
+        desc: "Led a sales unit to achieve 15% month-on-month growth in conversions. Mentored team members, analyzed sales calls, tracked KPIs, and collaborated with senior management to align sales strategies with business objectives."
+    },
+    {
+        role: "Business Development Executive (NRI)",
+        company: "NoBroker",
+        period: "Dec 2023 – May 2024",
+        desc: "Provided tailored real estate solutions for NRI clients. Consistently exceeded sales targets with performance achievements up to 230% and was recognized as a top performer for six consecutive months."
+    }
+];
+
 
     return (
         <section id="experience" className="section-padding relative overflow-hidden" data-name="experience" data-file="components/Experience.js">
