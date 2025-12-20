@@ -7,7 +7,7 @@ function Certifications() {
             issuer: "LeetCode", 
             color: "bg-yellow-500/10 border-yellow-500/30", 
             icon: "code",
-            image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" 
+            image: "https://leetcode.com/medal/?showImg=0&id=8789503&isLevel=false" 
         },
         { 
             title: "SQL Advanced", 
