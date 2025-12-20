@@ -20,6 +20,8 @@
     bindImageViewer();
   }
 
+  /* ================= HERO ================= */
+
   async function renderHero() {
     const section = document.getElementById("hero-section");
     if (!section) return;
@@ -27,14 +29,21 @@
     const d = await DataService.getProfile();
     if (!d?.identity) return;
 
-    section.innerHTML = `
-      <div class="hero-wrapper">
+    const wrapper = section.querySelector(".glass-box") || section;
+
+    wrapper.insertAdjacentHTML(
+      "beforeend",
+      `
+      <div class="hero-wrapper" data-omni-reveal>
         <h1>${escape(d.identity.fullName || "")}</h1>
         ${d.identity.headline ? `<p class="hero-tagline">${escape(d.identity.headline)}</p>` : ""}
         ${d.identity.summary ? `<p class="hero-summary">${escape(d.identity.summary)}</p>` : ""}
       </div>
-    `;
+    `
+    );
   }
+
+  /* ================= EXPERIENCE ================= */
 
   async function renderExperience() {
     const section = document.getElementById("experience-section");
@@ -43,13 +52,15 @@
     const d = await DataService.getExperience();
     if (!Array.isArray(d?.timeline)) return;
 
-    ensureHeading(section, d.section?.title || "Experience");
+    let html = `<h2>${escape(d.section?.title || "Experience")}</h2>`;
 
-    section.innerHTML += d.timeline
+    html += d.timeline
       .flatMap(org =>
         (org.roles || []).map(role => renderRole(role, org.organization))
       )
       .join("");
+
+    section.innerHTML = html;
   }
 
   function renderRole(role, org) {
@@ -74,6 +85,8 @@
     `;
   }
 
+  /* ================= FEATURED ================= */
+
   async function renderFeatured() {
     const section = document.getElementById("featured-section");
     if (!section) return;
@@ -81,9 +94,8 @@
     const d = await DataService.getFeatured();
     if (!Array.isArray(d?.items)) return;
 
-    ensureHeading(section, d.section?.title || "Featured");
-
-    section.innerHTML += `
+    section.innerHTML = `
+      <h2>${escape(d.section?.title || "Featured")}</h2>
       <div class="featured-list">
         ${d.items.map(renderFeaturedItem).join("")}
       </div>
@@ -104,6 +116,8 @@
     `;
   }
 
+  /* ================= PROJECTS ================= */
+
   async function renderProjects() {
     const section = document.getElementById("projects-section");
     if (!section) return;
@@ -111,18 +125,20 @@
     const d = await DataService.getProjects();
     if (!Array.isArray(d?.categories)) return;
 
-    ensureHeading(section, d.section?.title || "Projects");
+    let html = `<h2>${escape(d.section?.title || "Projects")}</h2>`;
 
     d.categories
       .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
       .forEach(cat => {
-        section.innerHTML += `
+        html += `
           <div class="project-category">
             <div class="project-category-title">${escape(cat.label || "")}</div>
             ${cat.projects.map(renderProjectCard).join("")}
           </div>
         `;
       });
+
+    section.innerHTML = html;
   }
 
   function renderProjectCard(p) {
@@ -139,6 +155,8 @@
     `;
   }
 
+  /* ================= EDUCATION ================= */
+
   async function renderEducation() {
     const section = document.getElementById("education-section");
     if (!section) return;
@@ -146,19 +164,24 @@
     const d = await DataService.getEducation();
     if (!Array.isArray(d?.records)) return;
 
-    ensureHeading(section, d.section?.title || "Education");
-
-    d.records.forEach(r => {
-      section.innerHTML += `
+    section.innerHTML = `
+      <h2>${escape(d.section?.title || "Education")}</h2>
+      ${d.records
+        .map(
+          r => `
         <div class="education-item" data-omni-reveal>
           <strong>${escape(r.institution || "")}</strong>
           <div>${escape(r.degree || "")}${r.field ? " — " + escape(r.field) : ""}</div>
           <div>${escape(r.start || "")} – ${escape(r.end || "")}</div>
           ${r.description ? `<p>${escape(r.description)}</p>` : ""}
         </div>
-      `;
-    });
+      `
+        )
+        .join("")}
+    `;
   }
+
+  /* ================= CONTACT ================= */
 
   async function renderContact() {
     const section = document.getElementById("contact-section");
@@ -168,7 +191,7 @@
     if (!d?.section) return;
 
     section.innerHTML = `
-      <div class="contact-panel">
+      <div class="contact-panel" data-omni-reveal>
         <h2>${escape(d.section.title)}</h2>
         <p>${escape(d.section.description || "")}</p>
         ${
@@ -180,21 +203,7 @@
     `;
   }
 
-  function ensureHeading(section, text) {
-    if (!section.querySelector("h2")) {
-      const h = document.createElement("h2");
-      h.textContent = text;
-      section.prepend(h);
-    }
-  }
-
-  function escape(str) {
-    return typeof str === "string"
-      ? str.replace(/[&<>"']/g, c =>
-          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
-        )
-      : "";
-  }
+  /* ================= IMAGE VIEWER ================= */
 
   function bindImageViewer() {
     document.body.addEventListener("click", e => {
@@ -229,5 +238,15 @@
         document.body.style.overflow = "";
       }
     });
+  }
+
+  /* ================= UTIL ================= */
+
+  function escape(str) {
+    return typeof str === "string"
+      ? str.replace(/[&<>"']/g, c =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+        )
+      : "";
   }
 })();
