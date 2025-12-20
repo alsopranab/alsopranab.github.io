@@ -97,7 +97,7 @@ function Hero() {
                 </h1>
                 
                 <p className="text-xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 font-bold mb-8">
-                    Data Analyst & Tech Professional
+                    Data Analyst & Automation Specialist
                 </p>
 
                 <p className="mt-2 max-w-2xl mx-auto text-lg text-[var(--text-muted)] mb-10 leading-relaxed">
