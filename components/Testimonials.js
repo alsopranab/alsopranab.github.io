@@ -7,8 +7,7 @@ function Testimonials() {
                     
                     <blockquote className="relative z-10 text-center space-y-6">
                         <p className="text-lg md:text-xl text-slate-200 italic leading-relaxed">
-                            "I’ve had the privilege of working with <span className="text-blue-400 font-semibold">Pranab in at Magicbricks</span>,  and he has consistently proven himself to be an exceptional Data Analyst... accuracy, and scalability to our operations.
-."
+                            "I’ve had the privilege of working with <span className="text-blue-400 font-semibold">Pranab in at Magicbricks</span>,  and he has consistently proven himself to be an exceptional Data Analyst... accuracy, and scalability to our operations."
                         </p>
                         
                         <div className="flex items-center justify-center gap-4 pt-4 border-t border-slate-700/50">
