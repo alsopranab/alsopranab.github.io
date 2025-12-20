@@ -55,7 +55,7 @@ function Hero() {
                     <div className="hidden md:flex flex-col gap-3 items-end">
                         <div className="bg-violet-900/40 backdrop-blur-md border border-violet-500/30 px-4 py-2 rounded-full flex items-center gap-2 shadow-[0_0_15px_rgba(139,92,246,0.3)] animate-fade-in-right">
                             <div className="icon-trophy text-yellow-400 text-sm"></div>
-                            <span className="text-sm font-medium text-violet-100">Global #1 SQL</span>
+                            <span className="text-sm font-medium text-violet-100">HackerRank Global #1 SQL</span>
                         </div>
                     </div>
 
