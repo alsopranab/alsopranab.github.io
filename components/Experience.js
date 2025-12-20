@@ -1,4 +1,5 @@
-const experiences = [
+function Experience() {
+    const experiences = [
     {
         role: "Operations Data Analyst",
         company: "MagicBricks",
