@@ -1,4 +1,21 @@
+/**
+ * Application Bootstrap (FINAL — PRODUCTION SAFE)
+ * ===============================================
+ * Responsibilities:
+ * - Wait for DOM readiness
+ * - Verify DataService availability
+ * - Warm DataService cache (optional)
+ * - Emit `app:ready` exactly once
+ * - NEVER touch DOM
+ * - NEVER emit page-level events
+ */
+
+let APP_INITIALIZED = false;
+
 document.addEventListener("DOMContentLoaded", async () => {
+  if (APP_INITIALIZED) return;
+  APP_INITIALIZED = true;
+
   console.log("[Bootstrap] DOM ready");
 
   if (!window.DataService) {
@@ -7,40 +24,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   try {
-    const [
-      profile,
-      experience,
-      featured,
-      projects,
-      education,
-      contact
-    ] = await Promise.all([
+    /* Optional cache warm — non-blocking logic downstream */
+    await Promise.allSettled([
       DataService.getProfile(),
       DataService.getExperience(),
       DataService.getFeatured(),
       DataService.getProjects(),
       DataService.getEducation(),
-      DataService.getContact()
+      DataService.getContact(),
+      DataService.getSocials?.()
     ]);
 
-    inject("hero-section", profile);
-    inject("experience-section", experience);
-    inject("featured-section", featured);
-    inject("projects-section", projects);
-    inject("education-section", education);
-    inject("contact-section", contact);
-
-    window.dispatchEvent(new Event("app:ready"));
-    window.dispatchEvent(new Event("home:ready"));
+    window.dispatchEvent(
+      new CustomEvent("app:ready", {
+        detail: { timestamp: Date.now() }
+      })
+    );
 
     console.log("[Bootstrap] App ready");
   } catch (e) {
     console.error("[Bootstrap] Fatal init error", e);
   }
 });
-
-function inject(id, data) {
-  const el = document.getElementById(id);
-  if (!el || !data) return;
-  el.dataset.source = JSON.stringify(data);
-}
