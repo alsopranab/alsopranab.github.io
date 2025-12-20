@@ -1,10 +1,11 @@
 import React from "react";
+import CodeViewer from "./CodeViewer"; // 🔴 REQUIRED IMPORT
 
 function Projects() {
   const [activeCode, setActiveCode] = React.useState(null);
   const [projects, setProjects] = React.useState([]);
 
-  // ICONS BASED ON PROJECT NAME (STABLE)
+  // ICON BASED ONLY ON PROJECT NAME (STABLE)
   const resolveIconByName = (name = "") => {
     const n = name.toLowerCase();
 
@@ -19,58 +20,56 @@ function Projects() {
     )
       return "activity";
 
-    if (
-      n.includes("sql") ||
-      n.includes("database") ||
-      n.includes("db")
-    )
+    if (n.includes("sql") || n.includes("database"))
       return "database";
 
-    if (
-      n.includes("sentiment") ||
-      n.includes("nlp")
-    )
+    if (n.includes("sentiment") || n.includes("nlp"))
       return "message-circle";
 
-    if (
-      n.includes("leetcode") ||
-      n.includes("algorithm") ||
-      n.includes("ds")
-    )
+    if (n.includes("leetcode") || n.includes("algorithm"))
       return "code";
 
-    // DEFAULT — SAME TYPE OF ICON AS BEFORE
-    return "shopping-cart";
+    return "shopping-cart"; // fallback (same as before)
   };
 
   React.useEffect(() => {
     const fetchRepos = async () => {
       try {
         const res = await fetch(
-          "https://api.github.com/users/alsopranab/repos?per_page=100"
+          "https://api.github.com/users/alsopranab/repos?per_page=100",
+          {
+            headers: {
+              Accept: "application/vnd.github+json"
+            }
+          }
         );
+
         const data = await res.json();
 
+        if (!Array.isArray(data)) return;
+
         const formatted = data
-          .filter(repo => !repo.fork)
+          .filter(repo => repo && !repo.fork)
           .sort(
-            (a, b) => new Date(b.updated_at) - new Date(a.updated_at)
+            (a, b) =>
+              new Date(b.updated_at || 0) -
+              new Date(a.updated_at || 0)
           )
           .map(repo => ({
-            title: repo.name,
+            title: repo.name || "Untitled Project",
             desc:
               repo.description ||
               "Project focused on analytics, automation, and data processing.",
             tags:
-              repo.topics && repo.topics.length > 0
+              Array.isArray(repo.topics) && repo.topics.length > 0
                 ? repo.topics
                 : repo.language
                 ? [repo.language]
                 : ["Project"],
             icon: resolveIconByName(repo.name),
-            demo: repo.html_url,
+            demo: repo.html_url || "#",
 
-            // CodeViewer safe placeholders (NO BREAK)
+            // CodeViewer SAFE placeholders
             codeSnippet:
               "// Full source code available in the GitHub repository.",
             lang: repo.language
@@ -81,7 +80,7 @@ function Projects() {
 
         setProjects(formatted);
       } catch (err) {
-        console.error("Failed to fetch GitHub repos:", err);
+        console.error("GitHub fetch failed:", err);
       }
     };
 
