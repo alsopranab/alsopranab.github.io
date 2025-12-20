@@ -1,14 +1,29 @@
 (function () {
   "use strict";
 
-  document.addEventListener("DOMContentLoaded", async () => {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+  async function init() {
     try {
+      if (!window.DataService) {
+        console.error("[Renderer] DataService missing");
+        return;
+      }
+
       await DataService.preloadAll();
       renderHome();
+
+      console.log("[Renderer] Home rendered");
     } catch (e) {
-      console.error("App render failed", e);
+      console.error("[Renderer] Fatal render error", e);
     }
-  });
+  }
+
+  // ================= RENDER HOME =================
 
   function renderHome() {
     renderHero();
@@ -19,6 +34,8 @@
     renderContact();
     bindImageViewer();
   }
+
+})();
 
   /* ================= HERO ================= */
 
