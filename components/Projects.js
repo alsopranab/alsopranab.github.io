@@ -2,6 +2,50 @@ function Projects() {
     const [activeCode, setActiveCode] = React.useState(null);
     const [projects, setProjects] = React.useState([]);
 
+    // ICON RESOLUTION (name + description + code)
+    const resolveIcon = ({ name = "", desc = "", code = "" }) => {
+        const text = `${name} ${desc} ${code}`.toLowerCase();
+
+        if (text.includes("sql") || text.includes("query") || text.includes("database"))
+            return "database";
+
+        if (
+            text.includes("etl") ||
+            text.includes("automation") ||
+            text.includes("pipeline") ||
+            text.includes("scheduler")
+        )
+            return "activity";
+
+        if (
+            text.includes("analysis") ||
+            text.includes("analytics") ||
+            text.includes("eda") ||
+            text.includes("visual")
+        )
+            return "bar-chart";
+
+        if (
+            text.includes("model") ||
+            text.includes("prediction") ||
+            text.includes("ml") ||
+            text.includes("classifier")
+        )
+            return "users";
+
+        if (
+            text.includes("sentiment") ||
+            text.includes("nlp") ||
+            text.includes("text")
+        )
+            return "message-circle";
+
+        if (text.includes("api") || text.includes("script") || text.includes("javascript"))
+            return "code";
+
+        return "folder"; // neutral fallback
+    };
+
     React.useEffect(() => {
         const fetchProjects = async () => {
             try {
@@ -12,12 +56,12 @@ function Projects() {
 
                 const supportedExt = ["js", "py", "sql", "ipynb"];
 
-                const projectData = await Promise.all(
+                const allProjects = await Promise.all(
                     repos
                         .filter(repo => !repo.fork)
                         .map(async repo => {
-                            let codeSnippet = "// Code not available";
-                            let fileName = "N/A";
+                            let codeSnippet = "";
+                            let fileName = "";
                             let lang = "text";
 
                             try {
@@ -42,21 +86,36 @@ function Projects() {
                                 }
                             } catch {}
 
+                            if (!codeSnippet) return null;
+
                             return {
                                 title: repo.name,
                                 desc:
                                     repo.description ||
-                                    "Project focused on data analysis and automation.",
+                                    "Project focused on analytics and automation.",
                                 tags: repo.language ? [repo.language] : ["Project"],
-                                icon: "shopping-cart", // UNCHANGED (same type)
+                                icon: resolveIcon({
+                                    name: repo.name,
+                                    desc: repo.description,
+                                    code: codeSnippet
+                                }),
                                 codeSnippet,
                                 lang,
-                                file: fileName
+                                file: fileName,
+                                updated: repo.updated_at
                             };
                         })
                 );
 
-                setProjects(projectData);
+                const bestFour = allProjects
+                    .filter(Boolean)
+                    .sort(
+                        (a, b) =>
+                            new Date(b.updated) - new Date(a.updated)
+                    )
+                    .slice(0, 4);
+
+                setProjects(bestFour);
             } catch (err) {
                 console.error("Failed to load projects", err);
             }
@@ -86,7 +145,11 @@ function Projects() {
                                     <div className="icon-code text-sm"></div> 
                                     {activeCode === idx ? 'Hide Code' : 'View Code'}
                                 </button>
-                                <a href={`https://github.com/alsopranab/${project.title}`} target="_blank" className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all">
+                                <a
+                                    href={`https://github.com/alsopranab/${project.title}`}
+                                    target="_blank"
+                                    className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all"
+                                >
                                     <div className="icon-external-link text-sm"></div> Repo
                                 </a>
                             </div>
@@ -112,7 +175,10 @@ function Projects() {
 
                         <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
                             {project.tags.map(tag => (
-                                <span key={tag} className="text-xs font-medium text-violet-200 bg-violet-500/10 px-3 py-1.5 rounded-full border border-violet-500/20 hover:border-violet-500/50 transition-all cursor-default">
+                                <span
+                                    key={tag}
+                                    className="text-xs font-medium text-violet-200 bg-violet-500/10 px-3 py-1.5 rounded-full border border-violet-500/20 hover:border-violet-500/50 transition-all cursor-default"
+                                >
                                     {tag}
                                 </span>
                             ))}
