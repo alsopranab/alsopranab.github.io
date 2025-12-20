@@ -24,9 +24,6 @@
         : false
   };
 
-  // Respect reduced motion fully
-  if (ENV.reduceMotion) return;
-
   /* ============================================================
      VIEWPORT
   ============================================================ */
@@ -74,7 +71,6 @@
     lastFrame = t;
     STATE.frame++;
 
-    // Pause motion while image viewer is open
     if (!document.getElementById("image-viewer-overlay")) {
       TASKS.forEach(fn => fn(t));
     }
@@ -103,19 +99,21 @@
   /* ============================================================
      ENERGY MODEL
   ============================================================ */
-  TASKS.add(() => {
-    const raw =
-      Math.hypot(STATE.velocity.x, STATE.velocity.y) * 0.01;
+  if (!ENV.reduceMotion) {
+    TASKS.add(() => {
+      const raw =
+        Math.hypot(STATE.velocity.x, STATE.velocity.y) * 0.01;
 
-    STATE.energy += (Math.min(raw, 0.8) - STATE.energy) * 0.08;
-  });
+      STATE.energy += (Math.min(raw, 0.8) - STATE.energy) * 0.08;
+    });
+  }
 
   /* ============================================================
      CURSOR ORB (DESKTOP ONLY)
   ============================================================ */
   let orb = null;
 
-  if (ENV.pointer && !ENV.isMobile) {
+  if (ENV.pointer && !ENV.isMobile && !ENV.reduceMotion) {
     const ORB_SIZE = 14;
 
     orb = document.createElement("div");
@@ -185,12 +183,12 @@
   /* ============================================================
      CARD TILT (GRAPH-SAFE)
   ============================================================ */
-  if (!ENV.isMobile) {
+  if (!ENV.isMobile && !ENV.reduceMotion) {
     TASKS.add(() => {
       if (STATE.frame % 2) return;
 
       const CARDS = document.querySelectorAll(
-        ".project-card:not(.is-visible), .featured-item, .education-item"
+        ".project-card, .featured-item, .education-item"
       );
 
       for (const el of CARDS) {
@@ -219,7 +217,7 @@
   }
 
   /* ============================================================
-     SCROLL-LINKED REVEAL (FPS SAFE)
+     SCROLL-LINKED REVEAL (DYNAMIC SAFE)
   ============================================================ */
   const revealObserver = new IntersectionObserver(
     entries => {
@@ -232,8 +230,22 @@
     { threshold: 0.35 }
   );
 
-  document
-    .querySelectorAll("[data-omni-reveal]")
-    .forEach(el => revealObserver.observe(el));
+  function observeReveals(root = document) {
+    root
+      .querySelectorAll("[data-omni-reveal]:not(.is-visible)")
+      .forEach(el => revealObserver.observe(el));
+  }
+
+  // initial
+  observeReveals();
+
+  // dynamic DOM support
+  new MutationObserver(mutations => {
+    for (const m of mutations) {
+      m.addedNodes.forEach(n => {
+        if (n.nodeType === 1) observeReveals(n);
+      });
+    }
+  }).observe(document.body, { childList: true, subtree: true });
 
 })();
