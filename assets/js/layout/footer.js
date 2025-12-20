@@ -8,7 +8,31 @@
  * - Race-condition safe
  */
 
-window.addEventListener("app:ready", async () => {
+let FOOTER_INITIALIZED = false;
+
+function bootFooter() {
+  if (FOOTER_INITIALIZED) return;
+  FOOTER_INITIALIZED = true;
+
+  FooterController().catch(err => {
+    console.warn("[Footer] Initialization failed", err);
+  });
+}
+
+/* Primary trigger */
+window.addEventListener("app:ready", bootFooter);
+
+/* Safety fallback */
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    if (!FOOTER_INITIALIZED) {
+      console.warn("[Footer] app:ready not detected, falling back");
+      bootFooter();
+    }
+  }, 0);
+});
+
+async function FooterController() {
   const footerEl = document.getElementById("site-footer");
   if (!footerEl) return;
 
@@ -19,7 +43,7 @@ window.addEventListener("app:ready", async () => {
 
     if (Array.isArray(socialData?.profiles)) {
       socials = socialData.profiles
-        .filter(p => p.enabled && p.url)
+        .filter(p => p.enabled !== false && p.url)
         .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99));
     }
   } catch (err) {
@@ -61,7 +85,7 @@ window.addEventListener("app:ready", async () => {
       detail: { timestamp: Date.now() }
     })
   );
-});
+}
 
 /* ================= UTIL ================= */
 
