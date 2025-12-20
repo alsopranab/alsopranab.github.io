@@ -144,7 +144,7 @@ tweets.forEach(tweet => {
             </div>
             
             <div className="text-center mt-12">
-                <a href="https://github.com" target="_blank" className="btn btn-outline inline-flex items-center gap-2 group">
+                <a href="https://github.com/alsopranab" target="_blank" className="btn btn-outline inline-flex items-center gap-2 group">
                     View Full Project Archive 
                     <div className="icon-arrow-right group-hover:translate-x-1 transition-transform"></div>
                 </a>
