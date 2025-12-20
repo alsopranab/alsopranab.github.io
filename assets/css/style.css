@@ -1,57 +1,37 @@
 /* ============================================================
-   OMNIVERSE UI SYSTEM — FINAL PRODUCTION BUILD
+   FINAL OMNIVERSE UI SYSTEM — VISIBILITY LOCKED
    ------------------------------------------------------------
-   • Apple / iOS 17 inspired
-   • Token-driven
+   • No hidden content by default
+   • No animation deadlocks
    • GPU-safe
-   • Motion respectful
-   • Mobile + desktop parity
-   • Long-term maintainable
+   • Mobile + desktop stable
+   • Data-driven rendering safe
 ============================================================ */
 
-/* ============================================================
-   ROOT TOKENS
-============================================================ */
+/* ================= ROOT TOKENS ================= */
 
 :root {
-  /* Background */
   --bg-main: #05030c;
   --bg-deep: #090613;
 
-  /* White scale */
   --white-100: rgba(255,255,255,.96);
   --white-80:  rgba(255,255,255,.80);
   --white-60:  rgba(255,255,255,.60);
   --white-40:  rgba(255,255,255,.40);
 
-  /* Violet identity */
   --violet-main: #a78bfa;
-  --violet-soft: rgba(167,139,250,.45);
-  --violet-glow: rgba(167,139,250,.35);
 
-  /* Glass */
   --glass-strong: rgba(255,255,255,.12);
   --glass-soft:   rgba(255,255,255,.06);
   --border-soft:  rgba(255,255,255,.14);
 
-  /* Radius */
-  --radius-lg: 40px;
-  --radius-md: 26px;
-  --radius-sm: 16px;
+  --radius-lg: 32px;
+  --radius-md: 22px;
 
-  /* Elevation */
-  --z-1: 0 20px 60px rgba(0,0,0,.55);
-  --z-2: 0 60px 140px rgba(0,0,0,.75);
-  --z-3: 0 120px 260px rgba(0,0,0,.95);
-
-  /* Motion */
-  --ease-ios: cubic-bezier(.32,.72,0,1);
-  --ease-soft: cubic-bezier(.22,1,.36,1);
+  --ease: cubic-bezier(.22,1,.36,1);
 }
 
-/* ============================================================
-   RESET
-============================================================ */
+/* ================= RESET ================= */
 
 *,
 *::before,
@@ -69,328 +49,193 @@ body {
   color: var(--white-100);
   min-height: 100vh;
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-
   background:
     radial-gradient(900px 600px at 70% -10%, rgba(255,255,255,.10), transparent),
     radial-gradient(700px 520px at 15% 120%, rgba(255,255,255,.08), transparent),
     linear-gradient(180deg,#04020a,var(--bg-deep) 55%,#04020a);
 }
 
-img, svg, canvas {
-  display: block;
-  max-width: 100%;
+/* ================= GLOBAL SAFETY ================= */
+
+/* NEVER allow empty invisible containers */
+section,
+.glass-box {
+  min-height: 1px;
 }
 
-/* ============================================================
-   BACKGROUND LAYERS
-============================================================ */
+/* ================= BACKGROUND ================= */
 
-#stars,
-#shooting-stars {
+#stars {
   position: fixed;
   inset: 0;
+  z-index: -3;
   pointer-events: none;
 }
 
-#stars { z-index: -3; }
-#shooting-stars { z-index: -2; }
-
-/* ============================================================
-   SECTION WRAPPER
-============================================================ */
+/* ================= SECTION LAYOUT ================= */
 
 section {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 8rem 2rem;
-  position: relative;
+  padding: 7rem 2rem;
 }
 
-/* Journey connector */
-section::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -120px;
-  width: 2px;
-  height: 140px;
-  transform: translateX(-50%) rotate(6deg);
-  background:
-    radial-gradient(
-      ellipse at center,
-      rgba(255,255,255,.55),
-      rgba(255,255,255,.05) 70%,
-      transparent
-    );
-  opacity: .45;
-}
-
-section:first-of-type::before {
-  display: none;
-}
-
-/* ============================================================
-   HERO
-============================================================ */
+/* ================= HERO ================= */
 
 .hero {
-  padding: 10rem 2rem 6rem;
+  padding-top: 9rem;
 }
 
 .hero h1 {
-  font-size: clamp(42px, 6vw, 64px);
+  font-size: clamp(40px, 6vw, 64px);
   font-weight: 500;
   letter-spacing: -0.04em;
-  margin: 0;
-}
-
-.hero .tagline {
-  margin-top: 1.4rem;
-  font-weight: 500;
-  color: var(--violet-main);
-  text-shadow: 0 0 14px rgba(167,139,250,.25);
 }
 
 .hero p {
-  margin-top: 1.4rem;
   max-width: 60ch;
   color: var(--white-60);
   line-height: 1.75;
 }
 
-/* ============================================================
-   LIQUID GLASS CONTAINERS
-============================================================ */
+/* ================= GLASS CONTAINERS ================= */
 
 .glass-box,
-.dashboard,
-.github-signal-shell,
-.intel-shell {
-  position: relative;
-  border-radius: var(--radius-lg);
+.dashboard {
   background:
     linear-gradient(
       180deg,
       var(--glass-strong),
       var(--glass-soft)
     );
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(28px) saturate(160%);
   border: 1px solid var(--border-soft);
-  box-shadow: var(--z-3);
-  overflow: hidden;
+  border-radius: var(--radius-lg);
+  padding: 3rem;
+  box-shadow: 0 80px 200px rgba(0,0,0,.9);
 }
 
-.glass-box::after,
-.dashboard::after,
-.github-signal-shell::after {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background:
-    radial-gradient(circle at 40% 40%, rgba(255,255,255,.18), transparent 60%);
-  filter: blur(160px);
-  opacity: .55;
-  pointer-events: none;
-}
-
-/* ============================================================
-   DASHBOARDS
-============================================================ */
+/* ================= DASHBOARDS ================= */
 
 .dashboard {
-  margin-top: 4.5rem;
-  padding: clamp(2.6rem, 4vw, 3.6rem);
-  transition:
-    transform 900ms var(--ease-soft),
-    box-shadow 900ms var(--ease-soft);
+  margin-top: 4rem;
 }
 
-@media (hover:hover) {
-  .dashboard:hover {
-    transform: translateY(-10px);
-    box-shadow:
-      0 160px 320px rgba(0,0,0,1),
-      0 0 120px rgba(255,255,255,.15);
-  }
-}
-
-/* ============================================================
-   KPI GRID
-============================================================ */
+/* ================= KPI GRID ================= */
 
 .kpis {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
-  gap: 2rem;
-  margin-bottom: 3rem;
+  grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
+  gap: 1.8rem;
+  margin-bottom: 2.8rem;
 }
 
 .kpi {
-  padding: 1.6rem;
+  padding: 1.4rem;
   border-radius: var(--radius-md);
   background: rgba(255,255,255,.06);
   border: 1px solid var(--border-soft);
-  transition:
-    transform 420ms var(--ease-soft),
-    box-shadow 420ms var(--ease-soft);
 }
 
 .kpi span {
   font-size: 11px;
-  letter-spacing: .14em;
   text-transform: uppercase;
+  letter-spacing: .12em;
   color: var(--white-40);
 }
 
 .kpi strong {
   display: block;
   margin-top: .6rem;
-  font-size: 26px;
-  font-weight: 600;
+  font-size: 24px;
   color: var(--violet-main);
 }
 
-@media (hover:hover) {
-  .kpi:hover {
-    transform: translateY(-6px);
-    box-shadow:
-      0 40px 120px rgba(0,0,0,.85),
-      0 0 40px rgba(167,139,250,.25);
-  }
-}
-
-/* ============================================================
-   CHART CONTAINER
-============================================================ */
-
-.chart-glass {
-  padding: 2rem;
-  border-radius: var(--radius-md);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255,255,255,.12),
-      rgba(255,255,255,.04)
-    );
-  backdrop-filter: blur(26px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.14);
-  box-shadow: var(--z-2);
-}
-
-/* ============================================================
-   EXPERIENCE
-============================================================ */
-
-#experience-section h2 {
-  font-size: 26px;
-  font-weight: 500;
-  margin-bottom: 4rem;
-}
+/* ================= EXPERIENCE ================= */
 
 .experience-role {
-  position: relative;
-  margin-left: 64px;
-  margin-bottom: 3.2rem;
-  padding: 2.2rem 2.4rem;
-  border-radius: 26px;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  border-radius: var(--radius-md);
   background: rgba(255,255,255,.06);
-  backdrop-filter: blur(28px) saturate(160%);
-  border: 1px solid rgba(255,255,255,.12);
-  box-shadow: var(--z-2);
-}
-
-.experience-role strong {
-  font-size: 18px;
-  font-weight: 600;
+  border: 1px solid var(--border-soft);
 }
 
 .experience-meta {
-  margin-top: .4rem;
   font-size: 14px;
   color: var(--white-60);
+  margin-top: .4rem;
 }
 
 .experience-role ul {
-  margin-top: 1.4rem;
+  margin-top: 1.2rem;
   padding-left: 1.2rem;
 }
 
-.experience-role li {
-  margin-bottom: .6rem;
-  line-height: 1.65;
+/* ================= PROJECTS ================= */
+
+.project-category {
+  margin-bottom: 3rem;
 }
 
-/* ============================================================
-   SCROLL REVEAL
-============================================================ */
+.project-card {
+  margin-top: 1.6rem;
+  padding: 1.6rem;
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border-soft);
+}
 
+/* ================= EDUCATION ================= */
+
+.education-item {
+  margin-bottom: 2.4rem;
+}
+
+/* ================= CONTACT ================= */
+
+.contact-panel a {
+  color: var(--violet-main);
+  text-decoration: none;
+}
+
+/* ================= SCROLL REVEAL (SAFE) ================= */
+
+/* 🔒 CONTENT IS VISIBLE BY DEFAULT */
 [data-omni-reveal] {
-  opacity: 0;
-  transform: translateY(26px);
-  transition:
-    opacity 900ms var(--ease-ios),
-    transform 900ms var(--ease-ios);
+  opacity: 1;
+  transform: none;
 }
 
+/* Optional enhancement only */
 [data-omni-reveal].is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
-/* ============================================================
-   GITHUB SIGNAL
-============================================================ */
-
-.signal-header h3 {
-  font-size: 14px;
-  letter-spacing: .22em;
-  text-transform: uppercase;
-  color: var(--violet-main);
-}
-
-.signal-status {
-  font-size: 11px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  color: var(--violet-main);
-  border: 1px solid var(--violet-soft);
-  box-shadow: 0 0 18px var(--violet-glow);
-}
-
-/* ============================================================
-   FOOTER
-============================================================ */
+/* ================= FOOTER ================= */
 
 footer {
-  padding: 6rem 2rem;
+  padding: 5rem 2rem;
   text-align: center;
   font-size: 13px;
   color: var(--white-40);
 }
 
-/* ============================================================
-   MOBILE
-============================================================ */
+/* ================= MOBILE ================= */
 
 @media (max-width: 720px) {
   section {
-    padding: 6rem 1.4rem;
+    padding: 5rem 1.4rem;
   }
 
-  .kpis {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .experience-role {
-    margin-left: 36px;
+  .glass-box,
+  .dashboard {
+    padding: 2rem;
   }
 }
 
-/* ============================================================
-   REDUCED MOTION
-============================================================ */
+/* ================= REDUCED MOTION ================= */
 
 @media (prefers-reduced-motion: reduce) {
   * {
