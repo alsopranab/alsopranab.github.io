@@ -13,9 +13,9 @@ function Dashboard() {
             const newChart1 = new window.ChartJS(ctx1, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Python', 'SQL', 'Viz', 'Cloud'],
+                    labels: ['Python', 'SQL', 'Excel', 'BI Tools'],
                     datasets: [{
-                        data: [40, 30, 20, 10],
+                        data: [20, 30, 40, 10],
                         backgroundColor: ['#06b6d4', '#8b5cf6', '#3b82f6', '#cbd5e1'],
                         borderWidth: 0
                     }]
@@ -38,10 +38,10 @@ function Dashboard() {
             const newChart2 = new window.ChartJS(ctx2, {
                 type: 'bar',
                 data: {
-                    labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+                    labels: ['Sales Ops', 'Funnel Analysis', 'KPI Reports', 'RCA'],
                     datasets: [{
                         label: 'Projects Completed',
-                        data: [4, 6, 8, 12],
+                        data: [15, 22, 29, 38],
                         backgroundColor: '#06b6d4',
                         borderRadius: 4
                     }]
@@ -85,15 +85,18 @@ function Dashboard() {
                 <div className="lg:col-span-1 space-y-6">
                     <div className="card border-l-4 border-l-[var(--primary)]">
                         <div className="text-slate-400 text-sm uppercase tracking-wider mb-1">Total Experience</div>
-                        <div className="text-3xl font-bold text-white">5+ Years</div>
+                        <div className="text-3xl font-bold text-white">
+  {(((new Date() - new Date("2023-12-08")) / (1000 * 60 * 60 * 24 * 365.25))).toFixed(1)}+ Years
+</div>
+
                     </div>
                     <div className="card border-l-4 border-l-[var(--accent)]">
-                        <div className="text-slate-400 text-sm uppercase tracking-wider mb-1">Data Processed</div>
+                        <div className="text-slate-400 text-sm uppercase tracking-wider mb-1">Automated Workflows</div>
                         <div className="text-3xl font-bold text-white">100+ TB</div>
                     </div>
                     <div className="card border-l-4 border-l-blue-500">
                         <div className="text-slate-400 text-sm uppercase tracking-wider mb-1">Dashboards Built</div>
-                        <div className="text-3xl font-bold text-white">45+</div>
+                        <div className="text-3xl font-bold text-white">50+</div>
                     </div>
                 </div>
 
@@ -106,7 +109,7 @@ function Dashboard() {
                         </div>
                     </div>
                     <div className="card min-h-[300px] flex flex-col">
-                        <h3 className="text-lg font-semibold mb-4 text-center">Project Velocity</h3>
+                        <h3 className="text-lg font-semibold mb-4 text-center">Analysis Lifecycle</h3>
                         <div className="flex-grow relative">
                              <canvas ref={chartRef2}></canvas>
                         </div>
