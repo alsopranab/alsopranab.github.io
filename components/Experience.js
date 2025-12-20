@@ -36,13 +36,32 @@ function Experience() {
             <div className="relative max-w-4xl mx-auto">
                 {/* Glowing Curve Line (SVG) */}
                 <svg className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-full pointer-events-none z-0 hidden md:block" preserveAspectRatio="none">
-                    <path 
-                        d="M 2 0 V 100 Q 2 200 100 200 H 300 Q 400 200 400 300 V 400"
-                        fill="none" 
-                        stroke="url(#glowGradient)" 
-                        strokeWidth="4"
-                        className="animate-draw-path opacity-50"
-                    />
+                    <svg
+  className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-full pointer-events-none z-0 hidden md:block"
+  preserveAspectRatio="none"
+>
+  <path
+    d="
+      M 50 0
+      C 60 100, 40 200, 50 300
+      C 60 400, 40 500, 50 600
+      C 60 700, 40 800, 50 1000
+    "
+    fill="none"
+    stroke="url(#glowGradient)"
+    strokeWidth="4"
+    className="opacity-60"
+  />
+
+  <defs>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
+      <stop offset="50%" stopColor="#8b5cf6" stopOpacity="1" />
+      <stop offset="100%" stopColor="#06b6d4" stopOpacity="0" />
+    </linearGradient>
+  </defs>
+</svg>
+
                      <defs>
                         <linearGradient id="glowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                             <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
