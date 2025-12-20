@@ -1,21 +1,13 @@
 /**
  * ============================================================
- * OMNIVERSE — COSMIC BACKGROUND ENGINE
+ * OMNIVERSE — COSMIC BACKGROUND ENGINE (PRODUCTION)
  * ------------------------------------------------------------
- * Single-file controller for:
- * - Twinkling starfield (Canvas)
- * - Shooting stars (SVG)
- *
- * Design goals:
  * - GPU safe
- * - Zero layout impact
- * - Resize aware
+ * - Visibility aware
+ * - Battery safe
+ * - Resize throttled
+ * - Memory bounded
  * - Apple-grade subtle motion
- * - No external dependencies
- *
- * Drop-in replacement for:
- * - stars.background.js
- * - shooting-stars.js
  * ============================================================
  */
 
@@ -25,12 +17,15 @@
   /* ============================================================
      SAFETY CHECKS
   ============================================================ */
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  if (reduceMotion) return;
 
   /* ============================================================
      DOM SETUP
   ============================================================ */
-
   const starCanvas = document.createElement("canvas");
   const shootingSVG = document.createElementNS(
     "http://www.w3.org/2000/svg",
@@ -43,75 +38,91 @@
   document.body.prepend(starCanvas, shootingSVG);
 
   /* ============================================================
-     LAYER STYLING (INLINE = ZERO CSS DEPENDENCY)
+     LAYER STYLING (SAFE STACKING)
   ============================================================ */
-
   Object.assign(starCanvas.style, {
     position: "fixed",
     inset: "0",
-    zIndex: "-3",
+    zIndex: "0",
     pointerEvents: "none"
   });
 
   Object.assign(shootingSVG.style, {
     position: "fixed",
     inset: "0",
-    zIndex: "-2",
+    zIndex: "1",
     pointerEvents: "none"
   });
 
   /* ============================================================
      STARFIELD — CANVAS ENGINE
   ============================================================ */
-
-  const ctx = starCanvas.getContext("2d");
+  const ctx = starCanvas.getContext("2d", { alpha: true });
   let stars = [];
   const STAR_DENSITY = 0.00015;
 
-  function resizeStars() {
-    starCanvas.width = window.innerWidth;
-    starCanvas.height = window.innerHeight;
+  function buildStars() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
-    const total = Math.floor(
-      window.innerWidth * window.innerHeight * STAR_DENSITY
-    );
+    starCanvas.width = w;
+    starCanvas.height = h;
+
+    const total = Math.floor(w * h * STAR_DENSITY);
 
     stars = Array.from({ length: total }, () => ({
-      x: Math.random() * starCanvas.width,
-      y: Math.random() * starCanvas.height,
+      x: Math.random() * w,
+      y: Math.random() * h,
       r: Math.random() * 0.6 + 0.4,
-      o: Math.random() * 0.5 + 0.4,
       t: Math.random() * 0.8 + 0.4
     }));
   }
 
-  function renderStars() {
-    ctx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+  let starsRunning = true;
 
-    const time = Date.now() * 0.001;
+  function renderStars() {
+    if (!starsRunning) return;
+
+    ctx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+    const time = performance.now() * 0.001;
 
     for (const s of stars) {
-      const opacity =
-        0.5 + Math.abs(Math.sin(time / s.t) * 0.5);
-
+      const o = 0.5 + Math.abs(Math.sin(time / s.t) * 0.5);
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+      ctx.fillStyle = `rgba(255,255,255,${o})`;
       ctx.fill();
     }
 
     requestAnimationFrame(renderStars);
   }
 
-  resizeStars();
+  buildStars();
   renderStars();
 
-  window.addEventListener("resize", resizeStars, { passive: true });
+  /* Resize throttling */
+  let resizeRAF = null;
+  window.addEventListener(
+    "resize",
+    () => {
+      if (resizeRAF) return;
+      resizeRAF = requestAnimationFrame(() => {
+        buildStars();
+        resizeRAF = null;
+      });
+    },
+    { passive: true }
+  );
+
+  /* Visibility handling */
+  document.addEventListener("visibilitychange", () => {
+    starsRunning = !document.hidden;
+    if (starsRunning) renderStars();
+  });
 
   /* ============================================================
      SHOOTING STARS — SVG ENGINE
   ============================================================ */
-
   shootingSVG.innerHTML = `
     <defs>
       <linearGradient id="cosmic-trail" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -120,6 +131,9 @@
       </linearGradient>
     </defs>
   `;
+
+  let shootingActive = true;
+  let shootingTimeout = null;
 
   function getStartPoint() {
     const side = Math.floor(Math.random() * 4);
@@ -136,15 +150,16 @@
   }
 
   function spawnShootingStar() {
-    const { x, y, angle } = getStartPoint();
+    if (!shootingActive) return;
 
+    const { x, y, angle } = getStartPoint();
     const star = document.createElementNS(
       "http://www.w3.org/2000/svg",
       "rect"
     );
 
     const length = 140 + Math.random() * 80;
-    const speed = 16 + Math.random() * 10;
+    const speed = 14 + Math.random() * 8;
 
     star.setAttribute("x", x);
     star.setAttribute("y", y);
@@ -158,14 +173,18 @@
 
     shootingSVG.appendChild(star);
 
-    let distance = 0;
+    let d = 0;
     const rad = (angle * Math.PI) / 180;
 
     function animate() {
-      distance += speed;
+      if (!shootingActive) {
+        star.remove();
+        return;
+      }
 
-      const nx = x + Math.cos(rad) * distance;
-      const ny = y + Math.sin(rad) * distance;
+      d += speed;
+      const nx = x + Math.cos(rad) * d;
+      const ny = y + Math.sin(rad) * d;
 
       star.setAttribute("x", nx);
       star.setAttribute("y", ny);
@@ -183,10 +202,25 @@
 
     animate();
 
-    const delay = 2000 + Math.random() * 4000;
-    setTimeout(spawnShootingStar, delay);
+    shootingTimeout = setTimeout(
+      spawnShootingStar,
+      2200 + Math.random() * 3800
+    );
   }
 
   spawnShootingStar();
+
+  document.addEventListener("visibilitychange", () => {
+    shootingActive = !document.hidden;
+
+    if (!shootingActive && shootingTimeout) {
+      clearTimeout(shootingTimeout);
+      shootingTimeout = null;
+    }
+
+    if (shootingActive && !shootingTimeout) {
+      spawnShootingStar();
+    }
+  });
 
 })();
