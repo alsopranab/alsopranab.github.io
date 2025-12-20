@@ -3,10 +3,18 @@
 
   const FETCH_TIMEOUT = 8000;
   const ENABLE_SESSION_CACHE = true;
-  const DEBUG = true; // disable in production
+  const DEBUG = false; // MUST be false in production
 
-  // ✅ Correct, GitHub Pages–safe base path
-  const BASE_PATH = "assets/data/";
+
+  const SCRIPT_BASE =
+    document.currentScript?.src
+      ?.split("/")
+      .slice(0, -2)
+      .join("/") + "/";
+
+  const BASE_PATH = SCRIPT_BASE + "data/";
+
+
 
   const memoryCache = Object.create(null);
   const inFlight = Object.create(null);
@@ -15,20 +23,24 @@
   const warn  = (...a) => console.warn("[DataService]", ...a);
   const error = (...a) => console.error("[DataService]", ...a);
 
+  const sessionKey = file => `DS::${file}`;
+
+
   const withTimeout = (promise, ms) =>
     new Promise((resolve, reject) => {
-      const t = setTimeout(() => reject(new Error("Timeout")), ms);
+      const t = setTimeout(
+        () => reject(new Error("Fetch timeout")),
+        ms
+      );
       promise.then(
         v => { clearTimeout(t); resolve(v); },
         e => { clearTimeout(t); reject(e); }
       );
     });
 
-  const sessionKey = file => `DS::${file}`;
-
   function normalizeSocial(data) {
     if (!Array.isArray(data?.profiles)) {
-      warn("social.json malformed — fallback used");
+      warn("social.json malformed");
       return { profiles: [] };
     }
 
@@ -39,14 +51,12 @@
     };
   }
 
+
   async function fetchJSON(file) {
-    const url = `${BASE_PATH}${file}`;
+    const url = BASE_PATH + file;
     log("Fetching:", url);
 
-    const res = await withTimeout(
-      fetch(url, { cache: "no-store" }),
-      FETCH_TIMEOUT
-    );
+    const res = await withTimeout(fetch(url), FETCH_TIMEOUT);
 
     if (!res.ok) {
       throw new Error(`HTTP ${res.status} – ${file}`);
@@ -73,13 +83,12 @@
 
     if (inFlight[file]) return inFlight[file];
 
-    const request = (async () => {
+    inFlight[file] = (async () => {
       try {
         let data = await fetchJSON(file);
 
         if (!data || typeof data !== "object") {
-          warn(`${file} returned invalid JSON`);
-          return {};
+          throw new Error(`${file} returned invalid JSON`);
         }
 
         if (file === "social.json") {
@@ -89,25 +98,27 @@
         memoryCache[file] = data;
 
         if (ENABLE_SESSION_CACHE) {
-          sessionStorage.setItem(sessionKey(file), JSON.stringify(data));
+          sessionStorage.setItem(
+            sessionKey(file),
+            JSON.stringify(data)
+          );
         }
 
         log("Loaded:", file);
         return data;
       } catch (e) {
         error(`Failed loading ${file}`, e);
-        return {};
+        return null; // 🔒 explicit failure
       } finally {
         delete inFlight[file];
       }
     })();
 
-    inFlight[file] = request;
-    return request;
+    return inFlight[file];
   }
 
   window.DataService = Object.freeze({
-    getProfile:    () => load("profile.json"),
+    getProfile:     () => load("profile.json"),
     getExperience: () => load("experience.json"),
     getEducation:  () => load("education.json"),
     getProjects:   () => load("projects.json"),
@@ -128,7 +139,7 @@
         load("social.json")
       ]),
 
-    debugSnapshot: () => ({
+    snapshot: () => ({
       basePath: BASE_PATH,
       memory: Object.keys(memoryCache),
       inflight: Object.keys(inFlight)
