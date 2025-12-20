@@ -55,31 +55,18 @@ function Hero() {
                     <div className="hidden md:flex flex-col gap-3 items-end">
                         <div className="bg-violet-900/40 backdrop-blur-md border border-violet-500/30 px-4 py-2 rounded-full flex items-center gap-2 shadow-[0_0_15px_rgba(139,92,246,0.3)] animate-fade-in-right">
                             <div className="icon-trophy text-yellow-400 text-sm"></div>
-                            <span className="text-sm font-medium text-violet-100">HackerRank Global #1 SQL</span>
+                            <span className="text-sm font-medium text-violet-100">Global #1 SQL</span>
                         </div>
                     </div>
 
                     {/* Profile Image */}
-<div className="relative group">
-    <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full opacity-75 blur group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
-
-    <div className="relative w-40 h-40 rounded-full overflow-hidden border-2 border-white/10 bg-black flex items-center justify-center">
-        <img
-            src="https://github.com/alsopranab.png"
-            alt="Pranab Debnath"
-            className="absolute inset-0 w-full h-full object-cover"
-            onError={(e) => {
-                e.currentTarget.style.display = "none";
-            }}
-        />
-
-        {/* Fallback initials */}
-        <span className="relative z-10 text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">
-            PD
-        </span>
-    </div>
-</div>
-
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-cyan-500 rounded-full opacity-75 blur group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
+                        <div className="relative w-40 h-40 rounded-full overflow-hidden border-2 border-white/10 bg-black">
+                            {/* Placeholder Avatar */}
+                             <div className="absolute inset-0 flex items-center justify-center bg-[#050014]">
+                                <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-cyan-400">PD</span>
+                             </div>
                              {/* Glossy overlay */}
                              <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>
                         </div>
@@ -89,7 +76,7 @@ function Hero() {
                     <div className="flex md:hidden flex-row gap-3 mt-4">
                         <div className="bg-violet-900/40 backdrop-blur-md border border-violet-500/30 px-4 py-2 rounded-full flex items-center gap-2 shadow-sm">
                             <div className="icon-trophy text-yellow-400 text-sm"></div>
-                            <span className="text-sm font-medium text-violet-100">HackerRank Global #1 SQL</span>
+                            <span className="text-sm font-medium text-violet-100">Global #1 SQL</span>
                         </div>
                         <div className="bg-cyan-900/40 backdrop-blur-md border border-cyan-500/30 px-4 py-2 rounded-full flex items-center gap-2 shadow-sm">
                             <div className="icon-code text-cyan-400 text-sm"></div>
@@ -110,7 +97,7 @@ function Hero() {
                 </h1>
                 
                 <p className="text-xl md:text-3xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-violet-400 to-fuchsia-400 font-bold mb-8">
-                    Data Analyst & Automation Specialist
+                    Data Analyst & Tech Professional
                 </p>
 
                 <p className="mt-2 max-w-2xl mx-auto text-lg text-[var(--text-muted)] mb-10 leading-relaxed">
