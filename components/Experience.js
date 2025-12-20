@@ -34,18 +34,17 @@ function Experience() {
             </h2>
 
             <div className="relative max-w-4xl mx-auto">
-                {/* Glowing Curve Line (SVG) */}
-                <svg className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-full pointer-events-none z-0 hidden md:block" preserveAspectRatio="none">
-                    <svg
+                {/* Glowing Curve Line (Desktop) */}
+<svg
   className="absolute top-0 left-1/2 -translate-x-1/2 h-full w-full pointer-events-none z-0 hidden md:block"
   preserveAspectRatio="none"
 >
   <path
     d="
       M 50 0
-      C 60 100, 40 200, 50 300
-      C 60 400, 40 500, 50 600
-      C 60 700, 40 800, 50 1000
+      C 60 120, 40 240, 50 360
+      C 60 480, 40 600, 50 720
+      C 60 840, 40 960, 50 1200
     "
     fill="none"
     stroke="url(#glowGradient)"
@@ -61,6 +60,7 @@ function Experience() {
     </linearGradient>
   </defs>
 </svg>
+
 
                      <defs>
                         <linearGradient id="glowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
