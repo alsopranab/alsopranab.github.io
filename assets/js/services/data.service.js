@@ -1,41 +1,30 @@
 (function (window) {
   "use strict";
+
   const FETCH_TIMEOUT = 8000;
   const ENABLE_SESSION_CACHE = true;
-  const DEBUG = true; // TEMPORARILY TRUE — need disable later
+  const DEBUG = true; // disable in production
 
-
-
-  const BASE_PATH = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, "")}/assets/data/`;
-
+  // ✅ Correct, GitHub Pages–safe base path
+  const BASE_PATH = "assets/data/";
 
   const memoryCache = Object.create(null);
   const inFlight = Object.create(null);
 
-
-
-  const log = (...a) => DEBUG && console.log("[DataService]", ...a);
-  const warn = (...a) => console.warn("[DataService]", ...a);
+  const log   = (...a) => DEBUG && console.log("[DataService]", ...a);
+  const warn  = (...a) => console.warn("[DataService]", ...a);
   const error = (...a) => console.error("[DataService]", ...a);
-
 
   const withTimeout = (promise, ms) =>
     new Promise((resolve, reject) => {
       const t = setTimeout(() => reject(new Error("Timeout")), ms);
       promise.then(
-        v => {
-          clearTimeout(t);
-          resolve(v);
-        },
-        e => {
-          clearTimeout(t);
-          reject(e);
-        }
+        v => { clearTimeout(t); resolve(v); },
+        e => { clearTimeout(t); reject(e); }
       );
     });
 
   const sessionKey = file => `DS::${file}`;
-
 
   function normalizeSocial(data) {
     if (!Array.isArray(data?.profiles)) {
@@ -49,7 +38,6 @@
         .sort((a, b) => (a.priority ?? 99) - (b.priority ?? 99))
     };
   }
-
 
   async function fetchJSON(file) {
     const url = `${BASE_PATH}${file}`;
@@ -66,7 +54,6 @@
 
     return res.json();
   }
-
 
   async function load(file) {
     if (memoryCache[file]) return memoryCache[file];
