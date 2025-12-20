@@ -1,32 +1,51 @@
 /**
- * Capability Radar — FINAL PRODUCTION
- * ----------------------------------
+ * Capability Radar — FINAL PRODUCTION (LOCKED)
+ * --------------------------------------------
  * • Pure canvas
  * • Scroll activated
  * • No libraries
  * • GPU safe
  * • Motion-safe
+ * • Visibility aware
+ * • Lifecycle safe
  */
 
 (() => {
   "use strict";
 
-  const prefersReducedMotion =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
-  window.addEventListener("app:ready", () => {
+  let INITIALIZED = false;
+  let rafId = null;
+
+  function boot() {
+    if (INITIALIZED) return;
+    INITIALIZED = true;
+
     const canvas = document.getElementById("capability-radar");
     if (!canvas) return;
 
     observe(canvas);
+  }
+
+  /* Primary trigger */
+  window.addEventListener("app:ready", boot);
+
+  /* Safety fallback */
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      if (!INITIALIZED) boot();
+    }, 0);
   });
 
   function observe(canvas) {
     const io = new IntersectionObserver(
       entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          io.disconnect();
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          io.unobserve(canvas);
           init(canvas);
         });
       },
@@ -36,8 +55,9 @@
   }
 
   function init(canvas) {
-    const ctx = canvas.getContext("2d");
-    let w, h, t = 0;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    let w = 0, h = 0, t = 0;
+    let running = true;
 
     const skills = [
       { label: "Data Analytics", value: 0.9 },
@@ -48,20 +68,25 @@
     ];
 
     function resize() {
-      const dpr = devicePixelRatio || 1;
-      w = canvas.width = canvas.offsetWidth * dpr;
-      h = canvas.height = canvas.offsetHeight * dpr;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+
+      w = canvas.width = rect.width * dpr;
+      h = canvas.height = rect.height * dpr;
+
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     function draw() {
+      if (!running) return;
+
       ctx.clearRect(0, 0, w, h);
 
-      const cx = canvas.offsetWidth / 2;
-      const cy = canvas.offsetHeight / 2;
+      const cx = canvas.clientWidth / 2;
+      const cy = canvas.clientHeight / 2;
       const radius = Math.min(cx, cy) * 0.65;
 
-      // grid
+      /* Grid */
       ctx.strokeStyle = "rgba(255,255,255,.08)";
       for (let i = 1; i <= 4; i++) {
         ctx.beginPath();
@@ -69,7 +94,7 @@
         ctx.stroke();
       }
 
-      // axes
+      /* Axes */
       skills.forEach((_, i) => {
         const a = (Math.PI * 2 / skills.length) * i - Math.PI / 2;
         ctx.beginPath();
@@ -81,11 +106,12 @@
         ctx.stroke();
       });
 
-      // animated shape
+      /* Shape */
       ctx.beginPath();
       skills.forEach((s, i) => {
         const a = (Math.PI * 2 / skills.length) * i - Math.PI / 2;
-        const r = radius * s.value * (0.92 + Math.sin(t) * 0.02);
+        const pulse = prefersReducedMotion ? 1 : 0.92 + Math.sin(t) * 0.02;
+        const r = radius * s.value * pulse;
         const x = cx + Math.cos(a) * r;
         const y = cy + Math.sin(a) * r;
         i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
@@ -100,12 +126,28 @@
 
       if (!prefersReducedMotion) {
         t += 0.015;
-        requestAnimationFrame(draw);
+        rafId = requestAnimationFrame(draw);
       }
     }
 
     resize();
     draw();
-    window.addEventListener("resize", resize);
+
+    /* Resize throttling */
+    let resizeRAF = null;
+    window.addEventListener("resize", () => {
+      if (resizeRAF) return;
+      resizeRAF = requestAnimationFrame(() => {
+        resize();
+        resizeRAF = null;
+      });
+    });
+
+    /* Visibility safety */
+    document.addEventListener("visibilitychange", () => {
+      running = !document.hidden;
+      if (running && !prefersReducedMotion) draw();
+      if (!running && rafId) cancelAnimationFrame(rafId);
+    });
   }
 })();
