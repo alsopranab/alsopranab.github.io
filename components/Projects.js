@@ -1,126 +1,132 @@
-import React from "react";
-import CodeViewer from "./CodeViewer";
-
 function Projects() {
-  const [projects, setProjects] = React.useState([]);
-  const [activeCode, setActiveCode] = React.useState(null);
+    const [activeCode, setActiveCode] = React.useState(null);
+    const [projects, setProjects] = React.useState([]);
 
-  // Best-effort icon resolver (ONLY option without manual config)
-  const resolveIcon = (name = "", language = "") => {
-    const n = name.toLowerCase();
-
-    if (n.includes("uber") || n.includes("analytics")) return "bar-chart";
-    if (n.includes("etl") || n.includes("automation")) return "activity";
-    if (n.includes("sql")) return "database";
-    if (n.includes("sentiment") || n.includes("nlp")) return "message-circle";
-    if (language?.toLowerCase() === "python") return "bar-chart";
-    if (language?.toLowerCase() === "javascript") return "shopping-cart";
-
-    return "shopping-cart"; // visual-safe fallback
-  };
-
-  React.useEffect(() => {
-    const load = async () => {
-      try {
-        const repoRes = await fetch(
-          "https://api.github.com/users/alsopranab/repos?per_page=100"
-        );
-        const repos = await repoRes.json();
-
-        const enriched = await Promise.all(
-          repos
-            .filter(r => !r.fork)
-            .map(async repo => {
-              let code = "// Preview not available";
-
-              // Try README first (industry standard)
-              try {
-                const readme = await fetch(
-                  `https://raw.githubusercontent.com/alsopranab/${repo.name}/main/README.md`
+    React.useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const repoRes = await fetch(
+                    "https://api.github.com/users/alsopranab/repos?per_page=100"
                 );
-                if (readme.ok) code = await readme.text();
-              } catch {}
+                const repos = await repoRes.json();
 
-              return {
-                title: repo.name,
-                desc: repo.description || "No description provided.",
-                tags: repo.language ? [repo.language] : ["Project"],
-                icon: resolveIcon(repo.name, repo.language),
-                demo: repo.html_url,
-                codeSnippet: code,
-                lang: repo.language?.toLowerCase() || "text",
-                file: "README.md"
-              };
-            })
-        );
+                const supportedExt = ["js", "py", "sql", "ipynb"];
 
-        setProjects(enriched);
-      } catch (e) {
-        console.error("Failed to load projects", e);
-      }
-    };
+                const projectData = await Promise.all(
+                    repos
+                        .filter(repo => !repo.fork)
+                        .map(async repo => {
+                            let codeSnippet = "// Code not available";
+                            let fileName = "N/A";
+                            let lang = "text";
 
-    load();
-  }, []);
+                            try {
+                                const contentRes = await fetch(
+                                    `https://api.github.com/repos/alsopranab/${repo.name}/contents`
+                                );
+                                const contents = await contentRes.json();
 
-  return (
-    <section id="projects" className="section-padding">
-      <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-        <span className="text-[var(--primary)]">02.</span> Featured Projects
-      </h2>
+                                const codeFile = contents.find(
+                                    item =>
+                                        item.type === "file" &&
+                                        supportedExt.includes(
+                                            item.name.split(".").pop()
+                                        )
+                                );
 
-      <div className="grid lg:grid-cols-2 gap-8">
-        {projects.map((project, idx) => (
-          <div key={idx} className="card flex flex-col">
-            <div className="flex justify-between items-start mb-6">
-              <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700">
-                <div className={`icon-${project.icon} text-2xl`} />
-              </div>
+                                if (codeFile?.download_url) {
+                                    const rawRes = await fetch(codeFile.download_url);
+                                    codeSnippet = await rawRes.text();
+                                    fileName = codeFile.name;
+                                    lang = fileName.split(".").pop();
+                                }
+                            } catch {}
 
-              <div className="flex gap-2">
-                <button
-                  onClick={() =>
-                    setActiveCode(activeCode === idx ? null : idx)
-                  }
-                  className="text-xs px-3 py-1.5 rounded-full bg-slate-800"
-                >
-                  View Code
-                </button>
+                            return {
+                                title: repo.name,
+                                desc:
+                                    repo.description ||
+                                    "Project focused on data analysis and automation.",
+                                tags: repo.language ? [repo.language] : ["Project"],
+                                icon: "shopping-cart", // UNCHANGED (same type)
+                                codeSnippet,
+                                lang,
+                                file: fileName
+                            };
+                        })
+                );
 
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs px-3 py-1.5 rounded-full bg-slate-800"
-                >
-                  Repo
+                setProjects(projectData);
+            } catch (err) {
+                console.error("Failed to load projects", err);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+
+    return (
+        <section id="projects" className="section-padding" data-name="projects" data-file="components/Projects.js">
+            <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
+                <span className="text-[var(--primary)]">02.</span> Featured Projects
+            </h2>
+
+            <div className="grid lg:grid-cols-2 gap-8">
+                {projects.map((project, idx) => (
+                    <div key={idx} className="card group hover:-translate-y-2 transition-transform duration-300 flex flex-col">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="w-12 h-12 rounded-lg bg-slate-800 flex items-center justify-center border border-slate-700 group-hover:border-[var(--primary)] group-hover:text-[var(--primary)] transition-colors">
+                                <div className={`icon-${project.icon} text-2xl`}></div>
+                            </div>
+                            <div className="flex gap-2">
+                                <button 
+                                    onClick={() => setActiveCode(activeCode === idx ? null : idx)}
+                                    className={`text-xs flex items-center gap-1 px-3 py-1.5 rounded-full transition-all ${activeCode === idx ? 'bg-[var(--primary)] text-white' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}`}
+                                >
+                                    <div className="icon-code text-sm"></div> 
+                                    {activeCode === idx ? 'Hide Code' : 'View Code'}
+                                </button>
+                                <a href={`https://github.com/alsopranab/${project.title}`} target="_blank" className="text-xs flex items-center gap-1 px-3 py-1.5 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all">
+                                    <div className="icon-external-link text-sm"></div> Repo
+                                </a>
+                            </div>
+                        </div>
+
+                        <h3 className="text-xl font-bold mb-3 group-hover:text-[var(--primary)] transition-colors">
+                            {project.title}
+                        </h3>
+                        
+                        <p className="text-[var(--text-muted)] mb-6">
+                            {project.desc}
+                        </p>
+
+                        {activeCode === idx && (
+                            <div className="mb-6 animate-fade-in-up">
+                                <CodeViewer
+                                    code={project.codeSnippet}
+                                    language={project.lang}
+                                    title={project.file}
+                                />
+                            </div>
+                        )}
+
+                        <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
+                            {project.tags.map(tag => (
+                                <span key={tag} className="text-xs font-medium text-violet-200 bg-violet-500/10 px-3 py-1.5 rounded-full border border-violet-500/20 hover:border-violet-500/50 transition-all cursor-default">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="text-center mt-12">
+                <a href="https://github.com/alsopranab" target="_blank" className="btn btn-outline inline-flex items-center gap-2 group">
+                    View Full Project Archive 
+                    <div className="icon-arrow-right group-hover:translate-x-1 transition-transform"></div>
                 </a>
-              </div>
             </div>
-
-            <h3 className="text-xl font-bold mb-3">{project.title}</h3>
-            <p className="text-[var(--text-muted)] mb-6">{project.desc}</p>
-
-            {activeCode === idx && (
-              <CodeViewer
-                code={project.codeSnippet}
-                language={project.lang}
-                title={project.file}
-              />
-            )}
-
-            <div className="flex gap-2 mt-auto pt-4 border-t border-white/5">
-              {project.tags.map(t => (
-                <span key={t} className="text-xs px-3 py-1 rounded-full">
-                  {t}
-                </span>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+        </section>
+    );
 }
-
-export default Projects;
