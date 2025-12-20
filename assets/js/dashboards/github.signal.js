@@ -1,11 +1,12 @@
 /**
- * GitHub Engineering Signal — FINAL PRODUCTION BUILD
- * =================================================
+ * GitHub Engineering Signal — FINAL PRODUCTION (LOCKED)
+ * ====================================================
  * • Single source of truth
- * • Lazy-loaded (IntersectionObserver)
+ * • Lazy-loaded
  * • Session cached (rate-limit safe)
- * • Motion-safe (reduced motion respected)
- * • Zero dependency on layout order
+ * • Motion-safe
+ * • Visibility-safe
+ * • Lifecycle-safe
  * • Silent fallback
  */
 
@@ -13,31 +14,42 @@
   "use strict";
 
   const USERNAME = "alsopranab";
-  const CACHE_KEY = "GH_SIGNAL_V1";
-  const CACHE_TTL = 30 * 60 * 1000; // 30 min
+  const CACHE_KEY = `GH_SIGNAL_V1::${USERNAME}`;
+  const CACHE_TTL = 30 * 60 * 1000;
 
-  const prefersReducedMotion =
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
 
-  /* ===============================
-     APP READY
-  =============================== */
-  window.addEventListener("app:ready", () => {
+  let INITIALIZED = false;
+
+  function boot() {
+    if (INITIALIZED) return;
+    INITIALIZED = true;
+
     const host = document.getElementById("github-dashboard");
     if (!host) return;
 
     observe(host);
+  }
+
+  /* Primary trigger */
+  window.addEventListener("app:ready", boot);
+
+  /* Safety fallback */
+  document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      if (!INITIALIZED) boot();
+    }, 0);
   });
 
-  /* ===============================
-     VISIBILITY GATE
-  =============================== */
+  /* ================= VISIBILITY GATE ================= */
   function observe(el) {
     const io = new IntersectionObserver(
       entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          io.disconnect();
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          io.unobserve(el);
           init(el);
         });
       },
@@ -47,9 +59,7 @@
     io.observe(el);
   }
 
-  /* ===============================
-     INIT
-  =============================== */
+  /* ================= INIT ================= */
   async function init(host) {
     host.innerHTML = buildShell();
 
@@ -62,15 +72,16 @@
     renderMetrics(data);
     renderLanguages(data.languages);
     renderHeat(data.repos);
-    drawWave(host.querySelector(".signal-wave"), data.activity);
+    drawWave(
+      host.querySelector(".signal-wave"),
+      data.activity
+    );
   }
 
-  /* ===============================
-     SHELL
-  =============================== */
+  /* ================= SHELL ================= */
   function buildShell() {
     return `
-      <div class="github-signal-shell" data-reveal data-hover>
+      <div class="github-signal-shell" data-omni-reveal data-hover>
         <header class="signal-header">
           <h3>Engineering Signal</h3>
           <span class="signal-status">LIVE · GitHub</span>
@@ -97,9 +108,7 @@
     `;
   }
 
-  /* ===============================
-     DATA (CACHED)
-  =============================== */
+  /* ================= DATA (CACHED) ================= */
   async function getGitHubData() {
     const cached = sessionStorage.getItem(CACHE_KEY);
     if (cached) {
@@ -112,9 +121,17 @@
     }
 
     try {
+      const ctrl = new AbortController();
+      setTimeout(() => ctrl.abort(), 4000);
+
       const [profileRes, reposRes] = await Promise.all([
-        fetch(`https://api.github.com/users/${USERNAME}`),
-        fetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100`)
+        fetch(`https://api.github.com/users/${USERNAME}`, {
+          signal: ctrl.signal
+        }),
+        fetch(
+          `https://api.github.com/users/${USERNAME}/repos?per_page=100`,
+          { signal: ctrl.signal }
+        )
       ]);
 
       if (!profileRes.ok || !reposRes.ok) return null;
@@ -125,12 +142,21 @@
       const languages = {};
       repos.forEach(r => {
         if (!r.language) return;
-        languages[r.language] = (languages[r.language] || 0) + 1;
+        languages[r.language] =
+          (languages[r.language] || 0) + 1;
       });
 
-      const activity = repos
-        .map(r => new Date(r.updated_at).getTime())
-        .map(t => Math.max(0, 30 - Math.floor((Date.now() - t) / 86400000)));
+      const activity = repos.map(r =>
+        Math.max(
+          0,
+          30 -
+            Math.floor(
+              (Date.now() -
+                new Date(r.updated_at).getTime()) /
+                86400000
+            )
+        )
+      );
 
       const payload = {
         repos: repos.length,
@@ -153,12 +179,12 @@
     }
   }
 
-  /* ===============================
-     RENDER
-  =============================== */
+  /* ================= RENDER ================= */
   function renderMetrics(data) {
-    document.getElementById("gh-repos").textContent = data.repos;
-    document.getElementById("gh-years").textContent = data.years;
+    document.getElementById("gh-repos").textContent =
+      data.repos;
+    document.getElementById("gh-years").textContent =
+      data.years;
     document.getElementById("gh-commits").textContent =
       data.commits.toLocaleString() + "+";
   }
@@ -169,12 +195,14 @@
       .sort((a, b) => b[1] - a[1])
       .slice(0, 5)
       .forEach(([lang, count]) => {
-        const el = document.createElement("span");
-        el.innerHTML = `${lang}<i style="width:${Math.min(
-          100,
-          count * 16
-        )}%"></i>`;
-        wrap.appendChild(el);
+        const span = document.createElement("span");
+        span.textContent = lang;
+
+        const bar = document.createElement("i");
+        bar.style.width = `${Math.min(100, count * 16)}%`;
+
+        span.appendChild(bar);
+        wrap.appendChild(span);
       });
   }
 
@@ -184,35 +212,56 @@
 
     for (let i = 0; i < 156; i++) {
       const d = document.createElement("div");
-      d.className = "signal-dot" + (i < density ? " active" : "");
+      d.className =
+        "signal-dot" + (i < density ? " active" : "");
       heat.appendChild(d);
     }
   }
 
-  /* ===============================
-     WAVE (GPU SAFE)
-  =============================== */
+  /* ================= WAVE ================= */
   function drawWave(canvas, activity) {
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
-    let w, h, raf;
-    let t = 0;
+    const ctx = canvas.getContext("2d", { alpha: true });
+    let w = 0,
+      h = 0,
+      t = 0,
+      raf = null,
+      running = true;
 
     function resize() {
       const dpr = window.devicePixelRatio || 1;
-      w = canvas.width = canvas.offsetWidth * dpr;
+      const rect = canvas.getBoundingClientRect();
+      w = canvas.width = rect.width * dpr;
       h = canvas.height = 120 * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    function draw() {
+    resize();
+
+    let resizeRAF = null;
+    window.addEventListener("resize", () => {
+      if (resizeRAF) return;
+      resizeRAF = requestAnimationFrame(() => {
+        resize();
+        resizeRAF = null;
+      });
+    });
+
+    function frame() {
+      if (!running) return;
+
       ctx.clearRect(0, 0, w, h);
       ctx.beginPath();
 
       activity.forEach((v, i) => {
-        const x = (i / (activity.length - 1)) * canvas.offsetWidth;
-        const y = 60 + Math.sin(i * 0.6 + t) * (v * 0.6);
+        const x =
+          (i / (activity.length - 1)) *
+          canvas.clientWidth;
+        const y =
+          60 +
+          Math.sin(i * 0.6 + t) *
+            (prefersReducedMotion ? 0 : v * 0.6);
         i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
       });
 
@@ -222,18 +271,20 @@
 
       if (!prefersReducedMotion) {
         t += 0.015;
-        raf = requestAnimationFrame(draw);
+        raf = requestAnimationFrame(frame);
       }
     }
 
-    resize();
-    draw();
-    window.addEventListener("resize", resize);
+    frame();
+
+    document.addEventListener("visibilitychange", () => {
+      running = !document.hidden;
+      if (running && !prefersReducedMotion) frame();
+      if (!running && raf) cancelAnimationFrame(raf);
+    });
   }
 
-  /* ===============================
-     FALLBACK
-  =============================== */
+  /* ================= FALLBACK ================= */
   function renderFallback(host) {
     const status = host.querySelector(".signal-status");
     if (status) status.textContent = "STATIC MODE";
