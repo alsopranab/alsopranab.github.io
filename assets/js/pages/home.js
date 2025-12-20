@@ -2,16 +2,35 @@
  * Home Page Controller (FINAL — CANONICAL & SAFE)
  * ===============================================
  * Responsibilities:
- * - Runs only after `app:ready`
+ * - Runs after `app:ready` OR DOMContentLoaded fallback
  * - Loads all required JSON via DataService
- * - Attaches data to DOM sections
+ * - Attaches data to DOM sections (non-destructive)
  * - Emits `home:ready` exactly once
  */
 
-window.addEventListener("app:ready", () => {
+let HOME_INITIALIZED = false;
+
+function bootHomePage() {
+  if (HOME_INITIALIZED) return;
+  HOME_INITIALIZED = true;
+
   HomePageController().catch(err => {
     console.error("[HomePage] Fatal initialization error", err);
   });
+}
+
+/* Primary trigger */
+window.addEventListener("app:ready", bootHomePage);
+
+/* Safety fallback */
+document.addEventListener("DOMContentLoaded", () => {
+  // allow app:ready a tick to fire first
+  setTimeout(() => {
+    if (!HOME_INITIALIZED) {
+      console.warn("[HomePage] app:ready not detected, falling back");
+      bootHomePage();
+    }
+  }, 0);
 });
 
 async function HomePageController() {
@@ -58,7 +77,7 @@ async function HomePageController() {
   ] = normalizeResults(results);
 
   /* -------------------------------------------------
-     Profile is mandatory for homepage
+     Profile is mandatory
   ------------------------------------------------- */
   if (!profileData?.identity) {
     console.error("[HomePage] profile.json missing or invalid");
@@ -67,7 +86,7 @@ async function HomePageController() {
   }
 
   /* -------------------------------------------------
-     Attach data to sections
+     Attach data (non-serial, safe)
   ------------------------------------------------- */
   attach(sections.hero, profileData);
   attach(sections.experience, experienceData);
@@ -81,7 +100,7 @@ async function HomePageController() {
   console.groupEnd();
 
   /* -------------------------------------------------
-     Signal renderer + motion engine
+     Signal downstream systems ONCE
   ------------------------------------------------- */
   window.dispatchEvent(new CustomEvent("home:ready"));
 }
@@ -110,8 +129,14 @@ function normalizeResults(results) {
 
 function attach(section, data) {
   if (!section || !data) return;
+
   try {
-    section.dataset.source = JSON.stringify(data);
+    Object.defineProperty(section, "__data__", {
+      value: data,
+      writable: false,
+      enumerable: false,
+      configurable: false
+    });
   } catch (err) {
     console.error("[HomePage] Failed to attach data", err);
   }
