@@ -27,68 +27,80 @@
 <body>
 
   <!-- =====================================================
-       COSMIC BACKGROUND (CANVAS)
+       COSMIC BACKGROUND (PURELY VISUAL)
   ====================================================== -->
   <canvas id="stars" aria-hidden="true"></canvas>
 
   <!-- =====================================================
-       HERO (DATA-DRIVEN)
+       HERO · IDENTITY (DATA-DRIVEN)
   ====================================================== -->
   <section id="hero-section" class="hero">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       DASHBOARD · SYSTEM OVERVIEW (STATIC VISUAL)
-       Purpose: credibility, not data binding
+       DASHBOARD 01 · SYSTEM OVERVIEW
+       Purpose: immediate credibility
+       Style: KPI-first, calm, compact
   ====================================================== -->
-  <section id="analytics-dashboard" class="dashboard">
+  <section id="analytics-dashboard" class="dashboard dashboard--overview">
     <div class="glass-box">
 
-      <div class="kpis">
+      <header class="dashboard-header">
+        <h2>System Overview</h2>
+        <span class="dashboard-meta">Live sample metrics</span>
+      </header>
+
+      <div class="kpis kpis--compact">
         <div class="kpi"><span>Sessions</span><strong>10.2K</strong></div>
         <div class="kpi"><span>Conversion</span><strong>3.3%</strong></div>
         <div class="kpi"><span>Drop-off</span><strong>−28%</strong></div>
         <div class="kpi"><span>Uptime</span><strong>99.9%</strong></div>
       </div>
 
-      <div class="chart-glass" data-parallax="0.03">
-        <canvas id="trend1" height="180" aria-hidden="true"></canvas>
+      <div class="chart-glass chart--thin" data-parallax="0.02">
+        <canvas id="trend1" height="140" aria-hidden="true"></canvas>
       </div>
 
     </div>
   </section>
 
   <!-- =====================================================
-       EXPERIENCE (DATA-DRIVEN)
+       EXPERIENCE · CAREER TIMELINE (DATA-DRIVEN)
   ====================================================== -->
   <section id="experience-section" class="text-section">
     <div class="glass-box"></div>
   </section>
 
   <!-- =====================================================
-       DASHBOARD · PROJECT INTELLIGENCE (VISUAL DEPTH)
-       Purpose: scale & systems thinking
+       DASHBOARD 02 · PROJECT INTELLIGENCE
+       Purpose: depth, scale, engineering mindset
+       Style: denser, analytical, heavier
   ====================================================== -->
-  <section id="project-intelligence-section" class="dashboard">
+  <section id="project-intelligence-section" class="dashboard dashboard--intelligence">
     <div class="glass-box">
 
-      <div class="kpis">
+      <header class="dashboard-header">
+        <h2>Project Intelligence</h2>
+        <span class="dashboard-meta">GitHub-backed analysis</span>
+      </header>
+
+      <div class="kpis kpis--expanded">
         <div class="kpi"><span>Total Projects</span><strong>—</strong></div>
         <div class="kpi"><span>SQL-Heavy</span><strong>—</strong></div>
         <div class="kpi"><span>Automation</span><strong>—</strong></div>
         <div class="kpi"><span>Dashboards</span><strong>—</strong></div>
       </div>
 
-      <div class="chart-glass" data-parallax="0.04">
-        <canvas id="trend2" height="180" aria-hidden="true"></canvas>
+      <div class="chart-glass chart--deep" data-parallax="0.05">
+        <canvas id="trend2" height="220" aria-hidden="true"></canvas>
       </div>
 
     </div>
   </section>
 
   <!-- =====================================================
-       PROJECTS (DATA-DRIVEN)
+       PROJECTS · WORK CATALOG (DATA-DRIVEN)
   ====================================================== -->
   <section id="projects-section" class="text-section">
     <div class="glass-box"></div>
@@ -109,18 +121,18 @@
   </section>
 
   <!-- =====================================================
-       FOOTER (SOCIALS + META)
+       FOOTER (SOCIALS RENDERED BY JS)
   ====================================================== -->
   <footer id="site-footer"></footer>
 
   <!-- =====================================================
-       CORE SCRIPTS (LOCKED ORDER — DO NOT TOUCH)
+       CORE SCRIPTS (ORDER IS CRITICAL)
   ====================================================== -->
   <script src="assets/js/services/data.service.js"></script>
   <script src="assets/js/renderers/app.renderer.js"></script>
 
   <!-- =====================================================
-       BACKGROUND STARS (VISUAL ONLY)
+       BACKGROUND STARS (GPU SAFE)
   ====================================================== -->
   <script>
     (() => {
@@ -161,7 +173,7 @@
   </script>
 
   <!-- =====================================================
-       DEMO CHARTS (STATIC, SAFE)
+       DEMO CHARTS (INTENTIONALLY DIFFERENT)
   ====================================================== -->
   <script>
     function drawLine(id, data) {
@@ -182,8 +194,11 @@
       ctx.stroke();
     }
 
-    drawLine("trend1", [60, 70, 65, 75, 62, 68, 74]);
-    drawLine("trend2", [30, 45, 40, 60, 55, 70, 65]);
+    // Overview: smoother, calm
+    drawLine("trend1", [60, 62, 61, 64, 63, 66, 68]);
+
+    // Intelligence: volatile, analytical
+    drawLine("trend2", [20, 48, 30, 65, 40, 72, 55]);
   </script>
 
 </body>
