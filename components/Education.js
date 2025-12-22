@@ -1,0 +1,62 @@
+function Education() {
+    try {
+        return (
+            <div className="space-y-8" data-name="Education" data-file="components/Education.js">
+                <h2 className="section-title font-light text-3xl border-b border-gray-100 pb-4">
+                    <div className="icon-graduation-cap text-[var(--primary-color)] w-6 h-6 opacity-80"></div>
+                    Education & Certifications
+                </h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Degree */}
+                    <div className="card border-l-4 border-l-[var(--primary-color)]">
+                        <h3 className="font-medium text-lg text-gray-900 mb-1">Bachelor of Technology</h3>
+                        <p className="text-gray-600 text-sm mb-4 font-light">Computer Science & Engineering</p>
+                        <p className="text-gray-400 text-xs font-light">2016 - 2020</p>
+                        <div className="mt-6 pt-4 border-t border-gray-50">
+                             <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-2">Relevant Coursework</p>
+                             <p className="text-sm text-gray-600 font-light leading-relaxed">Database Management Systems, Data Structures, Statistics, Operations Research</p>
+                        </div>
+                    </div>
+
+                    {/* Certifications List */}
+                    <div className="card">
+                        <h3 className="font-medium text-lg text-gray-900 mb-6">Certifications</h3>
+                        <div className="space-y-5">
+                            <div className="flex gap-3 items-start">
+                                <div className="mt-0.5 text-green-600 opacity-80">
+                                    <div className="icon-check w-4 h-4"></div>
+                                </div>
+                                <div>
+                                    <h4 className="font-normal text-gray-800 text-sm">Google Data Analytics Professional Certificate</h4>
+                                    <p className="text-xs text-gray-400 font-light mt-0.5">Coursera</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-3">
+                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                                    <div className="icon-check w-3 h-3 text-green-600"></div>
+                                </div>
+                                <div>
+                                    <h4 className="font-medium text-gray-800 text-sm">SQL for Data Science</h4>
+                                    <p className="text-xs text-gray-500">University of California, Davis</p>
+                                </div>
+                            </div>
+                             <div className="flex gap-3">
+                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                                    <div className="icon-check w-3 h-3 text-green-600"></div>
+                                </div>
+                                <div>
+                                    <h4 className="font-medium text-gray-800 text-sm">Microsoft Power BI Data Analyst Associate</h4>
+                                    <p className="text-xs text-gray-500">Microsoft</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    } catch (error) {
+        console.error('Education component error:', error);
+        return null;
+    }
+}
