@@ -1,125 +1,58 @@
+## Portfolio Inspiration
+
+This project is inspired by **DataSciencePortfol.io** and can be used as a reference to create your own data science portfolio.
+
+**Website:**  
+[DataSciencePortfolio](https://www.datascienceportfol.io/)
+
+> Their platform allows you to build a professional portfolio without writing any code.  
+> Simple, fast, and easy to use.
+
+
+---
+
+## Project Structure
+
+If you prefer building something on your own—simple, clean, and professional—you can use the following structure as a starting point.
+
+Each section is separated into its own component, making the portfolio easy to customize and scale.
+
+
+- `components/` contains all UI sections of the portfolio.
+- `trickle/` holds configuration, rules, and supporting assets.
+- `app.js` is the main application entry.
+- `index.html` is the root HTML file.
+- `README.md` provides project documentation.
+
 ```
-alsopranab.github.io/
-├── index.html
-├── README.md
+components/
+├── Analytics.js
+├── CompetitiveProgramming.js
+├── Contact.js
+├── Education.js
+├── Experience.js
+├── Navbar.js
+├── ProjectCard.js
+├── Projects.js
+├── Sidebar.js
+
+trickle/
 ├── assets/
-│   ├── css/
-│   │   └── style.css
-│   │
-│   ├── js/
-│   │   ├── core/
-│   │   │   └── bootstrap.js
-│   │   │
-│   │   ├── services/
-│   │   │   └── data.service.js
-│   │   │
-│   │   ├── layout/
-│   │   │   ├── header.js
-│   │   │   └── footer.js
-│   │   │
-│   │   ├── pages/
-│   │   │   └── home.js
-│   │   │
-│   │   ├── renderers/
-│   │   │   └── app.renderer.js
-│   │   │
-│   │   ├── interactions/
-│   │   │   └── ui.motion.js
-│   │   │
-│   │   └── omniverse.godmode.js
-│   │
-│   └── data/
-│       ├── profile.json
-│       ├── experience.json
-│       ├── projects.json
-│       ├── featured.json
-│       ├── education.json
-│       ├── licenses.json
-│       ├── contact.json
-│       └── socials.json
-│
-├── favicon.ico   (optional)
-└── .gitignore
+│   └── github-avatar.json
+├── notes/
+│   └── README.md
+├── rules/
+│   ├── rule_for_icons.md
+│   └── rule_for_readme.md
+
+README.md
+app.js
+index.html
 ```
-# Project Structure & Responsibilities
 
-## index.html
-- **Static shell only** — minimal structure, no hardcoded content.  
-- **Sections injected via JS** dynamically once the app initializes.  
-- **Header/Footer** also injected (not pre-rendered).  
 
 ---
 
-## assets/css/style.css
-> **Single Source of Truth**  
-Controls all **spacing**, **typography**, **layout**, and **animations**.
+Best Wishes,
 
-- Header = **NAV ONLY**.  
-- All links use **UPPERCASE** text.  
-- **Empty sections auto-collapse** visually (handled by pure CSS).  
-
----
-
-## assets/js/core/bootstrap.js
-- Manages **app lifecycle** initialization.  
-- Emits `app:ready` event when core setup completes.  
-
----
-
-## assets/js/services/data.service.js
-- Handles **safe JSON loading** of content from `/assets/data/*.json`.  
-- No direct DOM manipulation or rendering.  
-- Provides clean data objects for other modules.  
-
----
-
-## assets/js/layout/header.js
-- **Renders navigation only**.  
-- No name, title, or role injected here.  
-- Does not alter layout structure beyond its own container.  
-
----
-
-## assets/js/layout/footer.js
-- Handles **social links** and **copyright**.  
-- Ensures **no duplication** and **no overflow** in layout.  
-
----
-
-## assets/js/pages/home.js
-- **Fetches data** via `data.service.js`.  
-- Triggers `home:ready` event when data prep completes.  
-
----
-
-## assets/js/renderers/app.renderer.js
-- Injects dynamic page sections using **canonical IDs** only:
-  - Hero  
-  - Experience  
-  - Projects  
-  - Featured  
-  - Education  
-  - Contact  
-
----
-
-## assets/js/interactions/ui.motion.js
-- Handles:
-  - Header hide/show behavior.  
-  - Section reveal animations.  
-- Uses **GPU-only transformations** — no layout shifts.  
-
----
-
-## assets/js/omniverse.godmode.js
-- **Ambient canvas** for background visuals.  
-- **Particle motion** and **cursor orb** (desktop only).  
-- Includes **safe FPS governor** for performance control.  
-- **Zero DOM mutation** — renders purely on canvas context.  
-
----
-
-## assets/data/*.json
-- Contains **pure content only**.  
-- No formatting or layout logic.  
-- Driven by a **JSON schema** for consistency.  
+Pranab Debnath
