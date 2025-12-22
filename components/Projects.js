@@ -14,34 +14,33 @@ function Projects() {
                     if (!response.ok) throw new Error('Failed to fetch projects');
                     const data = await response.json();
                     setProjects(data);
-                    setLoading(false);
                 } catch (err) {
-                    console.error("Error fetching projects:", err);
-                    {/* Fallback data */}
+                    console.error('Error fetching projects:', err);
                     setProjects([
                         {
                             id: 1,
-                            name: "Portfolio-v1",
-                            description: "Personal portfolio website built with React and Tailwind CSS made by Pranab Debnath.",
+                            name: 'Portfolio-v1',
+                            description: 'Personal portfolio website built with React and Tailwind CSS.',
                             stargazers_count: 5,
                             forks_count: 2,
                             updated_at: new Date().toISOString(),
-                            topics: ["react", "javascript", "tailwind"],
-                            html_url: "https://github.com/alsopranab",
-                            language: "JavaScript"
+                            topics: ['portfolio', 'react'],
+                            html_url: 'https://github.com/alsopranab',
+                            language: 'JavaScript'
                         },
                         {
                             id: 2,
-                            name: "SQL-Analytics-Suite",
-                            description: "A collection of complex SQL queries for business intelligence reporting.",
+                            name: 'SQL-Analytics-Suite',
+                            description: 'Advanced SQL queries for business analytics.',
                             stargazers_count: 12,
                             forks_count: 4,
-                            updated_at: "2024-11-15T10:00:00Z",
-                            topics: ["sql", "analytics", "case-study"],
-                            html_url: "https://github.com/alsopranab",
-                            language: "SQL"
+                            updated_at: '2024-11-15T10:00:00Z',
+                            topics: ['sql', 'case-study'],
+                            html_url: 'https://github.com/alsopranab',
+                            language: 'SQL'
                         }
                     ]);
+                } finally {
                     setLoading(false);
                 }
             };
@@ -58,34 +57,40 @@ function Projects() {
             'Exploratory Data Analysis'
         ];
 
-        {/* FIXED FILTERING LOGIC */}
+        // Filter → topic mapping (THIS IS THE KEY)
+        const filterMap = {
+            'case studies': ['case-study', 'case', 'study'],
+            'dashboards': ['dashboard', 'powerbi', 'tableau', 'looker'],
+            'automation': ['automation', 'etl', 'pipeline', 'script'],
+            'sql': ['sql'],
+            'exploratory data analysis': ['eda', 'exploratory', 'data-analysis']
+        };
+
         const filteredProjects = projects.filter(project => {
             if (filter === 'All') return true;
 
             const normalizedFilter = filter.toLowerCase();
+            const allowedTopics = filterMap[normalizedFilter] || [];
 
-            {/* Topic-based matching (preferred) */}
+            // 1️⃣ Topic-based matching (PRIMARY)
             if (Array.isArray(project.topics)) {
-                const topicMatch = project.topics.some(topic => {
-                    const t = topic.toLowerCase();
-                    return (
-                        t.includes(normalizedFilter.replace(/\s+/g, '-')) ||
-                        t.includes(normalizedFilter.replace(/\s+/g, ''))
-                    );
-                });
+                const topicMatch = project.topics.some(topic =>
+                    allowedTopics.includes(topic.toLowerCase())
+                );
                 if (topicMatch) return true;
             }
 
-            { /*Language-based matching (for SQL, etc.)*/ }
-            if (project.language) {
-                if (project.language.toLowerCase().includes(normalizedFilter)) {
-                    return true;
-                }
+            // 2️⃣ Language-based matching (SQL fallback)
+            if (
+                project.language &&
+                allowedTopics.includes(project.language.toLowerCase())
+            ) {
+                return true;
             }
 
-            { /*Fallback: name + description*/ }
+            // 3️⃣ Name / description fallback
             const searchStr = `${project.name || ''} ${project.description || ''}`.toLowerCase();
-            return searchStr.includes(normalizedFilter);
+            return allowedTopics.some(tag => searchStr.includes(tag));
         });
 
         return (
