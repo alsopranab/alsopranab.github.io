@@ -2,6 +2,7 @@ function Education() {
     try {
         return (
             <div className="space-y-8" data-name="Education" data-file="components/Education.js">
+                
                 <h2 className="section-title font-light text-3xl border-b border-gray-100 pb-4">
                     <div className="icon-graduation-cap text-[var(--primary-color)] w-6 h-6 opacity-80"></div>
                     Education & Certifications
@@ -33,7 +34,7 @@ function Education() {
                         </div>
                     </div>
 
-                    {/* Certifications List */}
+                    {/* Certifications */}
                     <div className="card">
                         <h3 className="font-medium text-lg text-gray-900 mb-6">
                             Certifications
@@ -41,6 +42,7 @@ function Education() {
 
                         <div className="space-y-5">
 
+                            {/* Certification 1 */}
                             <div className="flex gap-3 items-start">
                                 <div className="mt-0.5 text-green-600 opacity-80">
                                     <div className="icon-check w-4 h-4"></div>
@@ -55,9 +57,10 @@ function Education() {
                                 </div>
                             </div>
 
-                            <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
+                            {/* Certification 2 */}
+                            <div className="flex gap-3 items-start">
+                                <div className="mt-0.5 text-green-600 opacity-80">
+                                    <div className="icon-check w-4 h-4"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-medium text-gray-800 text-sm">
@@ -69,9 +72,10 @@ function Education() {
                                 </div>
                             </div>
 
-                            <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
+                            {/* Certification 3 */}
+                            <div className="flex gap-3 items-start">
+                                <div className="mt-0.5 text-green-600 opacity-80">
+                                    <div className="icon-check w-4 h-4"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-medium text-gray-800 text-sm">
@@ -83,9 +87,10 @@ function Education() {
                                 </div>
                             </div>
 
-                            <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
+                            {/* Certification 4 */}
+                            <div className="flex gap-3 items-start">
+                                <div className="mt-0.5 text-green-600 opacity-80">
+                                    <div className="icon-check w-4 h-4"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-medium text-gray-800 text-sm">
@@ -97,9 +102,10 @@ function Education() {
                                 </div>
                             </div>
 
-                            <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
+                            {/* Certification 5 */}
+                            <div className="flex gap-3 items-start">
+                                <div className="mt-0.5 text-green-600 opacity-80">
+                                    <div className="icon-check w-4 h-4"></div>
                                 </div>
                                 <div>
                                     <h4 className="font-medium text-gray-800 text-sm">
