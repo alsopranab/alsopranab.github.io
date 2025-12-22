@@ -7,11 +7,13 @@ function Contact() {
             message: ''
         });
 
-        // Password / unlock state (UI only)
+        // Phone lock state
+        const [isPhoneUnlocked, setIsPhoneUnlocked] = React.useState(false);
         const [isUnlocking, setIsUnlocking] = React.useState(false);
         const [accessCode, setAccessCode] = React.useState('');
         const [lockError, setLockError] = React.useState('');
-        const [isVerified, setIsVerified] = React.useState(false);
+        const [decryptedPhone, setDecryptedPhone] = React.useState('');
+        const binaryData = [105, 92, 0, 76, 80, 86, 64, 83, 121, 93, 111, 91, 65, 74];
 
         const handleChange = (e) => {
             const { name, value } = e.target;
@@ -20,24 +22,41 @@ function Contact() {
 
         const handleSubmit = (e) => {
             e.preventDefault();
+
             const subject = encodeURIComponent(`Portfolio Contact: ${formData.subject}`);
-            const body = encodeURIComponent(
-                `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-            );
+            const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
             window.location.href = `mailto:carrer.pranab@gmail.com?subject=${subject}&body=${body}`;
         };
 
         const handleUnlock = (e) => {
             e.preventDefault();
-
-            if (!accessCode.trim()) {
+            const key = accessCode.trim();
+            
+            if (!key) {
                 setLockError('Please enter the access code.');
                 return;
             }
 
-            // No decryption, no secrets — intent-based verification only
-            setIsVerified(true);
-            setLockError('');
+            try {
+                // Attempt decryption
+                const decrypted = binaryData.map((byte, i) => {
+                    return String.fromCharCode(byte ^ key.charCodeAt(i % key.length));
+                }).join('');
+
+                // Validate if the decryption resulted in a likely phone number (starts with +)
+                if (decrypted.startsWith('+91')) {
+                    setDecryptedPhone(decrypted);
+                    setIsPhoneUnlocked(true);
+                    setIsUnlocking(false);
+                    setLockError('');
+                } else {
+                    console.error('Decryption failed. Result:', decrypted);
+                    setLockError('Incorrect access code.');
+                }
+            } catch (err) {
+                console.error(err);
+                setLockError('An error occurred.');
+            }
         };
 
         return (
@@ -51,67 +70,47 @@ function Contact() {
                     {/* Contact Info */}
                     <div className="space-y-8">
                         <p className="text-gray-600 text-lg leading-relaxed font-light">
-                            Open to roles in Data Analytics, Business Intelligence, and Automation.
-                            Happy to discuss projects, collaborations, or consulting opportunities.
+                            Open to roles in Data Analytics, Business Intelligence, and Automation. Happy to discuss projects, collaborations, or consulting opportunities.
                         </p>
-
+                        
                         <div className="space-y-4 mt-6">
-                            {/* Location */}
                             <div className="flex items-center gap-5 p-5 bg-white rounded-xl border border-gray-100">
                                 <div className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-[var(--primary-color)] opacity-80">
                                     <div className="icon-map-pin w-5 h-5"></div>
                                 </div>
                                 <div>
-                                    <div className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-0.5">
-                                        Location
-                                    </div>
-                                    <div className="text-gray-900 font-normal">
-                                        Bengaluru, India
-                                    </div>
+                                    <div className="text-[10px] text-gray-400 font-medium uppercase tracking-widest mb-0.5">Location</div>
+                                    <div className="text-gray-900 font-normal">Bengaluru, India</div>
                                 </div>
                             </div>
 
-                            {/* Email */}
-                            <a
-                                href="mailto:carrer.pranab@gmail.com"
-                                className="flex items-center gap-4 p-4 bg-white rounded-lg border border-gray-100 shadow-sm hover:border-[var(--primary-color)] transition-colors group"
-                            >
+                            <a href="mailto:carrer.pranab@gmail.com" className="flex items-center gap-4 p-4 bg-white rounded-lg border border-gray-100 shadow-sm hover:border-[var(--primary-color)] transition-colors group">
                                 <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[var(--primary-color)] group-hover:bg-[var(--primary-color)] group-hover:text-white transition-colors">
                                     <div className="icon-mail"></div>
                                 </div>
                                 <div>
                                     <div className="text-xs text-gray-500 font-medium uppercase">Email</div>
-                                    <div className="text-gray-900 font-medium break-all">
-                                        carrer.pranab@gmail.com
-                                    </div>
+                                    <div className="text-gray-900 font-medium break-all">carrer.pranab@gmail.com</div>
                                 </div>
                             </a>
 
-                            {/* Phone (Password Protected UI) */}
-                            <div className="flex flex-col gap-2 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+                            {/* Password Protected Phone Number */}
+                            <div className="flex flex-col gap-2 p-4 bg-white rounded-lg border border-gray-100 shadow-sm transition-all">
                                 <div className="flex items-center gap-4">
-                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                                        isVerified ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
-                                    }`}>
-                                        <div className={isVerified ? 'icon-check' : 'icon-lock'}></div>
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isPhoneUnlocked ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
+                                        <div className={isPhoneUnlocked ? "icon-phone" : "icon-lock"}></div>
                                     </div>
-
                                     <div className="flex-1">
-                                        <div className="text-xs text-gray-500 font-medium uppercase">
-                                            Phone
-                                        </div>
-
-                                        {isVerified ? (
-                                            <div className="text-sm text-gray-600 font-medium">
-                                                Access request verified. Please email to receive the number.
-                                            </div>
+                                        <div className="text-xs text-gray-500 font-medium uppercase">Phone</div>
+                                        {isPhoneUnlocked ? (
+                                            <a href={`tel:${decryptedPhone.replace(/\s/g, '')}`} className="text-gray-900 font-medium hover:text-[var(--primary-color)]">
+                                                {decryptedPhone}
+                                            </a>
                                         ) : (
                                             <div className="flex items-center justify-between">
-                                                <span className="text-gray-400 font-medium">
-                                                    Locked *********
-                                                </span>
+                                                <span className="text-gray-400 font-medium">Locked *********</span>
                                                 {!isUnlocking && (
-                                                    <button
+                                                    <button 
                                                         onClick={() => setIsUnlocking(true)}
                                                         className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600 font-medium"
                                                     >
@@ -122,39 +121,25 @@ function Contact() {
                                         )}
                                     </div>
                                 </div>
-
-                                {isUnlocking && !isVerified && (
-                                    <div className="mt-2 pl-14">
+                                
+                                {isUnlocking && !isPhoneUnlocked && (
+                                    <div className="mt-2 pl-14 animate-in fade-in slide-in-from-top-2 duration-200">
                                         <form onSubmit={handleUnlock} className="flex gap-2">
-                                            <input
-                                                type="password"
-                                                placeholder="Enter access code"
+                                            <input 
+                                                type="password" 
+                                                placeholder="Enter access code" 
                                                 className="flex-1 px-3 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-[var(--primary-color)] outline-none"
                                                 value={accessCode}
                                                 onChange={(e) => setAccessCode(e.target.value)}
                                                 autoFocus
                                             />
-                                            <button
-                                                type="submit"
-                                                className="px-3 py-1 bg-[var(--primary-color)] text-white text-xs rounded hover:bg-[var(--primary-light)]"
-                                            >
+                                            <button type="submit" className="px-3 py-1 bg-[var(--primary-color)] text-white text-xs rounded hover:bg-[var(--primary-light)]">
                                                 Verify
                                             </button>
                                         </form>
-
-                                        {lockError && (
-                                            <p className="text-xs text-red-500 mt-1">{lockError}</p>
-                                        )}
-
+                                        {lockError && <p className="text-xs text-red-500 mt-1">{lockError}</p>}
                                         <p className="text-xs text-gray-400 mt-2">
-                                            Please{' '}
-                                            <a
-                                                href="mailto:carrer.pranab@gmail.com?subject=Request Phone Access"
-                                                className="text-[var(--primary-color)] hover:underline"
-                                            >
-                                                email me
-                                            </a>{' '}
-                                            to receive the phone number.
+                                            Please <a href="mailto:carrer.pranab@gmail.com?subject=Request Phone Access" className="text-[var(--primary-color)] hover:underline">email me</a> to request the access code.
                                         </p>
                                     </div>
                                 )}
@@ -162,54 +147,60 @@ function Contact() {
                         </div>
                     </div>
 
-                    {/* Contact Form */}
+                    {/* Form */}
                     <div className="card">
-                        <h3 className="text-lg font-bold text-gray-900 mb-4">
-                            Send a Message
-                        </h3>
-
+                        <h3 className="text-lg font-bold text-gray-900 mb-4">Send a Message</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <input
-                                type="text"
-                                name="name"
-                                required
-                                placeholder="Your Name"
-                                className="w-full px-4 py-2 rounded-lg border border-gray-200"
-                                value={formData.name}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="email"
-                                name="email"
-                                required
-                                placeholder="your@email.com"
-                                className="w-full px-4 py-2 rounded-lg border border-gray-200"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="subject"
-                                required
-                                placeholder="Project Inquiry"
-                                className="w-full px-4 py-2 rounded-lg border border-gray-200"
-                                value={formData.subject}
-                                onChange={handleChange}
-                            />
-                            <textarea
-                                name="message"
-                                rows="4"
-                                required
-                                placeholder="How can I help you?"
-                                className="w-full px-4 py-2 rounded-lg border border-gray-200 resize-none"
-                                value={formData.message}
-                                onChange={handleChange}
-                            ></textarea>
-
-                            <button
-                                type="submit"
-                                className="w-full btn btn-primary"
-                            >
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    required 
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all"
+                                    placeholder="Your Name"
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input 
+                                    type="email" 
+                                    name="email" 
+                                    required 
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all"
+                                    placeholder="your@email.com"
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+                                <input 
+                                    type="text" 
+                                    name="subject" 
+                                    required 
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all"
+                                    placeholder="Project Inquiry"
+                                    value={formData.subject}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                                <textarea 
+                                    name="message" 
+                                    required 
+                                    rows="4" 
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all resize-none"
+                                    placeholder="How can I help you?"
+                                    value={formData.message}
+                                    onChange={handleChange}
+                                ></textarea>
+                            </div>
+                            <button type="submit" className="w-full btn btn-primary flex items-center justify-center gap-2">
+                                <div className="icon-send w-4 h-4"></div>
                                 Send Message
                             </button>
                         </form>
