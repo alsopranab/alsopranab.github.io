@@ -8,15 +8,16 @@ function Projects() {
         React.useEffect(() => {
             const fetchProjects = async () => {
                 try {
-                    // Fetch from GitHub API
-                    const response = await fetch('https://api.github.com/users/alsopranab/repos?sort=updated&per_page=12');
+                    const response = await fetch(
+                        'https://api.github.com/users/alsopranab/repos?sort=updated&per_page=12'
+                    );
                     if (!response.ok) throw new Error('Failed to fetch projects');
                     const data = await response.json();
                     setProjects(data);
                     setLoading(false);
                 } catch (err) {
                     console.error("Error fetching projects:", err);
-                    // Fallback data if API rate limited or fails
+                    {/* Fallback data */}
                     setProjects([
                         {
                             id: 1,
@@ -36,9 +37,9 @@ function Projects() {
                             stargazers_count: 12,
                             forks_count: 4,
                             updated_at: "2024-11-15T10:00:00Z",
-                            topics: ["sql", "database", "analytics"],
+                            topics: ["sql", "analytics", "case-study"],
                             html_url: "https://github.com/alsopranab",
-                            language: "PLpgSQL"
+                            language: "SQL"
                         }
                     ]);
                     setLoading(false);
@@ -48,15 +49,43 @@ function Projects() {
             fetchProjects();
         }, []);
 
-        const filters = ['All', 'Case Studies', 'Dashboards', 'Automation', 'SQL', 'Exploratory Data Analysis'];
+        const filters = [
+            'All',
+            'Case Studies',
+            'Dashboards',
+            'Automation',
+            'SQL',
+            'Exploratory Data Analysis'
+        ];
 
-        // Simple filtering logic - in real world would rely on topics or naming conventions
-        // Here we simulate filtering or use "All" for fetched data
-        const filteredProjects = projects.filter(p => {
+        {/* FIXED FILTERING LOGIC */}
+        const filteredProjects = projects.filter(project => {
             if (filter === 'All') return true;
-            // Simple keyword matching for demo purposes
-            const searchStr = (p.name + " " + p.description).toLowerCase();
-            return searchStr.includes(filter.toLowerCase().replace(' ', '')); 
+
+            const normalizedFilter = filter.toLowerCase();
+
+            {/* Topic-based matching (preferred) */}
+            if (Array.isArray(project.topics)) {
+                const topicMatch = project.topics.some(topic => {
+                    const t = topic.toLowerCase();
+                    return (
+                        t.includes(normalizedFilter.replace(/\s+/g, '-')) ||
+                        t.includes(normalizedFilter.replace(/\s+/g, ''))
+                    );
+                });
+                if (topicMatch) return true;
+            }
+
+            { /*Language-based matching (for SQL, etc.)*/ }
+            if (project.language) {
+                if (project.language.toLowerCase().includes(normalizedFilter)) {
+                    return true;
+                }
+            }
+
+            { /*Fallback: name + description*/ }
+            const searchStr = `${project.name || ''} ${project.description || ''}`.toLowerCase();
+            return searchStr.includes(normalizedFilter);
         });
 
         return (
@@ -66,16 +95,16 @@ function Projects() {
                         <div className="icon-folder-open text-[var(--primary-color)] w-6 h-6 opacity-80"></div>
                         Projects
                     </h2>
-                    
+
                     <div className="flex gap-2 overflow-x-auto pb-2 sm:pb-0">
                         {filters.map(f => (
                             <button
                                 key={f}
                                 onClick={() => setFilter(f)}
                                 className={`px-4 py-1.5 rounded-full text-xs tracking-wide transition-all whitespace-nowrap ${
-                                    filter === f 
-                                    ? 'bg-gray-900 text-white font-normal shadow-sm' 
-                                    : 'bg-transparent text-gray-500 hover:text-gray-900 font-light'
+                                    filter === f
+                                        ? 'bg-gray-900 text-white font-normal shadow-sm'
+                                        : 'bg-transparent text-gray-500 hover:text-gray-900 font-light'
                                 }`}
                             >
                                 {f}
@@ -87,7 +116,10 @@ function Projects() {
                 {loading ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[1, 2, 3].map(i => (
-                            <div key={i} className="card h-48 animate-pulse bg-gray-100 border-none"></div>
+                            <div
+                                key={i}
+                                className="card h-48 animate-pulse bg-gray-100 border-none"
+                            ></div>
                         ))}
                     </div>
                 ) : (
