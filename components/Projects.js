@@ -21,7 +21,7 @@ function Projects() {
                         {
                             id: 1,
                             name: "Portfolio-v1",
-                            description: "Personal portfolio website built with React and Tailwind CSS.",
+                            description: "Personal portfolio website built with React and Tailwind CSS made by Pranab Debnath.",
                             stargazers_count: 5,
                             forks_count: 2,
                             updated_at: new Date().toISOString(),
@@ -48,7 +48,7 @@ function Projects() {
             fetchProjects();
         }, []);
 
-        const filters = ['All', 'Case Studies', 'Dashboards', 'Automation'];
+        const filters = ['All', 'Case Studies', 'Dashboards', 'Automation', 'SQL'];
 
         // Simple filtering logic - in real world would rely on topics or naming conventions
         // Here we simulate filtering or use "All" for fetched data
