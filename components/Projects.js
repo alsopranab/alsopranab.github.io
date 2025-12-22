@@ -48,7 +48,7 @@ function Projects() {
             fetchProjects();
         }, []);
 
-        const filters = ['All', 'Case Studies', 'Dashboards', 'Automation', 'SQL'];
+        const filters = ['All', 'Case Studies', 'Dashboards', 'Automation', 'SQL', 'Exploratory Data Analysis'];
 
         // Simple filtering logic - in real world would rely on topics or naming conventions
         // Here we simulate filtering or use "All" for fetched data
