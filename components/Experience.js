@@ -18,13 +18,14 @@ function Experience() {
                             </div>
                             <div className="text-gray-500 text-sm font-light mb-4">MagicBricks</div>
                             <p className="text-sm text-gray-600 mb-5 leading-relaxed font-light">
-                                Managed multi-center reporting for Bangalore, Noida, and Tier-1/2 branches, improving KPI consistency and data reliability by 30%.
-Built a centralized, near real-time operations dashboard by integrating CRM and dialer systems, giving leadership complete visibility into daily performance.
-Automated key reporting workflows using Google Apps Script, Power Query, VBA, and Power Automate, reducing manual effort by 60–70% and consolidating team workload from 3 to 1 with (~76 ms refresh using PowerAutomate.)
-Performed detailed EDA on operational funnels, covering fresh vs new leads, contactability, schedule rates, SV completion, timeline patterns, and funnel drop-offs — improving funnel efficiency by 20–25%.
+                             Managed multi-center reporting for Bangalore, Noida, and Tier-1/2 branches, improving KPI consistency and data reliability by ~30%.
+Built a centralized near real-time operations dashboard by integrating CRM and dialer systems, giving leadership complete visibility into daily performance.
+Automated key reporting workflows using Google Apps Script, Power Query, VBA, and Power Automate, reducing manual effort by 60–70% and consolidating team workload from 3 analysts to 1 (~76 ms refresh via Power Automate).
+Performed detailed EDA on operational funnels including fresh vs repeat leads, contactability, scheduling rates, site visit completion, timeline patterns, and funnel drop-offs, improving funnel efficiency by 20–25%.
 Unified data from Ameyo, ReadPro, and internal CRMs to create a single source of truth for performance, quality, and productivity analytics.
-Conducted EDA on QA outcomes, agent dispositions, call quality and connectivity, reducing errors by 15–18% and improving agent effectiveness.
-Executed RCA on performance dips, lead leakages, connectivity gaps, and operational inconsistencies, driving faster corrective actions across Ops, Product, QA, and Sales.Managed multi-center reporting for Bangalore, Noida, and Tier-1/2 branches, improving KPI consistency and data reliability by 30%. Built a centralized, near real-time operations dashboard by integrating CRM and dialer systems, giving leadership complete visibility into daily performance. Automated key reporting workflows using Google Apps Script, Power Query, VBA, and Power Automate, reducing manual effort by 60–70% and consolidating team workload from 3 to 1 with (~76 ms refresh using PowerAutomate.) Performed detailed EDA on operational funnels, covering fresh vs new leads, contactability, schedule rates, SV completion, timeline patterns, and funnel drop-offs — improving funnel efficiency by 20–25%. Unified data from Ameyo, ReadPro, and internal CRMs to create a single source of truth for performance, quality, and productivity analytics. Conducted EDA on QA outcomes, agent dispositions, call quality and connectivity, reducing errors by 15–18% and improving agent effectiveness. Executed RCA on performance dips, lead leakages, connectivity gaps, and operational inconsistencies, driving faster corrective actions across Ops, Product, QA, and Sales.
+Conducted EDA on QA outcomes, agent dispositions, call quality, and connectivity, reducing operational errors by 15–18% and improving agent effectiveness.
+Executed root cause analysis (RCA) on performance dips, lead leakages, connectivity gaps, and operational inconsistencies, enabling faster corrective actions across Ops, Product, QA, and Sales teams.
+
 
                             </p>
                             <div className="flex flex-wrap gap-2">
@@ -45,9 +46,10 @@ Executed RCA on performance dips, lead leakages, connectivity gaps, and operatio
                             </div>
                             <div className="text-gray-500 text-sm font-light mb-4">Tech Solutions Inc.</div>
                             <p className="text-sm text-gray-600 mb-5 leading-relaxed font-light">
-                               Managed the end-to-end SV coordination process between buyers and builders, ensuring smooth scheduling, requirement mapping, and timely follow-ups.
-Handled all buyer–builder communication, including cab coordination with the transport team, to ensure seamless visit execution.
-Collaborated with the QA team to maintain call-quality standards, validate dispositions, and ensure accuracy in reporting.
+                               Managed the end-to-end site visit (SV) coordination process between buyers and builders, ensuring smooth scheduling, requirement mapping, and timely follow-ups.
+Handled all buyer–builder communication, including cab coordination with the transport team, to ensure seamless site visit execution.
+Collaborated closely with the QA team to maintain call-quality standards, validate dispositions, and ensure accuracy and consistency in reporting.
+
                             </p>
                             <div className="flex flex-wrap gap-2">
                                 <span className="px-2 py-1 bg-gray-50 text-gray-500 text-[10px] uppercase tracking-wider rounded border border-gray-100">Power BI</span>
@@ -67,11 +69,12 @@ Collaborated with the QA team to maintain call-quality standards, validate dispo
                             </div>
                             <div className="text-gray-500 text-sm font-light mb-4">NoBroker</div>
                             <p className="text-sm text-gray-600 mb-5 leading-relaxed font-light">
-Led a 12-member sales team, consistently achieving FTD, WTD, MTD, and MoM targets with strong conversion growth.
-Ran daily performance huddles, reviewing pipeline, call quality, and conversion gaps to drive immediate action.
-Analysed lead behaviour and call patterns to improve productivity and close ratios.
-Managed end-to-end KPIs for team + self, ensuring accurate forecasting and target discipline.
-Collaborated with senior leadership to align sales strategy and deliver predictable revenue performance.
+Led a 12-member sales team, consistently achieving FTD, WTD, MTD, and MoM targets with strong and sustained conversion growth.
+Conducted daily performance huddles to review pipeline health, call quality, and conversion gaps, driving immediate corrective actions.
+Analysed lead behaviour and call patterns to improve team productivity, close ratios, and overall sales efficiency.
+Owned end-to-end KPIs for both team and self, ensuring accurate forecasting, target discipline, and predictable performance delivery.
+Collaborated with senior leadership to align sales strategy and execute revenue plans effectively.
+
                             </p>
                             <div className="flex flex-wrap gap-2">
                                 <span className="px-2 py-1 bg-gray-50 text-gray-500 text-[10px] uppercase tracking-wider rounded border border-gray-100">Power BI</span>
@@ -91,10 +94,11 @@ Collaborated with senior leadership to align sales strategy and deliver predicta
                             </div>
                             <div className="text-gray-500 text-sm font-light mb-4">NoBroker</div>
                             <p className="text-sm text-gray-600 leading-relaxed font-light">
-Delivered customized real-estate solutions tailored to the needs of NRI tenants and buyers, ensuring high client satisfaction and smooth end-to-end experience.
+Delivered customized real estate solutions tailored to NRI tenants and buyers, ensuring a smooth end-to-end client experience.
 Consistently exceeded sales targets with monthly achievements of 170%, 134.38%, 232.94%, 103.48%, 121.88%, and 119.99% over a six-month period.
-Awarded Top Performer for six consecutive months for exceptional conversion rates and revenue contribution.
-3x Achiever's Club
+Recognized as Top Performer for six consecutive months for exceptional conversion rates and revenue contribution.
+Three-time Achiever’s Club awardee.
+
                             </p>
                         </div>
                     </div>
