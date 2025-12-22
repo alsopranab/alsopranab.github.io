@@ -7,6 +7,12 @@ function Contact() {
             message: ''
         });
 
+        // Password / unlock state (UI only)
+        const [isUnlocking, setIsUnlocking] = React.useState(false);
+        const [accessCode, setAccessCode] = React.useState('');
+        const [lockError, setLockError] = React.useState('');
+        const [isVerified, setIsVerified] = React.useState(false);
+
         const handleChange = (e) => {
             const { name, value } = e.target;
             setFormData(prev => ({ ...prev, [name]: value }));
@@ -21,6 +27,19 @@ function Contact() {
             window.location.href = `mailto:carrer.pranab@gmail.com?subject=${subject}&body=${body}`;
         };
 
+        const handleUnlock = (e) => {
+            e.preventDefault();
+
+            if (!accessCode.trim()) {
+                setLockError('Please enter the access code.');
+                return;
+            }
+
+            // No decryption, no secrets — intent-based verification only
+            setIsVerified(true);
+            setLockError('');
+        };
+
         return (
             <div className="space-y-8" data-name="Contact" data-file="components/Contact.js">
                 <h2 className="section-title font-light text-3xl border-b border-gray-100 pb-4">
@@ -32,7 +51,7 @@ function Contact() {
                     {/* Contact Info */}
                     <div className="space-y-8">
                         <p className="text-gray-600 text-lg leading-relaxed font-light">
-                            Open to roles in Data Analytics, Business Intelligence, and Automation. 
+                            Open to roles in Data Analytics, Business Intelligence, and Automation.
                             Happy to discuss projects, collaborations, or consulting opportunities.
                         </p>
 
@@ -61,34 +80,84 @@ function Contact() {
                                     <div className="icon-mail"></div>
                                 </div>
                                 <div>
-                                    <div className="text-xs text-gray-500 font-medium uppercase">
-                                        Email
-                                    </div>
+                                    <div className="text-xs text-gray-500 font-medium uppercase">Email</div>
                                     <div className="text-gray-900 font-medium break-all">
                                         carrer.pranab@gmail.com
                                     </div>
                                 </div>
                             </a>
 
-                            {/* Phone (Secure & Intentional) */}
-                            <div className="flex items-center gap-4 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
-                                <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500">
-                                    <div className="icon-lock"></div>
-                                </div>
-                                <div className="flex-1">
-                                    <div className="text-xs text-gray-500 font-medium uppercase">
-                                        Phone
+                            {/* Phone (Password Protected UI) */}
+                            <div className="flex flex-col gap-2 p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                        isVerified ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'
+                                    }`}>
+                                        <div className={isVerified ? 'icon-check' : 'icon-lock'}></div>
                                     </div>
-                                    <div className="text-gray-400 text-sm font-medium">
-                                        Available on request
+
+                                    <div className="flex-1">
+                                        <div className="text-xs text-gray-500 font-medium uppercase">
+                                            Phone
+                                        </div>
+
+                                        {isVerified ? (
+                                            <div className="text-sm text-gray-600 font-medium">
+                                                Access request verified. Please email to receive the number.
+                                            </div>
+                                        ) : (
+                                            <div className="flex items-center justify-between">
+                                                <span className="text-gray-400 font-medium">
+                                                    Locked *********
+                                                </span>
+                                                {!isUnlocking && (
+                                                    <button
+                                                        onClick={() => setIsUnlocking(true)}
+                                                        className="text-xs px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600 font-medium"
+                                                    >
+                                                        Unlock
+                                                    </button>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
-                                    <a
-                                        href="mailto:carrer.pranab@gmail.com?subject=Request Phone Number"
-                                        className="text-xs text-[var(--primary-color)] hover:underline"
-                                    >
-                                        Request via email
-                                    </a>
                                 </div>
+
+                                {isUnlocking && !isVerified && (
+                                    <div className="mt-2 pl-14">
+                                        <form onSubmit={handleUnlock} className="flex gap-2">
+                                            <input
+                                                type="password"
+                                                placeholder="Enter access code"
+                                                className="flex-1 px-3 py-1 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-[var(--primary-color)] outline-none"
+                                                value={accessCode}
+                                                onChange={(e) => setAccessCode(e.target.value)}
+                                                autoFocus
+                                            />
+                                            <button
+                                                type="submit"
+                                                className="px-3 py-1 bg-[var(--primary-color)] text-white text-xs rounded hover:bg-[var(--primary-light)]"
+                                            >
+                                                Verify
+                                            </button>
+                                        </form>
+
+                                        {lockError && (
+                                            <p className="text-xs text-red-500 mt-1">{lockError}</p>
+                                        )}
+
+                                        <p className="text-xs text-gray-400 mt-2">
+                                            Please{' '}
+                                            <a
+                                                href="mailto:carrer.pranab@gmail.com?subject=Request Phone Access"
+                                                className="text-[var(--primary-color)] hover:underline"
+                                            >
+                                                email me
+                                            </a>{' '}
+                                            to receive the phone number.
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -98,72 +167,49 @@ function Contact() {
                         <h3 className="text-lg font-bold text-gray-900 mb-4">
                             Send a Message
                         </h3>
+
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Name
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    required
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all"
-                                    placeholder="Your Name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    name="email"
-                                    required
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all"
-                                    placeholder="your@email.com"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Subject
-                                </label>
-                                <input
-                                    type="text"
-                                    name="subject"
-                                    required
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all"
-                                    placeholder="Project Inquiry"
-                                    value={formData.subject}
-                                    onChange={handleChange}
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Message
-                                </label>
-                                <textarea
-                                    name="message"
-                                    required
-                                    rows="4"
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent outline-none transition-all resize-none"
-                                    placeholder="How can I help you?"
-                                    value={formData.message}
-                                    onChange={handleChange}
-                                ></textarea>
-                            </div>
+                            <input
+                                type="text"
+                                name="name"
+                                required
+                                placeholder="Your Name"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200"
+                                value={formData.name}
+                                onChange={handleChange}
+                            />
+                            <input
+                                type="email"
+                                name="email"
+                                required
+                                placeholder="your@email.com"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200"
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                            <input
+                                type="text"
+                                name="subject"
+                                required
+                                placeholder="Project Inquiry"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200"
+                                value={formData.subject}
+                                onChange={handleChange}
+                            />
+                            <textarea
+                                name="message"
+                                rows="4"
+                                required
+                                placeholder="How can I help you?"
+                                className="w-full px-4 py-2 rounded-lg border border-gray-200 resize-none"
+                                value={formData.message}
+                                onChange={handleChange}
+                            ></textarea>
 
                             <button
                                 type="submit"
-                                className="w-full btn btn-primary flex items-center justify-center gap-2"
+                                className="w-full btn btn-primary"
                             >
-                                <div className="icon-send w-4 h-4"></div>
                                 Send Message
                             </button>
                         </form>
