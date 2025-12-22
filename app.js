@@ -83,7 +83,7 @@ function App() {
 
             <footer className="pt-12 pb-6 text-center text-gray-400 text-sm">
                 <p>&copy; 2025 Pranab Debnath. All rights reserved.</p>
-                <p className="mt-1">Built with React & Tailwind CSS.</p>
+                <p className="mt-1">Built with Passion · Designed for Data Analytics & Automation..</p>
             </footer>
         </main>
       </div>
