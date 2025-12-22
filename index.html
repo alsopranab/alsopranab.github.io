@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranab Debnath | Data Analytics Portfolio</title>
+    <meta name="description" content="Portfolio of Pranab Debnath - Data Analyst specializing in operations, reporting, and automation.">
+    <meta name="keywords" content="Data Analyst, SQL, Python, Power BI, Automation, Portfolio, Pranab Debnath">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Pranab Debnath | Data Analytics Portfolio">
+    <meta property="og:description" content="Data Analyst specializing in operations, reporting, and automation. View my projects and skills.">
+    <meta name="twitter:title" content="Pranab Debnath | Data Analytics Portfolio">
+    <meta name="twitter:description" content="Data Analyst specializing in operations, reporting, and automation. View my projects and skills.">
+
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react@18/umd/react.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+
+    <script>
+        // Save Chart.js to window to avoid conflicts
+        window.ChartJS = window.Chart;
+    </script>
+
+    <style type="text/tailwindcss">
+    @layer theme {
+        :root {
+            --primary-color: #0F766E; /* Teal 700 */
+            --primary-light: #14B8A6; /* Teal 500 */
+            --bg-color: #F3F4F6; /* Gray 100 */
+            --card-bg: #FFFFFF;
+            --text-main: #111827; /* Gray 900 */
+            --text-secondary: #4B5563; /* Gray 600 */
+            --text-muted: #9CA3AF; /* Gray 400 */
+            --sidebar-width: 320px;
+        }
+    }
+
+    @layer base {
+        body {
+            @apply bg-[var(--bg-color)] text-[var(--text-main)] font-sans antialiased;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            @apply font-medium tracking-tight;
+        }
+    }
+
+    @layer components {
+        .card {
+            @apply bg-[var(--card-bg)] rounded-xl shadow-sm border border-gray-100 p-6;
+        }
+        .btn {
+            @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+        }
+        .btn-primary {
+            @apply bg-[var(--primary-color)] text-white hover:bg-[var(--primary-light)];
+        }
+        .btn-outline {
+            @apply border border-gray-300 text-[var(--text-secondary)] hover:bg-gray-50;
+        }
+        .section-title {
+            @apply text-2xl font-bold mb-6 flex items-center gap-2;
+        }
+        .nav-link {
+            @apply text-[var(--text-secondary)] hover:text-[var(--primary-color)] cursor-pointer transition-colors;
+        }
+        .nav-link.active {
+            @apply text-[var(--primary-color)] font-medium;
+        }
+    }
+
+    @layer utilities {
+        .text-shadow {
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+    }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- App Entry -->
+    <script type="text/babel" src="components/Sidebar.js"></script>
+    <script type="text/babel" src="components/ProjectCard.js"></script>
+    <script type="text/babel" src="components/Projects.js"></script>
+    <script type="text/babel" src="components/Analytics.js"></script>
+    <script type="text/babel" src="components/CompetitiveProgramming.js"></script>
+    <script type="text/babel" src="components/Experience.js"></script>
+    <script type="text/babel" src="components/Education.js"></script>
+    <script type="text/babel" src="components/Contact.js"></script>
+    <script type="text/babel" src="components/Navbar.js"></script>
+    <script type="text/babel" src="app.js"></script>
+</body>
+</html>
