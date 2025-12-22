@@ -19,7 +19,7 @@ function Experience() {
                                     2022 - Present
                                 </span>
                             </div>
-                            <div className="text-gray-500 text-sm font-light mb-4">MagicBricks</div>
+                            <div className="text-gray-500 text-sm font-light mb-4">MagicBricks - Bangalore</div>
 
                             <ul className="text-sm text-gray-600 mb-5 leading-relaxed font-light space-y-2 list-disc pl-5">
                                 <li>
@@ -64,7 +64,7 @@ function Experience() {
                                     Jan 2025 - Dec 2025
                                 </span>
                             </div>
-                            <div className="text-gray-500 text-sm font-light mb-4">Tech Solutions Inc.</div>
+                            <div className="text-gray-500 text-sm font-light mb-4">MagicBricks - Bangalore</div>
 
                             <ul className="text-sm text-gray-600 mb-5 leading-relaxed font-light space-y-2 list-disc pl-5">
                                 <li>
@@ -96,7 +96,7 @@ function Experience() {
                                     Oct 2024 - Dec 2025
                                 </span>
                             </div>
-                            <div className="text-gray-500 text-sm font-light mb-4">NoBroker</div>
+                            <div className="text-gray-500 text-sm font-light mb-4">NoBroker - Bangalore</div>
 
                             <ul className="text-sm text-gray-600 mb-5 leading-relaxed font-light space-y-2 list-disc pl-5">
                                 <li>
@@ -134,7 +134,7 @@ function Experience() {
                                     Jun 2024 - Oct 2024
                                 </span>
                             </div>
-                            <div className="text-gray-500 text-sm font-light mb-4">NoBroker</div>
+                            <div className="text-gray-500 text-sm font-light mb-4">NoBroker - Bangalore</div>
 
                             <ul className="text-sm text-gray-600 leading-relaxed font-light space-y-2 list-disc pl-5">
                                 <li>
