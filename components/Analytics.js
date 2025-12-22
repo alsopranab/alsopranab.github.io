@@ -31,7 +31,7 @@ function Analytics() {
                             <div>
                                 <div className="flex justify-between text-xs mb-1">
                                     <span className="font-medium text-gray-700">SQL / PLpgSQL</span>
-                                    <span className="text-gray-500">45%</span>
+                                    <span className="text-gray-500">90%</span>
                                 </div>
                                 <div className="w-full bg-gray-100 rounded-full h-2">
                                     <div className="bg-[var(--primary-color)] h-2 rounded-full" style={{width: '45%'}}></div>
@@ -40,7 +40,7 @@ function Analytics() {
                             <div>
                                 <div className="flex justify-between text-xs mb-1">
                                     <span className="font-medium text-gray-700">Python</span>
-                                    <span className="text-gray-500">30%</span>
+                                    <span className="text-gray-500">60%</span>
                                 </div>
                                 <div className="w-full bg-gray-100 rounded-full h-2">
                                     <div className="bg-blue-500 h-2 rounded-full" style={{width: '30%'}}></div>
@@ -49,7 +49,7 @@ function Analytics() {
                             <div>
                                 <div className="flex justify-between text-xs mb-1">
                                     <span className="font-medium text-gray-700">JavaScript</span>
-                                    <span className="text-gray-500">20%</span>
+                                    <span className="text-gray-500">45%</span>
                                 </div>
                                 <div className="w-full bg-gray-100 rounded-full h-2">
                                     <div className="bg-yellow-400 h-2 rounded-full" style={{width: '20%'}}></div>
@@ -58,7 +58,7 @@ function Analytics() {
                              <div>
                                 <div className="flex justify-between text-xs mb-1">
                                     <span className="font-medium text-gray-700">Power BI / DAX</span>
-                                    <span className="text-gray-500">5%</span>
+                                    <span className="text-gray-500">60%</span>
                                 </div>
                                 <div className="w-full bg-gray-100 rounded-full h-2">
                                     <div className="bg-yellow-600 h-2 rounded-full" style={{width: '5%'}}></div>
