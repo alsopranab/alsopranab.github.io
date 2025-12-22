@@ -19,69 +19,83 @@ function Education() {
                         </div>
                     </div>
 
-                    {/* Certifications List */}
-                    <div className="card">
-                        <h3 className="font-medium text-lg text-gray-900 mb-6">Certifications</h3>
-                        <div className="space-y-5">
-                            <div className="flex gap-3 items-start">
-                                <div className="mt-0.5 text-green-600 opacity-80">
-                                    <div className="icon-check w-4 h-4"></div>
-                        {/*Cerifications 1*/}
-                                </div>
-                                <div>
-                                    <h4 className="font-normal text-gray-800 text-sm">Master Course in Healthcare Leadership & Clinical Leadership</h4>
-                                    <p className="text-xs text-gray-400 font-light mt-0.5">Udemy</p>
-                                </div>
-                            </div>
-                            <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-gray-800 text-sm">HTML, CSS, JavaScript, React - Online Certification Course</h4>
-                                    <p className="text-xs text-gray-500">YouAccel Training, Blue Digital Media </p>
-                                </div>
-                            </div>
-                             <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-gray-800 text-sm">Master Pandas: Basics To Advanced - To Become A Data Analyst</h4>
-                                    <p className="text-xs text-gray-500">Udemy</p>
-                                </div>
-                            </div>
-{/*Just Copy and Paste this layout and add your cerifications*/}
-{/*Cerifications Layout*/}
-                             <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-gray-800 text-sm">Python for Data Analysis</h4>
-                                    <p className="text-xs text-gray-500">Udemy</p>
-                                </div>
-                            </div>
-{/*CerificationsLast*/}
-                                     <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-gray-800 text-sm">Professional Certificate in SQL and SQL for Data Analysis</h4>
-                                    <p className="text-xs text-gray-500">Udemy</p>
-                                </div>
-                            </div>
-                                     <div className="flex gap-3">
-                                <div className="mt-1 bg-green-100 rounded p-1 h-fit">
-                                    <div className="icon-check w-3 h-3 text-green-600"></div>
-                                </div>
-                                <div>
-                                    <h4 className="font-medium text-gray-800 text-sm">Professional Certificate in SQL and SQL for Data Analysis</h4>
-                                    <p className="text-xs text-gray-500">Udemy</p>
-                                </div>
-                            </div>
-{/*And here is the end*/}
+{/* Certifications List */}
+<div className="card">
+    <h3 className="font-medium text-lg text-gray-900 mb-6">
+        Certifications
+    </h3>
+
+    <div className="space-y-5">
+
+        {/* Certification 1 */}
+        <div className="flex gap-3 items-start">
+            <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                <div className="icon-check w-3 h-3 text-green-600"></div>
+            </div>
+            <div>
+                <h4 className="font-medium text-gray-800 text-sm">
+                    Master Course in Healthcare & Clinical Leadership
+                </h4>
+                <p className="text-xs text-gray-500">Udemy</p>
+            </div>
+        </div>
+
+        {/* Certification 2 */}
+        <div className="flex gap-3 items-start">
+            <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                <div className="icon-check w-3 h-3 text-green-600"></div>
+            </div>
+            <div>
+                <h4 className="font-medium text-gray-800 text-sm">
+                    HTML, CSS, JavaScript & React
+                </h4>
+                <p className="text-xs text-gray-500">
+                    YouAccel Training · Blue Digital Media
+                </p>
+            </div>
+        </div>
+
+        {/* Certification 3 */}
+        <div className="flex gap-3 items-start">
+            <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                <div className="icon-check w-3 h-3 text-green-600"></div>
+            </div>
+            <div>
+                <h4 className="font-medium text-gray-800 text-sm">
+                    Master Pandas: Basics to Advanced for Data Analysis
+                </h4>
+                <p className="text-xs text-gray-500">Udemy</p>
+            </div>
+        </div>
+
+        {/* Certification 4 */}
+        <div className="flex gap-3 items-start">
+            <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                <div className="icon-check w-3 h-3 text-green-600"></div>
+            </div>
+            <div>
+                <h4 className="font-medium text-gray-800 text-sm">
+                    Python for Data Analysis
+                </h4>
+                <p className="text-xs text-gray-500">Udemy</p>
+            </div>
+        </div>
+
+        {/* Certification 5 */}
+        <div className="flex gap-3 items-start">
+            <div className="mt-1 bg-green-100 rounded p-1 h-fit">
+                <div className="icon-check w-3 h-3 text-green-600"></div>
+            </div>
+            <div>
+                <h4 className="font-medium text-gray-800 text-sm">
+                    Professional Certificate in SQL & SQL for Data Analysis
+                </h4>
+                <p className="text-xs text-gray-500">Udemy</p>
+            </div>
+        </div>
+
+    </div>
+</div>
                         </div>
                     </div>
                 </div>
