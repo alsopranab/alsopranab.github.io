@@ -16,7 +16,7 @@ function Experience() {
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
                                 <h3 className="text-xl font-medium text-gray-900">Operations Data Analyst</h3>
                                 <span className="text-xs text-gray-400 font-light uppercase tracking-wider">
-                                    2022 - Present
+                                    Jan 2025 - Dec 2025
                                 </span>
                             </div>
                             <div className="text-gray-500 text-sm font-light mb-4">MagicBricks - Bangalore</div>
