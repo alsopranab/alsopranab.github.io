@@ -14,7 +14,7 @@ function Experience() {
                         <div className="absolute -left-[45px] top-1 bg-white border border-[var(--primary-color)] w-4 h-4 rounded-full ring-4 ring-gray-50"></div>
                         <div className="card py-6 px-8 border-l-4 border-l-[var(--primary-color)]">
                             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline mb-1">
-                                <h3 className="text-xl font-medium text-gray-900">Data Analyst</h3>
+                                <h3 className="text-xl font-medium text-gray-900">Operations Data Analyst</h3>
                                 <span className="text-xs text-gray-400 font-light uppercase tracking-wider">
                                     2022 - Present
                                 </span>
