@@ -76,14 +76,37 @@
         .text-shadow {
             text-shadow: 0 1px 2px rgba(0,0,0,0.1);
         }
+        .glow-icon {
+            filter: drop-shadow(0 0 8px currentColor);
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
     }
     </style>
 </head>
 <body>
     <div id="root"></div>
     
+    <!-- Utilities -->
+    <script type="text/babel" src="utils/imageHelper.js"></script>
+    <script type="text/babel" src="utils/iconHelper.js"></script>
+
     <!-- App Entry -->
+    <script type="text/babel" src="components/Loader.js"></script>
     <script type="text/babel" src="components/Sidebar.js"></script>
+    <script type="text/babel" src="components/ProjectModal.js"></script>
     <script type="text/babel" src="components/ProjectCard.js"></script>
     <script type="text/babel" src="components/Projects.js"></script>
     <script type="text/babel" src="components/Analytics.js"></script>
