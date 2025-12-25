@@ -11,132 +11,85 @@ function Analytics() {
 
     React.useEffect(() => {
         const fetchGithubStats = async () => {
-            const username = "alsopranab";
-
-            {/* Github Token */}
-            const GITHUB_TOKEN = "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";
-            const headers = {
-                Authorization: `Bearer ${GITHUB_TOKEN}`
-            };
-
             try {
-
-                 {/* Token Used Here  (stars, forks, top language) */}
-                
-                const repoRes = await fetch(
-                    `https://api.github.com/users/${username}/repos?per_page=100`,
-                    { headers } {/* Token Used Here */}
-                );
-
-                if (!repoRes.ok) throw new Error("Repo fetch failed");
-
-                const repos = await repoRes.json();
-
-                const stars = repos.reduce(
-                    (acc, repo) => acc + (repo.stargazers_count || 0),
-                    0
-                );
-                const forks = repos.reduce(
-                    (acc, repo) => acc + (repo.forks_count || 0),
-                    0
-                );
-
-                const languages = {};
-                repos.forEach(repo => {
-                    if (repo.language) {
-                        languages[repo.language] =
-                            (languages[repo.language] || 0) + 1;
-                    }
-                });
-
-                const topLang =
-                    Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
-
-                setStats(prev => ({
-                    ...prev,
-                    totalStars: stars,
-                    totalForks: forks,
-                    topLanguage: topLang ? topLang[0] : "SQL"
-                }));
-
-{/* Fetch Public Events */}
-                const eventsRes = await fetch(
-                    `https://api.github.com/users/${username}/events/public?per_page=100`,
-                    { headers }  {/* Token Used Here */}
-                );
-
-                if (!eventsRes.ok) throw new Error("Events fetch failed");
-
-                const events = await eventsRes.json();
-
-{/* Init Last 30 Days Data */}
-                const dailyCommits = {};
-                for (let i = 29; i >= 0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
-                    const key = d.toISOString().split("T")[0];
-                    dailyCommits[key] = 0;
-                }
-
-{/* Count Push Events */}
-                events.forEach(event => {
-                    if (event.type === "PushEvent") {
-                        const date = event.created_at?.split("T")[0];
-                        if (dailyCommits[date] !== undefined) {
-                            dailyCommits[date] += event.payload?.size || 0;
+                // 1. Fetch Repos for general stats using Proxy
+                const repoRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100');
+                if (repoRes.ok) {
+                    const repos = await repoRes.json();
+                    const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
+                    const forks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
+                    
+                    const languages = {};
+                    repos.forEach(repo => {
+                        if (repo.language) {
+                            languages[repo.language] = (languages[repo.language] || 0) + 1;
                         }
-                    }
-                });
+                    });
+                    const topLang = Object.entries(languages).sort((a,b) => b[1] - a[1])[0];
 
-{/* Prepare Chart Data */}
-                const labels = [];
-                const data = [];
-
-                Object.keys(dailyCommits).forEach(d => {
-                    labels.push(
-                        new Date(d).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric"
-                        })
-                    );
-                    data.push(dailyCommits[d]);
-                });
-
-                setChartData({ labels, data });
-
-{/* Calculate Active Streak */}
-                let streak = 0;
-                for (let i = data.length - 1; i >= 0; i--) {
-                    if (data[i] > 0) streak++;
-                    else break;
+                    setStats(prev => ({
+                        ...prev,
+                        totalStars: stars,
+                        totalForks: forks,
+                        topLanguage: topLang ? topLang[0] : "SQL"
+                    }));
                 }
 
-                setStats(prev => ({ ...prev, commitStreak: streak }));
+                // 2. Fetch Events for Real Commit Trends (Last 30 days approx from events)
+                // Note: This fetches public events. A full commit history graph like GitHub's requires authentication or scraping.
+                const eventsRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/events?per_page=100');
+                if (eventsRes.ok) {
+                    const events = await eventsRes.json();
+                    
+                    // Process PushEvents to build a daily frequency map
+                    const dailyCommits = {};
+                    // Initialize last 30 days with 0 to show the full timeline
+                    for (let i = 29; i >= 0; i--) {
+                        const d = new Date();
+                        d.setDate(d.getDate() - i);
+                        const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                        dailyCommits[dateStr] = 0;
+                    }
 
+                    events.forEach(event => {
+                        if (event.type === 'PushEvent') {
+                            const date = new Date(event.created_at);
+                            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            // Check if this date is within our 30 day window
+                            if (dailyCommits.hasOwnProperty(dateStr)) {
+                                dailyCommits[dateStr] += event.payload.size; // payload.size is number of commits in the push
+                            }
+                        }
+                    });
+
+                    setChartData({
+                        labels: Object.keys(dailyCommits),
+                        data: Object.values(dailyCommits)
+                    });
+
+                    // Calculate a simple "active days" streak based on available data
+                    let currentStreak = 0;
+                    const values = Object.values(dailyCommits).reverse();
+                    for (let val of values) {
+                        if (val > 0) currentStreak++;
+                        else break;
+                    }
+                    setStats(prev => ({ ...prev, commitStreak: currentStreak }));
+                }
             } catch (e) {
-                console.error("GitHub API error", e);
-
-                {/* Fallback */}
-                setStats({
-                    totalStars: 17,
-                    totalForks: 6,
-                    topLanguage: "SQL",
-                    commitStreak: 15
-                });
+                console.error("Failed to fetch GitHub stats", e);
+                // Fallback data if API fails or rate limited
+                setStats({ totalStars: 17, totalForks: 6, topLanguage: "SQL", commitStreak: 15 });
                 setChartData({
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
                     data: [12, 19, 3, 5, 2, 3]
                 });
             }
         };
-
         fetchGithubStats();
     }, []);
 
-{/* Above Everything is About the Logic & API*/}
-
-    
-{/* Initialize Chart.js */}
+    // Initialize Chart.js
     React.useEffect(() => {
         if (chartRef.current && chartData) {
             if (chartInstance.current) {
@@ -146,9 +99,9 @@ function Analytics() {
             const ctx = chartRef.current.getContext('2d');
             const ChartJS = window.ChartJS;
 
-{ /* Green Gradient for the line fill (matching reference image style) */}
+            // Green Gradient for the line fill (matching reference image style)
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(74, 222, 128, 0.2)'); { /* Green 400 with opacity */ }
+            gradient.addColorStop(0, 'rgba(74, 222, 128, 0.2)'); // Green 400 with opacity
             gradient.addColorStop(1, 'rgba(74, 222, 128, 0.0)');
 
             chartInstance.current = new ChartJS(ctx, {
@@ -159,15 +112,15 @@ function Analytics() {
                         label: 'Contributions',
                         data: chartData.data,
                         backgroundColor: gradient,
-                        borderColor: '#4ade80', { /* Green 400 */ }
+                        borderColor: '#4ade80', // Green 400
                         borderWidth: 2,
-                        pointBackgroundColor: '#f3f4f6', { /* Gray Background */ }
+                        pointBackgroundColor: '#111827', // Dark background color
                         pointBorderColor: '#4ade80',
                         pointBorderWidth: 2,
                         pointHoverBackgroundColor: '#4ade80',
                         pointHoverBorderColor: '#fff',
                         fill: true,
-                        tension: 0.4,  { /* Smooth curve */ }
+                        tension: 0.4, // Smooth curve
                         pointRadius: 4,
                         pointHoverRadius: 6
                     }]
