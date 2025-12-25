@@ -9,116 +9,117 @@ function Analytics() {
     const chartRef = React.useRef(null);
     const chartInstance = React.useRef(null);
 
-    React.useEffect(() => {
-        const fetchGithubStats = async () => {
-            try {
-                const username = "alsopranab";
+React.useEffect(() => {
+    const fetchGithubStats = async () => {
+        const username = "alsopranab";
 
-                // 1. Fetch Repos for general stats (direct GitHub API)
-                const repoRes = await fetch(
-                    `https://api.github.com/users/${username}/repos?per_page=100`
-                );
-                if (repoRes.ok) {
-                    const repos = await repoRes.json();
+        try {
+            // 1. Fetch repos (stars, forks, language)
+            const repoRes = await fetch(
+                `https://api.github.com/users/${username}/repos?per_page=100`
+            );
 
-                    const stars = repos.reduce(
-                        (acc, repo) => acc + (repo.stargazers_count || 0),
-                        0
-                    );
-                    const forks = repos.reduce(
-                        (acc, repo) => acc + (repo.forks_count || 0),
-                        0
-                    );
+            if (!repoRes.ok) throw new Error("Repo fetch failed");
 
-                    const languages = {};
-                    repos.forEach((repo) => {
-                        if (repo.language) {
-                            languages[repo.language] =
-                                (languages[repo.language] || 0) + 1;
-                        }
-                    });
-                    const topLang = Object.entries(languages).sort(
-                        (a, b) => b[1] - a[1]
-                    )[0];
+            const repos = await repoRes.json();
 
-                    setStats((prev) => ({
-                        ...prev,
-                        totalStars: stars,
-                        totalForks: forks,
-                        topLanguage: topLang ? topLang[0] : "SQL",
-                    }));
+            const stars = repos.reduce(
+                (acc, repo) => acc + (repo.stargazers_count || 0),
+                0
+            );
+            const forks = repos.reduce(
+                (acc, repo) => acc + (repo.forks_count || 0),
+                0
+            );
+
+            const languages = {};
+            repos.forEach(repo => {
+                if (repo.language) {
+                    languages[repo.language] =
+                        (languages[repo.language] || 0) + 1;
                 }
+            });
 
-                // 2. Fetch Events for Real Commit Trends (Last 30 days approx from public events)
-                const eventsRes = await fetch(
-                    `https://api.github.com/users/${username}/events/public?per_page=100`
-                );
-                if (eventsRes.ok) {
-                    const events = await eventsRes.json();
+            const topLang =
+                Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
 
-                    // Process PushEvents to build a daily frequency map
-                    const dailyCommits = {};
-                    // Initialize last 30 days with 0 to show the full timeline
-                    for (let i = 29; i >= 0; i--) {
-                        const d = new Date();
-                        d.setDate(d.getDate() - i);
-                        const dateStr = d.toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                        });
-                        dailyCommits[dateStr] = 0;
-                    }
+            setStats(prev => ({
+                ...prev,
+                totalStars: stars,
+                totalForks: forks,
+                topLanguage: topLang ? topLang[0] : "SQL"
+            }));
 
-                    events.forEach((event) => {
-                        if (event.type === "PushEvent") {
-                            const date = new Date(event.created_at);
-                            const dateStr = date.toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                            });
-                            // Check if this date is within our 30 day window
-                            if (dailyCommits.hasOwnProperty(dateStr)) {
-                                dailyCommits[dateStr] +=
-                                    event.payload?.size || 0; // payload.size is number of commits in the push
-                            }
-                        }
-                    });
+            // 2. Fetch public events for commit trend
+            const eventsRes = await fetch(
+                `https://api.github.com/users/${username}/events/public?per_page=100`
+            );
 
-                    setChartData({
-                        labels: Object.keys(dailyCommits),
-                        data: Object.values(dailyCommits),
-                    });
+            if (!eventsRes.ok) throw new Error("Events fetch failed");
 
-                    // Calculate a simple "active days" streak based on available data
-                    let currentStreak = 0;
-                    const values = Object.values(dailyCommits).reverse();
-                    for (let val of values) {
-                        if (val > 0) currentStreak++;
-                        else break;
-                    }
-                    setStats((prev) => ({
-                        ...prev,
-                        commitStreak: currentStreak,
-                    }));
-                }
-            } catch (e) {
-                console.error("Failed to fetch GitHub stats", e);
-                // Fallback data if API fails or rate limited
-                setStats({
-                    totalStars: 17,
-                    totalForks: 6,
-                    topLanguage: "SQL",
-                    commitStreak: 15,
-                });
-                setChartData({
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                    data: [12, 19, 3, 5, 2, 3],
-                });
+            const events = await eventsRes.json();
+
+            // Init last 30 days
+            const dailyCommits = {};
+            for (let i = 29; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const key = d.toISOString().split("T")[0];
+                dailyCommits[key] = 0;
             }
-        };
-        fetchGithubStats();
-    }, []);
-}
+
+            // Count PushEvent commits
+            events.forEach(event => {
+                if (event.type === "PushEvent") {
+                    const date =
+                        event.created_at?.split("T")[0];
+                    if (dailyCommits[date] !== undefined) {
+                        dailyCommits[date] += event.payload?.size || 0;
+                    }
+                }
+            });
+
+            const labels = [];
+            const data = [];
+
+            Object.keys(dailyCommits).forEach(d => {
+                labels.push(
+                    new Date(d).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric"
+                    })
+                );
+                data.push(dailyCommits[d]);
+            });
+
+            setChartData({ labels, data });
+
+            // Streak
+            let streak = 0;
+            for (let i = data.length - 1; i >= 0; i--) {
+                if (data[i] > 0) streak++;
+                else break;
+            }
+
+            setStats(prev => ({ ...prev, commitStreak: streak }));
+
+        } catch (e) {
+            console.error("GitHub API error", e);
+            setStats({
+                totalStars: 17,
+                totalForks: 6,
+                topLanguage: "SQL",
+                commitStreak: 15
+            });
+            setChartData({
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                data: [12, 19, 3, 5, 2, 3]
+            });
+        }
+    };
+
+    fetchGithubStats();
+}, []);
 
     // Initialize Chart.js
     React.useEffect(() => {
