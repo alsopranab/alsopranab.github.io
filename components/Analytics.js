@@ -16,32 +16,35 @@ function Analytics() {
                 const repoRes = await fetch(
                     'https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100'
                 );
-                if (!repoRes.ok) return;
 
-                const repos = await repoRes.json();
+                let repos = [];
 
-                const stars = repos.reduce((a, r) => a + r.stargazers_count, 0);
-                const forks = repos.reduce((a, r) => a + r.forks_count, 0);
+                if (repoRes.ok) {
+                    repos = await repoRes.json();
 
-                const languages = {};
-                repos.forEach(repo => {
-                    if (repo.language) {
-                        languages[repo.language] =
-                            (languages[repo.language] || 0) + 1;
-                    }
-                });
+                    const stars = repos.reduce((a, r) => a + r.stargazers_count, 0);
+                    const forks = repos.reduce((a, r) => a + r.forks_count, 0);
 
-                const topLang =
-                    Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
+                    const languages = {};
+                    repos.forEach(repo => {
+                        if (repo.language) {
+                            languages[repo.language] =
+                                (languages[repo.language] || 0) + 1;
+                        }
+                    });
 
-                setStats(prev => ({
-                    ...prev,
-                    totalStars: stars,
-                    totalForks: forks,
-                    topLanguage: topLang ? topLang[0] : "SQL"
-                }));
+                    const topLang =
+                        Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
 
-                // 2. Last 30 days map
+                    setStats(prev => ({
+                        ...prev,
+                        totalStars: stars,
+                        totalForks: forks,
+                        topLanguage: topLang ? topLang[0] : "SQL"
+                    }));
+                }
+
+                // 2. Build last 30 days map
                 const dailyCommits = {};
                 for (let i = 29; i >= 0; i--) {
                     const d = new Date();
@@ -49,7 +52,7 @@ function Analytics() {
                     dailyCommits[d.toISOString().split('T')[0]] = 0;
                 }
 
-                // 3. Fetch real commits repo-by-repo
+                // 3. Fetch real commits from GitHub (per repo)
                 for (const repo of repos) {
                     const commitsRes = await fetch(
                         `https://proxy-api.trickle-app.host/?url=https://api.github.com/repos/alsopranab/${repo.name}/commits?per_page=100`
@@ -65,6 +68,7 @@ function Analytics() {
                     });
                 }
 
+                // 4. Convert to chart format
                 const labels = [];
                 const data = [];
 
@@ -81,13 +85,14 @@ function Analytics() {
 
                 setChartData({ labels, data });
 
-                let streak = 0;
+                // 5. Active streak
+                let currentStreak = 0;
                 for (let i = data.length - 1; i >= 0; i--) {
-                    if (data[i] > 0) streak++;
+                    if (data[i] > 0) currentStreak++;
                     else break;
                 }
 
-                setStats(prev => ({ ...prev, commitStreak: streak }));
+                setStats(prev => ({ ...prev, commitStreak: currentStreak }));
             } catch (e) {
                 console.error("Failed to fetch GitHub stats", e);
             }
@@ -120,11 +125,9 @@ function Analytics() {
                     backgroundColor: gradient,
                     borderColor: '#4ade80',
                     borderWidth: 2,
-                    pointBackgroundColor: '#111827',
+                    pointBackgroundColor: '#374151',
                     pointBorderColor: '#4ade80',
                     pointBorderWidth: 2,
-                    pointHoverBackgroundColor: '#4ade80',
-                    pointHoverBorderColor: '#fff',
                     fill: true,
                     tension: 0.4,
                     pointRadius: 4,
@@ -140,12 +143,12 @@ function Analytics() {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { color: '#4ade80', stepSize: 1 },
-                        grid: { color: 'rgba(255,255,255,0.1)' }
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        ticks: { color: '#4ade80', stepSize: 1 }
                     },
                     x: {
-                        ticks: { color: '#4ade80', maxTicksLimit: 10 },
-                        grid: { color: 'rgba(255,255,255,0.05)' }
+                        grid: { color: 'rgba(0,0,0,0.05)' },
+                        ticks: { color: '#4ade80', maxTicksLimit: 10 }
                     }
                 }
             }
@@ -180,13 +183,17 @@ function Analytics() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-2 border bg-gray-900 rounded-xl">
-                    <div className="h-72 p-4">
+                <div className="lg:col-span-2 card border border-gray-200 bg-gray-100 shadow-xl">
+                    <div className="p-6 border-b border-gray-200">
+                        <h3 className="font-bold text-xl text-gray-800">Contribution Activity</h3>
+                        <p className="text-xs text-gray-500 font-mono">Last 30 Days</p>
+                    </div>
+                    <div className="relative h-72 p-4">
                         <canvas ref={chartRef}></canvas>
                     </div>
                 </div>
 
-                {/* Tech stack JSX remains unchanged */}
+                {/* Tech stack section unchanged */}
             </div>
         </div>
     );
