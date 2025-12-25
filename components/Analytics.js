@@ -9,119 +9,134 @@ function Analytics() {
     const chartRef = React.useRef(null);
     const chartInstance = React.useRef(null);
 
-React.useEffect(() => {
-    const fetchGithubStats = async () => {
-        const username = "alsopranab";
+    React.useEffect(() => {
+        const fetchGithubStats = async () => {
+            const username = "alsopranab";
 
-        try {
-            // 1. Fetch repos (stars, forks, language)
-            const repoRes = await fetch(
-                `https://api.github.com/users/${username}/repos?per_page=100`
-            );
+            {/* Github Token */}
+            const GITHUB_TOKEN = "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";
+            const headers = {
+                Authorization: `Bearer ${GITHUB_TOKEN}`
+            };
 
-            if (!repoRes.ok) throw new Error("Repo fetch failed");
+            try {
 
-            const repos = await repoRes.json();
-
-            const stars = repos.reduce(
-                (acc, repo) => acc + (repo.stargazers_count || 0),
-                0
-            );
-            const forks = repos.reduce(
-                (acc, repo) => acc + (repo.forks_count || 0),
-                0
-            );
-
-            const languages = {};
-            repos.forEach(repo => {
-                if (repo.language) {
-                    languages[repo.language] =
-                        (languages[repo.language] || 0) + 1;
-                }
-            });
-
-            const topLang =
-                Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
-
-            setStats(prev => ({
-                ...prev,
-                totalStars: stars,
-                totalForks: forks,
-                topLanguage: topLang ? topLang[0] : "SQL"
-            }));
-
-            // 2. Fetch public events for commit trend
-            const eventsRes = await fetch(
-                `https://api.github.com/users/${username}/events/public?per_page=100`
-            );
-
-            if (!eventsRes.ok) throw new Error("Events fetch failed");
-
-            const events = await eventsRes.json();
-
-            // Init last 30 days
-            const dailyCommits = {};
-            for (let i = 29; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                const key = d.toISOString().split("T")[0];
-                dailyCommits[key] = 0;
-            }
-
-            // Count PushEvent commits
-            events.forEach(event => {
-                if (event.type === "PushEvent") {
-                    const date =
-                        event.created_at?.split("T")[0];
-                    if (dailyCommits[date] !== undefined) {
-                        dailyCommits[date] += event.payload?.size || 0;
-                    }
-                }
-            });
-
-            const labels = [];
-            const data = [];
-
-            Object.keys(dailyCommits).forEach(d => {
-                labels.push(
-                    new Date(d).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric"
-                    })
+                 {/* Token Used Here  (stars, forks, top language) */}
+                
+                const repoRes = await fetch(
+                    `https://api.github.com/users/${username}/repos?per_page=100`,
+                    { headers } {/* Token Used Here */}
                 );
-                data.push(dailyCommits[d]);
-            });
 
-            setChartData({ labels, data });
+                if (!repoRes.ok) throw new Error("Repo fetch failed");
 
-            // Streak
-            let streak = 0;
-            for (let i = data.length - 1; i >= 0; i--) {
-                if (data[i] > 0) streak++;
-                else break;
+                const repos = await repoRes.json();
+
+                const stars = repos.reduce(
+                    (acc, repo) => acc + (repo.stargazers_count || 0),
+                    0
+                );
+                const forks = repos.reduce(
+                    (acc, repo) => acc + (repo.forks_count || 0),
+                    0
+                );
+
+                const languages = {};
+                repos.forEach(repo => {
+                    if (repo.language) {
+                        languages[repo.language] =
+                            (languages[repo.language] || 0) + 1;
+                    }
+                });
+
+                const topLang =
+                    Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
+
+                setStats(prev => ({
+                    ...prev,
+                    totalStars: stars,
+                    totalForks: forks,
+                    topLanguage: topLang ? topLang[0] : "SQL"
+                }));
+
+{/* Fetch Public Events */}
+                const eventsRes = await fetch(
+                    `https://api.github.com/users/${username}/events/public?per_page=100`,
+                    { headers }  {/* Token Used Here */}
+                );
+
+                if (!eventsRes.ok) throw new Error("Events fetch failed");
+
+                const events = await eventsRes.json();
+
+{/* Init Last 30 Days Data */}
+                const dailyCommits = {};
+                for (let i = 29; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const key = d.toISOString().split("T")[0];
+                    dailyCommits[key] = 0;
+                }
+
+{/* Count Push Events */}
+                events.forEach(event => {
+                    if (event.type === "PushEvent") {
+                        const date = event.created_at?.split("T")[0];
+                        if (dailyCommits[date] !== undefined) {
+                            dailyCommits[date] += event.payload?.size || 0;
+                        }
+                    }
+                });
+
+{/* Prepare Chart Data */}
+                const labels = [];
+                const data = [];
+
+                Object.keys(dailyCommits).forEach(d => {
+                    labels.push(
+                        new Date(d).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric"
+                        })
+                    );
+                    data.push(dailyCommits[d]);
+                });
+
+                setChartData({ labels, data });
+
+{/* Calculate Active Streak */}
+                let streak = 0;
+                for (let i = data.length - 1; i >= 0; i--) {
+                    if (data[i] > 0) streak++;
+                    else break;
+                }
+
+                setStats(prev => ({ ...prev, commitStreak: streak }));
+
+            } catch (e) {
+                console.error("GitHub API error", e);
+
+                {/* Fallback */}
+                setStats({
+                    totalStars: 17,
+                    totalForks: 6,
+                    topLanguage: "SQL",
+                    commitStreak: 15
+                });
+                setChartData({
+                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                    data: [12, 19, 3, 5, 2, 3]
+                });
             }
+        };
 
-            setStats(prev => ({ ...prev, commitStreak: streak }));
+        fetchGithubStats();
+    }, []);
 
-        } catch (e) {
-            console.error("GitHub API error", e);
-            setStats({
-                totalStars: 17,
-                totalForks: 6,
-                topLanguage: "SQL",
-                commitStreak: 15
-            });
-            setChartData({
-                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
-                data: [12, 19, 3, 5, 2, 3]
-            });
-        }
-    };
+{/* Above Everything is About the Logic & API*/}
 
-    fetchGithubStats();
-}, []);
-
-    // Initialize Chart.js
+    
+{/* Initialize Chart.js */}
     React.useEffect(() => {
         if (chartRef.current && chartData) {
             if (chartInstance.current) {
@@ -131,9 +146,9 @@ React.useEffect(() => {
             const ctx = chartRef.current.getContext('2d');
             const ChartJS = window.ChartJS;
 
-            // Green Gradient for the line fill (matching reference image style)
+{ /* Green Gradient for the line fill (matching reference image style) */}
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(74, 222, 128, 0.2)'); // Green 400 with opacity
+            gradient.addColorStop(0, 'rgba(74, 222, 128, 0.2)'); { /* Green 400 with opacity */ }
             gradient.addColorStop(1, 'rgba(74, 222, 128, 0.0)');
 
             chartInstance.current = new ChartJS(ctx, {
@@ -144,15 +159,15 @@ React.useEffect(() => {
                         label: 'Contributions',
                         data: chartData.data,
                         backgroundColor: gradient,
-                        borderColor: '#4ade80', // Green 400
+                        borderColor: '#4ade80', { /* Green 400 */ }
                         borderWidth: 2,
-                        pointBackgroundColor: '#111827', // Dark background color
+                        pointBackgroundColor: '#f3f4f6', { /* Gray Background */ }
                         pointBorderColor: '#4ade80',
                         pointBorderWidth: 2,
                         pointHoverBackgroundColor: '#4ade80',
                         pointHoverBorderColor: '#fff',
                         fill: true,
-                        tension: 0.4, // Smooth curve
+                        tension: 0.4,  { /* Smooth curve */ }
                         pointRadius: 4,
                         pointHoverRadius: 6
                     }]
