@@ -114,7 +114,7 @@ function Analytics() {
                         backgroundColor: gradient,
                         borderColor: '#4ade80', // Green 400
                         borderWidth: 2,
-                        pointBackgroundColor: '#111827', // Dark background color
+                        pointBackgroundColor: '#ffffff', // Light background color
                         pointBorderColor: '#4ade80',
                         pointBorderWidth: 2,
                         pointHoverBackgroundColor: '#4ade80',
@@ -133,10 +133,10 @@ function Analytics() {
                             display: false
                         },
                         tooltip: {
-                            backgroundColor: '#1f2937',
-                            titleColor: '#f3f4f6',
-                            bodyColor: '#fff',
-                            borderColor: '#374151',
+                            backgroundColor: '#ffffff',
+                            titleColor: '#111827',
+                            bodyColor: '#111827',
+                            borderColor: '#e5e7eb',
                             borderWidth: 1,
                             padding: 10,
                             displayColors: false,
@@ -153,7 +153,7 @@ function Analytics() {
                         y: {
                             beginAtZero: true,
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.1)',
+                                color: 'rgba(0, 0, 0, 0.05)',
                                 drawBorder: false,
                                 borderDash: [5, 5]
                             },
@@ -168,7 +168,7 @@ function Analytics() {
                         },
                         x: {
                             grid: {
-                                color: 'rgba(255, 255, 255, 0.05)',
+                                color: 'rgba(0, 0, 0, 0.05)',
                                 drawBorder: false,
                                 borderDash: [5, 5]
                             },
