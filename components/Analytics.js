@@ -13,7 +13,7 @@ function Analytics() {
         const fetchGithubStats = async () => {
             try {
                 // 1. Fetch Repos for general stats using Proxy
-                const repoRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100');
+                const repoRes = await fetch('https://api.github.com/users/alsopranab/repos?per_page=100');
                 if (repoRes.ok) {
                     const repos = await repoRes.json();
                     const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
@@ -37,7 +37,7 @@ function Analytics() {
 
                 // 2. Fetch Events for Real Commit Trends (Last 30 days approx from events)
                 // Note: This fetches public events. A full commit history graph like GitHub's requires authentication or scraping.
-                const eventsRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/events?per_page=100');
+                const eventsRes = await fetch('https://api.github.com/users/alsopranab/events?per_page=100');
                 if (eventsRes.ok) {
                     const events = await eventsRes.json();
                     
@@ -261,14 +261,14 @@ function Analytics() {
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Commit Trend Chart - Dark Theme matching reference */}
-                <div className="lg:col-span-2 card relative overflow-hidden group border border-gray-800 bg-[#0d1117] p-0 shadow-xl">
+                <div className="lg:col-span-2 card relative overflow-hidden group border border-gray-200 bg-white p-0 shadow-xl">
                      {/* Dark Theme Header */}
                      <div className="p-6 pb-2 relative z-10 flex items-center justify-between border-b border-gray-800/50">
                         <div>
-                            <h3 className="font-bold text-xl text-gray-100">Contribution Activity</h3>
+                            <h3 className="font-bold text-xl text-gray-900">Contribution Activity</h3>
                             <p className="text-xs text-gray-500 mt-1 font-mono">Push Events (Last 30 Days)</p>
                         </div>
-                        <div className="p-2 bg-gray-800 rounded-lg text-green-400 border border-gray-700">
+                        <div className="p-2 bg-gray-100 rounded-lg text-green-500 border border-gray-200">
                             <div className="icon-chart-bar w-5 h-5"></div>
                         </div>
                      </div>
