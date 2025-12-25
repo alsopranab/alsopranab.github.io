@@ -13,26 +13,19 @@ function Analytics() {
         const fetchGithubStats = async () => {
             try {
                 // 1. Fetch Repos for general stats using Proxy
-                const repoRes = await fetch(
-                    'https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100'
-                );
-
-                let repos = [];
-
+                const repoRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100');
                 if (repoRes.ok) {
-                    repos = await repoRes.json();
-
+                    const repos = await repoRes.json();
                     const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
                     const forks = repos.reduce((acc, repo) => acc + repo.forks_count, 0);
-
+                    
                     const languages = {};
                     repos.forEach(repo => {
                         if (repo.language) {
                             languages[repo.language] = (languages[repo.language] || 0) + 1;
                         }
                     });
-
-                    const topLang = Object.entries(languages).sort((a, b) => b[1] - a[1])[0];
+                    const topLang = Object.entries(languages).sort((a,b) => b[1] - a[1])[0];
 
                     setStats(prev => ({
                         ...prev,
@@ -42,7 +35,7 @@ function Analytics() {
                     }));
                 }
 
-                // 2. REAL Commit Data (replace events API, rest logic same)
+                // 2. Fetch Commits for Real Commit Trends (Last 30 days)
                 const dailyCommits = {};
                 for (let i = 29; i >= 0; i--) {
                     const d = new Date();
@@ -51,20 +44,25 @@ function Analytics() {
                     dailyCommits[dateStr] = 0;
                 }
 
-                for (const repo of repos) {
-                    const commitsRes = await fetch(
-                        `https://proxy-api.trickle-app.host/?url=https://api.github.com/repos/alsopranab/${repo.name}/commits?per_page=100`
-                    );
-                    if (!commitsRes.ok) continue;
+                const reposForCommitsRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100');
+                if (reposForCommitsRes.ok) {
+                    const reposForCommits = await reposForCommitsRes.json();
 
-                    const commits = await commitsRes.json();
-                    commits.forEach(c => {
-                        const date = new Date(c.commit.author.date)
-                            .toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                        if (dailyCommits.hasOwnProperty(date)) {
-                            dailyCommits[date]++;
-                        }
-                    });
+                    for (const repo of reposForCommits) {
+                        const commitsRes = await fetch(
+                            `https://proxy-api.trickle-app.host/?url=https://api.github.com/repos/alsopranab/${repo.name}/commits?per_page=100`
+                        );
+                        if (!commitsRes.ok) continue;
+
+                        const commits = await commitsRes.json();
+                        commits.forEach(c => {
+                            const dateStr = new Date(c.commit.author.date)
+                                .toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                            if (dailyCommits.hasOwnProperty(dateStr)) {
+                                dailyCommits[dateStr] += 1;
+                            }
+                        });
+                    }
                 }
 
                 setChartData({
@@ -89,11 +87,9 @@ function Analytics() {
                 });
             }
         };
-
         fetchGithubStats();
     }, []);
 
-    // Initialize Chart.js
     React.useEffect(() => {
         if (chartRef.current && chartData) {
             if (chartInstance.current) {
@@ -117,7 +113,7 @@ function Analytics() {
                         backgroundColor: gradient,
                         borderColor: '#4ade80',
                         borderWidth: 2,
-                        pointBackgroundColor: '#374151',
+                        pointBackgroundColor: '#111827',
                         pointBorderColor: '#4ade80',
                         pointBorderWidth: 2,
                         pointHoverBackgroundColor: '#4ade80',
@@ -131,18 +127,38 @@ function Analytics() {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1f2937',
+                            titleColor: '#f3f4f6',
+                            bodyColor: '#fff',
+                            borderColor: '#374151',
+                            borderWidth: 1,
+                            padding: 10,
+                            displayColors: false,
+                            intersect: false,
+                            mode: 'index',
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.parsed.y} commits`;
+                                }
+                            }
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            grid: { color: 'rgba(0,0,0,0.05)' },
-                            ticks: { color: '#4ade80', stepSize: 1 }
+                            grid: { color: 'rgba(255, 255, 255, 0.1)', drawBorder: false, borderDash: [5, 5] },
+                            ticks: { color: '#4ade80', font: { family: "'Courier New', monospace", size: 10 }, stepSize: 1 }
                         },
                         x: {
-                            grid: { color: 'rgba(0,0,0,0.05)' },
-                            ticks: { color: '#4ade80', maxTicksLimit: 10 }
+                            grid: { color: 'rgba(255, 255, 255, 0.05)', drawBorder: false, borderDash: [5, 5] },
+                            ticks: { color: '#4ade80', font: { family: "'Courier New', monospace", size: 10 }, maxTicksLimit: 10 }
                         }
-                    }
+                    },
+                    interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                    animation: { duration: 1500, easing: 'easeOutQuart' }
                 }
             });
         }
@@ -158,13 +174,13 @@ function Analytics() {
         <div className={`p-6 bg-white rounded-2xl border border-gray-100 shadow-sm flex flex-col items-center justify-center text-center relative overflow-hidden group hover:shadow-lg transition-all duration-300`}>
             <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${bgClass}`}></div>
             <div className={`absolute -right-6 -top-6 w-24 h-24 rounded-full opacity-10 ${bgClass} blur-xl group-hover:scale-150 transition-transform duration-700`}></div>
-            <div className="mb-4 relative">
-                <div className={`absolute inset-0 ${bgClass} blur-lg opacity-20 rounded-full`}></div>
-                <div className={`${colorClass} relative z-10`}>
+            <div className={`mb-4 relative`}>
+                <div className={`absolute inset-0 ${bgClass} blur-lg opacity-20 rounded-full animate-pulse-glow`}></div>
+                <div className={`${colorClass} relative z-10 transform group-hover:scale-110 transition-transform duration-300`}>
                     <div className={`${icon} w-10 h-10`}></div>
                 </div>
             </div>
-            <div className="text-3xl font-bold text-gray-900 mb-1">{value}</div>
+            <div className="text-3xl font-bold text-gray-900 mb-1 tracking-tight">{value}</div>
             <div className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{label}</div>
         </div>
     );
@@ -184,26 +200,19 @@ function Analytics() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Commit Trend Chart - GRAY THEME */}
-                <div className="lg:col-span-2 card relative overflow-hidden group border border-gray-200 bg-gray-100 p-0 shadow-xl">
-                    <div className="p-6 pb-2 relative z-10 flex items-center justify-between border-b border-gray-300">
+                <div className="lg:col-span-2 card relative overflow-hidden group border border-gray-800 bg-gray-100 p-0 shadow-xl">
+                    <div className="p-6 pb-2 relative z-10 flex items-center justify-between border-b border-gray-800/50">
                         <div>
-                            <h3 className="font-bold text-xl text-gray-800">Contribution Activity</h3>
-                            <p className="text-xs text-gray-500 mt-1 font-mono">Last 30 Days</p>
+                            <h3 className="font-bold text-xl text-gray-100">Contribution Activity</h3>
+                            <p className="text-xs text-gray-500 mt-1 font-mono">Commits (Last 30 Days)</p>
                         </div>
-                        <div className="p-2 bg-gray-200 rounded-lg text-green-500 border border-gray-300">
+                        <div className="p-2 bg-gray-800 rounded-lg text-green-400 border border-gray-700">
                             <div className="icon-chart-bar w-5 h-5"></div>
                         </div>
                     </div>
                     <div className="relative h-72 w-full z-10 p-4">
                         <canvas ref={chartRef}></canvas>
                     </div>
-                </div>
-
-                {/* Tech Stack Distribution — unchanged */}
-                <div className="card relative overflow-hidden">
-                    <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-500"></div>
-                    <h3 className="font-bold text-xl text-gray-900 mb-6">Tech Stack</h3>
                 </div>
             </div>
         </div>
