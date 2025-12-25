@@ -13,7 +13,7 @@ function Analytics() {
         const fetchGithubStats = async () => {
             try {
                 // 1. Fetch Repos for general stats using Proxy
-                const repoRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/repos?per_page=100');
+                const repoRes = await fetch('https://api.github.com/users/alsopranab/repos?per_page=100');
                 if (repoRes.ok) {
                     const repos = await repoRes.json();
                     const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
@@ -37,7 +37,7 @@ function Analytics() {
 
                 // 2. Fetch Events for Real Commit Trends (Last 30 days approx from events)
                 // Note: This fetches public events. A full commit history graph like GitHub's requires authentication or scraping.
-                const eventsRes = await fetch('https://proxy-api.trickle-app.host/?url=https://api.github.com/users/alsopranab/events?per_page=100');
+                const eventsRes = await fetch('https://api.github.com/users/alsopranab/events/public?per_page=100');
                 if (eventsRes.ok) {
                     const events = await eventsRes.json();
                     
