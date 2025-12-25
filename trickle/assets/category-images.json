@@ -1,0 +1,110 @@
+[
+  {
+    "keywords": ["titanic", "ship", "disaster", "survival"],
+    "url": "https://images.unsplash.com/photo-1500043236083-29452b478335?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Ocean/Ship theme for Titanic dataset projects",
+    "priority": 10
+  },
+  {
+    "keywords": ["housing", "house", "real estate", "property"],
+    "url": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Real estate theme for housing projects",
+    "priority": 10
+  },
+  {
+    "keywords": ["iris", "flower", "botany", "plant"],
+    "url": "https://images.unsplash.com/photo-1550523119-0b73c988e404?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Flower theme for Iris dataset projects",
+    "priority": 10
+  },
+  {
+    "keywords": ["covid", "virus", "pandemic", "health"],
+    "url": "https://images.unsplash.com/photo-1584036561566-b93a58066c53?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Medical theme for COVID projects",
+    "priority": 10
+  },
+  {
+    "keywords": ["sql", "database", "query", "data", "postgres", "mysql"],
+    "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Data analytics dashboard",
+    "priority": 5
+  },
+  {
+    "keywords": ["sql", "database", "server", "storage"],
+    "url": "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Server rack lights",
+    "priority": 5
+  },
+  {
+    "keywords": ["python", "script", "automation", "code", "pandas", "numpy"],
+    "url": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Python code on screen",
+    "priority": 2
+  },
+  {
+    "keywords": ["machine learning", "neural", "deep learning", "ai", "artificial intelligence"],
+    "url": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "AI visualization (Robot/Brain)",
+    "priority": 3
+  },
+  {
+    "keywords": ["statistics", "prediction", "forecast", "regression", "classification", "eda"],
+    "url": "https://images.unsplash.com/photo-1543286386-2f6595e96e6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "General Data Charts (Neutral)",
+    "priority": 4
+  },
+  {
+    "keywords": ["react", "frontend", "web", "javascript", "js", "html", "css"],
+    "url": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "React logo concept",
+    "priority": 3
+  },
+  {
+    "keywords": ["web", "design", "ui", "ux", "frontend"],
+    "url": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Web design wireframe",
+    "priority": 2
+  },
+  {
+    "keywords": ["finance", "money", "sales", "ecommerce", "business", "chart"],
+    "url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Financial charts on laptop",
+    "priority": 4
+  },
+  {
+    "keywords": ["analytics", "growth", "trend"],
+    "url": "https://images.unsplash.com/photo-1599658880436-c61792e70672?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Analytics graph analysis",
+    "priority": 4
+  },
+  {
+    "keywords": ["api", "backend", "cloud", "network"],
+    "url": "https://images.unsplash.com/photo-1558494949-efc535b5fa02?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Server room",
+    "priority": 2
+  },
+  {
+    "keywords": ["code", "development", "programming", "laptop"],
+    "url": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Coding on laptop",
+    "priority": 1
+  },
+  {
+    "keywords": ["mobile", "app", "phone", "ios", "android"],
+    "url": "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Mobile app development",
+    "priority": 3
+  },
+  {
+    "keywords": ["default"],
+    "url": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Clean workspace default 1",
+    "priority": 0
+  },
+  {
+    "keywords": ["default"],
+    "url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    "description": "Clean workspace default 2",
+    "priority": 0
+  }
+]
