@@ -13,6 +13,11 @@ function Contact() {
         const [accessCode, setAccessCode] = React.useState('');
         const [lockError, setLockError] = React.useState('');
         const [decryptedPhone, setDecryptedPhone] = React.useState('');
+
+        // Encrypted phone number data (XOR obfuscation)
+        // Hidden from plain text inspection
+        // Decodes to: +91 9366036448
+        // Key: Be1lieveInYourself
         const binaryData = [105, 92, 0, 76, 80, 86, 64, 83, 121, 93, 111, 91, 65, 74];
 
         const handleChange = (e) => {
@@ -22,7 +27,7 @@ function Contact() {
 
         const handleSubmit = (e) => {
             e.preventDefault();
-
+            // Construct mailto link
             const subject = encodeURIComponent(`Portfolio Contact: ${formData.subject}`);
             const body = encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`);
             window.location.href = `mailto:carrer.pranab@gmail.com?subject=${subject}&body=${body}`;
@@ -62,7 +67,7 @@ function Contact() {
         return (
             <div className="space-y-8" data-name="Contact" data-file="components/Contact.js">
                 <h2 className="section-title font-light text-3xl border-b border-gray-100 pb-4">
-                    <div className="icon-mail text-[var(--primary-color)] w-6 h-6 opacity-80"></div>
+                    <div className="icon-mail text-[var(--primary-color)] w-8 h-8 opacity-90"></div>
                     Contact
                 </h2>
 
