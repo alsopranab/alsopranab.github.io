@@ -13,7 +13,10 @@ function Analytics() {
         const fetchGithubStats = async () => {
             try {
                 // 1. Fetch Repos for general stats using Proxy
-                const repoRes = await fetch('https://api.github.com/users/alsopranab/repos?per_page=100');
+                const repoRes = await fetch(
+  'https://api.github.com/users/alsopranab/repos?per_page=100'
+);
+
                 if (repoRes.ok) {
                     const repos = await repoRes.json();
                     const stars = repos.reduce((acc, repo) => acc + repo.stargazers_count, 0);
@@ -37,45 +40,53 @@ function Analytics() {
 
                 // 2. Fetch Events for Real Commit Trends (Last 30 days approx from events)
                 // Note: This fetches public events. A full commit history graph like GitHub's requires authentication or scraping.
-                const eventsRes = await fetch('https://api.github.com/users/alsopranab/events/public?per_page=100');
-                if (eventsRes.ok) {
-                    const events = await eventsRes.json();
-                    
-                    // Process PushEvents to build a daily frequency map
-                    const dailyCommits = {};
-                    // Initialize last 30 days with 0 to show the full timeline
-                    for (let i = 29; i >= 0; i--) {
-                        const d = new Date();
-                        d.setDate(d.getDate() - i);
-                        const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                        dailyCommits[dateStr] = 0;
-                    }
+const dailyCommits = {};
 
-                    events.forEach(event => {
-                        if (event.type === 'PushEvent') {
-                            const date = new Date(event.created_at);
-                            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                            // Check if this date is within our 30 day window
-                            if (dailyCommits.hasOwnProperty(dateStr)) {
-                                dailyCommits[dateStr] += event.payload.size; // payload.size is number of commits in the push
-                            }
-                        }
-                    });
+// init last 30 days
+for (let i = 29; i >= 0; i--) {
+  const d = new Date();
+  d.setDate(d.getDate() - i);
+  dailyCommits[d.toISOString().split('T')[0]] = 0;
+}
 
-                    setChartData({
-                        labels: Object.keys(dailyCommits),
-                        data: Object.values(dailyCommits)
-                    });
+for (const repo of repos) {
+  const commitsRes = await fetch(
+    `https://api.github.com/repos/alsopranab/${repo.name}/commits?per_page=100`
+  );
 
-                    // Calculate a simple "active days" streak based on available data
-                    let currentStreak = 0;
-                    const values = Object.values(dailyCommits).reverse();
-                    for (let val of values) {
-                        if (val > 0) currentStreak++;
-                        else break;
-                    }
-                    setStats(prev => ({ ...prev, commitStreak: currentStreak }));
-                }
+  if (!commitsRes.ok) continue;
+
+  const commits = await commitsRes.json();
+
+  commits.forEach(c => {
+    const date = c?.commit?.author?.date?.split('T')[0];
+    if (dailyCommits[date] !== undefined) {
+      dailyCommits[date]++;
+    }
+  });
+}
+
+const labels = [];
+const data = [];
+
+Object.keys(dailyCommits).forEach(d => {
+  labels.push(
+    new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  );
+  data.push(dailyCommits[d]);
+});
+
+setChartData({ labels, data });
+
+// streak
+let streak = 0;
+for (let i = data.length - 1; i >= 0; i--) {
+  if (data[i] > 0) streak++;
+  else break;
+}
+
+setStats(prev => ({ ...prev, commitStreak: streak }));
+
             } catch (e) {
                 console.error("Failed to fetch GitHub stats", e);
                 // Fallback data if API fails or rate limited
