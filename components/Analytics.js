@@ -264,18 +264,32 @@ function Analytics() {
                      {/* Dark Theme Header */}
                      <div className="p-6 pb-2 relative z-10 flex items-center justify-between border-b border-gray-800/50">
                         <div>
-                            <h3 className="font-bold text-xl text-gray-900">Contribution Activity</h3>
-                            <p className="text-xs text-gray-500 mt-1 font-mono">Push Events (Last 30 Days)</p>
+                            <h3 className="font-bold text-xl text-gray-900">GitHub Contribution Activity</h3>
+                            <p className="text-xs text-gray-500 mt-1 font-mono">Public + Private Contributions</p>
+                        
                         </div>
                         <div className="p-2 bg-gray-100 rounded-lg text-green-500 border border-gray-200">
                             <div className="icon-chart-bar w-5 h-5"></div>
                         </div>
                      </div>
-                    
-                    <div className="relative h-72 w-full z-10 p-4">
+
+
+{/* <div className="relative h-72 w-full z-10 p-4">
                         <canvas ref={chartRef}></canvas>
                     </div>
-                </div>
+                 */} // Removing this as of now, as there is limitation. Instead file below:
+
+<div className="relative w-full z-10 p-4">
+  <img
+    src="https://github-readme-activity-graph.vercel.app/graph?username=alsopranab&bg_color=ffffff&color=16a34a&line=15803d&point=16a34a&area=true&hide_title=true&hide_border=true"
+    alt="GitHub Contribution Graph"
+    className="w-full rounded-lg"
+  />
+</div> 
+        // Above *** This is the replacement past for the above *** Currently ****
+
+        
+</div>
 
                 {/* Tech Stack Distribution */}
                 <div className="card relative overflow-hidden">
