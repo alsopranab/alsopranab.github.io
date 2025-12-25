@@ -35,12 +35,17 @@ class ErrorBoundary extends React.Component {
 }
 
 function App() {
-  try {
-    return (
-      <div className="min-h-screen flex flex-col lg:flex-row" data-name="app" data-file="app.js">
+  const [loading, setLoading] = React.useState(true);
+
+  return (
+    <div data-name="app" data-file="app.js">
+      {/* Entry Loader */}
+      {loading && <Loader onComplete={() => setLoading(false)} />}
+
+      <div className={`min-h-screen flex flex-col lg:flex-row transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}>
         
         {/* Mobile Header / Navbar for small screens */}
-        <div className="lg:hidden sticky top-0 z-50 bg-white border-b border-gray-200 p-4">
+        <div className="lg:hidden sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 p-4">
             <Navbar />
         </div>
 
@@ -50,48 +55,47 @@ function App() {
         </aside>
 
         {/* Main Content Area */}
-        <main className="flex-1 lg:ml-[var(--sidebar-width)] p-4 md:p-8 lg:p-12 space-y-16 max-w-7xl mx-auto w-full">
+        <main className="flex-1 lg:ml-[var(--sidebar-width)] px-4 md:px-8 lg:px-12 pb-12 pt-0 lg:pt-0 max-w-7xl mx-auto w-full">
             
-            {/* Desktop Navbar (Hidden on mobile) */}
-            <div className="hidden lg:block sticky top-0 bg-[var(--bg-color)]/95 backdrop-blur z-30 py-4 mb-8 -mt-4 border-b border-gray-200/50">
+            {/* Desktop Sticky Navbar */}
+            <div className="hidden lg:block sticky top-0 bg-[var(--bg-color)]/95 backdrop-blur z-30 py-3 border-b border-gray-200/50 mb-10 shadow-sm">
                 <Navbar />
             </div>
 
-            <section id="projects" className="scroll-mt-24">
-                <Projects />
-            </section>
+            <div className="space-y-24 mt-8 lg:mt-0">
+                <section id="projects" className="scroll-mt-32">
+                    <Projects />
+                </section>
 
-            <section id="analytics" className="scroll-mt-24">
-                <Analytics />
-            </section>
+                <section id="analytics" className="scroll-mt-32">
+                    <Analytics />
+                </section>
 
-            <section id="cp" className="scroll-mt-24">
-                <CompetitiveProgramming />
-            </section>
+                <section id="cp" className="scroll-mt-32">
+                    <CompetitiveProgramming />
+                </section>
 
-            <section id="experience" className="scroll-mt-24">
-                <Experience />
-            </section>
+                <section id="experience" className="scroll-mt-32">
+                    <Experience />
+                </section>
 
-            <section id="education" className="scroll-mt-24">
-                <Education />
-            </section>
+                <section id="education" className="scroll-mt-32">
+                    <Education />
+                </section>
 
-            <section id="contact" className="scroll-mt-24">
-                <Contact />
-            </section>
+                <section id="contact" className="scroll-mt-32">
+                    <Contact />
+                </section>
+            </div>
 
-            <footer className="pt-12 pb-6 text-center text-gray-400 text-sm">
+            <footer className="pt-20 pb-6 text-center text-gray-400 text-sm">
                 <p>&copy; 2025 Pranab Debnath. All rights reserved.</p>
-                <p className="mt-1">Built with Passion · Designed for Data Analytics & Automation..</p>
+                <p className="mt-1">Built with React & Tailwind CSS.</p>
             </footer>
         </main>
       </div>
-    );
-  } catch (error) {
-    console.error('App component error:', error);
-    return null;
-  }
+    </div>
+  );
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
