@@ -52,15 +52,14 @@ function Analytics() {
                     }
 
                     events.forEach(event => {
-                        if (event.type === 'PushEvent') {
-                            const date = new Date(event.created_at);
-                            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                            // Check if this date is within our 30 day window
-                            if (dailyCommits.hasOwnProperty(dateStr)) {
-                                dailyCommits[dateStr] += event.payload.size; // payload.size is number of commits in the push
-                            }
-                        }
-                    });
+                      const date = new Date(event.created_at);
+                      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+                      if (dailyCommits.hasOwnProperty(dateStr)) {
+                   dailyCommits[dateStr] += 1; // count ANY public activity
+  }
+});
+;
 
                     setChartData({
                         labels: Object.keys(dailyCommits),
@@ -144,7 +143,7 @@ function Analytics() {
                             mode: 'index',
                             callbacks: {
                                 label: function(context) {
-                                    return `${context.parsed.y} commits`;
+                                    return `${context.parsed.y} activities`;
                                 }
                             }
                         }
