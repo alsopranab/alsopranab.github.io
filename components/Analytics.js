@@ -53,10 +53,18 @@ for (const repo of repos) {
   const commitsRes = await fetch(
     `https://api.github.com/repos/alsopranab/${repo.name}/commits?per_page=100`
   );
-
+    
+    {/* this is added so that one bad repo shouldn't break everything*/}
+    
   if (!commitsRes.ok) continue;
 
-  const commits = await commitsRes.json();
+  let commits = [];
+try {
+  commits = await commitsRes.json();
+} catch {
+  continue;
+}
+
 
   commits.forEach(c => {
     const date = c?.commit?.author?.date?.split('T')[0];
@@ -76,7 +84,16 @@ Object.keys(dailyCommits).forEach(d => {
   data.push(dailyCommits[d]);
 });
 
-setChartData({ labels, data });
+                {/* Setting this chart data so that it shouldn't break with the months
+                Previoulsy it was:
+                
+                setChartData({
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+  data: [12, 19, 3, 5, 2, 3]
+});
+*/}
+                
+setChartData({ labels: [], data: [] });
 
 // streak
 let streak = 0;
